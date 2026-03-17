@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ascend-postgres
+    environment:
+      POSTGRES_DB: ascend
+      POSTGRES_USER: ascend
+      POSTGRES_PASSWORD: ascend_dev_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./api/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ascend"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ascend-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ascend-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - ascend-network
+
+  # Go API Server
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: ascend-api
+    environment:
+      # Database
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ascend
+      DB_PASSWORD: ascend_dev_password
+      DB_NAME: ascend
+      DB_SSL_MODE: disable
+
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      # Server
+      PORT: 8080
+      ENV: development
+
+      # JWT
+      JWT_SECRET: dev_jwt_secret_change_in_production
+      JWT_EXPIRATION: 24h
+
+      # Video Storage
+      VIDEO_STORAGE_PATH: /app/storage/videos
+      MAX_VIDEO_SIZE_MB: 100
+      ALLOWED_VIDEO_FORMATS: mp4,mov,avi
+
+      # CORS
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:19006
+
+      # Rate Limiting
+      RATE_LIMIT_REQUESTS: 100
+      RATE_LIMIT_DURATION: 1m
+
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/app
+      - video_storage:/app/storage/videos
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ascend-network
+    command: ["./api"]
+    restart: unless-stopped
+
+  # MinIO for S3-compatible object storage (optional, for video storage)
+  minio:
+    image: minio/minio:latest
+    container_name: ascend-minio
+    environment:
+      MINIO_ROOT_USER: ascend
+      MINIO_ROOT_PASSWORD: ascend_minio_password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ascend-network
+
+  # Adminer - Database UI (development only)
+  adminer:
+    image: adminer:latest
+    container_name: ascend-adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    networks:
+      - ascend-network
+    profiles:
+      - dev
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+  video_storage:
+    driver: local
+
+networks:
+  ascend-network:
+    driver: bridge

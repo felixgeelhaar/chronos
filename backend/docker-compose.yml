@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ascend-postgres
+    environment:
+      POSTGRES_DB: ascend_db
+      POSTGRES_USER: ascend_user
+      POSTGRES_PASSWORD: ascend_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ascend_user -d ascend_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ascend-network
+
+  # Redis cache (for future use)
+  redis:
+    image: redis:7-alpine
+    container_name: ascend-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - ascend-network
+
+  # API server
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ascend-api
+    environment:
+      - ENV=development
+      - PORT=8080
+      - DATABASE_URL=postgresql://ascend_user:ascend_password@postgres:5432/ascend_db?sslmode=disable
+      - REDIS_URL=redis://redis:6379/0
+      - LOG_LEVEL=debug
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ascend-network
+    volumes:
+      - ./:/app:ro
+    command: ["./api"]
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  ascend-network:
+    driver: bridge

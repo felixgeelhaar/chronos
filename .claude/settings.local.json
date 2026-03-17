@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(go mod init:*)",
+      "Bash(go get:*)",
+      "Bash(go mod:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(go build:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(npx react-native:*)",
+      "Bash(npx @react-native-community/cli:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(chmod:*)",
+      "Bash(cat:*)",
+      "Skill(enterprise-architecture-review)",
+      "Skill(security-audit)",
+      "Bash(npm audit:*)",
+      "Skill(production-readiness)",
+      "Bash(go test:*)",
+      "Read(///**)",
+      "Bash(awk:*)",
+      "Bash(/usr/bin/grep -E \"(RUN|PASS|FAIL)\")",
+      "Bash(timeout 30 go test:*)",
+      "Bash(/usr/bin/grep -E \"(RUN|PASS|FAIL|ok|FAIL)\")",
+      "Bash(/usr/bin/grep:*)",
+      "Bash(timeout 120 go test:*)",
+      "Bash(jobs)",
+      "Bash(jobs:*)",
+      "Bash(xargs:*)",
+      "Read(//Users/felixgeelhaar/Developer/projects/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

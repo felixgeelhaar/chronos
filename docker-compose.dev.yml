@@ -1,0 +1,36 @@
+version: '3.8'
+
+# Development override configuration
+# Use with: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # Development API with hot-reload
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    volumes:
+      # Mount source code for hot-reload
+      - ./api:/app
+      # Cache Go modules
+      - go_modules:/go/pkg/mod
+    environment:
+      # Enable development mode
+      ENV: development
+      DEBUG: "true"
+      LOG_LEVEL: debug
+
+      # Allow all origins in dev
+      ALLOWED_ORIGINS: "*"
+
+      # Longer JWT expiration for development
+      JWT_EXPIRATION: 168h  # 7 days
+    command: ["air", "-c", ".air.toml"]
+
+  # Always run Adminer in dev
+  adminer:
+    profiles: []  # Remove profile requirement
+
+volumes:
+  go_modules:
+    driver: local
