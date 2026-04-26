@@ -7,7 +7,7 @@ import (
 )
 
 func newSQLiteStore(connStr string) (Store, error) {
-	return sqlite.New(connStr)
+	return sqlite.NewStore(connStr)
 }
 
 func newPostgresStore(connStr string) (Store, error) {

@@ -3,8 +3,14 @@ package adapter
 
 import (
 	"context"
+	"sync"
 
 	"github.com/felixgeelhaar/chronos/pkg/vector"
+)
+
+var (
+	globalRegistry     *Registry
+	globalRegistryMu sync.RWMutex
 )
 
 // Source is the interface that all data adapters must implement.
@@ -28,22 +34,34 @@ func NewRegistry() *Registry {
 	return &Registry{sources: make(map[string]Source)}
 }
 
-// Register adds an adapter to the registry.
-func (r *Registry) Register(src Source) {
-	r.sources[src.Name()] = src
-}
-
-// Get retrieves an adapter by name.
-func (r *Registry) Get(name string) (Source, bool) {
-	src, ok := r.sources[name]
-	return src, ok
-}
-
-// List returns all registered adapter names.
-func (r *Registry) List() []string {
-	names := make([]string, 0, len(r.sources))
-	for name := range r.sources {
-		names = append(names, name)
+// GetRegistry returns the global adapter registry.
+// Adapters register themselves via init() to make this work.
+func GetRegistry() *Registry {
+	globalRegistryMu.Lock()
+	defer globalRegistryMu.Unlock()
+	if globalRegistry == nil {
+		globalRegistry = NewRegistry()
 	}
-	return names
+	return globalRegistry
+}
+
+// Register adds an adapter to the global registry.
+func Register(src Source) {
+	globalRegistryMu.Lock()
+	defer globalRegistryMu.Unlock()
+	if globalRegistry == nil {
+		globalRegistry = NewRegistry()
+	}
+	globalRegistry.sources[src.Name()] = src
+}
+
+// Get retrieves an adapter by name from the global registry.
+func Get(name string) (Source, bool) {
+	globalRegistryMu.RLock()
+	defer globalRegistryMu.RUnlock()
+	if globalRegistry == nil {
+		return nil, false
+	}
+	src, ok := globalRegistry.sources[name]
+	return src, ok
 }

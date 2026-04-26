@@ -156,10 +156,5 @@ func weekToTime(year, week int) time.Time {
 
 func init() {
 	// Register the adapter so it can be loaded by name
-	adapter.GetRegistry().Register(&Source{})
-}
-
-// GetRegistry returns the global adapter registry.
-func GetRegistry() *adapter.Registry {
-	return adapter.GetRegistry()
+	adapter.Register(&Source{})
 }

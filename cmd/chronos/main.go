@@ -92,8 +92,7 @@ func computeCmd() {
 	defer st.Close()
 
 	// Load adapter
-	reg := adapter.NewRegistry()
-	src, ok := reg.Get(*adapterName)
+	src, ok := adapter.Get(*adapterName)
 	if !ok {
 		log.Fatalf("Unknown adapter: %s", *adapterName)
 	}
@@ -102,6 +101,7 @@ func computeCmd() {
 	if err != nil {
 		log.Fatalf("Invalid coach-id: %v", err)
 	}
+	_ = scopeID.String() // unused but validated
 
 	// Fetch data
 	ctx, cancel := context.WithTimeout(context.Background(), cfg.ComputationTimeout)

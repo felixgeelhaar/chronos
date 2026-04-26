@@ -3,9 +3,15 @@
 package vector
 
 import (
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
+)
+
+var (
+	ErrMissingEntityID = errors.New("vector: missing entity ID")
+	ErrNoFeatures    = errors.New("vector: no features provided")
 )
 
 // EntityState represents a single observation of an entity at a point in time.

@@ -6,19 +6,18 @@ import (
 	"net/http"
 
 	"github.com/felixgeelhaar/chronos/internal/config"
-	"github.com/felixgeelhaar/chronos/internal/store/sqlite"
-	"github.com/felixgeelhaar/chronos/pkg/insight"
+	"github.com/felixgeelhaar/chronos/internal/store"
 	"github.com/google/uuid"
 )
 
 // Server wraps the HTTP handlers.
 type Server struct {
-	store *sqlite.Store
+	store store.Store
 	cfg   *config.Config
 }
 
 // NewServer creates an HTTP server.
-func NewServer(store *sqlite.Store, cfg *config.Config) *Server {
+func NewServer(store store.Store, cfg *config.Config) *Server {
 	return &Server{store: store, cfg: cfg}
 }
 

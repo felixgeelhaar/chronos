@@ -13,12 +13,13 @@ sql:
         emit_interface: true
         emit_exact_table_names: false
         emit_empty_slices: true
+        rename:
+          New: NewQueries
         overrides:
           - db_type: "TEXT"
             go_type:
-              import: "github.com/google/uuid"
-              type: "UUID"
-            nullable: false
+              type: "string"
+            nullable: true
           - db_type: "REAL"
             go_type: "float64"
             nullable: false
