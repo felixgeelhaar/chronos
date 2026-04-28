@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 98,
+  "version": 101,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -45,6 +45,17 @@
       "started_at": "2026-04-27T23:09:46.827948+02:00",
       "completed_at": "2026-04-27T23:16:40.806412+02:00",
       "elapsed_minutes": 6
+    },
+    "task-add-release-workflow": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".github/workflows/release.yml: tag push trigger, ghcr.io login, pre-flight HOMEBREW_TAP_TOKEN check, goreleaser release --clean; .goreleaser.yaml: brews.repository.token reads TAP_GITHUB_TOKEN env; verified with `goreleaser release --snapshot --clean --skip=publish,sign,docker,homebrew` — full artefact matrix produced"
+      ],
+      "started_at": "2026-04-28T08:56:04.197682+02:00",
+      "completed_at": "2026-04-28T08:57:31.899682+02:00",
+      "elapsed_minutes": 1
     },
     "task-bearer-auth": {
       "status": "done",
@@ -520,5 +531,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T08:16:42.173163+02:00"
+  "updated_at": "2026-04-28T08:57:31.899683+02:00"
 }
