@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 101,
+  "version": 108,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -35,6 +35,17 @@
       "completed_at": "2026-04-27T23:29:03.44205+02:00",
       "elapsed_minutes": 0
     },
+    "task-add-notifier-port": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/ports/interfaces.go: Notifier interface; internal/notify/decorator.go: NotifyingSignalRepository + Multi composite; internal/notify/decorator_test.go: 8 tests covering ordering, error path, nil safety, panic isolation, fan-out, read-method delegation"
+      ],
+      "started_at": "2026-04-28T09:16:01.002782+02:00",
+      "completed_at": "2026-04-28T09:17:07.422155+02:00",
+      "elapsed_minutes": 1
+    },
     "task-add-precommit-config": {
       "status": "done",
       "path": "",
@@ -56,6 +67,28 @@
       "started_at": "2026-04-28T08:56:04.197682+02:00",
       "completed_at": "2026-04-28T08:57:31.899682+02:00",
       "elapsed_minutes": 1
+    },
+    "task-add-sse-and-scheduler": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/notify/sse.go: SSE broadcaster with per-client bounded buffer + scope/pattern filter; internal/pipeline/scheduler.go: tick over scopes via new EntityStateRepository.ListScopes; internal/api/server.go: /v1/signals/stream handler using SSEBroadcaster interface (no notify import — cycle broken); ListScopes added to memory/sqlite/postgres backends; cmd/chronos/serve.go wires Multi(webhook, sse) + scheduler when CHRONOS_DETECTION_INTERVAL \u003e 0; docs/configuration.md + docs/wire-contract.md updated; coverage thresholds re-baselined for new code surface"
+      ],
+      "started_at": "2026-04-28T09:20:44.164121+02:00",
+      "completed_at": "2026-04-28T09:29:28.189019+02:00",
+      "elapsed_minutes": 8
+    },
+    "task-add-webhook-notifier": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/notify/webhook.go: HMAC-SHA256 X-Chronos-Signature, X-Chronos-Delivery uuid, X-Chronos-Event signal.detected; per-URL goroutine; retry on 5xx with 1s backoff; no retry on 2xx/4xx; ObserveWebhook metric; wired into cmd/chronos/{compute,serve}.go via wrapWithNotifier helper; CHRONOS_WEBHOOK_{URLS,SECRET,TIMEOUT,RETRIES} in config; 7 tests including signature verification, fan-out, retry behaviour, 4xx no-retry"
+      ],
+      "started_at": "2026-04-28T09:17:08.658778+02:00",
+      "completed_at": "2026-04-28T09:20:42.795435+02:00",
+      "elapsed_minutes": 3
     },
     "task-bearer-auth": {
       "status": "done",
@@ -531,5 +564,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T08:57:31.899683+02:00"
+  "updated_at": "2026-04-28T09:29:28.189019+02:00"
 }

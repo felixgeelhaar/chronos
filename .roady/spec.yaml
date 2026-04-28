@@ -227,6 +227,23 @@ features:
         errors; only cmd/ and internal/api log.
       requirements: []
 
+    - id: notifications
+      title: Push notifications (webhook + SSE)
+      description: |
+        Outbound delivery of newly-detected signals so consumers don't have to poll.
+        Two transports, both transport-only: webhooks for cross-process delivery
+        with HMAC signing, and Server-Sent Events for in-process / browser dashboards.
+        At-most-once delivery semantics; consumers de-duplicate by Signal.ID.
+      requirements:
+        - id: notifier-port
+          description: ports.Notifier interface; fire-and-forget; failures must not propagate to persistence.
+        - id: webhook-transport
+          description: HMAC-SHA256-signed POST with X-Chronos-Signature, X-Chronos-Delivery, X-Chronos-Event headers; best-effort retry on 5xx.
+        - id: sse-transport
+          description: GET /v1/signals/stream with text/event-stream; bounded per-client buffer, drops slow consumers.
+        - id: detection-scheduler
+          description: Background detection inside serve so SSE has signals to stream; configurable interval.
+
 constraints:
     - id: signals-not-opinions
       description: |

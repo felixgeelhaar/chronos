@@ -308,6 +308,45 @@
       "title": "Observability",
       "description": "Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
       "requirements": []
+    },
+    {
+      "id": "notifications",
+      "title": "Push notifications (webhook + SSE)",
+      "description": "Outbound delivery of newly-detected signals so consumers don't have to poll.\nTwo transports, both transport-only: webhooks for cross-process delivery\nwith HMAC signing, and Server-Sent Events for in-process / browser dashboards.\nAt-most-once delivery semantics; consumers de-duplicate by Signal.ID.\n",
+      "requirements": [
+        {
+          "id": "notifier-port",
+          "title": "",
+          "description": "ports.Notifier interface; fire-and-forget; failures must not propagate to persistence.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "webhook-transport",
+          "title": "",
+          "description": "HMAC-SHA256-signed POST with X-Chronos-Signature, X-Chronos-Delivery, X-Chronos-Event headers; best-effort retry on 5xx.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "sse-transport",
+          "title": "",
+          "description": "GET /v1/signals/stream with text/event-stream; bounded per-client buffer, drops slow consumers.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "detection-scheduler",
+          "title": "",
+          "description": "Background detection inside serve so SSE has signals to stream; configurable interval.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
     }
   ],
   "constraints": [
