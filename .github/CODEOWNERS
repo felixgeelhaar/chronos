@@ -1,0 +1,22 @@
+# Default owner for everything in this repo. PRs route to felixgeelhaar
+# unless a more specific rule below claims ownership.
+*                               @felixgeelhaar
+
+# Detector logic — careful review when changing thresholds, semantics,
+# or evidence shape since these are stable contracts for Nous consumers.
+/internal/detect/               @felixgeelhaar
+/internal/domain/               @felixgeelhaar
+/internal/ports/                @felixgeelhaar
+
+# Persistence: schema changes are migrations and require care.
+/internal/store/                @felixgeelhaar
+/sql/                           @felixgeelhaar
+
+# Public surfaces — changes here are SDK breaks.
+/chronos.go                     @felixgeelhaar
+/client/                        @felixgeelhaar
+
+# Release / packaging.
+/.goreleaser.yaml               @felixgeelhaar
+/Dockerfile                     @felixgeelhaar
+/.github/workflows/             @felixgeelhaar

@@ -1,0 +1,38 @@
+name: Feature request
+description: Propose a new pattern detector, adapter, or capability.
+title: "[feat] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Chronos's role in the cognitive stack is **Time / Pattern Perception**:
+        signals, not opinions. Feature requests that interpret signals or take
+        actions probably belong in Nous — but feel free to file here and we'll
+        route appropriately.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: What can you not currently do, or do well, with chronos?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: |
+        For a new detector: which PatternType, what does it perceive, what is the
+        evidence shape, and what config knobs should it have?
+        For an adapter: which data source, what is the cfg contract, what does
+        EntityState.Features look like?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you tried doing this with existing detectors / adapters? Why doesn't that suffice?

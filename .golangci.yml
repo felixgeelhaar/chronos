@@ -1,0 +1,76 @@
+version: "2"
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - gosec
+    - ineffassign
+    - revive
+    - staticcheck
+    - unconvert
+    - unused
+
+  settings:
+    revive:
+      rules:
+        - name: blank-imports
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: dot-imports
+        - name: error-return
+        - name: error-strings
+        - name: error-naming
+        - name: exported
+          arguments:
+            - "checkPrivateReceivers"
+            - "disableStutteringCheck"
+        - name: increment-decrement
+        - name: var-naming
+        - name: var-declaration
+        - name: package-comments
+        - name: range
+        - name: receiver-naming
+        - name: time-naming
+        - name: unexported-return
+        - name: indent-error-flow
+        - name: errorf
+        - name: empty-block
+        - name: superfluous-else
+        - name: unused-parameter
+        - name: unreachable-code
+        - name: redefines-builtin-id
+
+    gosec:
+      excludes:
+        # G404: Math/rand is fine for non-crypto sample generation in
+        # detector tests; we don't currently use it in production code.
+        - G404
+
+  exclusions:
+    # Test files do not need to satisfy gosec's hardening rules; the
+    # cost would be more code without security gain.
+    rules:
+      - path: _test\.go
+        linters:
+          - gosec
+      # Generated sqlc code is owned by the generator; we do not edit it.
+      - path: internal/store/sqlite/sqlcgen/.*
+        linters:
+          - revive
+          - staticcheck
+          - unused
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

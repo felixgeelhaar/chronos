@@ -61,3 +61,16 @@ temp/
 # Chronos specific
 chronos.db
 .chronos/
+
+# Claude Code per-clone permissions and runtime state. Project-level
+# .claude/ may host shared agents in future, but settings.local.json
+# is by design local-only (the file name carries the intent).
+.claude/
+
+# coverctl profile output (regenerated each run); .coverctl.yaml is tracked
+.cover/
+
+# nox transient outputs (sarif/cdx/findings produced per run);
+# .nox/baseline.json IS tracked so CI gates on new findings only.
+.nox/out/
+.nox/cache/

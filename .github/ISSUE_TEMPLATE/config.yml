@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Cognitive stack
+    url: https://github.com/felixgeelhaar/chronos/blob/main/docs/cognitive-stack.md
+    about: Where chronos fits next to Mnemos, Praxis, and Nous.
+  - name: Architecture
+    url: https://github.com/felixgeelhaar/chronos/blob/main/docs/architecture.md
+    about: Layering, ports, and detector internals.
+  - name: Adapter authoring
+    url: https://github.com/felixgeelhaar/chronos/blob/main/docs/adapters.md
+    about: How to write a chronos.Source for a new data system.

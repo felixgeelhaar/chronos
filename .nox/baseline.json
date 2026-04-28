@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0.0",
+  "entries": [
+    {
+      "fingerprint": "e51d4e38ef3c45b90eac5b7ffd4ae7b3ca4b0c4b0d5ec2a3bd0b3cb6ba2d7b35",
+      "rule_id": "CONT-001",
+      "file_path": "Dockerfile",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "973f171d3aa090bad8d44e08f7fcfd960225dd4c86bf23c2590092d154376c78",
+      "rule_id": "CONT-001",
+      "file_path": "Dockerfile",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "63f7b17228d66c8245740c7b590cd87f4b870b8ec0293b39a8a8d77a965c1df8",
+      "rule_id": "DATA-001",
+      "file_path": ".goreleaser.yaml",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "1d0bbcd417b915bb86c281d8eee0d16a104ff53f841e2848332fcc8cca7c5c17",
+      "rule_id": "DATA-005",
+      "file_path": "Dockerfile",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "bc8c09cf22b9c059728af7e6ef037af679e15d3fc40402454d5fb627601f7b5a",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "42f91d5f6a082c335e267b2c36871e3240b059eef3c91d42e5d94d09a52d1136",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "bd849a0b1803148547d95d7800911feb6ed612d7c06b622b09bc34dfd477f8a6",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "e74efb8db401b8ab5b5c13bd7b93d51487b3bc4813e5a7749e9d496d8e7f3ee7",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "2eb43eb0e36b00d877fc331db07035eb9c301eba891bff1d3ea1e434c7e4ff9a",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "7ba8774753166fe8902772a71dad71eb2c9b4323f39919f40cddd726931abef4",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "7770df452a2df4a06419ab21900a216fe2d5c901e9b7034167e65cc2bb063e76",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "55bbdfc1c5cce22f15d162461f50ff187b6f6fde5e5468c9212a6c8e43fc1987",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "29ac7343def5445bde6e8544730bd9cf4d6b51e4ae556db8f3303af45928fa84",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "a8b5416ad361531ba0b54d00e17b9e83f85a21dc4f9b011444818cfa404cd9c4",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "43853b52013238b718db4d26b3e0e127d8676465a2d0fdc14444eb4d403b7578",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "d8cba329fe6ba3c737af99fea131c7ed3eeb63babbee8317c34684ef65828b0c",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/security.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "0e56db2fb6433fc59404d2f0c8838a94a8e1e693021dc1482e8688515d1fa660",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/security.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "5f443eccbd2f82078a00f03046fbded3002e63d6ff82e439d8114100e47c3cf7",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/security.yml",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "c9f4f06666498f0f2e72f6d9f7a557013a6b1a3fec2c47f13c119af77ad4ee9d",
+      "rule_id": "SEC-073",
+      "file_path": "docs/configuration.md",
+      "severity": "critical",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "36b9dd34c5304301ece461e0522114a418c760f1eddb438f2327274fddc37d42",
+      "rule_id": "SEC-082",
+      "file_path": "internal/api/middleware.go",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "6f7e3fade431cfa8b71ac7d6d85c54b9392828ba48bbd56c93a375719ad7c5ed",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/spec.lock.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "b551f959b0f90c19d5f103fff160e0cc187ce0a0573a45719ada72dbc56072e0",
+      "rule_id": "SEC-161",
+      "file_path": "Dockerfile",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "fc99e88d26da316fcd53bf3695ae728036e9fd572e10b5f2e5218ade238f97f6",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/spec.lock.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "65f6313927c1864fbf7010ce55e4faa5339e9ea2a246033cb343f1cc06adeea8",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "b2a5f46d14204ff3edba7b4ab34d5623ba27dad0c9a7cfd0b469598127e2c02e",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/spec.lock.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "3c6202ecaac2bbcb278933d7f86cde83685cec8f988de5cd5f29fede39df6713",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/spec.lock.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "44b20cd1e3db94895f90c35998e43bb2617375fa211a156417468071f0ca8a58",
+      "rule_id": "SEC-163",
+      "file_path": "internal/observability/metrics.go",
+      "severity": "medium",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "b39f3890dbe386ce16957106a50a5e9d24e26b346001d686e22a4eb61244e1f0",
+      "rule_id": "SEC-430",
+      "file_path": "docs/configuration.md",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    },
+    {
+      "fingerprint": "982b7e91091a9c1467f0a92f3088482c0695ed3aa6d4af06a11d6b1f0da6523c",
+      "rule_id": "SEC-574",
+      "file_path": "internal/pipeline/compute_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T06:13:39.369935Z"
+    }
+  ]
+}

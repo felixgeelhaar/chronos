@@ -1,0 +1,68 @@
+# Pre-commit hooks for Chronos.
+#
+# Install once per clone:
+#   pip install pre-commit  (or: brew install pre-commit)
+#   pre-commit install
+#   pre-commit install --hook-type commit-msg
+#
+# Run on demand against all files:
+#   pre-commit run --all-files
+#
+# The hook set is a strict subset of CI: passing pre-commit guarantees
+# CI will not reject on style or lint. CI is the source of truth — these
+# hooks are local fast-feedback, not a parallel pipeline.
+
+minimum_pre_commit_version: "3.5.0"
+
+repos:
+  # Generic file hygiene.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-added-large-files
+        args: [--maxkb=500]
+
+  # gofmt + go mod tidy via dnephin/pre-commit-golang. We run go vet as a
+  # local hook below because v0.5.1 only ships a file-level `go-vet` hook,
+  # while CI uses module-level `go vet ./...`; matching CI is the goal.
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      - id: go-fmt
+      - id: go-mod-tidy
+
+  # Module-level go vet (matches CI). language: system requires Go to be
+  # installed locally; that's already a prerequisite for this repo.
+  - repo: local
+    hooks:
+      - id: go-vet-mod
+        name: go vet ./...
+        entry: go vet ./...
+        language: system
+        types: [go]
+        pass_filenames: false
+
+  # golangci-lint pinned to the same version CI runs (.github/workflows/ci.yml).
+  # Bump both at the same time when upgrading.
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v2.1.6
+    hooks:
+      - id: golangci-lint
+        args: [--timeout=5m]
+
+  # Conventional Commits format (feat:, fix:, docs:, ...). Enforced as a
+  # commit-msg hook so it runs on every commit attempt; install with
+  # `pre-commit install --hook-type commit-msg`.
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []

@@ -1,0 +1,70 @@
+# Coverage policy for chronos.
+#
+# Thresholds track current coverage as a no-regression floor, not an
+# aspirational target. Run `coverctl check` to see live numbers and
+# `coverctl suggest --strategy current --apply --force` to re-baseline
+# after coverage rises. Ratchet upward intentionally rather than
+# letting the floor drift.
+version: 1
+language: go
+policy:
+  default:
+    min: 80
+  domains:
+    # Well-tested core. Thresholds = current coverage minus a 2pp buffer
+    # so flaky tail effects don't fail CI.
+    - name: detect
+      match:
+        - ./internal/detect/...
+      min: 89.1
+    - name: domain
+      match:
+        - ./internal/domain/...
+      min: 98
+    - name: observability
+      match:
+        - ./internal/observability/...
+      min: 85.8
+    - name: pipeline
+      match:
+        - ./internal/pipeline/...
+      min: 86.5
+    - name: similarity
+      match:
+        - ./internal/similarity/...
+      min: 88.9
+    # API is partially tested (handlers covered, parse helpers not).
+    # Current ~68% with a 3pp buffer.
+    - name: api
+      match:
+        - ./internal/api/...
+      min: 65
+    # Persistence backends mix tested (memory ~71%, sqlite ~75%) with
+    # thin untested wrappers (postgres, store factory). Aggregate sits
+    # in the low-40s; threshold has a 3pp buffer. Ratchet up as the
+    # postgres backend gets integration tests.
+    - name: store
+      match:
+        - ./internal/store/...
+      min: 40
+    # CLI entrypoints exercised via integration tests outside this
+    # profile. Threshold is 0 until unit tests are added.
+    - name: cmd
+      match:
+        - ./cmd/...
+      min: 0
+    - name: config
+      match:
+        - ./internal/config/...
+      min: 0
+    # Ports are pure interface declarations (no executable statements
+    # to cover); 0 is the only meaningful threshold.
+    - name: ports
+      match:
+        - ./internal/ports/...
+      min: 0
+
+exclude:
+  # Generated sqlc code is owned by the generator; coverage on
+  # generated code is not actionable.
+  - internal/store/sqlite/sqlcgen/...

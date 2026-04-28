@@ -1,0 +1,80 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly OSV refresh so newly-published CVEs surface even when the
+    # repo is quiet.
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+
+jobs:
+  nox-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so nox can scan past commits for secrets when
+          # `-history` is enabled.
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache: true
+
+      - name: Install nox
+        env:
+          NOX_VERSION: "0.7.0"
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/nox.tar.gz \
+            "https://github.com/nox-hq/nox/releases/download/v${NOX_VERSION}/nox_${NOX_VERSION}_linux_amd64.tar.gz"
+          tar -xzf /tmp/nox.tar.gz -C /tmp
+          sudo install -m 0755 /tmp/nox /usr/local/bin/nox
+          nox version
+
+      - name: Run nox scan
+        run: |
+          # SARIF for GitHub Code Scanning, JSON for the annotate step,
+          # CycloneDX SBOM as a release artefact. The committed
+          # .nox/baseline.json silences historic findings, so a non-zero
+          # exit means the PR introduced a new finding. Update the
+          # baseline locally with `make nox-baseline-update` after
+          # legitimately accepting a finding.
+          nox scan . \
+            -format all \
+            -output ./.nox/out
+
+      - name: Upload SARIF to Code Scanning
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ./.nox/out/results.sarif
+          category: nox
+
+      - name: Annotate PR with new findings
+        if: github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          nox annotate \
+            -input ./.nox/out/findings.json \
+            -repo "${GITHUB_REPOSITORY}" \
+            -pr "${{ github.event.pull_request.number }}"
+
+      - name: Upload SBOM and findings as build artefact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nox-${{ github.sha }}
+          path: ./.nox/out/
+          retention-days: 30
