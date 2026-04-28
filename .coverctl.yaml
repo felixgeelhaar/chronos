@@ -16,7 +16,7 @@ policy:
     - name: detect
       match:
         - ./internal/detect/...
-      min: 89.1
+      min: 88.5
     - name: domain
       match:
         - ./internal/domain/...

@@ -2,42 +2,7 @@
   "schema_version": "1.0.0",
   "entries": [
     {
-      "fingerprint": "7c4decb759d7e4fa7961996084b9562f7d4267da25cc4293f8327c61cb4812f8",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "c66756f1dd4aaed122fb5881822b3cc0232f27d2fd9e48c5e970b2c6911e158c",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "9d5fa0dd1e0c456705ce40dafa5107583537521fc9e385b879db560f3aeba972",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "86714bd0fdf885dc1e22318e45193690778d0a403339897ae976ad832ba9aea2",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "eaebaa8d81673e59d2bfaae34963db4f9a9f221fc06b780b244780f4af89a02f",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "785cb7c109c32d959dd383909a3975542002f2c1bf8889d14fa67b8ac0a77827",
       "rule_id": "AI-036",
       "file_path": ".roady/state.json",
       "severity": "medium",
@@ -149,20 +114,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "173d7ab4af6268ed164822eb2353a7f4267d7413d779f95df2ee3ffc683600cb",
-      "rule_id": "SEC-073",
-      "file_path": ".roady/plan.json",
-      "severity": "critical",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "1bb06bfa6e22b3c521261078597cea3e6640c68f1ea8cc79c788cf806022f557",
-      "rule_id": "SEC-073",
-      "file_path": ".roady/plan.json",
-      "severity": "critical",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "70c6cc40c076bd92233ee263bdfc59c33e6e6bc415de79aa1c3a04d5847d218d",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
@@ -247,34 +198,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "ea8f53cb7e148b8b46c038471d80cf688977534d96e08e86bd90a757f55e2b66",
-      "rule_id": "SEC-073",
-      "file_path": "internal/store/store.go",
-      "severity": "critical",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "955c14869738c5f662f62b6b7f5704a95a71e6cdc0526d30604da4de1b47a7d0",
-      "rule_id": "SEC-073",
-      "file_path": "internal/store/store.go",
-      "severity": "critical",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "9505ceec416adb489b6e2af34a6796cc0749e7bc0fce7e7b9e61377a21f8d84d",
-      "rule_id": "SEC-073",
-      "file_path": "internal/store/store_test.go",
-      "severity": "critical",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "8baa6af75074e9e82b1c562cfb8f04fc43aac28fb64ee8c907ae01ecc4bf1dee",
-      "rule_id": "SEC-073",
-      "file_path": "internal/store/store_test.go",
-      "severity": "critical",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "36b9dd34c5304301ece461e0522114a418c760f1eddb438f2327274fddc37d42",
       "rule_id": "SEC-082",
       "file_path": "internal/api/middleware.go",
@@ -282,72 +205,9 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "a12ee72991b256c5fc3551b786c7849221ee4755f8a1a8f738da5ebd32f54ae0",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "1dcad1269f18547a6b7ed8ef3f5fde7b58d33dee68f202ced7318502e5e6b726",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "c31875893499ca2030f7b7822707dda9d3ea984b4824c59785d6da1b2fdc4279",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "26808b9861ab0808acff10df14201a1b4a9def2e27845b4def8bae29913cebef",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "5e0095c0f8d9683e65116a758a977a4c8dcbd9fc06797b4fa7901e23de6cb9e0",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "377fffd2b28eebd942b29fd7c2f68e6a020ed4de9b60bd02413b26b0e8200322",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "6f7e3fade431cfa8b71ac7d6d85c54b9392828ba48bbd56c93a375719ad7c5ed",
       "rule_id": "SEC-161",
       "file_path": ".roady/spec.lock.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "8864a4341d9365738332577c9c441cdd48147b05a36f38dd55490c91521d6042",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "eb1225b91aa0fc812cecc2bdb271c01210d8a67ddc9db4df7a14825f4afe85fe",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "ae101be4448a3b7adebc2df1a0aee52e4e84968ab723e9eead10a0b903e8bde6",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/state.json",
       "severity": "medium",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -366,58 +226,9 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "e98e53bbfd21c4ecb84fb8187fd63d98d0b1fc7a2c49937265bd0e925cb9bd5e",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "59fee2a4fe3e931bb5e7d944b382e2bbbf3621d721021bc9ed94caf7c543f927",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "da5afad55e3e835b2bedb6ce37a07471de6a328f1487e498f0563a4d146dcb75",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "471b8e1abf1ad2cfd9c15be4cf334b28c3f541cb3bac46b1ecf0bff19388737f",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "b2a99667317fd7f54425c9b7133e64cd5f5a90265d609746530ebac775275c0b",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "fc99e88d26da316fcd53bf3695ae728036e9fd572e10b5f2e5218ade238f97f6",
       "rule_id": "SEC-162",
       "file_path": ".roady/spec.lock.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "d999f5e58743b7a7ae10e9f728184edded275d369ac688b3d779c7e629c2c05d",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "91b42182ff31858150eb501a151983696ae8b93967b4cb51b1dcf6ba6f15bca3",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/state.json",
       "severity": "medium",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -443,48 +254,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "89f5764228746b9fd5154490fc4245252fadceb3a01fc57d98ad18e6a699e535",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "cae4590cbfcafefc940da705d0e7ebfaf7164d55570bca6ec247be9261704b68",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "fc25876c09c9f1a0a2873e25e0abbee3917b1440f7ce971df8c36133c0909d05",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "541f0adb45baf2a0da1c443a1d11cf859e284a8e3e2ab4d65e8cc47049274780",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "40d2d6681af50688b3fe44ce3f05da7ab5f40acf5ece2c2c3115cbc9327964b6",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "6d28c1a289685d1fc6253dfb41086fb84ea489e0f35cb3e42c663893e8d92fce",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "b2a5f46d14204ff3edba7b4ab34d5623ba27dad0c9a7cfd0b469598127e2c02e",
       "rule_id": "SEC-163",
       "file_path": ".roady/spec.lock.json",
@@ -495,20 +264,6 @@
       "fingerprint": "3c6202ecaac2bbcb278933d7f86cde83685cec8f988de5cd5f29fede39df6713",
       "rule_id": "SEC-163",
       "file_path": ".roady/spec.lock.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "76cb1f4f1b03294e3f3faeaf3581dfd7cb1f85df46b5ee4bfa36df8edbc429b3",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "0f0745dfe570fd68685b857a24d024de3bebddfcc86cf02a3dc3595633c8679b",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/state.json",
       "severity": "medium",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -576,23 +331,9 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "61ffcd6e91149d6c83e6c90cce9e149a0eec4e82db927c62475845895ff0acfb",
-      "rule_id": "SEC-163",
-      "file_path": "internal/store/store.go",
-      "severity": "medium",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "96cceac89efadd6f4beeae451e6fa49025da7dba99efe819df5c4cda325df4f7",
       "rule_id": "SEC-356",
       "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "9da8c1ba9ed6734030fce2931aa1dfecc694bf3b2820869e48e9be7dd2592350",
-      "rule_id": "SEC-356",
-      "file_path": "internal/store/postgres/db.go",
       "severity": "high",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -611,20 +352,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "684bf6dc3c2c258b4b6a732b9aad27b77af3f20a0ca90c935e069c6a33904322",
-      "rule_id": "SEC-356",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "fbfd62dfbf7d52246e24d795120a0d9a9b9eda0320b3c0181a9ff7ad992296a2",
-      "rule_id": "SEC-356",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "a19253fa2aacba395aa6420bc3d81ff91f6b79920582f1773427166645df8660",
       "rule_id": "SEC-357",
       "file_path": ".github/workflows/ci.yml",
@@ -635,13 +362,6 @@
       "fingerprint": "e130aa13ac5deb8db98d847991380b232876ad4a16609dc3b14b1cee931751d0",
       "rule_id": "SEC-357",
       "file_path": ".github/workflows/ci.yml",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "53079e0dc3ce550629eaa74fb4cdd84e508383582d1479db8512b1886ceb4f51",
-      "rule_id": "SEC-357",
-      "file_path": ".roady/plan.json",
       "severity": "high",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -661,20 +381,6 @@
     },
     {
       "fingerprint": "f9f901f7848626fc2c5fb958aafb646c4f8ddce705bd1e77237bff28aabab271",
-      "rule_id": "SEC-357",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "9e8d784b4a338592ba8005bf4512a3b7b429985bb0cbb9d9e0092782c3c41ee8",
-      "rule_id": "SEC-357",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "8e96a460117a971529dce74eb7466fd9df6c632157f2d43ca3ebeb6d8efff4ba",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
@@ -716,13 +422,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "ea92b565466bdf423cee3e65e598c1e3453bbadf005b8a354a3ff50b7d1f6b7e",
-      "rule_id": "SEC-357",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "45b6ab3e6977fca6962828e51ce092210458a6165ebdd01c8ac7ee05c66ee062",
       "rule_id": "SEC-358",
       "file_path": "docs/configuration.md",
@@ -744,30 +443,9 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "bd6cda76f727e5c7d4432fb12005f82b0b1c21f1af5cc13d1d0cd8c7a8eb2301",
-      "rule_id": "SEC-358",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "a5d3e0e0bd765a002c07b707ccba20f84cb07aece23f7f8f875956a8b95f89ba",
-      "rule_id": "SEC-358",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "8619993b10de468ac75d1c4e42c7df5675c576bb82da5e2e2f7892ddc4159787",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/mysql_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "d52f86a6e30446624bedb4cfcbf2dc0ec91f870c5e22796bf2fc04fec076d684",
-      "rule_id": "SEC-364",
-      "file_path": ".roady/plan.json",
       "severity": "high",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -842,114 +520,9 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "7cbb65aef08f3cd2493903970219a6c9cb7d917318e8dd64c38c1ed08f5987b5",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "74502458079fc6292d1837536446db1735c8ab75f3a709c6f48ad63cc9917f74",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "6e4b43298c693ec36b2873cb358299b22d67098262ad371ae9abd1a57312f457",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "96135d7324ba7f028bac701d45608e7ac65eea5f0a46b47ab7ae54b44281f467",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "72341dd257703df0fb49af978d6977ab1657f4db70b167a22c243f3c0ea81c38",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "bc2bab9f504d9c772d07d6b4ba2633de7df247caf2108937ed513ac6c6ed596d",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "12d7b20cb32ec6771130b0cf4e4610753f9c206c9e9326802c8094d470d4e765",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "5e9d75950fddafdcd4d91bc6477cc345b1ddae43a00b8118db1680b4fa68678f",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "cd99b0216322a96602bcb92dfbff8aa0b0476c6179efc938e8b86f8474040c15",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "95abe3e474f97ee3c860c6f76901f75be6cc9c51d08547b2ba46c4da8aa820f7",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "0109ae55819fca9e83f90c9990e9f605cfe48289169f41f90f62cb998ca0b95f",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "630a0ddf0e4693d316c56522771b266925667593b2d287e14a40f2ebe8a3f74c",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "57dc972e2a26d639c499cbe04d7bd2e2e93e98c394e85a8f1a5636e4072f8c12",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "afe54a2d9420de4f14383e2178626bd112e75b0ac5b270d2d85ed89ba6732b73",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "94a7c3bed4e5d9b2b1e9f574463d291bb2b7fd964a10cbf00312b6ef55c7cb1b",
       "rule_id": "SEC-430",
       "file_path": ".github/workflows/ci.yml",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "16ed0b8eea3e7fd5198d3db1fba3730bbea1c788bc85d703a035652283cfe3cb",
-      "rule_id": "SEC-430",
-      "file_path": ".roady/plan.json",
       "severity": "high",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -1010,20 +583,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "9c680476be4c3002adecfc90457cb00e53668b15a8f85e1e625cd9039dd57640",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "59364860b5c29492f3bedc9ab5508a3a0ecfd435e7f3e8892716deea0e032fa3",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "368bc873ccca4e6d8e833a8a534fca5f3804eaebbf6af3775bd3698f6b43f430",
       "rule_id": "SEC-430",
       "file_path": "internal/store/postgres/postgres_test.go",
@@ -1066,48 +625,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "0dd7c222ba37e5aaa3393836a3b41408692d18d4742c45bd682fa042ed7aaae0",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "a1b268ad0ef4a5bab99cfda01e26aae7b8d6da99470f8e798c70960933b74bda",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "e28c3e83dd63c647be750cf3f4ac48f3baae1d76f6073b32d0f868cb137ca4b8",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "b500fc09be14a42663e3a84732a705291678908978f347d997e54fc537def908",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "06bff178c4b92a1c4750dc4be2b0257b7c4f8a0be97cbcaa7b7307935ed1bc05",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "629052dad8f18762ecc518ecdcd3cb908716d5c9ba2d58bfde0c153f2630ea92",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "ade0c509f35e3bb6164b66e2ae3f8e957832223caaf30812a1309aa9d83cc728",
       "rule_id": "SEC-431",
       "file_path": ".github/workflows/ci.yml",
@@ -1118,13 +635,6 @@
       "fingerprint": "a661d0b80ed03c9cc6c95956f8e618d1dcebcafc3a27773040090f56d70a9fc5",
       "rule_id": "SEC-431",
       "file_path": ".github/workflows/ci.yml",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "80065b883db820ee5e0115450a91dcc149f60c1e363fc7e3607f127ad65ccc56",
-      "rule_id": "SEC-431",
-      "file_path": ".roady/plan.json",
       "severity": "high",
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
@@ -1151,20 +661,6 @@
     },
     {
       "fingerprint": "90f29700f25a67ad3e65f289511191f630557765c75b47df468af22b5f4db6ff",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "be53b14cd87a6dfd22b3cbf635c9588e5fb13a8fdee6d63968b7ff567444ad5d",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
-      "fingerprint": "a50568922228b80c38b704e39ea4b60bd9d9edacab8e2175f89f7a67ba37a678",
       "rule_id": "SEC-431",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
@@ -1206,13 +702,6 @@
       "created_at": "2026-04-28T20:41:55.228244Z"
     },
     {
-      "fingerprint": "e2ff3077d3387ae63646a5e021341091b29f05bd4c10dba1e4f21ce7cec784f2",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-04-28T20:41:55.228244Z"
-    },
-    {
       "fingerprint": "383993ec6f1b10a09c22632f2d1f968e0794e59dac2ed7adda983d042de53405",
       "rule_id": "SEC-533",
       "file_path": ".github/workflows/ci.yml",
@@ -1239,6 +728,545 @@
       "file_path": "client/sse_test.go",
       "severity": "high",
       "created_at": "2026-04-28T20:41:55.228244Z"
+    },
+    {
+      "fingerprint": "275a8b083814372991fcffd01de0e651b0d0af6e02851bee32fc294d8226b803",
+      "rule_id": "AI-036",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "b8af022e53579e73b17bc9ac5a3d932214a7fc79a5ff686d9a4a0e5cea1b1a1f",
+      "rule_id": "AI-036",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "84353b29a0af75c446b0db65f4e8e8415dbff9be958aa0aad771b6eb0d6587a3",
+      "rule_id": "AI-036",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "9a1d82a1eacde69aa0d957cb3e1c6de04eba8d61bd1a244d7975e8bb3a5baaba",
+      "rule_id": "AI-036",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "ef08fe37ce6bc5113efa4b0f19ed0bebb89eb988d0123391a950209a51f588e1",
+      "rule_id": "SEC-073",
+      "file_path": ".roady/plan.json",
+      "severity": "critical",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "c04b37223e666a0fb31821dd31380fe3f4027ce347eab991be684af5acf03b86",
+      "rule_id": "SEC-073",
+      "file_path": ".roady/plan.json",
+      "severity": "critical",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "c1cf24fb13af26f4027f0e385b7c8773d861ea514557343eb05f4a7f394aa6d9",
+      "rule_id": "SEC-073",
+      "file_path": "internal/store/store.go",
+      "severity": "critical",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "d3983bc77cb025a89a7c52cfda307acc23a10bf83ecde47e67fe656759ba7863",
+      "rule_id": "SEC-073",
+      "file_path": "internal/store/store.go",
+      "severity": "critical",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "1f07f376ee9f5d8502f0a21f435332059c65880df71233a9f214f907c37a9138",
+      "rule_id": "SEC-073",
+      "file_path": "internal/store/store_test.go",
+      "severity": "critical",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "0053199da1d09cc50be02c5aa71ddacbf769fe3ec41f09e9f87e5004690325c1",
+      "rule_id": "SEC-073",
+      "file_path": "internal/store/store_test.go",
+      "severity": "critical",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "827e54f13be0cc1412b2aa9395207568c008090eea668d1f0c6f4040445f7dc6",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "8b25fe344ce1956d6a6f60542bf85fcfa4ec5f4a26b67b1c7b6a70a401c79f30",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "bcfa8793b70cefb8ed69e54cc8744735cfd8742665b2bb0f5fe8310609da2c55",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "215b943785010f429f14514a15c46a6b924f5f635b6f88baa5d37314ee7b78a8",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "af94ba9667f2d6b7160a63ce7ba98f1ade526d25173f02339c97e9b7813c2c3f",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "c178493c2becb2df59ef54b3ac794a84befa5d39be7ae62a98352d402c5e7026",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "47bf061e23d441dd57021bf8ef866b0564ed4b0baa16b1c84fae85bd71599675",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "0af01d8f282813250b9759b3c2d4f37cfe22ae650dd2b76a8fa02ff35349fb19",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "d87c0cf525b0d2df165aeeec030a8ba76702d5590b331a7400ba099ee84c2434",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "f813bb20b395d307ac39870e243b18cddcada6509e6c2fbe75f2bc805702bcf8",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "3b157f9b4ca42fa4db8a60fe0206df8d0023031405656bb9debb4e443f9a0a10",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "ae253afb41e9a6f1b2894822786077e0574b8becef1201d3bf431483e4303180",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "cd8f15f69cef05e24c66fe818523b74be0bcf0e3bb47b5b1e552e05f978a0505",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "7bf15b1c2c921a7bc0a5ecbe960f130355f3b1d7a990c38514509ee26f77c24f",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "f486addf982bc1723e77f1bfea3b919a339048dc7c253d7ae8d539e0bd905518",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "159878d9b363b2ebf77df27a5becd491dcd8ee751ccc44fd99c85d14c696c216",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "cc92fda802b26bfcb2cc438c2ec930483594ea76fcfeeb5eb7a8b386ba717b89",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "54050eb894cbc015bf090926d275140f67b521bb7880c772ab10b6f2418e618e",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "27b5e51b62ad7e45bd32f4f7eff5665960cd535115f1169ce63d9767a7e0ddf1",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "bbe431830b6ec1d345a6348c40db1402e606540ffddb2db61318c7fc2803f5d3",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "6157197948277725b205d18a7d85f516f9c3893a253ffad1f6badc13f2648b28",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "b04d98325832a9f7946dc63067b1d53f720ab8d4f068606f7f58588cfa80d967",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "e11caaf629421ac7ce1e234a4ba8212f02b014dbaa390b144bc07d84afd2cd4c",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "72a6d9bca5b4febfb68d7f2d20ccbb9df648a1d88e0ad68944958fe059205dd8",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "18d71e7220feecfbe98b2cd596941cd462240877cbc245c788a9f6a9945c3d33",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "2ba5bb3daafbe2a03654f6ae43d9f3e42e850e9a80c77cb510987d62539b2545",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "dcd97b0da4fe07215ed1085db8209bd3c7dddf6ebb3dd9a3d4e5c9ecc3a80857",
+      "rule_id": "SEC-163",
+      "file_path": "internal/store/store.go",
+      "severity": "medium",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "f9c47f7b000f622dbb1b5a690ba17f831908710b3516f0ea489fe371777cea66",
+      "rule_id": "SEC-356",
+      "file_path": "internal/store/postgres/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "45ab3f17e3a69eb202f9b8ecb47b661133c4e3aedea18daa136039d969008edb",
+      "rule_id": "SEC-356",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "b1d2778f3b083dba9692e7a9cc9b0ed2c7e66b0b22486216189c1a3b061e97f6",
+      "rule_id": "SEC-356",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "76c6de87fb22d5a39dfc7a3051ad447935f06fbd688b25284649f02af7ce7d10",
+      "rule_id": "SEC-357",
+      "file_path": ".roady/plan.json",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "66ff562277f783a7cb57f8f1245a1811947f481f049f48e29263c58ecefcce59",
+      "rule_id": "SEC-357",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "c52f6a3eff23188c19c3994d31025679fdbe5a14db0ca70f2e79fdba2796a624",
+      "rule_id": "SEC-357",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "6cfc721f473cc2dbf4ba595d0eefedd96c08a7e30a49837e69940c18bd8264c0",
+      "rule_id": "SEC-357",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "ae19c7ecbaa65f23d5741184f9e7dd84b42c5eabd18a1f26d6c4a22cc0d0d8ab",
+      "rule_id": "SEC-358",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "b411b2fdf2c054f366b63f4fa599f74116d755b411a1fb2b421e8fc0b3875988",
+      "rule_id": "SEC-358",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "4e01f083969179fc50c137c849a02281a7b8036fe6b7d8073d96cb243e93c56d",
+      "rule_id": "SEC-364",
+      "file_path": ".roady/plan.json",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "00607705c68970c75b7541117259fbb5773659eafe00866da0d793b9edfc21a2",
+      "rule_id": "SEC-364",
+      "file_path": "docs/cognitive-stack-example.md",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "305d46b208c6669d1c1830d9d2e576abefe18e92f0bf9f7bdd63d1ab47e7fd14",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "8c67a557360ea093a78f04a3282a0c07db4bf50d92d27460686560fd47e12432",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "5b2253a76a625fe5631994c45cbe031314a319b8f50bb1bac917c3232a2e746f",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "c1800aea803a1eaba1912fa4b4d987945e1f596d23b472c4ae17a9d37cc7f61f",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "53a22a7d37e754f7a932f728b54d2b7ee186a5243b4ce3415cfa1931de12537b",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "a80f67bbe4214a3d46ba3c8db28efa20934be2f46ba99c951808ac6bd84ffe36",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "96c104d92e35fae8b41a9a3b968c5a78e8c21e3740875bdfe4fb38bc2027eab3",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "d68a0d22a8d180b580a206811ac52c914482b339920673effa8da6b805f102da",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "9647d17a57f40f0902d46e3c363cf9544a15d8224313612f88ec9f3af76442ca",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "8ce30e2c8d56e1fc63a81a085e75843818a79af6f1f3810c08bb35a3e0daace5",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "4862e7209655c7ddbe35f7e044a99c679979638d803f4a95f33a1ed18a1816b4",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "1ab6759ddcfebb3aeeccae2200d6818d5a0f99a58f49ed67f750745a85fcfdfb",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "f99f8bedef54b524beca70d0e31dfceb9641e0906e9b94023d99ea5b6be16b59",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "92e70e92921ce249bdfb67cc60c0809c6864e1e59a78047bd9ffb78c5adf8162",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "539befe9957ad9e02708c74d6c73d9454ec81899b0c9d60b35eab8a891e85b4e",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "d530f1fc3d8b63b8f829dbaa4559a3635f9088124b96cfc7b203c23789b9de02",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "2634903faa4f9c9ee18ff37b00e9aee54ab90b72b6f9623bf487ee92570d040f",
+      "rule_id": "SEC-430",
+      "file_path": ".roady/plan.json",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "7c893e87a142a43c04aada0aab85c53c19c759073f73c5f1233f11b24516e587",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/postgres/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "9910b4a4fd6773ba5c39854413e8e88af6d995a2b725bb2eadba39abe0bce41a",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/postgres/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "d6456bea970cef81d9dda4de0f2e9323a148800f3dd8637252a212ebb911b642",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "d8d9cf198902fa5c501d5d4fa452f9e2fe367d13dfe4b050a1335097d3f55760",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "c43b5b8c6f38853f913bcee7ba4a71c72d61f49de043a32660b0aab07d49c3fc",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "855d82db5d157b7d91b40529e80893cdf3ba9e0fab822eaa57763026c2cd743c",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "daa7568c3ee7e4f49381bffcc180b1003bc40b2d95ad72b2baf757d1e034e358",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "a3e877242d2467e976347cc61ed5ee9579edae9ca2ec02c58a3d5f08c2989273",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "b30806bb5233f7208e954e6fcd1948c719ca13bfe031c6adfb41d33c1764a064",
+      "rule_id": "SEC-431",
+      "file_path": ".roady/plan.json",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "43f49c0e8ded6e5bf07b791b43def9a9fa724ab9175c299687d3ea5e66363993",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "98405bcfb2fab8ea1a0dc522fda9a603552bd687fe295f46b9706c89b98941b8",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
+    },
+    {
+      "fingerprint": "7616601f91d6853fe01b1be707f66019053386e520fbfde366a6fdc4c68e142b",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-04-28T20:48:54.09576Z"
     }
   ]
 }

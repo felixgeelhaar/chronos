@@ -76,6 +76,7 @@ func openProvider(ctx context.Context, dsn string) (*store.Conn, error) {
 		Signals:      c.Signals,
 		Raw:          db,
 		Closer:       c.Close,
+		Tx:           sqlite.TxFn(db),
 	}, nil
 }
 

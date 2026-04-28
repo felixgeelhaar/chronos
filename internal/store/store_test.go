@@ -2,10 +2,12 @@ package store_test
 
 import (
 	"context"
+	"errors"
 	"net/url"
 	"strings"
 	"testing"
 
+	"github.com/felixgeelhaar/chronos/internal/ports"
 	"github.com/felixgeelhaar/chronos/internal/store"
 
 	// Pull in the providers we want to exercise. Memory and sqlite
@@ -148,6 +150,66 @@ func TestRegister_PanicsOnEmptyScheme(t *testing.T) {
 		}
 	}()
 	store.Register("", func(context.Context, string) (*store.Conn, error) { return nil, nil })
+}
+
+// TestTransactional_AssertableOnSQLProvider demonstrates the
+// capability-negotiation pattern: the engine type-asserts
+// ports.Transactional and falls back when the provider opts out.
+// Today the SQL providers populate Tx, the memory provider does not.
+func TestTransactional_AssertableOnSQLProvider(t *testing.T) {
+	conn, err := store.Open(context.Background(), "sqlite://:memory:")
+	if err != nil {
+		t.Fatalf("open sqlite: %v", err)
+	}
+	defer func() { _ = conn.Close() }()
+
+	// Type-assert against the optional capability interface.
+	tx, ok := any(conn).(ports.Transactional)
+	if !ok {
+		t.Fatal("Conn should satisfy ports.Transactional via its InTx method")
+	}
+
+	calls := 0
+	if err := tx.InTx(context.Background(), func(_ context.Context) error {
+		calls++
+		return nil
+	}); err != nil {
+		t.Fatalf("InTx: %v", err)
+	}
+	if calls != 1 {
+		t.Errorf("fn calls = %d, want 1", calls)
+	}
+}
+
+func TestTransactional_RollsBackOnError(t *testing.T) {
+	conn, err := store.Open(context.Background(), "sqlite://:memory:")
+	if err != nil {
+		t.Fatalf("open: %v", err)
+	}
+	defer func() { _ = conn.Close() }()
+
+	want := errors.New("intentional rollback")
+	got := conn.InTx(context.Background(), func(_ context.Context) error {
+		return want
+	})
+	if !errors.Is(got, want) {
+		t.Errorf("InTx error = %v, want %v", got, want)
+	}
+}
+
+func TestTransactional_MemoryReturnsNotTransactional(t *testing.T) {
+	// The memory provider deliberately doesn't populate Conn.Tx;
+	// callers should fall back rather than crash.
+	conn, err := store.Open(context.Background(), "memory://")
+	if err != nil {
+		t.Fatalf("open memory: %v", err)
+	}
+	defer func() { _ = conn.Close() }()
+
+	err = conn.InTx(context.Background(), func(context.Context) error { return nil })
+	if !errors.Is(err, store.ErrNotTransactional) {
+		t.Errorf("InTx on memory = %v, want ErrNotTransactional", err)
+	}
 }
 
 func TestRegister_PanicsOnNilFunc(t *testing.T) {

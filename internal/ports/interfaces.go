@@ -84,6 +84,71 @@ type SignalFilter struct {
 	Limit int
 }
 
+// Capability interfaces — optional features a provider may advertise.
+//
+// Per Mnemos ADR 0001 §4, not every backend can do every operation:
+// memory has no real transactions, MySQL has no pgvector, etc. Rather
+// than a lowest-common-denominator schema, we keep capabilities as
+// distinct interfaces and let the engine type-assert. Providers
+// implement what they can; callers fall back gracefully when an
+// assertion fails.
+//
+// Today only Transactional has live consumers in Chronos (batch save
+// semantics). TextSearcher and VectorSearcher are declared as
+// forward-compatible plumbing — if/when a future detector wants
+// natural-language similarity (e.g. clustering signals by their
+// metadata) or semantic distance over an embedding, the provider
+// surface is already there.
+
+// Transactional advertises that a provider supports atomic multi-
+// statement units of work. Callers obtain a child context that
+// transparently routes repository writes through the same
+// transaction; commit on nil-return-from-fn, rollback on error or
+// panic.
+//
+// Implementations exist for postgres, sqlite, and mysql. The memory
+// backend may return ErrNotImplemented (or implement best-effort
+// rollback via state snapshots) — callers must handle that.
+type Transactional interface {
+	InTx(ctx context.Context, fn func(context.Context) error) error
+}
+
+// TextHit is a single result returned by [TextSearcher.SearchByText].
+// Score is implementation-defined (BM25 / tsvector rank / FULLTEXT
+// score) but always *higher = better* so consumers can sort uniformly.
+type TextHit struct {
+	SignalID uuid.UUID
+	Score    float64
+	Snippet  string // optional; may be empty
+}
+
+// TextSearcher advertises full-text search over a stored corpus
+// (Mnemos searches Claims; Chronos's future use would be searching
+// signal metadata, evidence kinds, or labels). Provider plans:
+// postgres tsvector + GIN index, sqlite FTS5 virtual table, mysql
+// FULLTEXT index, memory tokenised scan with cosine on token sets.
+type TextSearcher interface {
+	SearchByText(ctx context.Context, query string, limit int) ([]TextHit, error)
+}
+
+// VectorHit is a single result from [VectorSearcher.SearchByVector].
+// Score is cosine similarity in [-1, 1]; consumers typically filter
+// by a minimum threshold and sort descending.
+type VectorHit struct {
+	SignalID uuid.UUID
+	Score    float64
+}
+
+// VectorSearcher advertises k-nearest-neighbour search over an
+// embedding space. Provider plans: postgres pgvector, sqlite
+// sqlite-vss, memory brute-force cosine. MySQL has no vector
+// extension in the mainline server today; the MySQL backend is
+// expected to either ship without VectorSearcher or fall back to
+// the memory implementation.
+type VectorSearcher interface {
+	SearchByVector(ctx context.Context, query []float32, limit int) ([]VectorHit, error)
+}
+
 // Notifier is the outbound port for pushing newly-persisted signals to
 // downstream consumers (webhooks, SSE clients, in-process listeners).
 //

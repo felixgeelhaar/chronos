@@ -85,6 +85,8 @@ Each layer must work standalone. Chronos used alone is a generic time-series pat
 
 The stack composes not because Chronos *knows* about Nous and Mnemos, but because their contracts (Signal, Memory, Action) are stable and decoupled.
 
+An end-to-end runnable version of the example below — with real curl payloads, the actual JSON Nous receives, and Go SDK code on the consumer side — lives in [`cognitive-stack-example.md`](cognitive-stack-example.md).
+
 ## Worked example
 
 > A user says: *"I'll follow up with Alex tomorrow."*

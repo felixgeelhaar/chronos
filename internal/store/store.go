@@ -51,7 +51,22 @@ type Conn struct {
 	// Closer releases backend resources. Providers populate it; Close
 	// invokes it. Repositories must not be used after Close returns.
 	Closer func() error
+
+	// Tx, when non-nil, advertises that the provider supports atomic
+	// multi-statement units of work and supplies the implementation
+	// behind [Conn.InTx]. SQL providers populate it with a BeginTx
+	// wrapper; the memory provider leaves it nil because it has no
+	// real cross-repository transaction semantics.
+	Tx func(ctx context.Context, fn func(context.Context) error) error
 }
+
+// ErrNotTransactional is returned by [Conn.InTx] when the underlying
+// provider does not support transactions. Callers checking
+// [ports.Transactional] via type-assertion will succeed for any Conn
+// (Conn always has the InTx method) but should be prepared for this
+// error from a provider that opts out — typically the memory backend
+// in tests.
+var ErrNotTransactional = fmt.Errorf("store: provider does not support transactions")
 
 // Close releases backend resources. Safe to call on a nil Conn or one
 // without a Closer set.
@@ -60,6 +75,22 @@ func (c *Conn) Close() error {
 		return nil
 	}
 	return c.Closer()
+}
+
+// InTx satisfies [ports.Transactional] for any Conn whose Tx field
+// has been populated by the provider. fn runs inside a provider-
+// native transaction; returning a non-nil error rolls back, returning
+// nil commits. Repositories that mutate state inside fn do *not* yet
+// auto-participate in the transaction — callers wanting strict
+// cross-repository atomicity reach through Conn.Raw to issue queries
+// against the *sql.Tx provided by Tx. Future work will route
+// repository writes through the tx automatically (Mnemos ADR 0001 §4
+// describes the same evolution arc).
+func (c *Conn) InTx(ctx context.Context, fn func(context.Context) error) error {
+	if c == nil || c.Tx == nil {
+		return ErrNotTransactional
+	}
+	return c.Tx(ctx, fn)
 }
 
 var (

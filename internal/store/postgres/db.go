@@ -70,7 +70,30 @@ func openProvider(ctx context.Context, dsn string) (*store.Conn, error) {
 		Signals:      c.Signals,
 		Raw:          c.DB,
 		Closer:       c.Close,
+		Tx:           txFn(c.DB),
 	}, nil
+}
+
+func txFn(db *sql.DB) func(ctx context.Context, fn func(context.Context) error) error {
+	return func(ctx context.Context, fn func(context.Context) error) (err error) {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if p := recover(); p != nil {
+				_ = tx.Rollback()
+				panic(p)
+			}
+			if err != nil {
+				_ = tx.Rollback()
+			}
+		}()
+		if err = fn(ctx); err != nil {
+			return err
+		}
+		return tx.Commit()
+	}
 }
 
 // dsnParts holds the relevant pieces of a parsed Chronos postgres DSN.

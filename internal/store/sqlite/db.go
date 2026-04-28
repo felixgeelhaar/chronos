@@ -70,7 +70,40 @@ func openProvider(_ context.Context, dsn string) (*store.Conn, error) {
 		Signals:      c.Signals,
 		Raw:          c.DB,
 		Closer:       c.Close,
+		Tx:           txFn(c.DB),
 	}, nil
+}
+
+// txFn returns a closure that satisfies store.Conn.Tx for any
+// database/sql-backed provider. The same implementation is reused by
+// the libsql provider (libSQL is wire-compatible with SQLite).
+func txFn(db *sql.DB) func(ctx context.Context, fn func(context.Context) error) error {
+	return func(ctx context.Context, fn func(context.Context) error) (err error) {
+		tx, err := db.BeginTx(ctx, nil)
+		if err != nil {
+			return err
+		}
+		defer func() {
+			if p := recover(); p != nil {
+				_ = tx.Rollback()
+				panic(p)
+			}
+			if err != nil {
+				_ = tx.Rollback()
+			}
+		}()
+		if err = fn(ctx); err != nil {
+			return err
+		}
+		return tx.Commit()
+	}
+}
+
+// TxFn is exported so the libsql provider can reuse this exact
+// implementation without duplicating it. Other providers that need
+// the same database/sql semantics may also use it.
+func TxFn(db *sql.DB) func(ctx context.Context, fn func(context.Context) error) error {
+	return txFn(db)
 }
 
 // Bootstrap applies the embedded migration to db. Reused by the
