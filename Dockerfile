@@ -5,7 +5,7 @@
 # so the resulting binary runs on any Linux/amd64 or arm64 base image
 # without a libc dependency.
 
-FROM golang:1.23-alpine AS builder
+FROM golang:1.23-alpine@sha256:383395b794dffa5b53012a212365d40c8e37109a626ca30d6151c8348d380b5f AS builder
 
 WORKDIR /src
 
@@ -34,7 +34,7 @@ RUN go build \
 
 # Distroless static gives us a minimal runtime image (~2MB) with a
 # non-root user, /etc/passwd, and ca-certificates baked in. No shell.
-FROM gcr.io/distroless/static:nonroot
+FROM gcr.io/distroless/static:nonroot@sha256:e3f945647ffb95b5839c07038d64f9811adf17308b9121d8a2b87b6a22a80a39
 
 LABEL org.opencontainers.image.title="chronos" \
       org.opencontainers.image.description="Time / Pattern Perception in the cognitive stack" \
