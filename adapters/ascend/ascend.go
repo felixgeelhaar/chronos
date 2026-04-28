@@ -1,4 +1,11 @@
-// adapters/ascend provides a Chronos adapter for the Ascend weightlifting coaching platform.
+// Package ascend provides a Chronos adapter for the Ascend weightlifting
+// coaching platform. It maps athlete training-week records into the generic
+// chronos.EntityState shape so the engine can detect patterns across
+// athletes within a coach's roster.
+//
+// Feature ordering: per-bodyweight tonnages for total and seven Klein zones
+// (k1..k7), followed by total tonnage as the outcome metric (last element,
+// per the engine convention).
 package ascend
 
 import (
@@ -7,13 +14,16 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/felixgeelhaar/chronos/internal/adapter"
-	"github.com/felixgeelhaar/chronos/pkg/vector"
+	"github.com/felixgeelhaar/chronos"
 	"github.com/google/uuid"
+
+	// pq is the PostgreSQL driver registered with database/sql; the
+	// blank import is the canonical way to enable "postgres" connection
+	// strings without exposing pq's package-level API.
 	_ "github.com/lib/pq"
 )
 
-// Source implements adapter.Source for Ascend PostgreSQL databases.
+// Source is a chronos.Source backed by an Ascend PostgreSQL database.
 type Source struct {
 	db *sql.DB
 }
@@ -22,139 +32,129 @@ type Source struct {
 func NewSource(connStr string) (*Source, error) {
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		return nil, fmt.Errorf("open ascend db: %w", err)
+		return nil, fmt.Errorf("ascend: open db: %w", err)
 	}
 	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("ping ascend db: %w", err)
+		return nil, fmt.Errorf("ascend: ping db: %w", err)
 	}
 	return &Source{db: db}, nil
 }
 
-// Name returns the adapter identifier.
-func (s *Source) Name() string {
-	return "ascend"
+// Name returns the stable adapter identifier.
+func (s *Source) Name() string { return "ascend" }
+
+// Close releases the underlying database connection.
+func (s *Source) Close() error {
+	if s.db == nil {
+		return nil
+	}
+	return s.db.Close()
 }
 
-// Fetch retrieves athlete training states from Ascend.
-// cfg must contain "coach_id" (UUID of the coach whose athletes to fetch).
-func (s *Source) Fetch(ctx context.Context, cfg map[string]string) ([]vector.EntityState, error) {
+// Fetch retrieves athlete training states for a coach. cfg["coach_id"] is
+// required and must parse as a UUID.
+func (s *Source) Fetch(ctx context.Context, cfg map[string]string) ([]chronos.EntityState, error) {
+	if s.db == nil {
+		return nil, fmt.Errorf("ascend: source not initialised; call NewSource")
+	}
 	coachIDStr, ok := cfg["coach_id"]
 	if !ok {
-		return nil, fmt.Errorf("ascend adapter requires coach_id in config")
+		return nil, fmt.Errorf("ascend: coach_id required")
 	}
-
 	coachID, err := uuid.Parse(coachIDStr)
 	if err != nil {
-		return nil, fmt.Errorf("invalid coach_id: %w", err)
+		return nil, fmt.Errorf("ascend: invalid coach_id: %w", err)
 	}
 
-	// Query: get latest week per athlete with computed metrics
-	// This is a read-only query against Ascend's database
 	rows, err := s.db.QueryContext(ctx, `
-		SELECT 
-			a.id as athlete_id,
-			apw.year,
-			apw.week,
-			apw.phase_type,
-			apw.total_tonnes,
-			apw.k1_tonnes,
-			apw.k2_tonnes,
-			apw.k3_tonnes,
-			apw.k4_tonnes,
-			apw.k5_tonnes,
-			apw.k6_tonnes,
-			apw.k7_tonnes,
-			a.bodyweight_kg,
-			apw.maz_focus
+		SELECT
+			a.id, apw.year, apw.week, apw.phase_type,
+			apw.total_tonnes, apw.k1_tonnes, apw.k2_tonnes, apw.k3_tonnes,
+			apw.k4_tonnes, apw.k5_tonnes, apw.k6_tonnes, apw.k7_tonnes,
+			a.bodyweight_kg, apw.maz_focus
 		FROM athletes a
 		JOIN annual_plan_weeks apw ON a.id = apw.athlete_id
 		WHERE a.coach_id = $1
 		ORDER BY a.id, apw.year, apw.week
 	`, coachID)
 	if err != nil {
-		return nil, fmt.Errorf("query ascend: %w", err)
+		return nil, fmt.Errorf("ascend: query: %w", err)
 	}
-	defer rows.Close()
+	defer func() { _ = rows.Close() }()
 
-	var states []vector.EntityState
+	var states []chronos.EntityState
 	for rows.Next() {
-		var r struct {
-			AthleteID    uuid.UUID
-			Year         int
-			Week         int
-			PhaseType    string
-			TotalTonnes  float64
-			K1Tonnes     float64
-			K2Tonnes     float64
-			K3Tonnes     float64
-			K4Tonnes     float64
-			K5Tonnes     float64
-			K6Tonnes     float64
-			K7Tonnes     float64
-			BodyweightKg float64
-			MazFocus     sql.NullString
-		}
-
+		var r row
 		if err := rows.Scan(
-			&r.AthleteID, &r.Year, &r.Week, &r.PhaseType,
-			&r.TotalTonnes, &r.K1Tonnes, &r.K2Tonnes, &r.K3Tonnes,
-			&r.K4Tonnes, &r.K5Tonnes, &r.K6Tonnes, &r.K7Tonnes,
-			&r.BodyweightKg, &r.MazFocus,
+			&r.athleteID, &r.year, &r.week, &r.phaseType,
+			&r.totalTonnes, &r.k1, &r.k2, &r.k3, &r.k4, &r.k5, &r.k6, &r.k7,
+			&r.bodyweight, &r.mazFocus,
 		); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("ascend: scan: %w", err)
 		}
-
-		// Normalise tonnage by bodyweight
-		normBW := r.BodyweightKg
-		if normBW == 0 {
-			normBW = 1 // avoid division by zero
-		}
-
-		features := []float64{
-			r.TotalTonnes / normBW,
-			r.K1Tonnes / normBW,
-			r.K2Tonnes / normBW,
-			r.K3Tonnes / normBW,
-			r.K4Tonnes / normBW,
-			r.K5Tonnes / normBW,
-			r.K6Tonnes / normBW,
-			r.K7Tonnes / normBW,
-		}
-
-		states = append(states, vector.EntityState{
-			ID:        uuid.New(),
-			EntityID:  r.AthleteID,
-			ScopeID:   coachID,
-			Timestamp: weekToTime(r.Year, r.Week),
-			Features:  features,
-			Labels: []string{
-				"total_tonnes_per_kg", "k1_per_kg", "k2_per_kg", "k3_per_kg",
-				"k4_per_kg", "k5_per_kg", "k6_per_kg", "k7_per_kg",
-			},
-			Meta: map[string]string{
-				"phase_type": r.PhaseType,
-				"maz_focus":  r.MazFocus.String,
-				"year":       fmt.Sprintf("%d", r.Year),
-				"week":       fmt.Sprintf("%d", r.Week),
-			},
-		})
+		states = append(states, r.toEntityState(coachID))
 	}
-
-	return states, rows.Err()
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("ascend: rows: %w", err)
+	}
+	return states, nil
 }
 
-// Close closes the database connection.
-func (s *Source) Close() error {
-	return s.db.Close()
+type row struct {
+	athleteID                       uuid.UUID
+	year, week                      int
+	phaseType                       string
+	totalTonnes, k1, k2, k3, k4, k5 float64
+	k6, k7                          float64
+	bodyweight                      float64
+	mazFocus                        sql.NullString
 }
 
-func weekToTime(year, week int) time.Time {
-	// Approximate: start of ISO week
+func (r row) toEntityState(scope uuid.UUID) chronos.EntityState {
+	bw := r.bodyweight
+	if bw == 0 {
+		bw = 1
+	}
+	// Last feature is the outcome metric per the engine convention; we use
+	// total tonnage per bodyweight, since "more total work absorbed" is the
+	// directional outcome a coach cares about for an aggregated week.
+	features := []float64{
+		r.k1 / bw, r.k2 / bw, r.k3 / bw, r.k4 / bw,
+		r.k5 / bw, r.k6 / bw, r.k7 / bw,
+		r.totalTonnes / bw,
+	}
+	labels := []string{"k1_per_kg", "k2_per_kg", "k3_per_kg", "k4_per_kg", "k5_per_kg", "k6_per_kg", "k7_per_kg", "total_per_kg"}
+	return chronos.EntityState{
+		ID:        uuid.New(),
+		EntityID:  r.athleteID,
+		ScopeID:   scope,
+		Timestamp: weekStart(r.year, r.week),
+		Features:  features,
+		Labels:    labels,
+		Meta: map[string]string{
+			"phase_type": r.phaseType,
+			"maz_focus":  r.mazFocus.String,
+			"year":       fmt.Sprintf("%d", r.year),
+			"week":       fmt.Sprintf("%d", r.week),
+		},
+	}
+}
+
+// weekStart returns the start of the given ISO year/week pair. The
+// approximation (year-start + (week-1)*7d) is acceptable here because the
+// engine compares timestamps but does not reason about calendar boundaries.
+func weekStart(year, week int) time.Time {
 	return time.Date(year, 1, 1, 0, 0, 0, 0, time.UTC).
 		Add(time.Duration(week-1) * 7 * 24 * time.Hour)
 }
 
-func init() {
-	// Register the adapter so it can be loaded by name
-	adapter.Register(&Source{})
-}
+// Register the adapter so binaries that import this package make it
+// available via chronos.Get("ascend"). Construction of the underlying *sql.DB
+// is deferred to the caller via NewSource — the registered instance has a
+// nil db and serves only to advertise the name; CLIs should call NewSource
+// and re-Register if they need the operational source.
+//
+// In practice the chronos CLI today wires the ascend source explicitly. This
+// init() makes a no-arg "name available" registration so chronos.Adapters()
+// reports it; calling Fetch on the registered instance returns an error.
+func init() { chronos.Register(&Source{}) }

@@ -1,0 +1,164 @@
+// Package domain holds the engine's private domain model.
+//
+// Chronos's role in the cognitive stack (Mnemos / Chronos / Praxis / Nous)
+// is *Time / Pattern Perception*: it ingests time-series observations and
+// emits structured Signals describing patterns. It does NOT interpret what
+// signals mean, decide actions, or store reviewer feedback — those are
+// Nous and Mnemos responsibilities respectively.
+//
+// As a result, this package contains only the perceptual primitives:
+// Signal, Evidence, PatternType, TimeWindow. There is no Title, no
+// Suggestion, no DismissedAt — Chronos is signals, not opinions.
+package domain
+
+import (
+	"errors"
+	"time"
+
+	"github.com/google/uuid"
+)
+
+// Sentinel errors returned by validation on domain types.
+var (
+	ErrMissingScopeID    = errors.New("domain: signal missing scope ID")
+	ErrMissingSeriesID   = errors.New("domain: signal missing series ID")
+	ErrMissingPattern    = errors.New("domain: signal missing pattern type")
+	ErrInvalidConfidence = errors.New("domain: confidence must be in [0,1]")
+	ErrInvalidStrength   = errors.New("domain: strength must be in [0,1]")
+	ErrInvalidWindow     = errors.New("domain: window end must not precede window start")
+	ErrSignalNotFound    = errors.New("domain: signal not found")
+)
+
+// PatternType is a typed enum for the kinds of patterns Chronos can
+// detect. Each detector emits Signals tagged with one PatternType so
+// downstream consumers (Nous) can filter and route by perception kind
+// without parsing free text.
+type PatternType string
+
+const (
+	// PatternTypeRecurrence — the subject is in a state that other
+	// entities have been in before. Detected via cross-entity similarity
+	// over historical states.
+	PatternTypeRecurrence PatternType = "recurrence"
+
+	// PatternTypeTrend — the outcome metric exhibits a sustained
+	// directional movement over the analysis window.
+	PatternTypeTrend PatternType = "trend"
+
+	// PatternTypeSpike — a sharp positive deviation from the recent
+	// baseline.
+	PatternTypeSpike PatternType = "spike"
+
+	// PatternTypeDrop — a sharp negative deviation from the recent
+	// baseline.
+	PatternTypeDrop PatternType = "drop"
+
+	// PatternTypeStall — the outcome metric shows little to no variance
+	// over the analysis window.
+	PatternTypeStall PatternType = "stall"
+
+	// PatternTypeAnomaly — a generic out-of-distribution observation;
+	// reserved for future detectors that do not fit Spike/Drop/Stall.
+	PatternTypeAnomaly PatternType = "anomaly"
+
+	// PatternTypeSeasonality — a periodic structure detected over a
+	// long-enough window. Reserved for future implementation.
+	PatternTypeSeasonality PatternType = "seasonality"
+
+	// PatternTypeCorrelation — two or more series move together. Reserved
+	// for future implementation.
+	PatternTypeCorrelation PatternType = "correlation"
+)
+
+// TimeWindow describes the analysis window over which a signal was
+// detected. End >= Start is enforced by Validate.
+type TimeWindow struct {
+	Start time.Time
+	End   time.Time
+}
+
+// Validate enforces that End is not before Start.
+func (w TimeWindow) Validate() error {
+	if w.End.Before(w.Start) {
+		return ErrInvalidWindow
+	}
+	return nil
+}
+
+// Evidence is one piece of supporting data backing a signal. The Kind tag
+// disambiguates evidence shapes across detector types: "similar_state"
+// for Recurrence, "baseline_deviation" for Spike/Drop, etc.
+type Evidence struct {
+	// Series is the entity this evidence comes from. For Recurrence this
+	// is a peer entity; for single-series detectors (Trend/Spike/...) it
+	// is the same as the Signal's Series.
+	Series uuid.UUID
+	// Time is when the evidence was observed.
+	Time time.Time
+	// Kind disambiguates the structural shape of this evidence.
+	Kind string
+	// Score is a unit-free numeric measurement whose meaning depends on
+	// Kind (similarity for "similar_state"; z-score for
+	// "baseline_deviation"; …).
+	Score float64
+	// Metrics carries detector-specific numeric measurements that are
+	// useful at the API boundary but not generic enough to deserve named
+	// fields. Keys should be lowercase snake_case.
+	Metrics map[string]float64
+}
+
+// Signal is a structured description of a detected pattern. It is
+// presentation-neutral: no Title, no Summary, no Suggestion. Downstream
+// consumers (Nous) interpret Signals into actions; Chronos only perceives.
+type Signal struct {
+	ID         uuid.UUID
+	ScopeID    uuid.UUID
+	Series     uuid.UUID // the entity ("series") the pattern was detected in
+	Pattern    PatternType
+	DetectedAt time.Time
+	Window     TimeWindow
+
+	// Strength describes the intensity of the pattern as observed
+	// (e.g. average similarity, regression slope normalised to a
+	// reference scale, peak-to-baseline ratio). Range: [0, 1].
+	Strength float64
+
+	// Confidence describes how sure the detector is that the pattern is
+	// real given the evidence available (e.g. similarity * sample
+	// factor, p-value transform, ...). Range: [0, 1].
+	Confidence float64
+
+	// Evidence is the list of underlying observations supporting the
+	// signal. May be empty if the detector does not surface line-level
+	// evidence.
+	Evidence []Evidence
+
+	// Metrics is a free-form bag of detector-specific measurements (e.g.
+	// "avg_similarity", "slope", "z_score"). Keys should be lowercase
+	// snake_case so downstream filters can reason about them.
+	Metrics map[string]float64
+}
+
+// Validate enforces invariants on a Signal. Detectors call Validate before
+// returning, and repositories call Validate before persisting.
+func (s Signal) Validate() error {
+	if s.ScopeID == uuid.Nil {
+		return ErrMissingScopeID
+	}
+	if s.Series == uuid.Nil {
+		return ErrMissingSeriesID
+	}
+	if s.Pattern == "" {
+		return ErrMissingPattern
+	}
+	if s.Strength < 0 || s.Strength > 1 {
+		return ErrInvalidStrength
+	}
+	if s.Confidence < 0 || s.Confidence > 1 {
+		return ErrInvalidConfidence
+	}
+	if err := s.Window.Validate(); err != nil {
+		return err
+	}
+	return nil
+}

@@ -1,60 +1,67 @@
-// Package store defines the generic storage interface for Chronos.
-// All persistence implementations (SQLite, PostgreSQL, MySQL, etc.) must satisfy this interface.
+// Package store wires the configured persistence backend into the engine.
+//
+// Each backend (memory, sqlite, postgres) lives in a subpackage and
+// exposes a Conn type that bundles its repositories. This package's only
+// job is to dispatch on the configured database type and return a
+// uniform port-typed handle to the rest of the engine.
 package store
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/felixgeelhaar/chronos/pkg/insight"
-	"github.com/felixgeelhaar/chronos/pkg/vector"
-	"github.com/google/uuid"
+	"github.com/felixgeelhaar/chronos/internal/ports"
+	"github.com/felixgeelhaar/chronos/internal/store/memory"
+	"github.com/felixgeelhaar/chronos/internal/store/postgres"
+	"github.com/felixgeelhaar/chronos/internal/store/sqlite"
 )
 
-// Store is the generic persistence interface. All database backends implement this.
-type Store interface {
-	// Entity states
-	SaveEntityStates(ctx context.Context, adapter string, states []vector.EntityState) error
-	LoadEntityStates(ctx context.Context, scopeID uuid.UUID) ([]vector.EntityState, error)
-	LoadEntityStatesByEntity(ctx context.Context, entityID uuid.UUID) ([]vector.EntityState, error)
-	DeleteOldEntityStates(ctx context.Context, before string, adapter string) error
+// Conn is the engine's view of a persistence backend: two port-typed
+// repositories plus a Close method.
+type Conn struct {
+	EntityStates ports.EntityStateRepository
+	Signals      ports.SignalRepository
 
-	// Insights
-	SaveInsight(ctx context.Context, in insight.Insight) error
-	LoadInsights(ctx context.Context, scopeID uuid.UUID) ([]insight.Insight, error)
-	LoadInsightByID(ctx context.Context, id uuid.UUID) (insight.Insight, error)
-	DismissInsight(ctx context.Context, insightID, dismissedBy uuid.UUID) error
-
-	// Feedback
-	SaveFeedback(ctx context.Context, insightID uuid.UUID, fb insight.Feedback) error
-	LoadFeedback(ctx context.Context, insightID uuid.UUID) (insight.Feedback, error)
-
-	// Metrics
-	CountEntityStates(ctx context.Context, adapter string) (int64, error)
-	CountInsights(ctx context.Context, scopeID uuid.UUID) (int64, error)
-
-	// Lifecycle
-	Close() error
+	close func() error
 }
 
-// Factory creates a Store from a connection string and type.
-type Factory struct{}
+// Close releases backend resources. Repository pointers must not be
+// used after Close returns.
+func (c *Conn) Close() error {
+	if c.close == nil {
+		return nil
+	}
+	return c.close()
+}
 
-// New creates a Store based on the provided configuration.
-func (f *Factory) New(dbType, connStr string) (Store, error) {
+// Open returns a Conn for the configured backend. Supported types are
+// "memory", "sqlite" / "sqlite3", and "postgres" / "postgresql".
+//
+// Open performs a connectivity check against external backends so
+// configuration errors surface at startup rather than first use.
+func Open(_ context.Context, dbType, connStr string) (*Conn, error) {
 	switch dbType {
-	case "sqlite", "sqlite3":
-		return newSQLiteStore(connStr)
-	case "postgres", "postgresql":
-		return newPostgresStore(connStr)
 	case "memory":
-		return newMemoryStore(), nil
+		c := memory.New()
+		return &Conn{EntityStates: c.EntityStates, Signals: c.Signals, close: c.Close}, nil
+	case "sqlite", "sqlite3":
+		c, err := sqlite.Open(connStr)
+		if err != nil {
+			return nil, err
+		}
+		return &Conn{EntityStates: c.EntityStates, Signals: c.Signals, close: c.Close}, nil
+	case "postgres", "postgresql":
+		c, err := postgres.Open(connStr)
+		if err != nil {
+			return nil, err
+		}
+		return &Conn{EntityStates: c.EntityStates, Signals: c.Signals, close: c.Close}, nil
 	default:
-		return nil, fmt.Errorf("unsupported database type: %s (supported: sqlite, postgres, memory)", dbType)
+		return nil, fmt.Errorf("store: unsupported database type %q (supported: memory, sqlite, postgres)", dbType)
 	}
 }
 
-// SupportedTypes returns the list of supported database backends.
+// SupportedTypes lists the backends this build understands.
 func SupportedTypes() []string {
-	return []string{"sqlite", "postgres", "memory"}
+	return []string{"memory", "sqlite", "postgres"}
 }

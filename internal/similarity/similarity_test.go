@@ -91,10 +91,10 @@ func TestWeightedCosine(t *testing.T) {
 func TestEuclidean(t *testing.T) {
 	a := []float64{1, 2, 3}
 	b := []float64{4, 5, 6}
-	
+
 	got := Euclidean(a, b)
 	expected := math.Sqrt(27) // sqrt((3)^2 + (3)^2 + (3)^2)
-	
+
 	if math.Abs(got-expected) > 0.0001 {
 		t.Errorf("Euclidean() = %v, want %v", got, expected)
 	}
