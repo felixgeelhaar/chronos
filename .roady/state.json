@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 108,
+  "version": 111,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -12,6 +12,17 @@
       "started_at": "2026-04-27T22:53:22.804473+02:00",
       "completed_at": "2026-04-27T22:54:04.430535+02:00",
       "elapsed_minutes": 0
+    },
+    "task-add-client-stream": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "client/sse.go: openStream + runStream parser handling heartbeats, multi-line data, unknown events; client/builder.go: Stream(ctx) on SignalQuery with Scope-required guard; client/sse_test.go: 5 tests including delivery, ctx-cancel close, 501 surfaced as APIError, heartbeat-ignore, multi-line data reassembly; README updated with Stream() example; flaky internal/api stream test fixed (read until signal id observed); client coverage 72.2%"
+      ],
+      "started_at": "2026-04-28T15:05:49.917525+02:00",
+      "completed_at": "2026-04-28T15:18:47.909867+02:00",
+      "elapsed_minutes": 12
     },
     "task-add-homebrew-tap": {
       "status": "done",
@@ -564,5 +575,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T09:29:28.189019+02:00"
+  "updated_at": "2026-04-28T15:18:47.909868+02:00"
 }

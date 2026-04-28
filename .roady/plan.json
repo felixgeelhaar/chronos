@@ -3,148 +3,13 @@
   "spec_id": "chronos",
   "tasks": [
     {
-      "id": "task-add-notifier-port",
-      "title": "Add Notifier port and SignalRepository decorator",
-      "description": "Add ports.Notifier interface (Notify(ctx, Signal); fire-and-forget). Create internal/notify package with: (a) NotifyingSignalRepository decorator that wraps any ports.SignalRepository and calls Notify after a successful Save; (b) Multi composite that fans out to multiple Notifiers. Save errors must NOT trigger Notify. Notify panics or errors must NOT propagate to the persistence path. Test the decorator's Save/notify ordering, error path, nil-notifier safety, and List/Get/Count delegation.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "notifications"
-    },
-    {
-      "id": "task-add-webhook-notifier",
-      "title": "Webhook notifier with HMAC and best-effort retry",
-      "description": "internal/notify/webhook.go: WebhookNotifier(URLs, Secret, Timeout, Retries). On Notify, marshal api.SignalDTO, HMAC-SHA256 sign, POST to each URL with X-Chronos-Signature: sha256=\u003chex\u003e, X-Chronos-Delivery: \u003cuuid\u003e, X-Chronos-Event: signal.detected. Best-effort: configurable retries (default 1) on 5xx with 1s linear backoff; no retry on 2xx or 4xx. Per-URL goroutine. Increment observability.Metrics counter on success/failure. Add CHRONOS_WEBHOOK_URLS / CHRONOS_WEBHOOK_SECRET / CHRONOS_WEBHOOK_TIMEOUT / CHRONOS_WEBHOOK_RETRIES env vars to config. Wire into both cmd/chronos/compute.go and cmd/chronos/serve.go (wrap signals repo with NotifyingSignalRepository(WebhookNotifier(...))). Tests use httptest.Server to verify signature, headers, retry behaviour, multi-URL fan-out.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "notifications"
-    },
-    {
-      "id": "task-add-sse-and-scheduler",
-      "title": "SSE endpoint + background detection scheduler in serve",
-      "description": "internal/notify/sse.go: SSE.Notify broadcasts to subscribed clients via per-client buffered channel; drops slow consumers (channel send select default). SSE.Subscribe returns a channel + cancel; Unsubscribe cleans up. internal/api adds GET /v1/signals/stream handler: parses scope_id (required) + optional pattern filter, sets Content-Type text/event-stream + Cache-Control no-cache + Connection keep-alive, writes `event: signal\\ndata: \u003cSignalDTO JSON\u003e\\n\\n` per matching signal until client disconnects. internal/pipeline/scheduler.go: Scheduler.Run loops on a ticker, enumerates scopes via new EntityStateRepository.ListScopes(ctx), runs Engine.Detect over each scope's states, saves emitted signals through the wrapped repo (so Notifier fires). Add ListScopes to ports and all three store backends (memory/sqlite/postgres). Add CHRONOS_DETECTION_INTERVAL env var (default 0 = scheduler off). cmd/chronos/serve.go starts the Scheduler when interval \u003e 0. Tests cover SSE delivery, slow-consumer drop, scheduler tick path.",
+      "id": "task-add-client-stream",
+      "title": "Add client.Signals().Stream(ctx) for SSE consumers",
+      "description": "Extend the Go SDK with a streaming method that opens GET /v1/signals/stream, parses the SSE event:signal/data:\u003cjson\u003e framing, and pushes decoded client.Signal values onto a returned channel. Close the channel on ctx cancellation, EOF, or unrecoverable error. Honour Scope (required) and Pattern filters via the existing builder. Reuse the auth/user-agent already configured on the client. Test against httptest.Server emitting canned SSE frames including a heartbeat comment, multi-line data, and graceful close. Update README reading-signals section with a Stream() example.",
       "priority": "medium",
       "estimate": "",
       "depends_on": null,
       "feature_id": "notifications"
-    },
-    {
-      "id": "task-wire-nox-scan-ci",
-      "title": "Wire nox vulnerability / SBOM scanning into CI and releases",
-      "description": "Add nox vulnerability scanning, SBOM generation, and VEX status reporting to the release pipeline. SBOM should be published as a release artefact alongside the binary archives. Findings should fail CI when severity exceeds a configured threshold. If nox provides a GitHub Action, prefer that; otherwise wire the CLI in .github/workflows/ci.yml. Document the threshold and how to suppress false positives in docs/security.md.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-wire-coverctl-gate-ci",
-      "title": "Wire coverctl coverage gating into CI",
-      "description": "Establish a coverage baseline via coverctl, then gate PRs on regressions beyond a configured threshold and post a PR comment with the diff. Replace or complement the current Codecov upload depending on which fits better. Capture the baseline in .coverctl/ (or wherever coverctl persists state) and document the workflow in CONTRIBUTING.md or docs/quality.md.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-detector-anomaly",
-      "title": "Implement Detector — Anomaly",
-      "description": "Implement the feature: Detector — Anomaly. Cross-entity dual of Recurrence. For each entity's most recent state,\ncosine-compare to peers' most recent states; emit when highest peer similarity\nis below AnomalyMaxSimilarity. Strength = 1 - max_similarity. Evidence kind\npeer_distance, one per peer.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-anomaly"
-    },
-    {
-      "id": "task-source-interface",
-      "title": " (Public adapter SDK (chronos package))",
-      "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "adapter-sdk"
-    },
-    {
-      "id": "task-store-factory",
-      "title": "Implement Store factory",
-      "description": "Implement the feature: Store factory. internal/store.Open(ctx, dbType, connStr) returns a uniform port-typed *Conn\nwiring EntityStateRepository and SignalRepository over a shared *sql.DB\n(memory / sqlite / postgres).\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "store-factory"
-    },
-    {
-      "id": "task-store-postgres",
-      "title": "Implement Store backend — Postgres",
-      "description": "Implement the feature: Store backend — Postgres. Hand-written queries (Postgres is the secondary backend). Schema embedded via\ngo:embed from internal/store/postgres/migrations/001_initial.sql. Filters compose\npositional placeholders for parametrised execution.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "store-postgres"
-    },
-    {
-      "id": "task-adapter-ascend",
-      "title": "Implement Adapter — Ascend",
-      "description": "Implement the feature: Adapter — Ascend. adapters/ascend — bundled working adapter backed by PostgreSQL. Divides tonnage\nby bodyweight to normalise features so cosine similarity is meaningful across\nathletes of different sizes.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "adapter-ascend"
-    },
-    {
-      "id": "task-detector-spike-drop",
-      "title": "Implement Detector — Spike / Drop",
-      "description": "Implement the feature: Detector — Spike / Drop. Z-score of most recent outcome against previous SpikeWindow points. Trigger:\n|z| \u003e= threshold in configured direction. Strength = min(|z|/5, 1); metrics\ncarry z, baseline mean / stddev. Evidence kind baseline_deviation.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-spike-drop"
-    },
-    {
-      "id": "task-detector-seasonality",
-      "title": "Implement Detector — Seasonality",
-      "description": "Implement the feature: Detector — Seasonality. Pearson autocorrelation at lags [MinPeriod, n/2]. Emit when largest peak exceeds\nSeasonalityMinAutocorr. Strength = peak value; metrics carry the period (lag).\nEvidence kind autocorrelation_peak.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-seasonality"
-    },
-    {
-      "id": "task-add-nfpms-packages",
-      "title": "Add .deb / .rpm packages via goreleaser",
-      "description": "Add an nfpms: block to .goreleaser.yaml producing .deb (Debian/Ubuntu) and .rpm (RHEL/Fedora) packages. Configure maintainer, description, license, package name, and install paths (binary at /usr/local/bin/chronos). Packages publish alongside the existing tar.gz archives in the GitHub Release.",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-bearer-auth",
-      "title": " (Public HTTP client SDK (client/))",
-      "description": "WithToken sets the Authorization Bearer header.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "client-sdk"
-    },
-    {
-      "id": "task-wire-shape-only",
-      "title": " (HTTP API)",
-      "description": "API does not render prose; the wire shape carries structured fields only.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-add-precommit-config",
-      "title": "Add pre-commit hooks for fmt, vet, lint, conventional commits",
-      "description": "Add .pre-commit-config.yaml using the pre-commit framework. Hooks: trailing-whitespace, end-of-file-fixer, check-yaml, check-merge-conflict, check-added-large-files (--maxkb=500), mixed-line-ending; Go-specific: gofmt, go vet, go-mod-tidy; golangci-lint v2.1.6 (matching CI); commit-msg: conventional-pre-commit. Update README with `pre-commit install` instructions. The hooks must be a strict subset of what CI already runs, so a passing pre-commit guarantees CI will not reject on style/lint.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "configuration"
     },
     {
       "id": "task-add-homebrew-tap",
@@ -156,108 +21,9 @@
       "feature_id": "cli"
     },
     {
-      "id": "task-fix-api-test-signatures",
-      "title": "Update api test call sites for new signatures",
-      "description": "internal/api/middleware_test.go calls Logging(logger) but signature is now Logging(logger, metrics). internal/api/server_test.go calls NewServer(states, signals, nil) but signature is now NewServer(states, signals, metrics, logger). Update both tests to pass an *observability.Metrics value (nil acceptable per NewServer doc).",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-state-repo",
-      "title": " (Outbound ports (per-aggregate repositories))",
-      "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "ports"
-    },
-    {
-      "id": "task-detector-stall",
-      "title": "Implement Detector — Stall",
-      "description": "Implement the feature: Detector — Stall. Normalised stddev of outcomes below StallMaxStdDev over at least StallMinPoints.\nStrength reflects flatness (1 - normalised_stddev / threshold). Evidence kind\nvariance_window.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-stall"
-    },
-    {
-      "id": "task-remove-empty-extract-dir",
-      "title": "Remove empty internal/extract directory",
-      "description": "internal/extract/ exists as an empty directory not referenced anywhere in code or spec. Remove it.",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "configuration"
-    },
-    {
-      "id": "task-document-install-channels",
-      "title": "Document all install channels in README",
-      "description": "Extend README's 'Install' section so users see every distribution option side-by-side: `go install`, prebuilt binary download (with checksum verification), Docker (`docker run ghcr.io/felixgeelhaar/chronos`), Homebrew (once available), .deb/.rpm (once available). Note the supported OS/arch matrix.",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-pipeline",
-      "title": "Implement Compute pipeline orchestrator",
-      "description": "Implement the feature: Compute pipeline orchestrator. internal/pipeline — Compute(ctx, ComputeInput) runs fetch → save observations →\ndetect → save signals. CHRONOS_JOB_TIMEOUT bounds the whole run as a\ncontext.WithTimeout.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "pipeline"
-    },
-    {
       "id": "task-no-feedback-repo",
       "title": " (Outbound ports (per-aggregate repositories))",
       "description": "There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "ports"
-    },
-    {
-      "id": "task-detector-correlation",
-      "title": "Implement Detector — Correlation",
-      "description": "Implement the feature: Detector — Correlation. Pairwise Pearson on aligned outcome series within a scope. One signal per pair,\ndeterministically owned by the lex-smaller series ID; the other appears as evidence.\nStrength = |r|; metrics carry r and direction. Evidence kind pair_correlation.\nCost is O(N²) in series count per scope.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-correlation"
-    },
-    {
-      "id": "task-observability",
-      "title": "Implement Observability",
-      "description": "Implement the feature: Observability. Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-functional-options",
-      "title": " (Public HTTP client SDK (client/))",
-      "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "client-sdk"
-    },
-    {
-      "id": "task-signal-shape",
-      "title": " (Core domain types)",
-      "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "domain-types"
-    },
-    {
-      "id": "task-signal-repo",
-      "title": " (Outbound ports (per-aggregate repositories))",
-      "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
@@ -282,24 +48,6 @@
       "feature_id": "similarity"
     },
     {
-      "id": "task-validation",
-      "title": " (Core domain types)",
-      "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "domain-types"
-    },
-    {
-      "id": "task-no-prose",
-      "title": " (Core domain types)",
-      "description": "Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "domain-types"
-    },
-    {
       "id": "task-scope-flag",
       "title": " (Command-line interface)",
       "description": "compute accepts --scope-id (preferred) or --coach-id (legacy alias).",
@@ -309,31 +57,31 @@
       "feature_id": "cli"
     },
     {
-      "id": "task-fix-pipeline-observability-import",
-      "title": "Fix pipeline import for observability.Metrics",
-      "description": "internal/pipeline/compute.go references *observability.Metrics on line 29 and calls in.Metrics.ObserveObservations / ObserveSignal but does not import internal/observability. Add the import. After fix, `go build ./...` must succeed for the pipeline package.",
-      "priority": "high",
+      "id": "task-detector-trend",
+      "title": "Implement Detector — Trend",
+      "description": "Implement the feature: Detector — Trend. OLS linear regression on outcome vs ordinal index. Trigger:\n|slope| \u003e TrendMinSlope ∧ R² \u003e 0.3 ∧ n \u003e= TrendMinPoints. Strength = R²;\nmetrics carry slope, intercept, R², n. Evidence kind regression_summary.\n",
+      "priority": "medium",
       "estimate": "",
-      "depends_on": null,
-      "feature_id": "pipeline"
+      "depends_on": [],
+      "feature_id": "detector-trend"
     },
     {
-      "id": "task-registry",
+      "id": "task-source-interface",
       "title": " (Public adapter SDK (chronos package))",
-      "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
+      "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
       "feature_id": "adapter-sdk"
     },
     {
-      "id": "task-reconcile-sort-order",
-      "title": "Reconcile detector output sort order",
-      "description": "docs/architecture.md:107 documents output as 'sorted by detected-at descending then confidence descending'. internal/detect/engine.go:70-75 sorts by confidence desc then detected-at desc. Pick one as truth and update the other so spec, code, and tests agree.",
+      "id": "task-state-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
       "priority": "medium",
       "estimate": "",
-      "depends_on": null,
-      "feature_id": "detect-engine"
+      "depends_on": [],
+      "feature_id": "ports"
     },
     {
       "id": "task-graceful-shutdown",
@@ -345,13 +93,148 @@
       "feature_id": "http-api"
     },
     {
-      "id": "task-detector-interface",
+      "id": "task-output-ordering",
       "title": " (Detection engine)",
-      "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
+      "description": "Output is sorted by detected-at desc, then by confidence desc.",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
       "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-scope-isolation",
+      "title": " (Detection engine)",
+      "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-document-anomaly-window",
+      "title": "Document Anomaly's degenerate window in consumer docs",
+      "description": "internal/detect/anomaly.go:94-96 sets Window.Start == Window.End == subject.Timestamp because Anomaly is a snapshot in time across peers. Consumers computing window duration will get zero and must special-case it. Add a note to docs/cognitive-stack.md (Signal section) and the Anomaly entry in docs/architecture.md so it is part of the consumer-facing contract, not just an internal source comment.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "detector-anomaly"
+    },
+    {
+      "id": "task-registry",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-detector-recurrence",
+      "title": "Implement Detector — Recurrence",
+      "description": "Implement the feature: Detector — Recurrence. For each entity's most recent state, look at strictly historical states of\nOTHER entities in the same scope. Cosine similarity ≥ threshold counts as a\nsimilar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).\nEvidence kind similar_state with metrics[\"outcome_diff\"] = peer.outcome - subject.outcome.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-recurrence"
+    },
+    {
+      "id": "task-pipeline",
+      "title": "Implement Compute pipeline orchestrator",
+      "description": "Implement the feature: Compute pipeline orchestrator. internal/pipeline — Compute(ctx, ComputeInput) runs fetch → save observations →\ndetect → save signals. CHRONOS_JOB_TIMEOUT bounds the whole run as a\ncontext.WithTimeout.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "pipeline"
+    },
+    {
+      "id": "task-observability",
+      "title": "Implement Observability",
+      "description": "Implement the feature: Observability. Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-detector-seasonality",
+      "title": "Implement Detector — Seasonality",
+      "description": "Implement the feature: Detector — Seasonality. Pearson autocorrelation at lags [MinPeriod, n/2]. Emit when largest peak exceeds\nSeasonalityMinAutocorr. Strength = peak value; metrics carry the period (lag).\nEvidence kind autocorrelation_peak.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-seasonality"
+    },
+    {
+      "id": "task-bearer-auth",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "WithToken sets the Authorization Bearer header.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-add-precommit-config",
+      "title": "Add pre-commit hooks for fmt, vet, lint, conventional commits",
+      "description": "Add .pre-commit-config.yaml using the pre-commit framework. Hooks: trailing-whitespace, end-of-file-fixer, check-yaml, check-merge-conflict, check-added-large-files (--maxkb=500), mixed-line-ending; Go-specific: gofmt, go vet, go-mod-tidy; golangci-lint v2.1.6 (matching CI); commit-msg: conventional-pre-commit. Update README with `pre-commit install` instructions. The hooks must be a strict subset of what CI already runs, so a passing pre-commit guarantees CI will not reject on style/lint.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-fix-api-test-signatures",
+      "title": "Update api test call sites for new signatures",
+      "description": "internal/api/middleware_test.go calls Logging(logger) but signature is now Logging(logger, metrics). internal/api/server_test.go calls NewServer(states, signals, nil) but signature is now NewServer(states, signals, metrics, logger). Update both tests to pass an *observability.Metrics value (nil acceptable per NewServer doc).",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-signal-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "ports"
+    },
+    {
+      "id": "task-validation",
+      "title": " (Core domain types)",
+      "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-wire-shape-only",
+      "title": " (HTTP API)",
+      "description": "API does not render prose; the wire shape carries structured fields only.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-detector-correlation",
+      "title": "Implement Detector — Correlation",
+      "description": "Implement the feature: Detector — Correlation. Pairwise Pearson on aligned outcome series within a scope. One signal per pair,\ndeterministically owned by the lex-smaller series ID; the other appears as evidence.\nStrength = |r|; metrics carry r and direction. Evidence kind pair_correlation.\nCost is O(N²) in series count per scope.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-correlation"
+    },
+    {
+      "id": "task-fix-pipeline-observability-import",
+      "title": "Fix pipeline import for observability.Metrics",
+      "description": "internal/pipeline/compute.go references *observability.Metrics on line 29 and calls in.Metrics.ObserveObservations / ObserveSignal but does not import internal/observability. Add the import. After fix, `go build ./...` must succeed for the pipeline package.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "pipeline"
     },
     {
       "id": "task-configuration",
@@ -390,33 +273,6 @@
       "feature_id": "client-sdk"
     },
     {
-      "id": "task-ingest-endpoint",
-      "title": " (HTTP API)",
-      "description": "POST /v1/ingest is the streaming entry point.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-output-ordering",
-      "title": " (Detection engine)",
-      "description": "Output is sorted by detected-at desc, then by confidence desc.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detect-engine"
-    },
-    {
-      "id": "task-detector-trend",
-      "title": "Implement Detector — Trend",
-      "description": "Implement the feature: Detector — Trend. OLS linear regression on outcome vs ordinal index. Trigger:\n|slope| \u003e TrendMinSlope ∧ R² \u003e 0.3 ∧ n \u003e= TrendMinPoints. Strength = R²;\nmetrics carry slope, intercept, R², n. Evidence kind regression_summary.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-trend"
-    },
-    {
       "id": "task-add-release-workflow",
       "title": "Add GitHub Actions release workflow that runs goreleaser on tag push",
       "description": "Create .github/workflows/release.yml triggering on tag push (v*) and workflow_dispatch. Sets up Go, QEMU, buildx; logs into ghcr.io with GITHUB_TOKEN (packages:write); runs goreleaser release --clean. Wire the Homebrew tap cross-repo push by referencing a HOMEBREW_TAP_TOKEN secret (PAT with contents:write on felixgeelhaar/homebrew-tap) via the brews.repository.token field in .goreleaser.yaml. Document the secret requirement so the workflow fails loudly when missing rather than silently skipping the formula push.",
@@ -426,13 +282,58 @@
       "feature_id": "cli"
     },
     {
-      "id": "task-detector-recurrence",
-      "title": "Implement Detector — Recurrence",
-      "description": "Implement the feature: Detector — Recurrence. For each entity's most recent state, look at strictly historical states of\nOTHER entities in the same scope. Cosine similarity ≥ threshold counts as a\nsimilar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).\nEvidence kind similar_state with metrics[\"outcome_diff\"] = peer.outcome - subject.outcome.\n",
+      "id": "task-wire-coverctl-gate-ci",
+      "title": "Wire coverctl coverage gating into CI",
+      "description": "Establish a coverage baseline via coverctl, then gate PRs on regressions beyond a configured threshold and post a PR comment with the diff. Replace or complement the current Codecov upload depending on which fits better. Capture the baseline in .coverctl/ (or wherever coverctl persists state) and document the workflow in CONTRIBUTING.md or docs/quality.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-detector-anomaly",
+      "title": "Implement Detector — Anomaly",
+      "description": "Implement the feature: Detector — Anomaly. Cross-entity dual of Recurrence. For each entity's most recent state,\ncosine-compare to peers' most recent states; emit when highest peer similarity\nis below AnomalyMaxSimilarity. Strength = 1 - max_similarity. Evidence kind\npeer_distance, one per peer.\n",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
-      "feature_id": "detector-recurrence"
+      "feature_id": "detector-anomaly"
+    },
+    {
+      "id": "task-adapter-ascend",
+      "title": "Implement Adapter — Ascend",
+      "description": "Implement the feature: Adapter — Ascend. adapters/ascend — bundled working adapter backed by PostgreSQL. Divides tonnage\nby bodyweight to normalise features so cosine similarity is meaningful across\nathletes of different sizes.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-ascend"
+    },
+    {
+      "id": "task-detector-spike-drop",
+      "title": "Implement Detector — Spike / Drop",
+      "description": "Implement the feature: Detector — Spike / Drop. Z-score of most recent outcome against previous SpikeWindow points. Trigger:\n|z| \u003e= threshold in configured direction. Strength = min(|z|/5, 1); metrics\ncarry z, baseline mean / stddev. Evidence kind baseline_deviation.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-spike-drop"
+    },
+    {
+      "id": "task-signal-shape",
+      "title": " (Core domain types)",
+      "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-reconcile-sort-order",
+      "title": "Reconcile detector output sort order",
+      "description": "docs/architecture.md:107 documents output as 'sorted by detected-at descending then confidence descending'. internal/detect/engine.go:70-75 sorts by confidence desc then detected-at desc. Pick one as truth and update the other so spec, code, and tests agree.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "detect-engine"
     },
     {
       "id": "task-outcome-convention",
@@ -444,25 +345,133 @@
       "feature_id": "adapter-sdk"
     },
     {
-      "id": "task-scope-isolation",
+      "id": "task-add-notifier-port",
+      "title": "Add Notifier port and SignalRepository decorator",
+      "description": "Add ports.Notifier interface (Notify(ctx, Signal); fire-and-forget). Create internal/notify package with: (a) NotifyingSignalRepository decorator that wraps any ports.SignalRepository and calls Notify after a successful Save; (b) Multi composite that fans out to multiple Notifiers. Save errors must NOT trigger Notify. Notify panics or errors must NOT propagate to the persistence path. Test the decorator's Save/notify ordering, error path, nil-notifier safety, and List/Get/Count delegation.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-remove-empty-extract-dir",
+      "title": "Remove empty internal/extract directory",
+      "description": "internal/extract/ exists as an empty directory not referenced anywhere in code or spec. Remove it.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-no-prose",
+      "title": " (Core domain types)",
+      "description": "Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-detector-interface",
       "title": " (Detection engine)",
-      "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
+      "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
       "feature_id": "detect-engine"
     },
     {
-      "id": "task-document-anomaly-window",
-      "title": "Document Anomaly's degenerate window in consumer docs",
-      "description": "internal/detect/anomaly.go:94-96 sets Window.Start == Window.End == subject.Timestamp because Anomaly is a snapshot in time across peers. Consumers computing window duration will get zero and must special-case it. Add a note to docs/cognitive-stack.md (Signal section) and the Anomaly entry in docs/architecture.md so it is part of the consumer-facing contract, not just an internal source comment.",
+      "id": "task-detector-stall",
+      "title": "Implement Detector — Stall",
+      "description": "Implement the feature: Detector — Stall. Normalised stddev of outcomes below StallMaxStdDev over at least StallMinPoints.\nStrength reflects flatness (1 - normalised_stddev / threshold). Evidence kind\nvariance_window.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-stall"
+    },
+    {
+      "id": "task-document-install-channels",
+      "title": "Document all install channels in README",
+      "description": "Extend README's 'Install' section so users see every distribution option side-by-side: `go install`, prebuilt binary download (with checksum verification), Docker (`docker run ghcr.io/felixgeelhaar/chronos`), Homebrew (once available), .deb/.rpm (once available). Note the supported OS/arch matrix.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-functional-options",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-add-nfpms-packages",
+      "title": "Add .deb / .rpm packages via goreleaser",
+      "description": "Add an nfpms: block to .goreleaser.yaml producing .deb (Debian/Ubuntu) and .rpm (RHEL/Fedora) packages. Configure maintainer, description, license, package name, and install paths (binary at /usr/local/bin/chronos). Packages publish alongside the existing tar.gz archives in the GitHub Release.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-add-webhook-notifier",
+      "title": "Webhook notifier with HMAC and best-effort retry",
+      "description": "internal/notify/webhook.go: WebhookNotifier(URLs, Secret, Timeout, Retries). On Notify, marshal api.SignalDTO, HMAC-SHA256 sign, POST to each URL with X-Chronos-Signature: sha256=\u003chex\u003e, X-Chronos-Delivery: \u003cuuid\u003e, X-Chronos-Event: signal.detected. Best-effort: configurable retries (default 1) on 5xx with 1s linear backoff; no retry on 2xx or 4xx. Per-URL goroutine. Increment observability.Metrics counter on success/failure. Add CHRONOS_WEBHOOK_URLS / CHRONOS_WEBHOOK_SECRET / CHRONOS_WEBHOOK_TIMEOUT / CHRONOS_WEBHOOK_RETRIES env vars to config. Wire into both cmd/chronos/compute.go and cmd/chronos/serve.go (wrap signals repo with NotifyingSignalRepository(WebhookNotifier(...))). Tests use httptest.Server to verify signature, headers, retry behaviour, multi-URL fan-out.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-add-sse-and-scheduler",
+      "title": "SSE endpoint + background detection scheduler in serve",
+      "description": "internal/notify/sse.go: SSE.Notify broadcasts to subscribed clients via per-client buffered channel; drops slow consumers (channel send select default). SSE.Subscribe returns a channel + cancel; Unsubscribe cleans up. internal/api adds GET /v1/signals/stream handler: parses scope_id (required) + optional pattern filter, sets Content-Type text/event-stream + Cache-Control no-cache + Connection keep-alive, writes `event: signal\\ndata: \u003cSignalDTO JSON\u003e\\n\\n` per matching signal until client disconnects. internal/pipeline/scheduler.go: Scheduler.Run loops on a ticker, enumerates scopes via new EntityStateRepository.ListScopes(ctx), runs Engine.Detect over each scope's states, saves emitted signals through the wrapped repo (so Notifier fires). Add ListScopes to ports and all three store backends (memory/sqlite/postgres). Add CHRONOS_DETECTION_INTERVAL env var (default 0 = scheduler off). cmd/chronos/serve.go starts the Scheduler when interval \u003e 0. Tests cover SSE delivery, slow-consumer drop, scheduler tick path.",
       "priority": "medium",
       "estimate": "",
       "depends_on": null,
-      "feature_id": "detector-anomaly"
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-store-postgres",
+      "title": "Implement Store backend — Postgres",
+      "description": "Implement the feature: Store backend — Postgres. Hand-written queries (Postgres is the secondary backend). Schema embedded via\ngo:embed from internal/store/postgres/migrations/001_initial.sql. Filters compose\npositional placeholders for parametrised execution.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-postgres"
+    },
+    {
+      "id": "task-ingest-endpoint",
+      "title": " (HTTP API)",
+      "description": "POST /v1/ingest is the streaming entry point.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-wire-nox-scan-ci",
+      "title": "Wire nox vulnerability / SBOM scanning into CI and releases",
+      "description": "Add nox vulnerability scanning, SBOM generation, and VEX status reporting to the release pipeline. SBOM should be published as a release artefact alongside the binary archives. Findings should fail CI when severity exceeds a configured threshold. If nox provides a GitHub Action, prefer that; otherwise wire the CLI in .github/workflows/ci.yml. Document the threshold and how to suppress false positives in docs/security.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-store-factory",
+      "title": "Implement Store factory",
+      "description": "Implement the feature: Store factory. internal/store.Open(ctx, dbType, connStr) returns a uniform port-typed *Conn\nwiring EntityStateRepository and SignalRepository over a shared *sql.DB\n(memory / sqlite / postgres).\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-factory"
     }
   ],
   "approval_status": "approved",
   "created_at": "2026-04-27T22:46:28.198554+02:00",
-  "updated_at": "2026-04-28T09:15:53.519907+02:00"
+  "updated_at": "2026-04-28T15:05:48.484626+02:00"
 }
