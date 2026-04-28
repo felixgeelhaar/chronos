@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 136,
+  "version": 140,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -11,6 +11,13 @@
       ],
       "started_at": "2026-04-27T22:53:22.804473+02:00",
       "completed_at": "2026-04-27T22:54:04.430535+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-add-capability-interfaces": {
+      "status": "in_progress",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-28T22:46:13.05814+02:00",
       "elapsed_minutes": 0
     },
     "task-add-client-stream": {
@@ -33,6 +40,17 @@
       ],
       "started_at": "2026-04-28T15:46:15.219889+02:00",
       "completed_at": "2026-04-28T15:47:23.08278+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-add-cognitive-stack-walkthrough": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "docs/cognitive-stack-example.md: 5-section walkthrough of the commitment scenario — setup, Mnemos memory shape, Chronos ingest curls, Stall signal payload (real JSON with all stable wire-contract fields), Nous SDK code (pull + stream), Nous interpretation pseudocode, outcome loopback. Cross-references cognitive-stack.md, wire-contract.md, adapters.md, configuration.md. cognitive-stack.md updated with a forward link to the runnable example."
+      ],
+      "started_at": "2026-04-28T22:45:03.515739+02:00",
+      "completed_at": "2026-04-28T22:46:12.272103+02:00",
       "elapsed_minutes": 1
     },
     "task-add-config-tests": {
@@ -696,5 +714,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T22:42:26.618437+02:00"
+  "updated_at": "2026-04-28T22:46:13.05814+02:00"
 }
