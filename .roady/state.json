@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 118,
+  "version": 129,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -56,6 +56,28 @@
       "started_at": "2026-04-27T23:17:48.969493+02:00",
       "completed_at": "2026-04-27T23:28:43.584291+02:00",
       "elapsed_minutes": 10
+    },
+    "task-add-libsql-backend": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/libsql/libsql.go: openProvider opens via sql.Open(\"libsql\", driverDSN), Bootstraps via sqlite.Bootstrap, returns Conn populated by sqlite.NewFromDB; translateDSN handles remote (libsql://host?...) and local-file (libsql:///path → file:/path) shapes; namespace validated then dropped (libSQL has no schemas); redactDSN sanitises authToken/password before logging; libsql_test.go: 5 tests covering DSN translation, redaction, registration, and local-file open. cmd/chronos/main.go blank-imports the libsql provider."
+      ],
+      "started_at": "2026-04-28T22:28:02.675619+02:00",
+      "completed_at": "2026-04-28T22:29:58.992691+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-add-mysql-backend": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/mysql/{db.go,schema.sql,entity_state_repo.go,signal_repo.go}: full backend with go-sql-driver/mysql; namespace-as-database (CREATE DATABASE IF NOT EXISTS via admin DSN, then reconnect with namespace selected); ?-placeholder dialect; CHAR(36) UUIDs, JSON columns, DATETIME(6) microsecond precision; parseTime=true\u0026loc=UTC for time.Time round-trip; ON DUPLICATE KEY UPDATE for upsert; mysql_test.go: 8 unit tests on DSN translation + statement splitter; integration_test.go: 4 cases gated on TEST_MYSQL_DSN mirroring Mnemos's pattern (per-test namespace, cleanup drops DB). cmd/chronos/main.go blank-imports the mysql provider."
+      ],
+      "started_at": "2026-04-28T22:29:59.359487+02:00",
+      "completed_at": "2026-04-28T22:33:04.056148+02:00",
+      "elapsed_minutes": 3
     },
     "task-add-nfpms-packages": {
       "status": "done",
@@ -244,6 +266,17 @@
       "completed_at": "2026-04-27T23:05:14.453767+02:00",
       "elapsed_minutes": 1
     },
+    "task-document-backend-compatibles": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "docs/configuration.md: CHRONOS_DB_DSN promoted to primary, legacy CHRONOS_DB_TYPE+CHRONOS_DB_CONN documented as back-compat path; DSN syntax block per provider; native providers table (memory/sqlite/postgres/mysql/libsql with namespace translation); wire-protocol compatibles table (CockroachDB, Yugabyte, Neon, Crunchy Bridge, TimescaleDB, AlloyDB Omni for postgres; MariaDB, PlanetScale, TiDB, Vitess for mysql; Turso for libsql); legacy mapping examples; cross-reference to Mnemos ADR 0001"
+      ],
+      "started_at": "2026-04-28T22:33:04.711409+02:00",
+      "completed_at": "2026-04-28T22:36:53.847327+02:00",
+      "elapsed_minutes": 3
+    },
     "task-document-install-channels": {
       "status": "done",
       "path": "",
@@ -396,6 +429,17 @@
       ],
       "started_at": "2026-04-27T22:53:15.171675+02:00",
       "completed_at": "2026-04-27T22:53:54.520505+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-postgres-pgx-and-namespace": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/postgres/db.go: switched from lib/pq to github.com/jackc/pgx/v5/stdlib (driver name \"pgx\"); parseDSN strips ?namespace= before handing to pgx; applyNamespace runs CREATE SCHEMA IF NOT EXISTS + SET search_path; adapters/ascend/ascend.go also switched to pgx so the binary links one Postgres driver; lib/pq removed from go.mod"
+      ],
+      "started_at": "2026-04-28T22:28:12.135294+02:00",
+      "completed_at": "2026-04-28T22:28:15.116554+02:00",
       "elapsed_minutes": 0
     },
     "task-reconcile-sort-order": {
@@ -552,6 +596,17 @@
       "completed_at": "2026-04-27T22:53:57.989525+02:00",
       "elapsed_minutes": 0
     },
+    "task-store-registry-and-dsn": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/store.go: Register/Open registry mirroring Mnemos ADR 0001; ParseNamespace + namespaceRE; LegacyDSN bridge; internal/store/{memory,sqlite,postgres}/*.go: self-register in init(); cmd/chronos/main.go: blank-imports providers; cmd/chronos/{compute,serve}.go: call store.Open(ctx, dsn) via resolveDSN helper; CHRONOS_DB_DSN added to config; legacy CHRONOS_DB_TYPE+CHRONOS_DB_CONN preserved as back-compat path; 7 new tests cover scheme dispatch, missing/unknown scheme rejection, namespace validation, LegacyDSN translation, and register panics"
+      ],
+      "started_at": "2026-04-28T15:53:45.503093+02:00",
+      "completed_at": "2026-04-28T22:27:57.996844+02:00",
+      "elapsed_minutes": 394
+    },
     "task-triage-nox-baseline": {
       "status": "done",
       "path": "",
@@ -608,5 +663,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T15:47:23.082781+02:00"
+  "updated_at": "2026-04-28T22:36:53.847328+02:00"
 }
