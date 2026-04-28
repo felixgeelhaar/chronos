@@ -82,6 +82,75 @@ jobs:
       - name: Verify binary metadata
         run: ./bin/chronos version
 
+  integration-postgres:
+    runs-on: ubuntu-latest
+    services:
+      # Pinned by digest; bump alongside the dependabot update for
+      # postgres:16-alpine. Health-check waits for the server to
+      # accept connections so test runs don't race the boot.
+      postgres:
+        image: postgres:16-alpine@sha256:4e6e670bb069649261c9c18031f0aded7bb249a5b6664ddec29c013a89310d50
+        env:
+          POSTGRES_USER: chronos
+          POSTGRES_PASSWORD: chronos
+          POSTGRES_DB: chronos
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: "1.24"
+          cache: true
+
+      - name: Run postgres integration tests
+        env:
+          TEST_POSTGRES_DSN: postgres://chronos:chronos@localhost:5432/chronos?sslmode=disable
+        run: go test -race -count=1 ./internal/store/postgres/...
+
+  integration-mysql:
+    runs-on: ubuntu-latest
+    services:
+      # MariaDB 11 is the long-term-support branch; the protocol it
+      # speaks is also accepted by Chronos's `mysql://` provider, so
+      # one service container exercises both schemes the engine
+      # supports.
+      mariadb:
+        image: mariadb:11@sha256:78a5047d3ba33975f183f183c2464cc7f1eab13ec8667e57cc9a5821d6da7577
+        env:
+          MARIADB_ROOT_PASSWORD: chronos
+          MARIADB_DATABASE: chronos
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "healthcheck.sh --connect --innodb_initialized"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: "1.24"
+          cache: true
+
+      - name: Run mysql integration tests
+        env:
+          # The mysql provider parses URL DSNs and translates them
+          # to the libmysql form; this URL form gets parsed,
+          # CREATE DATABASE issued, then a per-namespace reconnect.
+          TEST_MYSQL_DSN: mysql://root:chronos@localhost:3306/
+        run: go test -race -count=1 ./internal/store/mysql/...
+
   release-check:
     runs-on: ubuntu-latest
     steps:

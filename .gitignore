@@ -83,3 +83,12 @@ chronos.db
 /sbom.cdx.json
 /sbom.spdx.json
 /report.html
+
+# Roady journal files. spec.yaml / spec.lock.json / policy.yaml /
+# plan.json / state.json carry the durable shape and stay tracked;
+# events.jsonl (append-only transition log) and usage.json
+# (per-actor usage metrics) are per-clone bookkeeping. Keeping them
+# out of version control also drops ~1100 spurious nox findings
+# (UUIDs in the journal trip secret-detection heuristics).
+.roady/events.jsonl
+.roady/usage.json
