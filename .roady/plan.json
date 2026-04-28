@@ -3,22 +3,94 @@
   "spec_id": "chronos",
   "tasks": [
     {
-      "id": "task-add-cognitive-stack-walkthrough",
-      "title": "Worked example doc: Mnemos -\u003e Chronos -\u003e Nous end-to-end",
-      "description": "New docs/cognitive-stack-example.md (or extend cognitive-stack.md) walking a real scenario: a user makes a commitment, Mnemos persists it, Chronos sees the days-since-opened series climb without resolution and emits a Stall signal, Nous combines memory + signal to draft an intervention. Each step shows the actual wire interaction: curl POST to /v1/ingest with EntityState payload, curl GET /v1/signals returning the Stall SignalDTO, Go code using client.Signals().Stream(ctx) for the live feed, and pseudocode (or real Go) for what Nous would then do with that signal. Cross-link with cognitive-stack.md and wire-contract.md.",
+      "id": "task-configure-github-metadata",
+      "title": "Configure GitHub repo description, homepage, topics",
+      "description": "gh repo edit chronos: tighten the description (position it as the perception layer of the cognitive stack, not just 'time-series pattern detection'); set homepage to the pkg.go.dev URL; populate topics (go, time-series, pattern-detection, anomaly-detection, signals, cognitive-architecture, observability, ddd, hexagonal-architecture, sqlite, postgres, mysql, libsql, prometheus); disable wiki (we use docs/ inside the repo).",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-add-5min-quickstart",
+      "title": "Add a 5-minute quickstart to README",
+      "description": "A copy-paste-runnable sequence near the top of README that takes a fresh user from zero to a real Stall signal in under 5 minutes: (1) go install, (2) start serve with sqlite + scheduler enabled, (3) POST a small series of EntityStates via /v1/ingest, (4) wait 1 detection tick, (5) GET /v1/signals showing the actual returned JSON, (6) optional curl -N /v1/signals/stream for live SSE. No external services required — sqlite + memory + curl. Replace or augment the existing 'Quick start' section. Cross-link to docs/cognitive-stack-example.md for the Mnemos→Chronos→Nous full walkthrough.",
       "priority": "medium",
       "estimate": "",
       "depends_on": null,
       "feature_id": "configuration"
     },
     {
-      "id": "task-add-capability-interfaces",
-      "title": "Add Mnemos-style capability interfaces (Transactional, TextSearcher, VectorSearcher)",
-      "description": "Per Mnemos ADR 0001 §4, define optional capability interfaces in internal/ports so providers advertise features the engine can opt into via type-assertion with graceful fallback. Ship Transactional with concrete implementations on postgres/mysql/sqlite (BeginTx wrapper) — useful immediately for batch-save semantics. TextSearcher and VectorSearcher land as interfaces only with documented provider plans (postgres tsvector + pgvector, sqlite FTS5, mysql FULLTEXT, memory tokenised/brute cosine); no implementations needed today, but baking the contract in keeps future spectral / NLP detectors orthogonal to the store layer. Add a small example test demonstrating the type-assert + fallback pattern.",
+      "id": "task-polish-readme-positioning",
+      "title": "Polish README: positioning, sibling links, structural pass",
+      "description": "Add a brief 'Why Chronos?' positioning paragraph addressing 'why not just Prometheus alerting / Grafana / building it yourself?' — explain the cognitive-stack framing and the signals-not-opinions principle. Surface the new Stream() SDK method and SSE endpoint in the 'Reading signals' section. Make sure docs/ index is discoverable: each existing doc gets a one-line gloss in a 'Documentation' section. Tighten the Architecture / Bundled adapters tables.",
       "priority": "low",
       "estimate": "",
       "depends_on": null,
-      "feature_id": "ports"
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-document-install-channels",
+      "title": "Document all install channels in README",
+      "description": "Extend README's 'Install' section so users see every distribution option side-by-side: `go install`, prebuilt binary download (with checksum verification), Docker (`docker run ghcr.io/felixgeelhaar/chronos`), Homebrew (once available), .deb/.rpm (once available). Note the supported OS/arch matrix.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-registry",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-fix-pipeline-observability-import",
+      "title": "Fix pipeline import for observability.Metrics",
+      "description": "internal/pipeline/compute.go references *observability.Metrics on line 29 and calls in.Metrics.ObserveObservations / ObserveSignal but does not import internal/observability. Add the import. After fix, `go build ./...` must succeed for the pipeline package.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "pipeline"
+    },
+    {
+      "id": "task-source-interface",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-add-webhook-notifier",
+      "title": "Webhook notifier with HMAC and best-effort retry",
+      "description": "internal/notify/webhook.go: WebhookNotifier(URLs, Secret, Timeout, Retries). On Notify, marshal api.SignalDTO, HMAC-SHA256 sign, POST to each URL with X-Chronos-Signature: sha256=\u003chex\u003e, X-Chronos-Delivery: \u003cuuid\u003e, X-Chronos-Event: signal.detected. Best-effort: configurable retries (default 1) on 5xx with 1s linear backoff; no retry on 2xx or 4xx. Per-URL goroutine. Increment observability.Metrics counter on success/failure. Add CHRONOS_WEBHOOK_URLS / CHRONOS_WEBHOOK_SECRET / CHRONOS_WEBHOOK_TIMEOUT / CHRONOS_WEBHOOK_RETRIES env vars to config. Wire into both cmd/chronos/compute.go and cmd/chronos/serve.go (wrap signals repo with NotifyingSignalRepository(WebhookNotifier(...))). Tests use httptest.Server to verify signature, headers, retry behaviour, multi-URL fan-out.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-add-precommit-config",
+      "title": "Add pre-commit hooks for fmt, vet, lint, conventional commits",
+      "description": "Add .pre-commit-config.yaml using the pre-commit framework. Hooks: trailing-whitespace, end-of-file-fixer, check-yaml, check-merge-conflict, check-added-large-files (--maxkb=500), mixed-line-ending; Go-specific: gofmt, go vet, go-mod-tidy; golangci-lint v2.1.6 (matching CI); commit-msg: conventional-pre-commit. Update README with `pre-commit install` instructions. The hooks must be a strict subset of what CI already runs, so a passing pre-commit guarantees CI will not reject on style/lint.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-detector-correlation",
+      "title": "Implement Detector — Correlation",
+      "description": "Implement the feature: Detector — Correlation. Pairwise Pearson on aligned outcome series within a scope. One signal per pair,\ndeterministically owned by the lex-smaller series ID; the other appears as evidence.\nStrength = |r|; metrics carry r and direction. Evidence kind pair_correlation.\nCost is O(N²) in series count per scope.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-correlation"
     },
     {
       "id": "task-document-anomaly-window",
@@ -30,96 +102,6 @@
       "feature_id": "detector-anomaly"
     },
     {
-      "id": "task-fluent-builder",
-      "title": " (Public HTTP client SDK (client/))",
-      "description": "c.Signals().Scope(id).Pattern(...).List(ctx) reads signals from a server.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "client-sdk"
-    },
-    {
-      "id": "task-validation",
-      "title": " (Core domain types)",
-      "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "domain-types"
-    },
-    {
-      "id": "task-add-mysql-backend",
-      "title": "Add MySQL/MariaDB backend with hand-written queries and testcontainers integration",
-      "description": "New internal/store/mysql/{db,conn,entity_state_repo,signal_repo,schema.sql,integration_test}.go. Register 'mysql' AND 'mariadb' schemes (shared wire protocol + dialect). Translate ?namespace= into a MySQL database name (CREATE DATABASE IF NOT EXISTS \u003cns\u003e; USE \u003cns\u003e) — MySQL has no schemas. ParseDSN converts the URL form to libmysql DSN (user:pw@tcp(host:port)/db?parseTime=true) since the driver doesn't speak URLs natively. Hand-write queries to match the Postgres backend's surface (Save batch, ListByScope, ListByEntity, DeleteOlderThan, Count, ListScopes). Driver: github.com/go-sql-driver/mysql. Integration test mirrors Mnemos's pattern: testcontainers-go spins MariaDB on demand; gated behind a build tag or env var so unit tests stay fast in non-Docker environments.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "store-factory"
-    },
-    {
-      "id": "task-ingest-endpoint",
-      "title": " (HTTP API)",
-      "description": "POST /v1/ingest is the streaming entry point.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-scope-isolation",
-      "title": " (Detection engine)",
-      "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detect-engine"
-    },
-    {
-      "id": "task-observability",
-      "title": "Implement Observability",
-      "description": "Implement the feature: Observability. Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-configuration",
-      "title": "Implement Configuration system",
-      "description": "Implement the feature: Configuration system. Env-var driven (CHRONOS_*). Defaults in config.Default(). Precedence:\nCLI flags \u003e env vars \u003e defaults. Detectors have their own knob namespaces\n(CHRONOS_\u003cDETECTOR\u003e_*).\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "configuration"
-    },
-    {
-      "id": "task-detector-interface",
-      "title": " (Detection engine)",
-      "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detect-engine"
-    },
-    {
-      "id": "task-signal-shape",
-      "title": " (Core domain types)",
-      "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "domain-types"
-    },
-    {
-      "id": "task-detector-stall",
-      "title": "Implement Detector — Stall",
-      "description": "Implement the feature: Detector — Stall. Normalised stddev of outcomes below StallMaxStdDev over at least StallMinPoints.\nStrength reflects flatness (1 - normalised_stddev / threshold). Evidence kind\nvariance_window.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-stall"
-    },
-    {
       "id": "task-detector-seasonality",
       "title": "Implement Detector — Seasonality",
       "description": "Implement the feature: Detector — Seasonality. Pearson autocorrelation at lags [MinPeriod, n/2]. Emit when largest peak exceeds\nSeasonalityMinAutocorr. Strength = peak value; metrics carry the period (lag).\nEvidence kind autocorrelation_peak.\n",
@@ -127,15 +109,6 @@
       "estimate": "",
       "depends_on": [],
       "feature_id": "detector-seasonality"
-    },
-    {
-      "id": "task-document-stable-evidence-keys",
-      "title": "Document stable evidence kinds and metrics keys as wire contract",
-      "description": "Detector emissions use stable string keys (similar_state, regression_summary, baseline_deviation, variance_window, peer_distance, autocorrelation_peak, pair_correlation) and metric names (outcome_diff, slope, intercept, r2, n, z, baseline_mean, baseline_stddev, observed_outcome, normalised_stddev, max_peer_similarity, peer_count, period, autocorrelation, r, abs_r, direction, avg_similarity, sample_size, avg_outcome_diff, mean, window). These are de-facto wire contract for any consumer that switches on Evidence.Kind or reads Metrics[k]. Add a 'Stable wire keys' section to docs/cognitive-stack.md (or a new docs/wire-contract.md) listing every kind and key per detector so future renames are recognised as breaking changes.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "client-sdk"
     },
     {
       "id": "task-document-backend-compatibles",
@@ -147,13 +120,40 @@
       "feature_id": "configuration"
     },
     {
-      "id": "task-state-repo",
+      "id": "task-wire-coverctl-gate-ci",
+      "title": "Wire coverctl coverage gating into CI",
+      "description": "Establish a coverage baseline via coverctl, then gate PRs on regressions beyond a configured threshold and post a PR comment with the diff. Replace or complement the current Codecov upload depending on which fits better. Capture the baseline in .coverctl/ (or wherever coverctl persists state) and document the workflow in CONTRIBUTING.md or docs/quality.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-scope-isolation",
+      "title": " (Detection engine)",
+      "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-signal-repo",
       "title": " (Outbound ports (per-aggregate repositories))",
-      "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
+      "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
       "feature_id": "ports"
+    },
+    {
+      "id": "task-similarity",
+      "title": "Implement Similarity math",
+      "description": "Implement the feature: Similarity math. Pure-math package (cosine, weighted, Euclidean) used by detectors. No I/O.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "similarity"
     },
     {
       "id": "task-add-nfpms-packages",
@@ -165,9 +165,423 @@
       "feature_id": "cli"
     },
     {
+      "id": "task-scope-flag",
+      "title": " (Command-line interface)",
+      "description": "compute accepts --scope-id (preferred) or --coach-id (legacy alias).",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-add-notifier-port",
+      "title": "Add Notifier port and SignalRepository decorator",
+      "description": "Add ports.Notifier interface (Notify(ctx, Signal); fire-and-forget). Create internal/notify package with: (a) NotifyingSignalRepository decorator that wraps any ports.SignalRepository and calls Notify after a successful Save; (b) Multi composite that fans out to multiple Notifiers. Save errors must NOT trigger Notify. Notify panics or errors must NOT propagate to the persistence path. Test the decorator's Save/notify ordering, error path, nil-notifier safety, and List/Get/Count delegation.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-store-factory",
+      "title": "Implement Store factory",
+      "description": "Implement the feature: Store factory. internal/store.Open(ctx, dbType, connStr) returns a uniform port-typed *Conn\nwiring EntityStateRepository and SignalRepository over a shared *sql.DB\n(memory / sqlite / postgres).\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-factory"
+    },
+    {
+      "id": "task-output-ordering",
+      "title": " (Detection engine)",
+      "description": "Output is sorted by detected-at desc, then by confidence desc.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-remove-empty-extract-dir",
+      "title": "Remove empty internal/extract directory",
+      "description": "internal/extract/ exists as an empty directory not referenced anywhere in code or spec. Remove it.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-store-registry-and-dsn",
+      "title": "Refactor store to scheme-dispatched registry with DSN + namespace",
+      "description": "Mirror Mnemos's ADR 0001 contract. Replace internal/store/store.go's switch in Open with a Register(scheme, OpenFunc) registry; have memory/sqlite/postgres providers self-register in init(). Introduce DSN-as-URL with ?namespace= query param (default 'chronos', validated ^[a-z][a-z0-9_]{0,62}$). Each provider translates namespace into its native isolation: memory key prefix, sqlite distinct file (or single-file passthrough — Chronos isn't multi-tenant so default the same as Mnemos), postgres CREATE SCHEMA IF NOT EXISTS + SET search_path. Add CHRONOS_DB_DSN env var as the new primary; keep CHRONOS_DB_TYPE+CHRONOS_DB_CONN as legacy mapped internally to the new DSN form so operators don't break. Update cmd/chronos/{compute,serve}.go to use the new entry point. Update internal/store/store.go's Conn shape (EntityStateRepository + SignalRepository — unchanged from before). Tests must include round-trip: legacy env-var → DSN → provider; explicit DSN with namespace; missing scheme rejection; unknown scheme rejection.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "store-factory"
+    },
+    {
+      "id": "task-sqlc-source",
+      "title": " (Store backend — SQLite)",
+      "description": "To change SQL, edit sql/sqlite/queries.sql and/or the migration, then run make sqlc.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-sqlite"
+    },
+    {
+      "id": "task-reconcile-sort-order",
+      "title": "Reconcile detector output sort order",
+      "description": "docs/architecture.md:107 documents output as 'sorted by detected-at descending then confidence descending'. internal/detect/engine.go:70-75 sorts by confidence desc then detected-at desc. Pick one as truth and update the other so spec, code, and tests agree.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-detector-interface",
+      "title": " (Detection engine)",
+      "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-add-cmd-tests",
+      "title": "Add tests for cmd/chronos error helpers and version subcommand",
+      "description": "cmd/chronos sits at 0% coverage with threshold matching. Add tests for errors.go (NewUserError, NewSystemError, NewNotFoundError, error wrapping, exit code mapping) and version.go (output format, version/commit/buildDate substitution). runCompute and runServe are integration paths and stay uncovered for now. Ratchet the cmd threshold to whatever the new tests achieve (likely 30-50%).",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-ingest-endpoint",
+      "title": " (HTTP API)",
+      "description": "POST /v1/ingest is the streaming entry point.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-functional-options",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-add-libsql-backend",
+      "title": "Add libSQL provider reusing SQLite repositories",
+      "description": "internal/store/libsql/libsql.go registers the 'libsql' scheme and reuses internal/store/sqlite/{conn,entity_state_repo,signal_repo}.go via constructor functions exported from sqlite. The libsql provider parses the DSN, translates libsql:// URLs into the form tursodatabase/libsql-client-go expects (libsql:// for remote, file: for local-file paths), opens via database/sql with driver name 'libsql', applies the embedded SQLite migration (libSQL is wire-compatible with SQLite at the SQL level), and returns the Conn. ?namespace= is accepted but ignored — each remote libSQL DB is already a tenant boundary, matching Mnemos's posture. Pure-Go driver keeps CGO_ENABLED=0. Tests cover DSN translation (remote vs file) and provider registration.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "store-factory"
+    },
+    {
+      "id": "task-add-homebrew-tap",
+      "title": "Add Homebrew tap distribution via goreleaser",
+      "description": "Add a brews: block to .goreleaser.yaml pointing at a homebrew-tap repository (felixgeelhaar/homebrew-tap or similar). Configure formula name, description, license, dependencies (none for a static binary), and test stanza (`chronos version`). On release, goreleaser will commit the formula update to the tap automatically. Document the install command in README.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-validation",
+      "title": " (Core domain types)",
+      "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-state-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "ports"
+    },
+    {
+      "id": "task-detector-recurrence",
+      "title": "Implement Detector — Recurrence",
+      "description": "Implement the feature: Detector — Recurrence. For each entity's most recent state, look at strictly historical states of\nOTHER entities in the same scope. Cosine similarity ≥ threshold counts as a\nsimilar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).\nEvidence kind similar_state with metrics[\"outcome_diff\"] = peer.outcome - subject.outcome.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-recurrence"
+    },
+    {
+      "id": "task-ci-integration-services",
+      "title": "Add CI integration jobs with Postgres + MySQL service containers",
+      "description": "Extend .github/workflows/ci.yml with two new jobs (integration-postgres, integration-mysql) that use GitHub Actions services blocks to spin up postgres:16-alpine and mariadb:11 containers, export TEST_POSTGRES_DSN / TEST_MYSQL_DSN to point at them, and run the integration tests under each provider's package. Pin service images to digests for reproducibility. Tests skip locally without those env vars (existing behaviour) and run in CI on every PR.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "store-factory"
+    },
+    {
+      "id": "task-add-release-workflow",
+      "title": "Add GitHub Actions release workflow that runs goreleaser on tag push",
+      "description": "Create .github/workflows/release.yml triggering on tag push (v*) and workflow_dispatch. Sets up Go, QEMU, buildx; logs into ghcr.io with GITHUB_TOKEN (packages:write); runs goreleaser release --clean. Wire the Homebrew tap cross-repo push by referencing a HOMEBREW_TAP_TOKEN secret (PAT with contents:write on felixgeelhaar/homebrew-tap) via the brews.repository.token field in .goreleaser.yaml. Document the secret requirement so the workflow fails loudly when missing rather than silently skipping the formula push.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-postgres-pgx-and-namespace",
+      "title": "Switch postgres backend to pgx/v5/stdlib and apply namespace as schema",
+      "description": "Replace lib/pq with github.com/jackc/pgx/v5/stdlib (matches Mnemos so the cognitive stack shares one driver). Update internal/store/postgres/db.go to register the 'pgx' driver. Implement namespace translation: CREATE SCHEMA IF NOT EXISTS \u003cnamespace\u003e + SET search_path TO \u003cnamespace\u003e on every Open. Strip ?namespace= from the DSN before handing it to pgx (pgx rejects unknown query keys). Embedded migration runs against the namespace schema. Re-run all sqlite+memory+postgres tests; the postgres path is exercised via .nox or other integration only.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "store-postgres"
+    },
+    {
+      "id": "task-reduce-nox-baseline",
+      "title": "Reduce nox baseline by gitignoring Roady journal files",
+      "description": "1167 of 1316 baseline entries (89%) come from .roady/events.jsonl - an append-only transition journal whose UUIDs trip secret-detection heuristics. usage.json adds another ~10. Gitignore both files: state.json (canonical state), spec.yaml, spec.lock.json, plan.json, and policy.yaml stay tracked, so durable project state still persists across clones; events.jsonl becomes per-clone bookkeeping. Re-baseline nox; expected drop from ~1316 to ~150.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-add-mysql-backend",
+      "title": "Add MySQL/MariaDB backend with hand-written queries and testcontainers integration",
+      "description": "New internal/store/mysql/{db,conn,entity_state_repo,signal_repo,schema.sql,integration_test}.go. Register 'mysql' AND 'mariadb' schemes (shared wire protocol + dialect). Translate ?namespace= into a MySQL database name (CREATE DATABASE IF NOT EXISTS \u003cns\u003e; USE \u003cns\u003e) — MySQL has no schemas. ParseDSN converts the URL form to libmysql DSN (user:pw@tcp(host:port)/db?parseTime=true) since the driver doesn't speak URLs natively. Hand-write queries to match the Postgres backend's surface (Save batch, ListByScope, ListByEntity, DeleteOlderThan, Count, ListScopes). Driver: github.com/go-sql-driver/mysql. Integration test mirrors Mnemos's pattern: testcontainers-go spins MariaDB on demand; gated behind a build tag or env var so unit tests stay fast in non-Docker environments.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "store-factory"
+    },
+    {
+      "id": "task-configuration",
+      "title": "Implement Configuration system",
+      "description": "Implement the feature: Configuration system. Env-var driven (CHRONOS_*). Defaults in config.Default(). Precedence:\nCLI flags \u003e env vars \u003e defaults. Detectors have their own knob namespaces\n(CHRONOS_\u003cDETECTOR\u003e_*).\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-detector-trend",
+      "title": "Implement Detector — Trend",
+      "description": "Implement the feature: Detector — Trend. OLS linear regression on outcome vs ordinal index. Trigger:\n|slope| \u003e TrendMinSlope ∧ R² \u003e 0.3 ∧ n \u003e= TrendMinPoints. Strength = R²;\nmetrics carry slope, intercept, R², n. Evidence kind regression_summary.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-trend"
+    },
+    {
+      "id": "task-triage-nox-baseline",
+      "title": "Triage and reduce the nox baseline",
+      "description": "The committed nox baseline silences 381 findings. Most are likely Action SHA pinning (IAC-013), email-in-config (DATA-001), and container image digest pinning (CONT-001) — actionable. Goal: fix the easy ones in source, suppress documented-intent ones, re-baseline at the end. Categorize by RuleID first, then drive each rule to either zero or a documented suppression. Reducing the baseline shrinks the trust gap between 'no new findings' and 'no findings'.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-detector-spike-drop",
+      "title": "Implement Detector — Spike / Drop",
+      "description": "Implement the feature: Detector — Spike / Drop. Z-score of most recent outcome against previous SpikeWindow points. Trigger:\n|z| \u003e= threshold in configured direction. Strength = min(|z|/5, 1); metrics\ncarry z, baseline mean / stddev. Evidence kind baseline_deviation.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-spike-drop"
+    },
+    {
+      "id": "task-fix-api-test-signatures",
+      "title": "Update api test call sites for new signatures",
+      "description": "internal/api/middleware_test.go calls Logging(logger) but signature is now Logging(logger, metrics). internal/api/server_test.go calls NewServer(states, signals, nil) but signature is now NewServer(states, signals, metrics, logger). Update both tests to pass an *observability.Metrics value (nil acceptable per NewServer doc).",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-fluent-builder",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "c.Signals().Scope(id).Pattern(...).List(ctx) reads signals from a server.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-store-memory",
+      "title": "Implement Store backend — memory",
+      "description": "Implement the feature: Store backend — memory. Thread-safe in-memory backend used for tests and ephemeral exploration.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-memory"
+    },
+    {
+      "id": "task-add-client-stream",
+      "title": "Add client.Signals().Stream(ctx) for SSE consumers",
+      "description": "Extend the Go SDK with a streaming method that opens GET /v1/signals/stream, parses the SSE event:signal/data:\u003cjson\u003e framing, and pushes decoded client.Signal values onto a returned channel. Close the channel on ctx cancellation, EOF, or unrecoverable error. Honour Scope (required) and Pattern filters via the existing builder. Reuse the auth/user-agent already configured on the client. Test against httptest.Server emitting canned SSE frames including a heartbeat comment, multi-line data, and graceful close. Update README reading-signals section with a Stream() example.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-add-cognitive-stack-walkthrough",
+      "title": "Worked example doc: Mnemos -\u003e Chronos -\u003e Nous end-to-end",
+      "description": "New docs/cognitive-stack-example.md (or extend cognitive-stack.md) walking a real scenario: a user makes a commitment, Mnemos persists it, Chronos sees the days-since-opened series climb without resolution and emits a Stall signal, Nous combines memory + signal to draft an intervention. Each step shows the actual wire interaction: curl POST to /v1/ingest with EntityState payload, curl GET /v1/signals returning the Stall SignalDTO, Go code using client.Signals().Stream(ctx) for the live feed, and pseudocode (or real Go) for what Nous would then do with that signal. Cross-link with cognitive-stack.md and wire-contract.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-detector-stall",
+      "title": "Implement Detector — Stall",
+      "description": "Implement the feature: Detector — Stall. Normalised stddev of outcomes below StallMaxStdDev over at least StallMinPoints.\nStrength reflects flatness (1 - normalised_stddev / threshold). Evidence kind\nvariance_window.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-stall"
+    },
+    {
+      "id": "task-wire-shape-only",
+      "title": " (HTTP API)",
+      "description": "API does not render prose; the wire shape carries structured fields only.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-add-config-tests",
+      "title": "Add config_test.go covering env parsing, defaults, and Validate",
+      "description": "internal/config/config.go currently sits at 0% coverage with the threshold set to match. Add table-driven tests for Default() (env vars override defaults; bad values fall back), Validate() (covers each error branch: empty db_type, empty db_conn, bad similarity threshold, bad sample size, bad z-scores, bad stddev, bad anomaly/seasonality/correlation ranges), and the env helpers (defaultEnv, defaultEnvInt, defaultEnvFloat64, defaultEnvSlice, defaultEnvDuration). Use t.Setenv for env manipulation. Once landed, ratchet the threshold from 0 to ~85.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-outcome-convention",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Last feature is the outcome metric; higher is conventionally better.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-observability",
+      "title": "Implement Observability",
+      "description": "Implement the feature: Observability. Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-bearer-auth",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "WithToken sets the Authorization Bearer header.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-add-postgres-tests",
+      "title": "Add postgres unit + integration tests covering parseDSN and namespace",
+      "description": "internal/store/postgres/postgres_test.go: unit tests for parseDSN (default namespace fallback, custom namespace, invalid namespace rejected, scheme alias accepted, namespace stripped from driver DSN); also integration_test.go gated on TEST_POSTGRES_DSN mirroring the MySQL pattern (per-test namespace via uuid suffix, round-trip entity states and signals, cleanup drops the namespace's contents). Currently postgres has 0% test coverage.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "store-postgres"
+    },
+    {
+      "id": "task-adapter-ascend",
+      "title": "Implement Adapter — Ascend",
+      "description": "Implement the feature: Adapter — Ascend. adapters/ascend — bundled working adapter backed by PostgreSQL. Divides tonnage\nby bodyweight to normalise features so cosine similarity is meaningful across\nathletes of different sizes.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-ascend"
+    },
+    {
+      "id": "task-add-sse-and-scheduler",
+      "title": "SSE endpoint + background detection scheduler in serve",
+      "description": "internal/notify/sse.go: SSE.Notify broadcasts to subscribed clients via per-client buffered channel; drops slow consumers (channel send select default). SSE.Subscribe returns a channel + cancel; Unsubscribe cleans up. internal/api adds GET /v1/signals/stream handler: parses scope_id (required) + optional pattern filter, sets Content-Type text/event-stream + Cache-Control no-cache + Connection keep-alive, writes `event: signal\\ndata: \u003cSignalDTO JSON\u003e\\n\\n` per matching signal until client disconnects. internal/pipeline/scheduler.go: Scheduler.Run loops on a ticker, enumerates scopes via new EntityStateRepository.ListScopes(ctx), runs Engine.Detect over each scope's states, saves emitted signals through the wrapped repo (so Notifier fires). Add ListScopes to ports and all three store backends (memory/sqlite/postgres). Add CHRONOS_DETECTION_INTERVAL env var (default 0 = scheduler off). cmd/chronos/serve.go starts the Scheduler when interval \u003e 0. Tests cover SSE delivery, slow-consumer drop, scheduler tick path.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "notifications"
+    },
+    {
+      "id": "task-document-stable-evidence-keys",
+      "title": "Document stable evidence kinds and metrics keys as wire contract",
+      "description": "Detector emissions use stable string keys (similar_state, regression_summary, baseline_deviation, variance_window, peer_distance, autocorrelation_peak, pair_correlation) and metric names (outcome_diff, slope, intercept, r2, n, z, baseline_mean, baseline_stddev, observed_outcome, normalised_stddev, max_peer_similarity, peer_count, period, autocorrelation, r, abs_r, direction, avg_similarity, sample_size, avg_outcome_diff, mean, window). These are de-facto wire contract for any consumer that switches on Evidence.Kind or reads Metrics[k]. Add a 'Stable wire keys' section to docs/cognitive-stack.md (or a new docs/wire-contract.md) listing every kind and key per detector so future renames are recognised as breaking changes.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "client-sdk"
+    },
+    {
       "id": "task-no-prose",
       "title": " (Core domain types)",
       "description": "Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-graceful-shutdown",
+      "title": " (HTTP API)",
+      "description": "Shutdown drains in-flight requests for up to 10 seconds.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-wire-nox-scan-ci",
+      "title": "Wire nox vulnerability / SBOM scanning into CI and releases",
+      "description": "Add nox vulnerability scanning, SBOM generation, and VEX status reporting to the release pipeline. SBOM should be published as a release artefact alongside the binary archives. Findings should fail CI when severity exceeds a configured threshold. If nox provides a GitHub Action, prefer that; otherwise wire the CLI in .github/workflows/ci.yml. Document the threshold and how to suppress false positives in docs/security.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-no-feedback-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "ports"
+    },
+    {
+      "id": "task-add-capability-interfaces",
+      "title": "Add Mnemos-style capability interfaces (Transactional, TextSearcher, VectorSearcher)",
+      "description": "Per Mnemos ADR 0001 §4, define optional capability interfaces in internal/ports so providers advertise features the engine can opt into via type-assertion with graceful fallback. Ship Transactional with concrete implementations on postgres/mysql/sqlite (BeginTx wrapper) — useful immediately for batch-save semantics. TextSearcher and VectorSearcher land as interfaces only with documented provider plans (postgres tsvector + pgvector, sqlite FTS5, mysql FULLTEXT, memory tokenised/brute cosine); no implementations needed today, but baking the contract in keeps future spectral / NLP detectors orthogonal to the store layer. Add a small example test demonstrating the type-assert + fallback pattern.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "ports"
+    },
+    {
+      "id": "task-signal-shape",
+      "title": " (Core domain types)",
+      "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
       "priority": "medium",
       "estimate": "",
       "depends_on": [],
@@ -192,69 +606,6 @@
       "feature_id": "detector-anomaly"
     },
     {
-      "id": "task-fix-pipeline-observability-import",
-      "title": "Fix pipeline import for observability.Metrics",
-      "description": "internal/pipeline/compute.go references *observability.Metrics on line 29 and calls in.Metrics.ObserveObservations / ObserveSignal but does not import internal/observability. Add the import. After fix, `go build ./...` must succeed for the pipeline package.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "pipeline"
-    },
-    {
-      "id": "task-output-ordering",
-      "title": " (Detection engine)",
-      "description": "Output is sorted by detected-at desc, then by confidence desc.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detect-engine"
-    },
-    {
-      "id": "task-wire-shape-only",
-      "title": " (HTTP API)",
-      "description": "API does not render prose; the wire shape carries structured fields only.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-store-memory",
-      "title": "Implement Store backend — memory",
-      "description": "Implement the feature: Store backend — memory. Thread-safe in-memory backend used for tests and ephemeral exploration.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "store-memory"
-    },
-    {
-      "id": "task-detector-recurrence",
-      "title": "Implement Detector — Recurrence",
-      "description": "Implement the feature: Detector — Recurrence. For each entity's most recent state, look at strictly historical states of\nOTHER entities in the same scope. Cosine similarity ≥ threshold counts as a\nsimilar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).\nEvidence kind similar_state with metrics[\"outcome_diff\"] = peer.outcome - subject.outcome.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-recurrence"
-    },
-    {
-      "id": "task-add-homebrew-tap",
-      "title": "Add Homebrew tap distribution via goreleaser",
-      "description": "Add a brews: block to .goreleaser.yaml pointing at a homebrew-tap repository (felixgeelhaar/homebrew-tap or similar). Configure formula name, description, license, dependencies (none for a static binary), and test stanza (`chronos version`). On release, goreleaser will commit the formula update to the tap automatically. Document the install command in README.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-detector-correlation",
-      "title": "Implement Detector — Correlation",
-      "description": "Implement the feature: Detector — Correlation. Pairwise Pearson on aligned outcome series within a scope. One signal per pair,\ndeterministically owned by the lex-smaller series ID; the other appears as evidence.\nStrength = |r|; metrics carry r and direction. Evidence kind pair_correlation.\nCost is O(N²) in series count per scope.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-correlation"
-    },
-    {
       "id": "task-pipeline",
       "title": "Implement Compute pipeline orchestrator",
       "description": "Implement the feature: Compute pipeline orchestrator. internal/pipeline — Compute(ctx, ComputeInput) runs fetch → save observations →\ndetect → save signals. CHRONOS_JOB_TIMEOUT bounds the whole run as a\ncontext.WithTimeout.\n",
@@ -262,333 +613,9 @@
       "estimate": "",
       "depends_on": [],
       "feature_id": "pipeline"
-    },
-    {
-      "id": "task-store-registry-and-dsn",
-      "title": "Refactor store to scheme-dispatched registry with DSN + namespace",
-      "description": "Mirror Mnemos's ADR 0001 contract. Replace internal/store/store.go's switch in Open with a Register(scheme, OpenFunc) registry; have memory/sqlite/postgres providers self-register in init(). Introduce DSN-as-URL with ?namespace= query param (default 'chronos', validated ^[a-z][a-z0-9_]{0,62}$). Each provider translates namespace into its native isolation: memory key prefix, sqlite distinct file (or single-file passthrough — Chronos isn't multi-tenant so default the same as Mnemos), postgres CREATE SCHEMA IF NOT EXISTS + SET search_path. Add CHRONOS_DB_DSN env var as the new primary; keep CHRONOS_DB_TYPE+CHRONOS_DB_CONN as legacy mapped internally to the new DSN form so operators don't break. Update cmd/chronos/{compute,serve}.go to use the new entry point. Update internal/store/store.go's Conn shape (EntityStateRepository + SignalRepository — unchanged from before). Tests must include round-trip: legacy env-var → DSN → provider; explicit DSN with namespace; missing scheme rejection; unknown scheme rejection.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "store-factory"
-    },
-    {
-      "id": "task-detector-trend",
-      "title": "Implement Detector — Trend",
-      "description": "Implement the feature: Detector — Trend. OLS linear regression on outcome vs ordinal index. Trigger:\n|slope| \u003e TrendMinSlope ∧ R² \u003e 0.3 ∧ n \u003e= TrendMinPoints. Strength = R²;\nmetrics carry slope, intercept, R², n. Evidence kind regression_summary.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-trend"
-    },
-    {
-      "id": "task-source-interface",
-      "title": " (Public adapter SDK (chronos package))",
-      "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "adapter-sdk"
-    },
-    {
-      "id": "task-ci-integration-services",
-      "title": "Add CI integration jobs with Postgres + MySQL service containers",
-      "description": "Extend .github/workflows/ci.yml with two new jobs (integration-postgres, integration-mysql) that use GitHub Actions services blocks to spin up postgres:16-alpine and mariadb:11 containers, export TEST_POSTGRES_DSN / TEST_MYSQL_DSN to point at them, and run the integration tests under each provider's package. Pin service images to digests for reproducibility. Tests skip locally without those env vars (existing behaviour) and run in CI on every PR.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "store-factory"
-    },
-    {
-      "id": "task-scope-flag",
-      "title": " (Command-line interface)",
-      "description": "compute accepts --scope-id (preferred) or --coach-id (legacy alias).",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-add-release-workflow",
-      "title": "Add GitHub Actions release workflow that runs goreleaser on tag push",
-      "description": "Create .github/workflows/release.yml triggering on tag push (v*) and workflow_dispatch. Sets up Go, QEMU, buildx; logs into ghcr.io with GITHUB_TOKEN (packages:write); runs goreleaser release --clean. Wire the Homebrew tap cross-repo push by referencing a HOMEBREW_TAP_TOKEN secret (PAT with contents:write on felixgeelhaar/homebrew-tap) via the brews.repository.token field in .goreleaser.yaml. Document the secret requirement so the workflow fails loudly when missing rather than silently skipping the formula push.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-add-webhook-notifier",
-      "title": "Webhook notifier with HMAC and best-effort retry",
-      "description": "internal/notify/webhook.go: WebhookNotifier(URLs, Secret, Timeout, Retries). On Notify, marshal api.SignalDTO, HMAC-SHA256 sign, POST to each URL with X-Chronos-Signature: sha256=\u003chex\u003e, X-Chronos-Delivery: \u003cuuid\u003e, X-Chronos-Event: signal.detected. Best-effort: configurable retries (default 1) on 5xx with 1s linear backoff; no retry on 2xx or 4xx. Per-URL goroutine. Increment observability.Metrics counter on success/failure. Add CHRONOS_WEBHOOK_URLS / CHRONOS_WEBHOOK_SECRET / CHRONOS_WEBHOOK_TIMEOUT / CHRONOS_WEBHOOK_RETRIES env vars to config. Wire into both cmd/chronos/compute.go and cmd/chronos/serve.go (wrap signals repo with NotifyingSignalRepository(WebhookNotifier(...))). Tests use httptest.Server to verify signature, headers, retry behaviour, multi-URL fan-out.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "notifications"
-    },
-    {
-      "id": "task-remove-empty-extract-dir",
-      "title": "Remove empty internal/extract directory",
-      "description": "internal/extract/ exists as an empty directory not referenced anywhere in code or spec. Remove it.",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "configuration"
-    },
-    {
-      "id": "task-functional-options",
-      "title": " (Public HTTP client SDK (client/))",
-      "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "client-sdk"
-    },
-    {
-      "id": "task-wire-coverctl-gate-ci",
-      "title": "Wire coverctl coverage gating into CI",
-      "description": "Establish a coverage baseline via coverctl, then gate PRs on regressions beyond a configured threshold and post a PR comment with the diff. Replace or complement the current Codecov upload depending on which fits better. Capture the baseline in .coverctl/ (or wherever coverctl persists state) and document the workflow in CONTRIBUTING.md or docs/quality.md.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-add-config-tests",
-      "title": "Add config_test.go covering env parsing, defaults, and Validate",
-      "description": "internal/config/config.go currently sits at 0% coverage with the threshold set to match. Add table-driven tests for Default() (env vars override defaults; bad values fall back), Validate() (covers each error branch: empty db_type, empty db_conn, bad similarity threshold, bad sample size, bad z-scores, bad stddev, bad anomaly/seasonality/correlation ranges), and the env helpers (defaultEnv, defaultEnvInt, defaultEnvFloat64, defaultEnvSlice, defaultEnvDuration). Use t.Setenv for env manipulation. Once landed, ratchet the threshold from 0 to ~85.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "configuration"
-    },
-    {
-      "id": "task-triage-nox-baseline",
-      "title": "Triage and reduce the nox baseline",
-      "description": "The committed nox baseline silences 381 findings. Most are likely Action SHA pinning (IAC-013), email-in-config (DATA-001), and container image digest pinning (CONT-001) — actionable. Goal: fix the easy ones in source, suppress documented-intent ones, re-baseline at the end. Categorize by RuleID first, then drive each rule to either zero or a documented suppression. Reducing the baseline shrinks the trust gap between 'no new findings' and 'no findings'.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-document-install-channels",
-      "title": "Document all install channels in README",
-      "description": "Extend README's 'Install' section so users see every distribution option side-by-side: `go install`, prebuilt binary download (with checksum verification), Docker (`docker run ghcr.io/felixgeelhaar/chronos`), Homebrew (once available), .deb/.rpm (once available). Note the supported OS/arch matrix.",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-add-libsql-backend",
-      "title": "Add libSQL provider reusing SQLite repositories",
-      "description": "internal/store/libsql/libsql.go registers the 'libsql' scheme and reuses internal/store/sqlite/{conn,entity_state_repo,signal_repo}.go via constructor functions exported from sqlite. The libsql provider parses the DSN, translates libsql:// URLs into the form tursodatabase/libsql-client-go expects (libsql:// for remote, file: for local-file paths), opens via database/sql with driver name 'libsql', applies the embedded SQLite migration (libSQL is wire-compatible with SQLite at the SQL level), and returns the Conn. ?namespace= is accepted but ignored — each remote libSQL DB is already a tenant boundary, matching Mnemos's posture. Pure-Go driver keeps CGO_ENABLED=0. Tests cover DSN translation (remote vs file) and provider registration.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "store-factory"
-    },
-    {
-      "id": "task-bearer-auth",
-      "title": " (Public HTTP client SDK (client/))",
-      "description": "WithToken sets the Authorization Bearer header.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "client-sdk"
-    },
-    {
-      "id": "task-add-notifier-port",
-      "title": "Add Notifier port and SignalRepository decorator",
-      "description": "Add ports.Notifier interface (Notify(ctx, Signal); fire-and-forget). Create internal/notify package with: (a) NotifyingSignalRepository decorator that wraps any ports.SignalRepository and calls Notify after a successful Save; (b) Multi composite that fans out to multiple Notifiers. Save errors must NOT trigger Notify. Notify panics or errors must NOT propagate to the persistence path. Test the decorator's Save/notify ordering, error path, nil-notifier safety, and List/Get/Count delegation.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "notifications"
-    },
-    {
-      "id": "task-add-postgres-tests",
-      "title": "Add postgres unit + integration tests covering parseDSN and namespace",
-      "description": "internal/store/postgres/postgres_test.go: unit tests for parseDSN (default namespace fallback, custom namespace, invalid namespace rejected, scheme alias accepted, namespace stripped from driver DSN); also integration_test.go gated on TEST_POSTGRES_DSN mirroring the MySQL pattern (per-test namespace via uuid suffix, round-trip entity states and signals, cleanup drops the namespace's contents). Currently postgres has 0% test coverage.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "store-postgres"
-    },
-    {
-      "id": "task-signal-repo",
-      "title": " (Outbound ports (per-aggregate repositories))",
-      "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "ports"
-    },
-    {
-      "id": "task-detector-spike-drop",
-      "title": "Implement Detector — Spike / Drop",
-      "description": "Implement the feature: Detector — Spike / Drop. Z-score of most recent outcome against previous SpikeWindow points. Trigger:\n|z| \u003e= threshold in configured direction. Strength = min(|z|/5, 1); metrics\ncarry z, baseline mean / stddev. Evidence kind baseline_deviation.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "detector-spike-drop"
-    },
-    {
-      "id": "task-fix-api-test-signatures",
-      "title": "Update api test call sites for new signatures",
-      "description": "internal/api/middleware_test.go calls Logging(logger) but signature is now Logging(logger, metrics). internal/api/server_test.go calls NewServer(states, signals, nil) but signature is now NewServer(states, signals, metrics, logger). Update both tests to pass an *observability.Metrics value (nil acceptable per NewServer doc).",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-add-precommit-config",
-      "title": "Add pre-commit hooks for fmt, vet, lint, conventional commits",
-      "description": "Add .pre-commit-config.yaml using the pre-commit framework. Hooks: trailing-whitespace, end-of-file-fixer, check-yaml, check-merge-conflict, check-added-large-files (--maxkb=500), mixed-line-ending; Go-specific: gofmt, go vet, go-mod-tidy; golangci-lint v2.1.6 (matching CI); commit-msg: conventional-pre-commit. Update README with `pre-commit install` instructions. The hooks must be a strict subset of what CI already runs, so a passing pre-commit guarantees CI will not reject on style/lint.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "configuration"
-    },
-    {
-      "id": "task-graceful-shutdown",
-      "title": " (HTTP API)",
-      "description": "Shutdown drains in-flight requests for up to 10 seconds.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "http-api"
-    },
-    {
-      "id": "task-adapter-ascend",
-      "title": "Implement Adapter — Ascend",
-      "description": "Implement the feature: Adapter — Ascend. adapters/ascend — bundled working adapter backed by PostgreSQL. Divides tonnage\nby bodyweight to normalise features so cosine similarity is meaningful across\nathletes of different sizes.\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "adapter-ascend"
-    },
-    {
-      "id": "task-wire-nox-scan-ci",
-      "title": "Wire nox vulnerability / SBOM scanning into CI and releases",
-      "description": "Add nox vulnerability scanning, SBOM generation, and VEX status reporting to the release pipeline. SBOM should be published as a release artefact alongside the binary archives. Findings should fail CI when severity exceeds a configured threshold. If nox provides a GitHub Action, prefer that; otherwise wire the CLI in .github/workflows/ci.yml. Document the threshold and how to suppress false positives in docs/security.md.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "observability"
-    },
-    {
-      "id": "task-no-feedback-repo",
-      "title": " (Outbound ports (per-aggregate repositories))",
-      "description": "There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "ports"
-    },
-    {
-      "id": "task-registry",
-      "title": " (Public adapter SDK (chronos package))",
-      "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "adapter-sdk"
-    },
-    {
-      "id": "task-similarity",
-      "title": "Implement Similarity math",
-      "description": "Implement the feature: Similarity math. Pure-math package (cosine, weighted, Euclidean) used by detectors. No I/O.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "similarity"
-    },
-    {
-      "id": "task-add-cmd-tests",
-      "title": "Add tests for cmd/chronos error helpers and version subcommand",
-      "description": "cmd/chronos sits at 0% coverage with threshold matching. Add tests for errors.go (NewUserError, NewSystemError, NewNotFoundError, error wrapping, exit code mapping) and version.go (output format, version/commit/buildDate substitution). runCompute and runServe are integration paths and stay uncovered for now. Ratchet the cmd threshold to whatever the new tests achieve (likely 30-50%).",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "cli"
-    },
-    {
-      "id": "task-add-sse-and-scheduler",
-      "title": "SSE endpoint + background detection scheduler in serve",
-      "description": "internal/notify/sse.go: SSE.Notify broadcasts to subscribed clients via per-client buffered channel; drops slow consumers (channel send select default). SSE.Subscribe returns a channel + cancel; Unsubscribe cleans up. internal/api adds GET /v1/signals/stream handler: parses scope_id (required) + optional pattern filter, sets Content-Type text/event-stream + Cache-Control no-cache + Connection keep-alive, writes `event: signal\\ndata: \u003cSignalDTO JSON\u003e\\n\\n` per matching signal until client disconnects. internal/pipeline/scheduler.go: Scheduler.Run loops on a ticker, enumerates scopes via new EntityStateRepository.ListScopes(ctx), runs Engine.Detect over each scope's states, saves emitted signals through the wrapped repo (so Notifier fires). Add ListScopes to ports and all three store backends (memory/sqlite/postgres). Add CHRONOS_DETECTION_INTERVAL env var (default 0 = scheduler off). cmd/chronos/serve.go starts the Scheduler when interval \u003e 0. Tests cover SSE delivery, slow-consumer drop, scheduler tick path.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "notifications"
-    },
-    {
-      "id": "task-postgres-pgx-and-namespace",
-      "title": "Switch postgres backend to pgx/v5/stdlib and apply namespace as schema",
-      "description": "Replace lib/pq with github.com/jackc/pgx/v5/stdlib (matches Mnemos so the cognitive stack shares one driver). Update internal/store/postgres/db.go to register the 'pgx' driver. Implement namespace translation: CREATE SCHEMA IF NOT EXISTS \u003cnamespace\u003e + SET search_path TO \u003cnamespace\u003e on every Open. Strip ?namespace= from the DSN before handing it to pgx (pgx rejects unknown query keys). Embedded migration runs against the namespace schema. Re-run all sqlite+memory+postgres tests; the postgres path is exercised via .nox or other integration only.",
-      "priority": "high",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "store-postgres"
-    },
-    {
-      "id": "task-outcome-convention",
-      "title": " (Public adapter SDK (chronos package))",
-      "description": "Last feature is the outcome metric; higher is conventionally better.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "adapter-sdk"
-    },
-    {
-      "id": "task-sqlc-source",
-      "title": " (Store backend — SQLite)",
-      "description": "To change SQL, edit sql/sqlite/queries.sql and/or the migration, then run make sqlc.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "store-sqlite"
-    },
-    {
-      "id": "task-add-client-stream",
-      "title": "Add client.Signals().Stream(ctx) for SSE consumers",
-      "description": "Extend the Go SDK with a streaming method that opens GET /v1/signals/stream, parses the SSE event:signal/data:\u003cjson\u003e framing, and pushes decoded client.Signal values onto a returned channel. Close the channel on ctx cancellation, EOF, or unrecoverable error. Honour Scope (required) and Pattern filters via the existing builder. Reuse the auth/user-agent already configured on the client. Test against httptest.Server emitting canned SSE frames including a heartbeat comment, multi-line data, and graceful close. Update README reading-signals section with a Stream() example.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "notifications"
-    },
-    {
-      "id": "task-reconcile-sort-order",
-      "title": "Reconcile detector output sort order",
-      "description": "docs/architecture.md:107 documents output as 'sorted by detected-at descending then confidence descending'. internal/detect/engine.go:70-75 sorts by confidence desc then detected-at desc. Pick one as truth and update the other so spec, code, and tests agree.",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "detect-engine"
-    },
-    {
-      "id": "task-store-factory",
-      "title": "Implement Store factory",
-      "description": "Implement the feature: Store factory. internal/store.Open(ctx, dbType, connStr) returns a uniform port-typed *Conn\nwiring EntityStateRepository and SignalRepository over a shared *sql.DB\n(memory / sqlite / postgres).\n",
-      "priority": "medium",
-      "estimate": "",
-      "depends_on": [],
-      "feature_id": "store-factory"
-    },
-    {
-      "id": "task-reduce-nox-baseline",
-      "title": "Reduce nox baseline by gitignoring Roady journal files",
-      "description": "1167 of 1316 baseline entries (89%) come from .roady/events.jsonl - an append-only transition journal whose UUIDs trip secret-detection heuristics. usage.json adds another ~10. Gitignore both files: state.json (canonical state), spec.yaml, spec.lock.json, plan.json, and policy.yaml stay tracked, so durable project state still persists across clones; events.jsonl becomes per-clone bookkeeping. Re-baseline nox; expected drop from ~1316 to ~150.",
-      "priority": "low",
-      "estimate": "",
-      "depends_on": null,
-      "feature_id": "observability"
     }
   ],
   "approval_status": "approved",
   "created_at": "2026-04-27T22:46:28.198554+02:00",
-  "updated_at": "2026-04-28T22:45:02.159238+02:00"
+  "updated_at": "2026-04-28T22:55:20.869049+02:00"
 }

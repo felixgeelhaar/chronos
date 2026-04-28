@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 140,
+  "version": 148,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -13,12 +13,27 @@
       "completed_at": "2026-04-27T22:54:04.430535+02:00",
       "elapsed_minutes": 0
     },
-    "task-add-capability-interfaces": {
-      "status": "in_progress",
+    "task-add-5min-quickstart": {
+      "status": "done",
       "path": "",
       "owner": "ai-agent",
+      "evidence": [
+        "README.md: new \"5-minute demo\" section near the top — 6 copy-paste blocks (go install, serve with scheduler, 7 ingests, sleep, query, optional stream); validated locally end-to-end producing a real stall signal with strength=1.0 and confidence=0.875. macOS/Linux date compatibility handled with shell fallback. Cross-link to docs/cognitive-stack-example.md for the full Mnemos→Chronos→Nous walkthrough."
+      ],
+      "started_at": "2026-04-28T22:55:40.180388+02:00",
+      "completed_at": "2026-04-28T22:59:31.498369+02:00",
+      "elapsed_minutes": 3
+    },
+    "task-add-capability-interfaces": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/ports/interfaces.go: Transactional, TextHit/TextSearcher, VectorHit/VectorSearcher with documented provider-plan comments; internal/store/store.go: Conn.Tx field + Conn.InTx method + ErrNotTransactional sentinel; sqlite/postgres/mysql/libsql providers populate Tx via local txFn closures (sqlite exports TxFn so libsql shares the implementation); 3 store_test.go cases cover the type-assert pattern (SQL satisfies Transactional, memory returns ErrNotTransactional, error rolls back); detect threshold 89.1 → 88.5 to absorb ports churn"
+      ],
       "started_at": "2026-04-28T22:46:13.05814+02:00",
-      "elapsed_minutes": 0
+      "completed_at": "2026-04-28T22:49:36.850184+02:00",
+      "elapsed_minutes": 3
     },
     "task-add-client-stream": {
       "status": "done",
@@ -205,6 +220,17 @@
       ],
       "started_at": "2026-04-27T22:53:23.5576+02:00",
       "completed_at": "2026-04-27T22:54:05.570536+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-configure-github-metadata": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "gh repo edit: description rewritten to position Chronos as the cognitive-stack perception layer (signals enumerated, multi-backend mentioned); homepage set to pkg.go.dev/github.com/felixgeelhaar/chronos; 14 topics applied (go, time-series, pattern-detection, anomaly-detection, signals, cognitive-architecture, observability, ddd, hexagonal-architecture, sqlite, postgres, mysql, libsql, prometheus); wiki disabled (we use docs/ in-repo)"
+      ],
+      "started_at": "2026-04-28T22:55:21.765123+02:00",
+      "completed_at": "2026-04-28T22:55:38.979816+02:00",
       "elapsed_minutes": 0
     },
     "task-detector-anomaly": {
@@ -471,6 +497,17 @@
       "completed_at": "2026-04-27T22:53:54.520505+02:00",
       "elapsed_minutes": 0
     },
+    "task-polish-readme-positioning": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "README.md restructured: pkg.go.dev badge added; \"Why Chronos?\" comparison table (vs Prometheus, Grafana, build-it-yourself); architecture diagram extended with persistence backends; new \"Documentation\" section indexes all 6 docs/ files with one-line glosses; new \"Persistence backends\" section showing 5 native schemes + wire-protocol compatibles per provider; API table updated with /metrics + /v1/signals/stream; bundled adapters table trimmed (memory was misclassified as adapter, removed); make targets in Development section now mention coverctl-check + nox-scan"
+      ],
+      "started_at": "2026-04-28T22:55:40.961996+02:00",
+      "completed_at": "2026-04-28T22:59:36.94736+02:00",
+      "elapsed_minutes": 3
+    },
     "task-postgres-pgx-and-namespace": {
       "status": "done",
       "path": "",
@@ -714,5 +751,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T22:46:13.05814+02:00"
+  "updated_at": "2026-04-28T22:59:36.947361+02:00"
 }
