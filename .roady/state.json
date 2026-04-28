@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 129,
+  "version": 136,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -101,6 +101,17 @@
       "completed_at": "2026-04-28T09:17:07.422155+02:00",
       "elapsed_minutes": 1
     },
+    "task-add-postgres-tests": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/postgres/postgres_test.go: 7 unit cases covering parseDSN default namespace, custom namespace, postgresql alias, scheme rejection, namespace stripped from driver DSN, query-key preservation; internal/store/postgres/integration_test.go: 4 cases gated on TEST_POSTGRES_DSN with per-test schema namespace and DROP SCHEMA CASCADE cleanup"
+      ],
+      "started_at": "2026-04-28T22:39:08.212298+02:00",
+      "completed_at": "2026-04-28T22:40:08.294072+02:00",
+      "elapsed_minutes": 1
+    },
     "task-add-precommit-config": {
       "status": "done",
       "path": "",
@@ -155,6 +166,17 @@
       "started_at": "2026-04-27T22:53:01.46742+02:00",
       "completed_at": "2026-04-27T22:53:38.92534+02:00",
       "elapsed_minutes": 0
+    },
+    "task-ci-integration-services": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".github/workflows/ci.yml: integration-postgres job spins postgres:16-alpine (pinned by digest) with health check, exports TEST_POSTGRES_DSN, runs ./internal/store/postgres/...; integration-mysql job spins mariadb:11 (pinned by digest) and exports TEST_MYSQL_DSN. Both jobs run on every push/PR. Local test runs continue to skip when env unset."
+      ],
+      "started_at": "2026-04-28T22:40:09.713163+02:00",
+      "completed_at": "2026-04-28T22:41:19.13781+02:00",
+      "elapsed_minutes": 1
     },
     "task-configuration": {
       "status": "done",
@@ -453,6 +475,17 @@
       "completed_at": "2026-04-27T23:04:03.716263+02:00",
       "elapsed_minutes": 1
     },
+    "task-reduce-nox-baseline": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".gitignore: .roady/events.jsonl + .roady/usage.json now per-clone (durable shape — spec/plan/policy/state/lock — still tracked); git rm --cached untracked the existing files; .nox/baseline.json regenerated: 1316 → 177 entries (87% reduction). The remaining 177 are documented intent (Action SHA pinning, release workflow permissions, postgres URL examples in docs, UUIDs in test fixtures)."
+      ],
+      "started_at": "2026-04-28T22:41:20.03997+02:00",
+      "completed_at": "2026-04-28T22:42:26.618436+02:00",
+      "elapsed_minutes": 1
+    },
     "task-registry": {
       "status": "done",
       "path": "",
@@ -663,5 +696,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T22:36:53.847328+02:00"
+  "updated_at": "2026-04-28T22:42:26.618437+02:00"
 }
