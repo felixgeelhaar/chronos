@@ -15,9 +15,14 @@ import (
 // HTTP) live in this top-level struct; Tier-B detector knobs are added
 // next to the Tier-A fields as more detectors land.
 type Config struct {
-	// Database
-	DBType    string // sqlite, postgres, memory
-	DBConnStr string // connection string or path
+	// Database — DBDSN is the new primary entry point (Mnemos
+	// ADR 0001 contract). DBType + DBConnStr are kept as a legacy
+	// alias so existing operator configurations keep working through
+	// the cutover; if DBDSN is empty at startup, the runtime
+	// translates the legacy pair into a DSN form.
+	DBDSN     string // e.g. sqlite:///chronos.db, postgres://user:pw@host/db?namespace=chronos
+	DBType    string // legacy: sqlite, postgres, memory
+	DBConnStr string // legacy: connection string or path
 
 	// Detection — common
 	MaxSignalsPerRun   int           // Limit signals per detect run; 0 = unlimited
@@ -71,6 +76,7 @@ type Config struct {
 // Default returns sensible defaults.
 func Default() *Config {
 	return &Config{
+		DBDSN:     defaultEnv("CHRONOS_DB_DSN", ""),
 		DBType:    defaultEnv("CHRONOS_DB_TYPE", "sqlite"),
 		DBConnStr: defaultEnv("CHRONOS_DB_CONN", "chronos.db"),
 
@@ -115,11 +121,18 @@ func Default() *Config {
 
 // Validate checks configuration sanity.
 func (c *Config) Validate() error {
-	if c.DBType == "" {
-		return fmt.Errorf("db_type is required")
-	}
-	if c.DBConnStr == "" {
-		return fmt.Errorf("db_conn is required")
+	// At least one of the two configuration paths must be set: the
+	// new DBDSN, or the legacy DBType+DBConnStr pair. The cmd entry
+	// points translate the legacy form to a DSN before calling
+	// store.Open, so by the time the engine sees the config one
+	// will have been populated.
+	if c.DBDSN == "" {
+		if c.DBType == "" {
+			return fmt.Errorf("db_type is required (or set CHRONOS_DB_DSN)")
+		}
+		if c.DBConnStr == "" {
+			return fmt.Errorf("db_conn is required (or set CHRONOS_DB_DSN)")
+		}
 	}
 	if c.SimilarityThreshold < 0 || c.SimilarityThreshold > 1 {
 		return fmt.Errorf("similarity threshold must be between 0 and 1, got %f", c.SimilarityThreshold)

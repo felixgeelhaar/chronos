@@ -74,3 +74,12 @@ chronos.db
 # .nox/baseline.json IS tracked so CI gates on new findings only.
 .nox/out/
 .nox/cache/
+
+# Default-output-dir landing pad: when nox scan is invoked without
+# -output, findings.json drops at cwd and would re-pollute itself
+# on the next scan.
+/findings.json
+/results.sarif
+/sbom.cdx.json
+/sbom.spdx.json
+/report.html

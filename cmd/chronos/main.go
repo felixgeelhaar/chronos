@@ -9,10 +9,24 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/felixgeelhaar/chronos/internal/config"
+	"github.com/felixgeelhaar/chronos/internal/store"
+
 	// Adapters must be imported here for their init() registrations to take
 	// effect. New adapters are added to this list (or to a build-tagged
 	// shim file) so they appear in chronos.Adapters().
 	_ "github.com/felixgeelhaar/chronos/adapters/ascend"
+
+	// Persistence providers self-register with the store factory in
+	// init(); blank-imports here ensure those side effects fire before
+	// any subcommand calls store.Open. Drop any of these to produce a
+	// build that does not link the corresponding driver — useful for
+	// shrinking the static binary in single-backend deployments.
+	_ "github.com/felixgeelhaar/chronos/internal/store/libsql"
+	_ "github.com/felixgeelhaar/chronos/internal/store/memory"
+	_ "github.com/felixgeelhaar/chronos/internal/store/mysql"
+	_ "github.com/felixgeelhaar/chronos/internal/store/postgres"
+	_ "github.com/felixgeelhaar/chronos/internal/store/sqlite"
 )
 
 func main() {
@@ -60,6 +74,25 @@ Commands:
 Run "chronos compute --help" or "chronos serve --help" for command flags.
 
 Configuration is via CHRONOS_* environment variables; see README.md.`)
+}
+
+// resolveDSN returns the persistence DSN to hand to store.Open.
+// Precedence: CHRONOS_DB_DSN (the new primary, mirrors the Mnemos
+// ADR 0001 contract) > legacy CHRONOS_DB_TYPE + CHRONOS_DB_CONN
+// translated via store.LegacyDSN. Returns a usage error when both
+// paths are empty.
+func resolveDSN(cfg *config.Config) (string, error) {
+	if cfg.DBDSN != "" {
+		return cfg.DBDSN, nil
+	}
+	dsn, err := store.LegacyDSN(cfg.DBType, cfg.DBConnStr)
+	if err != nil {
+		return "", err
+	}
+	if dsn == "" {
+		return "", fmt.Errorf("set CHRONOS_DB_DSN (or the legacy CHRONOS_DB_TYPE + CHRONOS_DB_CONN pair)")
+	}
+	return dsn, nil
 }
 
 // exitWithError renders the error in a consistent shape and exits with the

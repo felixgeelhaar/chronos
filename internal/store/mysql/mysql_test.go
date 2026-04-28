@@ -1,0 +1,106 @@
+package mysql
+
+import (
+	"strings"
+	"testing"
+)
+
+// Unit tests for MySQL DSN translation. The integration test that
+// exercises a real server lives in integration_test.go and is gated
+// on TEST_MYSQL_DSN.
+
+func TestParseDSN(t *testing.T) {
+	cases := []struct {
+		name        string
+		in          string
+		wantNS      string
+		wantInDriver string // substring expected in the driver DSN
+		wantErr     bool
+	}{
+		{
+			name:        "default port + namespace default",
+			in:          "mysql://root:secret@host/?",
+			wantNS:      "chronos",
+			wantInDriver: "@tcp(host:3306)/chronos",
+		},
+		{
+			name:        "explicit port",
+			in:          "mysql://user:pw@db.local:6603/?namespace=tenant_a",
+			wantNS:      "tenant_a",
+			wantInDriver: "@tcp(db.local:6603)/tenant_a",
+		},
+		{
+			name:        "mariadb alias accepted",
+			in:          "mariadb://u:p@host/?",
+			wantNS:      "chronos",
+			wantInDriver: "@tcp(host:3306)/chronos",
+		},
+		{
+			name:        "no userinfo defaults to root",
+			in:          "mysql://host/?",
+			wantNS:      "chronos",
+			wantInDriver: "root@tcp(host:3306)/chronos",
+		},
+		{
+			name:    "wrong scheme rejected",
+			in:      "postgres://h/db",
+			wantErr: true,
+		},
+		{
+			name:    "invalid namespace rejected",
+			in:      "mysql://h/?namespace=BAD-name",
+			wantErr: true,
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := parseDSN(tc.in)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("err = %v, wantErr=%v", err, tc.wantErr)
+			}
+			if tc.wantErr {
+				return
+			}
+			if got.Namespace != tc.wantNS {
+				t.Errorf("Namespace = %q, want %q", got.Namespace, tc.wantNS)
+			}
+			if !strings.Contains(got.DriverDSN, tc.wantInDriver) {
+				t.Errorf("DriverDSN missing %q:\n  got: %s", tc.wantInDriver, got.DriverDSN)
+			}
+			if !strings.Contains(got.DriverDSN, "parseTime=true") {
+				t.Errorf("DriverDSN missing parseTime=true:\n  got: %s", got.DriverDSN)
+			}
+			if !strings.Contains(got.DriverDSN, "loc=UTC") {
+				t.Errorf("DriverDSN missing loc=UTC:\n  got: %s", got.DriverDSN)
+			}
+			// AdminDSN is the same as DriverDSN minus the database
+			// name; verify the shape.
+			if !strings.Contains(got.AdminDSN, "@tcp(") {
+				t.Errorf("AdminDSN malformed: %s", got.AdminDSN)
+			}
+			if strings.Contains(got.AdminDSN, "/"+tc.wantNS+"?") {
+				t.Errorf("AdminDSN should not include the namespace database: %s", got.AdminDSN)
+			}
+		})
+	}
+}
+
+func TestSplitStatements_HandlesCommentsAndBlankLines(t *testing.T) {
+	in := `
+-- a comment
+CREATE TABLE foo (id INT);
+
+-- another comment
+CREATE INDEX idx_foo ON foo(id);
+`
+	got := splitStatements(in)
+	if len(got) != 2 {
+		t.Fatalf("expected 2 statements, got %d: %v", len(got), got)
+	}
+	if !strings.Contains(got[0], "CREATE TABLE foo") {
+		t.Errorf("first statement: %q", got[0])
+	}
+	if !strings.Contains(got[1], "CREATE INDEX idx_foo") {
+		t.Errorf("second statement: %q", got[1])
+	}
+}

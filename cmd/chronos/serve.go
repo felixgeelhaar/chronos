@@ -39,7 +39,11 @@ func runServe(args []string) error {
 		return NewUserError("serve: invalid configuration: %v", err)
 	}
 
-	conn, err := store.Open(context.Background(), cfg.DBType, cfg.DBConnStr)
+	dsn, err := resolveDSN(cfg)
+	if err != nil {
+		return NewUserError("serve: %v", err)
+	}
+	conn, err := store.Open(context.Background(), dsn)
 	if err != nil {
 		return NewSystemError(err, "serve: open store: %v", err)
 	}

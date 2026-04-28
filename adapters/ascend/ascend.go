@@ -17,10 +17,9 @@ import (
 	"github.com/felixgeelhaar/chronos"
 	"github.com/google/uuid"
 
-	// pq is the PostgreSQL driver registered with database/sql; the
-	// blank import is the canonical way to enable "postgres" connection
-	// strings without exposing pq's package-level API.
-	_ "github.com/lib/pq"
+	// pgx-stdlib registers the "pgx" sql.DB driver and replaces lib/pq
+	// so the entire codebase shares one Postgres driver.
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 // Source is a chronos.Source backed by an Ascend PostgreSQL database.
@@ -30,7 +29,7 @@ type Source struct {
 
 // NewSource creates an Ascend adapter from a PostgreSQL connection string.
 func NewSource(connStr string) (*Source, error) {
-	db, err := sql.Open("postgres", connStr)
+	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		return nil, fmt.Errorf("ascend: open db: %w", err)
 	}

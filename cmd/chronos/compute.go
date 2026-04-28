@@ -52,7 +52,11 @@ func runCompute(args []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), cfg.ComputationTimeout)
 	defer cancel()
 
-	conn, err := store.Open(ctx, cfg.DBType, cfg.DBConnStr)
+	dsn, err := resolveDSN(cfg)
+	if err != nil {
+		return NewUserError("compute: %v", err)
+	}
+	conn, err := store.Open(ctx, dsn)
 	if err != nil {
 		return NewSystemError(err, "compute: open store: %v", err)
 	}

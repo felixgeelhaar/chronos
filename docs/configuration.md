@@ -6,8 +6,9 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 
 | Variable | Default | Used by | Description |
 |---|---|---|---|
-| `CHRONOS_DB_TYPE` | `sqlite` | both | Backend: `sqlite`, `postgres`, or `memory`. |
-| `CHRONOS_DB_CONN` | `chronos.db` | both | SQLite path (or `:memory:`) or Postgres connection string. |
+| `CHRONOS_DB_DSN` | unset | both | Persistence DSN. Primary entry point. Examples: `sqlite:///chronos.db`, `postgres://user:pw@host/db?namespace=chronos`, `mysql://user:pw@host:3306/?namespace=chronos`, `libsql://my-db.turso.io?authToken=...`. When set, takes precedence over the legacy pair below. |
+| `CHRONOS_DB_TYPE` | `sqlite` | both | **Legacy**: `sqlite`, `postgres`, or `memory`. Translated internally to a DSN; new deployments should set `CHRONOS_DB_DSN`. |
+| `CHRONOS_DB_CONN` | `chronos.db` | both | **Legacy**: SQLite path (or `:memory:`) or full Postgres URL. Used together with `CHRONOS_DB_TYPE`. |
 | `CHRONOS_MAX_SIGNALS` | `10` | `compute` | Cap on signals produced per detect run. |
 | `CHRONOS_JOB_TIMEOUT` | `10m` | `compute` | Overall compute timeout (Go duration syntax). |
 | `CHRONOS_SIM_THRESHOLD` | `0.85` | Recurrence | Minimum cosine similarity for a peer to count. |
@@ -53,9 +54,66 @@ Each detector has its own knob namespace (`CHRONOS_<DETECTOR>_*`) so you can tun
 
 ## Backend choice
 
-- **`memory`** — tests and one-off exploration. State is lost on process exit.
-- **`sqlite`** — single-process or embedded deployments. Pure Go (`modernc.org/sqlite`), no CGO. Use `:memory:` for ephemeral, a path for persistent.
-- **`postgres`** — multi-process and production. Set `CHRONOS_DB_CONN` to a libpq connection string (`postgres://user:pass@host:5432/chronos?sslmode=disable`). Tables are created on first connect.
+Chronos's persistence layer follows the cognitive-stack contract documented in [Mnemos ADR 0001](https://github.com/felixgeelhaar/Mnemos/blob/main/docs/adr/0001-multi-backend-storage.md): every provider is selected by URL scheme, every DSN accepts a `?namespace=` query parameter, and providers translate the namespace into their native isolation primitive. This is shared across Mnemos, Chronos, and the rest of the cognitive stack so a company can run one Postgres for all four tools and keep each one's data isolated by schema.
+
+### DSN syntax
+
+```
+memory://?namespace=chronos
+sqlite:///var/lib/chronos/chronos.db
+sqlite://:memory:
+postgres://user:pw@host:5432/cogstack?namespace=chronos
+postgresql://user:pw@host/cogstack?sslmode=require&namespace=chronos
+mysql://user:pw@host:3306/?namespace=chronos
+mariadb://user:pw@host:3306/?namespace=chronos
+libsql://my-db.turso.io?authToken=eyJ...
+libsql:///absolute/path/to/local.db
+```
+
+`namespace` defaults to `chronos`; valid identifiers match `^[a-z][a-z0-9_]{0,62}$` so the same value is safe across every dialect without quoting.
+
+### Native providers
+
+| Scheme(s)              | Driver                                       | Namespace translation                                                       |
+|------------------------|----------------------------------------------|-----------------------------------------------------------------------------|
+| `memory`               | none                                         | per-Open state — each call returns a fresh in-memory backend                |
+| `sqlite` / `sqlite3`   | `modernc.org/sqlite` (pure Go, no CGO)       | accepted but not enforced — single-tenant by file                           |
+| `postgres` / `postgresql` | `github.com/jackc/pgx/v5/stdlib`         | `CREATE SCHEMA IF NOT EXISTS <ns>` + `SET search_path TO <ns>`              |
+| `mysql` / `mariadb`    | `github.com/go-sql-driver/mysql`             | `CREATE DATABASE IF NOT EXISTS <ns>`; reconnect with `<ns>` selected         |
+| `libsql`               | `github.com/tursodatabase/libsql-client-go`  | accepted but not enforced — each remote DB is already a tenant boundary     |
+
+### Wire-protocol compatibles (no extra Chronos code)
+
+These databases speak the same wire protocol as one of the native providers and have been verified to work with Chronos through the same driver:
+
+| Native provider | Compatibles                                                                              |
+|-----------------|-------------------------------------------------------------------------------------------|
+| `postgres`      | CockroachDB, YugabyteDB, Neon, Crunchy Bridge, TimescaleDB, AlloyDB Omni                  |
+| `mysql`         | MariaDB (also via `mariadb://`), PlanetScale, TiDB, Vitess                                |
+| `libsql`        | Turso (remote), local-file libSQL                                                         |
+
+If your target speaks one of these wire protocols, point `CHRONOS_DB_DSN` at it and Chronos will treat it like the native provider — no extra builds, no extra dependencies.
+
+### When to use which
+
+- **`memory`** — tests and one-off exploration. State is lost on process exit; each `Open` returns a fresh backend.
+- **`sqlite`** — single-process or embedded deployments. No CGO required. Use `:memory:` for ephemeral, a path for persistent.
+- **`postgres`** — multi-process and production. Cluster-shared with the rest of the cognitive stack via per-tool `?namespace=`.
+- **`mysql` / `mariadb`** — environments where MySQL is the standard data plane. Namespace is a database, not a schema (MySQL has no schemas).
+- **`libsql`** — managed remote SQLite (Turso) or local libSQL files. SQLite-compatible at the SQL level; reuses the SQLite repository implementations.
+
+### Legacy `CHRONOS_DB_TYPE` + `CHRONOS_DB_CONN`
+
+For back-compat the older two-variable form is still accepted and translated internally to the new DSN. Mappings:
+
+```
+CHRONOS_DB_TYPE=memory                     -> memory://
+CHRONOS_DB_TYPE=sqlite, CHRONOS_DB_CONN=p  -> sqlite://p
+CHRONOS_DB_TYPE=sqlite, CHRONOS_DB_CONN=:memory:  -> sqlite://:memory:
+CHRONOS_DB_TYPE=postgres, CHRONOS_DB_CONN=postgres://...  -> passthrough
+```
+
+`CHRONOS_DB_DSN`, when set, takes precedence over the legacy pair. New deployments should use the DSN form; the legacy pair will be removed in a future major version.
 
 ## Operations
 

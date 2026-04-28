@@ -18,6 +18,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/felixgeelhaar/chronos/internal/store"
 	"github.com/felixgeelhaar/chronos/internal/store/sqlite/sqlcgen"
 
 	// modernc.org/sqlite is a pure-Go SQLite driver; the blank import
@@ -25,6 +26,74 @@ import (
 	// pure-Go driver lets chronos cross-compile without a C toolchain.
 	_ "modernc.org/sqlite"
 )
+
+func init() {
+	store.Register("sqlite", openProvider)
+	store.Register("sqlite3", openProvider) // alias the legacy db_type
+}
+
+// openProvider is the store.OpenFunc that backs sqlite:// DSNs.
+//
+// Path resolution from the URL:
+//
+//   - sqlite://:memory:                 -> ":memory:"  (in-process DB)
+//   - sqlite:///abs/path.db             -> "/abs/path.db"
+//   - sqlite://relative/path.db         -> "relative/path.db"
+//
+// Per Mnemos ADR 0001 §3, ?namespace= is accepted on the DSN but
+// SQLite has no native schema-namespace concept — operators isolate
+// by using a different file. The query parameter is therefore
+// validated (so typos are caught) and otherwise ignored.
+//
+// Bootstrap (Bootstrap exported as a thin alias for [ensureSchema])
+// is reused by the libsql provider, since libSQL is wire-compatible
+// with SQLite at the SQL level.
+func openProvider(_ context.Context, dsn string) (*store.Conn, error) {
+	u, err := url.Parse(dsn)
+	if err != nil {
+		return nil, fmt.Errorf("sqlite: parse dsn: %w", err)
+	}
+	if u.Scheme != "sqlite" && u.Scheme != "sqlite3" {
+		return nil, fmt.Errorf("sqlite: unsupported scheme %q", u.Scheme)
+	}
+	if _, err := store.ParseNamespace(u); err != nil {
+		return nil, fmt.Errorf("sqlite: %w", err)
+	}
+
+	path := pathFromURL(u)
+	c, err := Open(path)
+	if err != nil {
+		return nil, err
+	}
+	return &store.Conn{
+		EntityStates: c.EntityStates,
+		Signals:      c.Signals,
+		Raw:          c.DB,
+		Closer:       c.Close,
+	}, nil
+}
+
+// Bootstrap applies the embedded migration to db. Reused by the
+// libsql provider since the schema works unchanged on libSQL.
+func Bootstrap(db *sql.DB) error {
+	return ensureSchema(db)
+}
+
+// pathFromURL extracts the SQLite file path from a sqlite:// URL.
+// Special cases the in-memory form because url.Parse treats
+// ":memory:" as a host, not a path.
+func pathFromURL(u *url.URL) string {
+	if u.Host == ":memory:" || (u.Host == "" && u.Path == ":memory:") {
+		return ":memory:"
+	}
+	// `sqlite:///abs/path` -> Host="", Path="/abs/path" -> "/abs/path"
+	// `sqlite://relative` -> Host="relative", Path="" -> "relative"
+	// `sqlite://relative/x` -> Host="relative", Path="/x" -> "relative/x"
+	if u.Host == "" {
+		return u.Path
+	}
+	return u.Host + u.Path
+}
 
 //go:embed migrations/001_initial.sql
 var migrationInitial string
@@ -68,6 +137,21 @@ func Open(path string) (*Conn, error) {
 	c.EntityStates = &EntityStateRepository{conn: c}
 	c.Signals = &SignalRepository{conn: c}
 	return c, nil
+}
+
+// NewFromDB wires the SQLite repositories onto a pre-opened *sql.DB
+// without applying PRAGMAs or migrations. The libsql provider uses
+// this to reuse the SQLite repositories on a libsql-driver-backed
+// connection (libSQL is wire-compatible at the SQL level).
+//
+// The caller owns db and is responsible for closing it. Conn.Close
+// will close it; in shared scenarios call only one of them.
+func NewFromDB(db *sql.DB) *Conn {
+	q := sqlcgen.New(db)
+	c := &Conn{DB: db, q: q}
+	c.EntityStates = &EntityStateRepository{conn: c}
+	c.Signals = &SignalRepository{conn: c}
+	return c
 }
 
 // Close releases the underlying database handle.

@@ -1,15 +1,45 @@
 // Package memory provides in-memory implementations of the persistence
 // ports defined in internal/ports. It is the canonical backend used by
 // tests; production code should use the SQLite or Postgres backends.
+//
+// Registers itself with the top-level store factory under the
+// "memory" scheme. Per Mnemos ADR 0001 §3, ?namespace= is accepted
+// but produces independent state per Open — there is no shared
+// process-wide map, so each call to store.Open("memory://...")
+// returns a fresh, empty backend regardless of namespace.
 package memory
 
 import (
+	"context"
+	"fmt"
+	"strings"
 	"sync"
 
 	"github.com/felixgeelhaar/chronos"
 	"github.com/felixgeelhaar/chronos/internal/domain"
+	"github.com/felixgeelhaar/chronos/internal/store"
 	"github.com/google/uuid"
 )
+
+func init() {
+	store.Register("memory", openProvider)
+}
+
+// openProvider is the store.OpenFunc that backs memory:// DSNs.
+// State is per-Open: each call returns a fresh, empty Conn whose
+// repositories share a brand-new state struct.
+func openProvider(_ context.Context, dsn string) (*store.Conn, error) {
+	if !strings.HasPrefix(dsn, "memory://") {
+		return nil, fmt.Errorf("memory: not a memory dsn: %q", dsn)
+	}
+	mem := New()
+	return &store.Conn{
+		EntityStates: mem.EntityStates,
+		Signals:      mem.Signals,
+		Raw:          mem,
+		Closer:       mem.Close,
+	}, nil
+}
 
 // Conn bundles the in-memory repositories. The zero value is unusable;
 // use [New].
