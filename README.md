@@ -173,6 +173,26 @@ signals, err := c.Signals().
     List(ctx)
 ```
 
+For low-latency consumers, subscribe to live signals via SSE instead of polling:
+
+```go
+ctx, cancel := context.WithCancel(ctx)
+defer cancel()
+
+events, err := c.Signals().
+    Scope(scopeID).
+    Pattern(client.PatternTypeRecurrence).
+    Stream(ctx)
+if err != nil { return err }
+
+for sig := range events {
+    handle(sig)   // sig is client.Signal — same shape as List returns
+}
+// channel closes on ctx cancel, server EOF, or fatal protocol error
+```
+
+Streaming requires the server to run an in-process detection scheduler (`CHRONOS_DETECTION_INTERVAL > 0`); otherwise the endpoint returns 501. Delivery is at-most-once — pair with a `Since`-keyed `List` call for gap recovery and de-duplicate by `Signal.ID`.
+
 For streaming sources you can ingest single observations:
 
 ```go

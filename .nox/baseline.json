@@ -268,34 +268,6 @@
       "created_at": "2026-04-28T07:29:09.695981Z"
     },
     {
-      "fingerprint": "5fd7cbc20e3d66315cc7cbba119266f4498515f16c8ca7fe927347a541dd1dd2",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "b0de7e554c0d8838c896d2b0d19a56b01677a53966a1008bedb737d25ff83e05",
-      "rule_id": "SEC-161",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "514947030cf9dc92919920f3cd6c7a3ebd3239597845fc14fad08aacf56fb7a2",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "b107b4e5117f8a4117240534a482c9afb7694c353604f4201480d6972f9ee63d",
-      "rule_id": "SEC-162",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
       "fingerprint": "fc2f1a47edb16cbdacd0984ef2e1567d97b07dfafb37ebdcf84cda893af9c2ff",
       "rule_id": "SEC-163",
       "file_path": ".github/workflows/release.yml",
@@ -313,146 +285,6 @@
       "fingerprint": "9411cd5801ffdb83d4eb19b5434030d5f48e09c61e281691e693e10c0d4a2219",
       "rule_id": "SEC-163",
       "file_path": ".goreleaser.yaml",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "a7d2da56f40975161d0486e1431940061f185f8b455c8ff53710cec2d5cb4c6c",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "e70359d5c21c6e9808aba58dfc4c6e95708ffe8ddb6e990151b088d126a7a90c",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/plan.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "753e5668bdf31d239a7541f5a2309795191f17fda34809427c07c68599718287",
-      "rule_id": "SEC-163",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "89129d01da30a0be9e0e1f81bc088d358f7d816887ce1260135bba795e0f4076",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "4052b72938c58c6a26a99f5a849a3c9617bcedcac633be0f36f91cb64c65a36e",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "ad1e7d1293e9b39d1f1350af9c6ae730c29b66f65dffc9b24bd298db7a21cc65",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "df663312fd1110c34fefcece7ed9fc877fd6bea880902e89a2f5a8758a55e768",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "16baba87b0bc84e7180d37ab6afa9f1a5ae998332424b7d80be3e450bb6d2d69",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "fde9efb37623cfb0b005428c5147485a17936692fdf61185ce22b40e3e072811",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "1cbf89846697b18edda82e28624e1e205d94585e75a1f9967bc7c6aeeaad3376",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "2268cbe9b2cd6004ce88e7afa4e03a226815a23f47a10d7882ccd61879e21256",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "5f86806e86b0c4e53cc9486c165c57052b2329cf94a448ca8df07fd85f0412e8",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "3abcb0b0498e72274a109c16f49e1bdb41a9c898e5d055ba20531646f85789b5",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "0fdb69183099b26f381059d60a0954b4f6d9a83a60107d95d637b922a4d27bc9",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "72db667c9f9013dacf8a9ae48969d622e902552028c71ec2cc9e8a150fb01506",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "25cc0a638f0088ef309054226d3b195e407d4c4965c4ba74716ba5b8a2c1af53",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "f095bf987f132776d1a0f5d9e93f54e264afce03c958702a1149c37eb4436083",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "78aef4a988bba5ef9f59f702663b0aa8b93d2afe94d52acd232d55c9145cd798",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "135432b02065bd7da02853d700ebc84ce6c611103d34fc02ce63fd50242677c8",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
-      "severity": "medium",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "bba1202ec33e883ebb1060102f30a8720ced8b9d793b8635d1c7d2bbb42a1717",
-      "rule_id": "SEC-163",
-      "file_path": "findings.json",
       "severity": "medium",
       "created_at": "2026-04-28T07:29:09.695981Z"
     },
@@ -492,706 +324,6 @@
       "created_at": "2026-04-28T07:29:09.695981Z"
     },
     {
-      "fingerprint": "b3c120028f5929a28a9889248756766e748284732b7c701be0f65f3d5f95784f",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "c7cc2c97df07b4447eee5146eeefbd34653d49ccf1db20348a472ed31769bfcc",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "a5efb0aadb26f85b869d8e8bbcf858fee9d2414e11c8f396d1619f4f3c75a445",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "616bdc57851e982b305f10dd56839b5009fe4df0804dc1db4f80b2fcff95a2eb",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "e7cbe5732b645c4b89d6e6c4e327006367813de8de522e73ef0576c4186092a5",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "eec3f83f304a6781041054f90b0b4b7ba7729c80f1c2f81d42179f0d0abb3722",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "d47f559e493cf46f5fc292c36b7c12684fc6295cc7ba46220033a7d19d027b40",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "353b966ff3c91e062730cb4ed8b77042d94bb71f3da7a82754f5f6f528879622",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "e7b820fc5419b90e40a73699fcbfeb17b59a61bd85024a5e7d040e844303afbc",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "186391d10761cadf4ef759b423473bbe52b521d51404ff5be269580fbc291aae",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "6d151a94dac29a1b55d186a38c9d8f56a6275274ab3c56784548e8685b1ef952",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "bc97814c4a22e3540fc0551077bd06282ba814d0192c0e39e36822f580d83fdb",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "a4f91c616e772109f380a6e4df59db094432783a991d6b0a442308b8ba150ab4",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "d86937b5ef3d41e3f14c188055abe6ef36b81b57fbc92ea859c5acb4cec14b60",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "eb0556ead48521dc91726923ac52ce9a88f8171a74caad229aee6e053d1b3108",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "28aecac53837ff7867d9c470a8f33a2947b0dd64ff37b86e23e653812c97108c",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "1934209909dfdcff40c3199ff169fe3c92d6f4a2c649769ad14e161fa0327841",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "38ed10a8e51bbf525e28fc1398d288b787dbd32e6ce07350a7ee8597aafa81a7",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "d81d0a4d4cec553f0ba2af6f465acebc2e0d35a7848a855cdaf3ae1ad8dfef9d",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "68f75bf30b73eed2c72e96b777c5c8d7908865ed8c0a25444afec9a7c1d94ae8",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "9a58608c5bb24c1ed061d8a1b2edf64455d69199c8c8d21851957e7919219216",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "6c28ac59727381db1e7c17c68c9e85068f2b11565ca78adf4bd59a2b94a89ce9",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "db4195444fe966f8b3cb1fcfb0a9c52b84bebf137fae901d3d40f9ef19b545f2",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "c4232384b278fe4cbce48618ad3f6ab617de1543b4fc81489b76cec3322a3e58",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "99a8a0007fd0909486d0e52dd7405cf6cd946991e13cd3e5b4905a311448b4e6",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "387f87921ac3c8f262f45ba4c3e9ef15e09b5d670676e4c7e0d63b2c2ebb6f8b",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "555b72ebba054605b1737d5c2d4eec874ae61ecd6e493fc2ba0633c253577828",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "803a6f8fdccbdf8d4a463b9a4361bf590d610c8d92976533696cb5a3c4078a74",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "ae958f87333f5b1033387a19431e03d97305553afec558245a3a71695ebe7337",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "f550e9c176bb173c55b8878cc6092813992de5b56ec142d5e2f023d2e715d544",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "523fdc2618e9ceb1500b3863c25a3507ced8712daa060be1d8d577a171294263",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "4c7cc05ba1fe6f6950be0350cd2cb9e726f7c0eaf3b7af9130101b6dda842885",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "db8bd82624aea6da483b81cf9565bc9370b2383227f9861d9803b61de49c6193",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "622fe4016df77a0245afa6bccda4f6cf9801162610d843d64914d33ea16b1497",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "4658036fa249ec49739dfaff55a4abc3765f85cb825ae154358133b052a12897",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "45309e2980418523f0323b4de5601f16e060f5177d7526d593b8678bb4b7a075",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "87ad14e383b347c9ba60a0c79854f04f66ea0e1e6b333b86990badce296b5aaa",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "ab72ab4cafd9dddf4260d7736e1dcf2786a33a58b4d49a42d332609e52c16585",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "ca17c2d649dfe0841b669f5bc59abfa4c2a35bc5ced8eef7173ca9100ff020ca",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "62ca9f0b316d700c745782f5cdf480eb81ae84c2f188b9c8dae911ceb60a17a2",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "2b2ce3a361d4c4ef5ce62972b447872a8557397a0ba62598b1d4cb2b7975f0e5",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "280b9826db7f2a8e5eebc9210a26bc5847b90c535ff13b4e04cd3913a3641b3b",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "069e8a21aca420c6b0a4da64a67b3bf1fe17c72c23a0b6eb38a87604a8404975",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "ccd5751b55bdedfc43e8dcc337dfa616f69ab5bd8df10306eb8a76eb44af339d",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "747660524fa0615088cbfca575f204c812e4b3d8e9e04041e16809c20d2a5527",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "e56d7f92ad6839a82ea2c4265fe20d541074bad4f57118d882cb1aa36815ee10",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "a52d393fc7b7bf0bbf4c9659578ec3bc26bb63131183f0fdfbd4e705d2a3a4ad",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "6e908b4f4db34047b34f618a87cd0c7f1a8f1575dee38559c1f864c6db4c6177",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "fcad90568fac097a361fa6cfd56ecdb9ea27a01bae9e47250c84427dab20e31d",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "a47249afd50087e208b7f48136fcdc8533dedc2f2fece1ddca2a14572d2fe970",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "81b3649c8f7b8a58acccb762fbb9f913ca6fae2ee8b8f8ae924084b8409cf01d",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "3f2662113ad74723b61c7df0d75c63be80666980d6fbb3eedb0603747d90d604",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "d2fa7d11d09bfe20df217aa35b3fe3acd13566d949dbc800e99144dff6dd90c0",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "16359f7eee3ecd1544151cecbeb437b86ebfb69cb211e38ae62a4f071b4a93ad",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "c6d6ab5ef308bd1ab6a7ee16a1c470037cfb7747bcd1ce55157f557114fea6da",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "524fe43f55b0191d9d44b280ca0f90fe7972fca61a1c35ba1da3aff43c2ba239",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "698a29149044dd8ea67700ba79f4ddcda504aa2437f1ac3c85d0a73ba930c4e8",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "575e535e6eabe4e33da110f718b24c76e49bec940efd9037be5a768590cf3665",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "223571a51064aba7686ec665ef502de1f53be159564f0e4a9282ca04fb7603dd",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "70cdfc8d58b738f29a55b8319d4e9451dc49e96a6d60a04a1dbe91f417793a07",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "37c3980a965e5ad0bedc1a28331091811e4f0c7177530750cd9feb2a05cb8faf",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "5444ff35edd3eccb0cd4f452f0ff84e80a6bac55c4ac1bd683ec3b7f05e6e5d1",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "fa4946ee3a75dd185416f540236e0ad8700ec1bd757cbc30df1d95c98e2673a4",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "82d9753101b99da944f631f881d32e3f7377b8ae02619e3320d9f036cd0b25ce",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "69bb75ecce5c875fe414a10bd4b26117d7a84fda33007c59307a551ce3e550c1",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "f72e73e6414ac971f9fb96227e97c97445df5ca0cd540bbef31a74fd2683b6fe",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "8aa90d6a8699eb22a40e7e7e2f16cf033a67fe504d3aff08265b19d978b26e51",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "30f05c86ca15f4a352819a7cc3629b512ce30eb076fd4d8d08e6a38034c24213",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "5ea81727fd86105e151c2ad5aeaa32622050f424e3f2490bc96cd2d187bb19c9",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "9d12b35fc33236490b43f7b1f2fa0282d8d068b802830c375924579127cdb9b4",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "f9d515cc8f2ed315e254b5be0acc4b494255c35383d07f486cfeba07e2c2dedc",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "c11ff8fd69f1138785ea14764d57061264d75ee475c999bb4189acc3fc2832d9",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "390b0c544972e7d1fad6a52954d3dd0f0a5d3eea2608e58c9889bb5db9f6c3e4",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "0b5521a40467d3fdedcfd7face355516c70d11f5a00b7a8024268417a97a6e27",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "1ababf5e10c53d9f1b0d9aa471f6acedef232dadc5adb5ededb5f66a6b1f01b8",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "b50da2723c097c0da2370d62b6e004ea61d65b8e9945ecd936ba6f6eff63a514",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "61b7cc96398fa00bbfcb7de90f9c5909ffa3727ccc23a04878a348b7e22e4ceb",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "d4669d1c94c0e42486fd353c68c4d56fd4bfe9af002bec145c40a9b988fda2c1",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "b32f0b91ccc2fcd0c76a280d883af6e08dafe0a877087dd081909f998839d3f3",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "e0272f59c6541f8f7d7dcf1a2fb9b8f8b8e679f526216ea6d44bfa4b32c6065a",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "59b233716514ea458383664dd78fd1046857787f4d9100a46c78fae9fb99e1cb",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "2fc197ee2857c0286e20942b6fab6263514f55677b0acc8812ffb968f759e7ca",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "b3c4cd673df0fd29486971fd365120d4c08068ad8ed85e422a78db4756393921",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "51746fed044e01388937bd0f6fd75b99dad29457a4fb8f5ce5673bfd987b8275",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "8bd3996958ac9f93030573eec657faffecbb5e3379ccb390a3682c81173eef1f",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "290095ead5147beed61373ea682f3d9317c0bd2475949aebe746a20bb88428df",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "dfae43293d93953e414d55aa356c49e8c4d0c593210a7dab4430c11b889190b5",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "0716b778c140fa27cb4aebb94a7a8d5ab908afc9a0f5fbe10c2ec1c361decd34",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "44dcf38b6004d7ed1119108a3334b20624720f43580da01988020723c201188c",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "dcbfe1d8aacb761f421dbcc67a1b95ec84ac4169f3e7bd1ae03e4bd02d7de808",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "1a5ec009277be834e989304a1ebbd60536bb902b90ff4244296ad80d0257605d",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "7ee83fe68b0046918d55d06a38d684c2b24a3c79f9b70a4fe15a96012e71b0b5",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "4d8c98522f6b7941c64584e59a148876edd95943537a08b51b22f58bbd34876c",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "fa0809b53b979b7cf725409ea848c8bd6f2f5a21e777455f188e906446c66d8d",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "efd827aca3315b3a9b6e2ac35616f4255a3d9aab90d95dabccde0fa8ed8e2898",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "c52da2ba367e6bfff147cbbdd11df66f82691e1ae695260a9b80ed68aee4bb06",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "449796a08a70b644d212a1c78d14dffb2bf83d5f62c241e0d677f4f22edc78f3",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "73538dc11c4717f7bd3b8ad2df9bda3954654390a428d1602fda65872c132c10",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "7c07db3f28efe08efe39310de11f1f5d43143d159cdf9536b884ccc6b5a054ff",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
-      "fingerprint": "76eddee5a0eb39594419ab5cf85362ba544f42834cc16e2d0277b5129e5afcaa",
-      "rule_id": "SEC-574",
-      "file_path": "findings.json",
-      "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
-    },
-    {
       "fingerprint": "03861e5f98dd88bf86ce16c78b1a7d1d9a4aa2779c2aab34c66e5c7d2bc31c56",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
@@ -1206,704 +338,2335 @@
       "created_at": "2026-04-28T07:29:09.695981Z"
     },
     {
-      "fingerprint": "d3b7ea790482d233fc92ba650e9042f1738779824234cffcac0d90141144258c",
+      "fingerprint": "441185ed4c999434ab69346a03ea2439b81bbab65b721e4649958f8ba59008a7",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "0b90104531257c5733819c783418825ba27d80a03f25e7104c173dfcf483b202",
+      "rule_id": "SEC-161",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "07f8fbb6381956375d1475c3db16a1b235e26f174afcb907e791a4b88492a9a9",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "66586213b4fbcb4694840ef805e6ad6293742d52c534e7dcd56456b1fc0eef77",
+      "rule_id": "SEC-162",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4425d4f7347ce60086c0d286d7fda11ec8faa87bfeffcc925820b79b3c2852d4",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3bc544558d06916bd509c5de39a61bf6af0aad10d53631c0444c69e8d368bd9c",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/plan.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b244b59504de905cb7c1e630b4edaf28109c2814ccbcd32ba464be67b8983f39",
+      "rule_id": "SEC-163",
+      "file_path": ".roady/state.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "62260f5a71f55c1a53a04bf870f345c4a874e30c3b67c3d22b3f4b5285a63380",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5cf05499d15bd029ea597375ebf16dff26fd18c2308e8f84928b862e9924bf63",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3de5a20c19e0bb908dfcc8c7480fb9052363e90ff161fd339fa5e73c6b9881fc",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "baabab0b0e332d742335baf905d7ba9d206d4d2b3779c4f042dc8da2437509d4",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "126426d84e34170ddde5db847802e01214051cd151b47b68317bb1211754cc2a",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "edd6eeae50d338bbca5872323c4e67ec50eef97d984df58f47f9963d775de4c4",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c9340c6e7c671e685b56d3ed18ab986974ae0a4eaa75691d0286b3a00af4ae2e",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fbd9721a4cf17bf0a072b14037d58f9be5d08770b92376ee91e26f9eab40f262",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "49c361a3dcbbb94d76e6a82779f7ad0b672edb728f7f4f713f786706a794fb82",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fee50d9ea4a1604d6e7f57074661a346e1ba7984f1712adce784f10a0dda6ff7",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "9927ccd3fb560ed15121de982e1aa78bdf9dba99b4146df6b717985f04e4dcdd",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "68c23522bf1deb39aa095310a91069a5fec545e12e0b2c10df6ff75cd38c7c6c",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3bbcade7c907f4ad8cb4a37cb05212c92c77dbedfdd58885cc237e05633bcbf3",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "136f1d12f8bbe376356262539cbe607a63b313ccae0f2eef90a7189704f69fe8",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ecaa674c54edf36ffe87adce99bd40a0b4a9cba09b4da3333f2dabace2eea2cd",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f2734afa209172c7a3e5c5371f295f829014f4b41323f2ba12499f27d31549c7",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "68455490f153736e9d9f20c01c1e15d6f9300caa4f8d7dd505dc5ddf6562cf0f",
+      "rule_id": "SEC-163",
+      "file_path": "findings.json",
+      "severity": "medium",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "bc8c5d2d37657233a0bbe2023860ab19cf1fb3dc9c4675b378410194ec846937",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "32fab9c9a9ff75a3ab226d2b23638ccf8a05758302329891ae64ffcee98756a8",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "05eca64df8597527027547f546627324e17f849367b4a5dd60b6d48f13ed6e46",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "66376fbf262a3a4dab641c8743de8c7639f06419686c2202852676229dfd9089",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "05a79d9e5c06fc08608177151a67638036ed962a4a7fe67c2dec5b28398024ba",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "117d4f01c937fd6006f948d936a5b7e1b36b39b3d3ce8a3d1fd2f268239d3609",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e60efeb625e119d15873400e6dd2564e9124de686f2fddb804325b3be7c0bc29",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "22d69935359e74dd4b122bbcb3caea556d9c5b1475a109f5406883d917791526",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2ddecc187c6d04120eabd7781ab9414a30de4f9e1256b9d48f41740026c57060",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "22f33850fa387672d7ccfcbc248f5ce71ee7815c40cb786599eaf46b8eb86ed6",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "bf35007faa68c2402b27c93b9954eb6178c4500458d551d445c755b74d178035",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4d8499dae28d1d21f3ca678e0b708aff98a64f93248654776b1c2171e4f2f496",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3a8577fb17bee02738f726465b3b356a3c232f251a8722387d412d469bc592e5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "47091cc8effa1f9b78cbc77588c10641cb00ca502c7adf0e0f56e5da27afe72b",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7edb024ff0abe84ab72514d085b7e46c44fe2f7e99555fa84c2a76a3b80d10b5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "39acafa4574ae079fdb0e44da8c2d91acb2c6ceabf8f83fe716621e958ba6452",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "6ea0d6c1e1d7b9e386008983fe9888a706156f6f39c030e401930db51db1d23d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "44b2a54c0cd8f5b8e3cd96be3bb254bb04e0403cb438cabcced4f0d5af4250ac",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "325658a4ac51a9c500eb8639f7899563b2b56f0ef850820da22c7faa63e6d87e",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b3a2cf7e961df7ffe22ea3ffa0c6b67543295d5706e800e876e7763dfda8f85d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ccba7d3ae69ed86ab4a304789e459e183c0326f050d1d23d9684215a901b3431",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "94146fd52d4b683142b2012313d68674ea89708fa9c2385a6a594ab140ea7fc5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "0ee6547512cddad3eda1f336a802e1be1f66da7e95b13cb7f460bed50528cda2",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7b0c91288cbc519fc8a35df296270bb35acea6ea4e4ef64a759d67f3c2748bea",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ecbdbdbb4c48d498bbe2476c55c5ac2eadf7177ecdc82f345d395681ed87fc14",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1d3284bfd28d0069ffd3ce75e860bbb39a00ab4e6309a6372f72c718cb36e7cd",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b782d12ba313b944f2a0d04ec4ec1df8690843d2450653bc0ceda846c5216b3d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b727e7196ae1e8b5af1061537f16df33d381a4649a30304927b536bc84d0029c",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "13eb5a16a8688d99ec0676f7dbc562c02128e366951ddeda6bed702f49c7f10a",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7b6cfe7daace60dd4a2b9304a72a0938f14284618811b96de366e000cadbbba3",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "665bd782698f27d3066ad6235eb806296e6e3f8d1c089e2cdf16ee0f3dfeabd9",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "62118fb49eeb2276791142930b58fe95f32210366414827dc69b2cf667a077f7",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "149ec4d1b3ff8fb58383847f56f5892d463e2539e10d92ada2a5e98cbd45aa39",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ae0716e4d6bd39b96f7e384509aa69cf19fcf40a01dbb0a8edb12012285a542a",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3f8ecc47411b05567298dba5b10b1b380661ce865e19b7d5108c056296fbf63c",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3b3f4771b88421c32ea8072e9e403ed4c465bdc2efdf570f1125f2ec48452e6b",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "46820e1d45ef67f8a0bba0fe9c825ea0dc558b420670c2534240f6b15cfd4e8f",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e55f6f31c653c4c7a2c216dc4bcf26a6d68504883ef73804a467fcf8ac9806e0",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "02cafd7f202eb6c8d66251ad30ef53bf0e5332eb291829b722e1ff62dda1cfd5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5c24656ec4f1bb2aa88b8968594906d53bda306ebf579f74417c2ebb140774d7",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5675a1b9f0ae025d95cb3b44f2693cabd9a4a66e24b076e30d6edc271f77de99",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f97c9e9898c395552aa4b78b0eab635f9318e816363e048f80d48635a672b509",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "353346994431d69bb1c88c5f5a0f36b0a32b521554f73ada896878f96f0edd74",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "9dfcb3026c4c1e91004b6c2ae9419dda30a34dd8c1c92d22440d5f0bbeec2ffe",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c34d9eb6bc10d8247630ff8f0f2d25b4ce0da32dbc57daf0f6a5db371598eb97",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b42eb0fad4fdbf9af0cf449cafb483e8d79472bb55986ea4e403ffafa9271e0d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1501c6527c52570aca157e951537ba4b2b15dc4bdaac65402c62c75d104aa592",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fa6e191ff1122cfa2a995acaa19fc044cd06915a9692620527c1365520ad28e0",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "291d329218d0974e220cd8d4790c89c8309aae4cf03c00d2b7e08acf6199db76",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "187c6147be90e2546cedabecac41cb0cd7c67c8653a5944a2e33278666275ca2",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5e02ee62c7f2cb37764d54fe152b52fd05d68dd6ab600d14d7fff94ff7dc0b57",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "453ac7a6913be5f090467cb182458f5ce7f1fc80db3c19c6b430db478a1e3097",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e97ee0d420aa238ca4f91663de790b23058e4eead46c7864d1df7232148c0b8a",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ee3dbcf46200865f291b6ebf20655e098d2646c52a00da28e65876e2915d65f5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "a3321c017b137138a27b221f0957af03a563a3632052c77d81cbd2e5b21ee1a1",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1dc48043c537799665c901fd12c9e312f8d75baa91f28d3d68c51c222e70762f",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ee959e3491416757507f8dbd2e77713336673cd1c3ef18c5769ac427107f5370",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c31ac8adcb8adc879964361ec86ae577a26750d3aff25c3790cf1a69b8da0fae",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7d9b96dbaa2732f6bd287f847740910ec60cdbf3dd610f6dbe4a8d4dd42965d2",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "6e7fdfcca4cc7f06484357f9c089fc280602c341def0a752ec3280bb13242d02",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ae43233217a80b545fbe6b22d6ee891242375b22830ce05670c6c76bd61234b0",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5562cf70d02275835f855e0852f3f7e1d7b2a20e79f182150907409fd10f5860",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "aa70d131ce62a11d84107b641f2782707abf143ea8f54d7a405eddba852cf209",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "6f4d260ef376b416abb18e4840e1f1d150b263b5ec5a720d2302d6db2c55b7b6",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "64d475aa95bd7a5608db287aaca9a9cff08a9647fd17bc61a7b6ec5e22fc81d9",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "91a287dc83e6e8ea1f183738c25ea8a47c2435ad8d4e2321cf549e5e1f9e246d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ecf5e218387293dbad4c6fa0411e0802ade877ec5879d7273f4f1cd4e3dc237f",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c782b1fc4ea4f5b22b5512a01ea422da7eea2ea6a3d9122aaab349a4f95ee944",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "17817a6d90b890ca8aabf3f5022860bb68bbd92b63268c52339e9be8244ee71e",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3c73fd5d2b684e9c3994d7592779d12fa35dc811bf473709d0da8f95601192e1",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4723d203610a3fb67d575248c679b163713381f910612d6adf57126eeddda13e",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "915bd53169c44109b041e14de265d76ed2295a947337e404e473635ef6368d1c",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d9ba9c27bf93fa69f4a8467f3eecefc6da4eb2efce2f8c695cd02c883a12d8ab",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "28fd4a5cd6143cddcdb400e364fa86d0a06bb090888f569f0782035a9b3a3b4f",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ec5a646dd0107975a51fa8ca8663c705e161033c2fed582e344d8248aabdf94d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "37dadabd1b2a9da3e23186becc3a0e3ae2b5809d0a18498e6f3036f508b6086b",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2ec26f49410141e4bb18218f4cfd10cbb22d643e1650bb5631b67f08b6045865",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "bf94d8eeb3b81103b9849b91dede872431a7a619633acf9bc579ba5d3043eeb1",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d1b4974c85844a3f4ba68531f7136ddb1bce5c58880e223a86012e8b45dd1720",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "867b4171ff09aaac5100ee720009df32beffeeb9e790d106baf51f48822d674e",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d7ec0c794af455c1faf6bb1a9e4cfb4f1898f7190cd896154447d0d4ebf58445",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fae145eb32446bb9e1131d91cf4c3f3f7a14c64357545274f6bc05b3d4616017",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "15b428eb77ef67f5f106c0a60542e161a676e453d4f85e5677eaa6e1c761ecac",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "930895c2c98ede73351609527e0dcd7c53df491e33289cbdd327c71f77ea21e7",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "de4080c199225b218e0b29362305cf14e424db5cafc4451aba3904070d0a58cf",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "32ee1f6d286403c1378dd3766c2fcad459c212503e2f0507f626959fbec8de63",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e7bd90602eb1153ebe8a1dfdebe16d903d506e43e2fd6e97631d43db08b6bad3",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fca42241404e2fca3de1d5d2bf63fbc016078494b90f89455376ae5ec068419d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b24193ca39ec06ce464bc497a90f3a607545840d23d02f0375600eb7352e2737",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "97b9908c49c9ae4a4e7726b79fbcc618db0bbff641e6e7709ffb133ce8849ca5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "763005ca478b8c5de890b4152461e82682857369614b931177419dd8381f007a",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "9a78e4fd6e0ac2b57d62cd452a3fd8f3350ae7468ba61ee5d8b9b166996bb1a5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f1be40b8883ff5e188a39993d74432063d4735b4a4fa8ad99162105b47e53c81",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f1f9a6729b2dec2bb31df29dc59b3f9ca77d64b52839567a382592196360c8e9",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "72a1c760d862ca06bcb583fc0790aea7673059def1fbba035f08a05befd22321",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "48a82c3610ca4ba3af28a80ce003e0d66c0b64b4efe7cba22b0778727399f65e",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3027c9ce4327e1a1a6f65a8ad414d992660b8feb94db1ccae46744a9caafb8b1",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f80f74a042fcd40cd37d22f9969df63b0c7545d2e3eb29b5dfb13ecadf8d354d",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "22c4ffacfcb7cef758559b29ee0500d72dd5ae86636f0fe6f9d4eb9349a967ac",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "db9a74b6d0af4e45ec98101f42afa232a6e5e2814f967a1b82bb11d23880315f",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "55899ec9fc55c5459fce9b596d9617008a0028815a34dfc7ecc40237c244752b",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "10a0bf689d6b0905582c69901a5d3f91556c2387a7fba456ecf6469152b430a5",
+      "rule_id": "SEC-574",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7bfe720ad1496549e0a6c073d209606ba5291484dfc6edc42b40bb5d7031363b",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "347ae80954bfaefc0ac5691d121dc2136d8d6ca59245a491b62636faac2e45bf",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7bfca3820bc4eb61af8fddc74175ff20d51549b34fe899807dc68867a259235b",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c4b45691cdeb4e5f1266284f46d4f507b561704543c2697076bb1c5c1cd38f65",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "70b593b7f85f79b0ff2a66d22abf3b7a8964a4fbf042d98e381fa355df841793",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c5716afada73adc1af8e824b70cb60d21daaeb8c1af15ba604d6a96376dfec04",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ee95844017f458fcb714f48d292d5fddb6e96c46379166571fc664f3c45410ff",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "57658e224c9d9155b1d625ac3dc88e5ef5ea36adf4d1f769d5a953b93b37018a",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "6b12e2295db6ff41b91b20b832005f9da78f27184342b6358455810ac7441045",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b167d985be0cac40ffc146b1deeaf941007030b808fe7e62ff2c9c7aa8f9c091",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "619b001645b9354cec8d17e0cde56f79e9cde59e9ef13336622671476a19df40",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "556dd611a8a3af0a94303bab2c6e70015ae3eaa9c48d60678eb83116880b1a9f",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "564ad704038d4c34ce2ac5928f7c2bbafb49aa44e592a03bb33f0671579c2502",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "8f93ba3fb829bb3a151969353fc10623bfbd07233359e61f625880802e440ce2",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d2699afe692326800327b1e56a9f9a14c939bf6a9bd0f382aa46c4839caa42aa",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c6348e40aa33cc40474fe9def1e010c5dd69674ead8e62c039c52c8b0b1cefb2",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1dc86ccc8b78472d9a45c647525ac9d061cf1356cacece1efb616c251240ea8b",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4cb80d29f84836bd90de8260b2cd4e7442421e17ea28f86ebd0646b608a60324",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3787e2171df589cdcafd08e506d4d89d2442f5de742031f845d9c8a592f584ce",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "9d2af6505600d46320026d5f996b181257bfaa6b568768d2a22a073ac2c45e6e",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5fe46ffcdbd0d8d2e992fc19ea0c64c55a69151430aef6c087073f77adf7e4ed",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2be2e211d8ea5eee1673ec2ede8297a1683dfddff80da2c3544d6ce5dfa58ccc",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4083e6973ebff74508b63627317edd9c5d72069b0f0dfa8955311c78c0db8f6e",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e4b27a03c895b50d6122939590893dedf6e7a4bb15974cfd67faba7d211d14e4",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1d67b30adb011460fd0f79baacd2c4fed57b53faaee30b796420b6931bce5ea5",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2b7548ebb91f714a9913ed0c0e997931248a2f415f07b7fc4af61c901d018885",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c34f0680696043fc96d9fbd7a391983504d6faf1d2406cfa9d066f2f796a4781",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "3b0315d3a764bc9102a1b22d72d6a1c4669d9b48922c4fe1b827c15bd3cc3b3f",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "79ec55f5bc9efdeaa0427462029aea1d7c91344639fbb7ed455e83cae42b014d",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "8a84d7d8152be6a235176ce95797bddb4e19fe1efd54638b64fb7db0522ecae1",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "335a29f242405a2d86f313e875bbe0ab0dbd0dbec2cd15d725f4ae6b48df40b2",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "6f885430ae4ffcb02c4ea9814601f153deaf6acd5aa06e99ca3b30ba889d1612",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1a9b86d57e2d7b750dbecc708cb359c198d6fa6f1b9745c57cf04e9b8a3f136e",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1c33d01029014ea5c408f7b7ce26a7ec77dfa4aef7cf64f4bc1c33b9444f60f4",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1dfb45c5eeeb4587cc4f7471284a6b136d31bb788b37ebbac8a260ec941e0492",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7f36baa4a14fb246a6ad2791386bb7b38edfa18fbf8746692c7fa8badb4c5ca2",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e9a827083acba52cb4d0b241ec167a9ca4f52107b04b45690f62124f9b83e1d3",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "aa2bde345c296d0029f14e58a28132607653fa559c965de6e91ccc48b67e681e",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e8b9a3c8d9ec70e5054b84d4ba1ee1f69f3cf1de07e28cbc8fba3f3820c004e2",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "35b496b321f61faa852da5f3bb70db9e3ed7e2f77977524c751ce580266b79c3",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5a91ce89c6819b456d21ed29084860b0d8233c6701f77dc9c60c2bbec689dc1b",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "982e5fa1a5afca12be1be12c39c0d5abd8565fdb262f3cffa74d536c38f4cc5c",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fb5bb327c923e8e3e9cfa82ddb61465c2bfbff8568495711c280f061a3cbf6a1",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "29e03b258ee827150cd9de6193840b929f8f1580b442eeb066425138bff501c7",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ada962e272e2c31239c5f334cc11b16bbca372579249019d4b6b2365d0e9c9a7",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "15293357008f32d5d476ccc25dcd7d299e0e0d23799447335c526ff36aee4ec1",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "6350408316538e1d44521081d7f2e328569a84c7ee41d885b262ddca1b138659",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c1a417bd5cb3ff2bb19510e620723958859147db1f5930feb2775a7825a45bba",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "971c79dbeae916f9a7d4ac1fd19faf8c7de5ca2cb9a95285679c1f786bca2c37",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c22152318b783ac0e246aa553001fdac3da2c6349c48c911eee7ad423f474cf3",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "0509b26664a5de12b1f06e7e83cb080d68990da26d73eb638161aab617d9f246",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2e6a14a7c1d701940ace319e08b099109455f4d76afc5d45cf47c75ff8575cf2",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7a6d7c5f0da88e18c81a4e4ff1d526e0f41509352def9a31c54fa7127af0072f",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "17d3463bca0faf2c8e7c0b4b6b2fdf67981d6e297563eba0885ccc729b042ac5",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d87d33c959f933e99ce0e60fed225e10ebfc0558ab90858f9f93bfe7227a95b0",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "92add7f485a07cb959d0ad2468da02f24d986bb1ff5e886f81c0c86bc31c48ab",
+      "rule_id": "SEC-629",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2c8d554c1b0ec644aefef4c90aa5a4b27e9e37f2fb4b464f3f99cb1977172eff",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "257c80789bbe0f6dd92d378fe687e35028a3e370fb20bc98e0578bd43b2729ce",
+      "fingerprint": "0babaf56e56a2621767c77990b5ef1ce5095d67c829ba879c35db7364ccf95ca",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "3696c831ef0de2d695fc38e2f1e017b346f3271271cbf97d818d48594f0df256",
+      "fingerprint": "226e52aa2fdc3dc6bcfa16817584f78787ca82922e24e8014833df855bce27da",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "652467631686f6f67b5f82a0676c23d54322cdab17612c352bd98c58c8173c0e",
+      "fingerprint": "528d72aa8ce094ba30220ef5b8828a18da2b1c4f1b2d098fa3af60ecf24cb3b7",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "9d8befedcca064c14e7707e5d7d891f995bced440fdd74274731cb07c5429791",
+      "fingerprint": "a879c9868eb698bece1607560c0d57f00578c2faccd04d025b0dd1554e8729f2",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "7f8ee278f4185552aaaaaf3602b2d387fa89b26864598d8c9de0c3be27fcec2e",
+      "fingerprint": "59d8fc06475ccff9d7610acd5fc0512be4f9dce97acc06c3b5319ac55db13350",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "84dde1dee72da9f89f0d09dec77a0b4d65732faa0f8a643b2e88257204ab938f",
+      "fingerprint": "ab96544a7ef645a2b191f0467ad00efdd072611b5a9f2dfdce7fd9b629a949cf",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "7644cb7c5af2c0f879f85bac8609b6483bce8f5b41663d5a49a382f7b8db2115",
+      "fingerprint": "2153f4a3d0821a44be06e1efd18d928129dc4cffa6ccee3f5682566fc671f52c",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "356244992f684c5d5dba3aa0f66269599cb4929ca479bf91573fe40291b64559",
+      "fingerprint": "4553bde070515523801098ef1f4b725d814e2eb63a2584a90f883b1fc5204562",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "8391d3563e5f536697a74cda0fb1ae8098f890a8e7fb5949f5f4694587d41475",
+      "fingerprint": "6e42f0a9c78f57d3a508036a9b9452eba6986655ac95dc350edb4674b43b4695",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "6c363dd41dc5bc0312e3d88dba4dde4d21a36e427b974d27a396ff2fbc4c6b41",
+      "fingerprint": "9bbf288deb5b8d8828a484812f1d64178ae4c0310ba005c650e0fbfdd3a93c02",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "2c1123d72875537a35c108928fce1864377673987e3510794a4f72d364335a8b",
+      "fingerprint": "392a147f6187878f220978805133e5cbbd5661186652bf346cb746c68d96b180",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "69c0057c1c2ba72741379c5d27c94845f2e8cb169ea14519459df65b7d28400e",
+      "fingerprint": "a022c5b2ef1e2ef9a5129c0da37cd23c7b1c08c26f2c6d6c1510bd28b3295173",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "181358c2a5c0ba16f5be32bf87e5523e41c0d794764cbb110ae481441028da4f",
+      "fingerprint": "871a02ad87aad287755c48a03fc663292fdcced2440e9b4226475924df869419",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "c09adf83dc3d7900ed35df7fdf6a8a6684a531fcf64d8d0f9459fe4f6457854a",
+      "fingerprint": "d27eb42e3ad75842a67dea357373bc69e6a11645c6d66f5997c15e1ad458a3ac",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "42665b3d8663fb9ca0791af2bcbcc0552a41a693e327d5ae4775a9aa35c4551b",
+      "fingerprint": "34e3c41dd6b41822a52e5c190ba2f0637d5defcdcea1e015ac5e0d810e401a5a",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "4a3787259a23797e9962a067e71935a7a4ca5a1aa5e548f976f54008a987a92e",
+      "fingerprint": "c1020ababcd7f096815475be787fe32479184164967a10ed68ebbd676e15e4b0",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "92a2805f292c5c4aabe12597169010b2200b94dd27f63bb772a9fa5f9dfec89b",
+      "fingerprint": "3e7828923fb60651f5a6604744a510b3d1421c90c5b6cbd288c0710a1262c41e",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "9337d3a6d70becff3f87cb4002378fe193b4a53341d25c89647daee13a5bdc5e",
+      "fingerprint": "5e3ffc36d843025563a2300bf7e7999ff8ddfc95133ea85e6bf46d581bdc05d0",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "e3cf633fd659d3f71a531dd95bd8b69dd542c0ed986962b088f994385162a8da",
+      "fingerprint": "e277761cf9ea8e4a70b3b3bae67f54f440c7b9250855cbc5adfdbcbb1e42e851",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "60b3b4bf04b22055116fcc77035f341b037c66fe6f32ef60483911279d6f19f4",
+      "fingerprint": "adea467e9052652102939e66b561a9a2e1491db72f4716255e0305303a229b27",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "80ca2921d70493a4ee99ded387de1bfee7f778692adc76ef4362e374b7ee3116",
+      "fingerprint": "57c5d19e1488bccc80a78a832e5657892b654c1947ec806b9b80921279fb7371",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "00b7ff3803153ffd973e98d0da7406a5d126c99f797d7097d33dd22081a3430e",
+      "fingerprint": "008df14786515d81ca32d85f24964fdabfcda59c70b5ab5025209ac2ec235cd6",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "86596426a56993b55bf59b1abaeaf39ca63b34510e94ac700e554fb3f3a86373",
+      "fingerprint": "85f5bd7a5771a85b9450751b0c8c15dbcebeb5d2d5fabe6e1edb5e4ea8ad9ee8",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "16faa0c6b98fbb74255794b2e851e81153c2b2763ac8059d40b393a283785d25",
+      "fingerprint": "5cddcb7cdc8afaf104e0f608e9fcba346e8fce6f598651157000cc9d33026ac3",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "2b6729206301ab947fb52119b8a532e537035054842fd468b7210fd09d7c4ef7",
+      "fingerprint": "800e249002c396b0fab3e6e0ddd7b77dbf2e649c7a072b397ec1475bc8c972b4",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "2e25cecea65692b4020ff1f91f16e86d071188c00eebe6397d484c04ffd38386",
+      "fingerprint": "9e414baa922d162debb435e10ec5d9f3c29e51d4be14ff1793708974fc72ddb7",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "88322c5eada1c1df7277f4d24241a8534e1060dada6e73b3991884a0f1aef435",
+      "fingerprint": "251c4d587d79533fa4511e4c375b34ea799d731141eab9f0ca3a2208adbe67e3",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "434a8b4e138dc236e2576a33148f97c334474aaabb537c53befccc9ed3a757d4",
+      "fingerprint": "65e3ca1f03edcf8cb599896757345dba7869341b435cf15e8601b410af8c8d21",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "b457e17e8d9e706225926d29a11e70530e8b3d52047692edb430fdab560f64c9",
+      "fingerprint": "9ac44110cb7dd8863cca27ea504181d721d54c2fc6d56c8c7238295aab797e87",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "6d7d7976aae172bca284c4ab0ddb611fb0f70ed3fbbbd7ce18d772accd9de14e",
+      "fingerprint": "430f99262407c972bc4f91d63774070ccc9de0d4e2ea5f1e346339d3b2d53b7b",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "c6c1ba50f64c3a976151a0556e72725a7f7416d1d6c54cb2351b2c96d94209b7",
+      "fingerprint": "03dba73661d85b6aba9603cdf9e59cb9609a76abb0267739917a4dc5ee68b589",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "536822c08ef8713efbf6d37b41334a4f7e9fa24704f36526bf67688a077da757",
+      "fingerprint": "5e1534b28942b7a34fc60387e574df5203074a7640d19c4a2b98c177245d55f4",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "cbf7e6ee814e61cdb41dda4a889bc46f1e920bcac91661517aec71ec431d76c8",
+      "fingerprint": "127007ced3a4f24692d2f6d96260935118472b3e8ecd4105a420697eb4d8650d",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "d2135b06253222e8d045b2ac460edbe6cfdf014b2056a93316ac5e5669a6334e",
+      "fingerprint": "b592abecdaf60f48528bb0418c2880ec42e9f6c4a71c8ecaa72e78e26d81e88f",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "f236c2b02225c3028e8e5c449682951d75b2bf5aa1859c3a63fd0782ed2c4634",
+      "fingerprint": "355f5f73e96e8853ced11fd82d13d9ae5f4c97361e4601b0e73bc4a122a7de49",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "3e3608ea7392eec74092c4eaac068a4cb3b21dd0ffb3eca7b9874268d2142b7f",
+      "fingerprint": "5ff06a627eb246c4071ac50fdb979661eed2c6899aa873727ce2950979c6ef8a",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "a42db6c0fe1e3e31c25b051223c9ad0a61b50875b8f1929624755b8f6cd6f13b",
+      "fingerprint": "74d34576ea0b4be92a9cec3daf0346fde0f73bc5ff3a190c59ecb17d39374517",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "b70198e9d1110be653d8ee99abccff2aea594f1670dd2ab0f6aeaa9a5b7de82c",
+      "fingerprint": "c45c3271576d9705ec3b9e565531181af6c0b628d0fbb9e547a9c33e697fedf2",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "b62e185561cbd092a6581f23491f0dce4c41f145a92122546bcb3ce4239889de",
+      "fingerprint": "35fea0344479ffb3c38e754af54bee2ca6ce835ab0a661745ef039e9e9e60620",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "7401536267a1e7c039cfef4180a562564861be5be2ebd1a44f5ec628f1bfd07a",
+      "fingerprint": "22098bb34f33fa2e3f28d993addf082f821bc8d6f3890dc1ea6d4062c7b381cf",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "f34e62e6e7c23d0815cb597bfc442baf33607502dfed84116b972814e4bf3c27",
+      "fingerprint": "47b9eaa8deea6251dae8620175a36a2d36f8984a32018f1cf9528c5f2fc4ff1a",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "495e967dc1bcca65b9a0de7ae490eb58649448e5f7e09aae9b9b66c530ebbc95",
+      "fingerprint": "15219766b2f648ff1025f8bf7c9a65f7bba7def60b72820f652b7c779683f525",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "bdac111d98956323faa733ebbc40c83cc8118ede2e65c9725b63206c892672b3",
+      "fingerprint": "652bbaf3dabad77613a3a7f0d14422d7e247015ebc32195af84dbcf91c6005ec",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "80f80f1fca28067fb1658546949a975317dacea3436acbbab55675238f75e7fe",
+      "fingerprint": "cf26356d48e4bea28b4a42e1006080df50332b56a0b622681b128aecf6e6350d",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "e0cc354887564476d50cf662b881a3e25271c21225c9b9dbb8b94b539dae8574",
+      "fingerprint": "5272dfcbc1e218156e80d8474abe1c8b0da7e6cc4572a958b01a613ee192f8e9",
       "rule_id": "SEC-629",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "2b614a20e0d66b30764395c049490fb9769ebfd67867f20d84ba942131b0b213",
-      "rule_id": "SEC-629",
+      "fingerprint": "6da300f72a345eac52e6c2ac88f67b247e569363bca29633ac15c2d54ca0a46d",
+      "rule_id": "SEC-659",
+      "file_path": "client/sse_test.go",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "7cac51c46d7ba75bc06a5d96c8c44770d3b5b76df78d35277ea17793e65d8655",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "d1c47e3cd433c6fc5ef56881c10aa3cb12d3e047234f72757fe9b597cacf7e44",
-      "rule_id": "SEC-629",
+      "fingerprint": "585a2840bf6b16103aeee1441f47fd4433cf2673171e9cad72e29736f1434152",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "13927d81f544e0c5ef726b4439fac5a6a6079b100eea198e3b38d03e299bfbdc",
-      "rule_id": "SEC-629",
+      "fingerprint": "ab959a96dea780f54b2f30ac0942ab95dee8595c07ab8b21604b57248e588783",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "6072fb94d09d5a756f03199fc2aa7b2a23baf6561e325f254c3782763fe4d9ca",
-      "rule_id": "SEC-629",
+      "fingerprint": "1c97047d0adfe631c8255610783378a492547c445d60a8e26db4ee00bec8c50a",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "9ab75fec8cb258d8402a522bd75405622ceb0b89fc09ada0728d43f6bddfb7ec",
-      "rule_id": "SEC-629",
+      "fingerprint": "90c22546c97e60527d7e21b3fa8d36c3d5fe3c7e7a83ec9cf19bac22205e0372",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "af092c8c8729583b44f81492e6e20c6f2387b03606406dca3eb7eb5d4a411400",
-      "rule_id": "SEC-629",
+      "fingerprint": "e0f135cee91f7790f47cbe16af37fcb814a444fab58ca8525b12ceefd6459d3b",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "5fcfa6001b0a120f2ef85720ad2b23657100dd28e8ff3282f3ab8039a7e02112",
-      "rule_id": "SEC-629",
+      "fingerprint": "0326033550c98b5f5ceb00b7fc8d7826c2ac68bf1be49398a62b3baac49bbab9",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "8f8265e1b638e110ee7a5d52aecf7a3455fe0aa80ee9872a83d2db7831ea4d47",
-      "rule_id": "SEC-629",
+      "fingerprint": "8be068a93b89cd43c669d4b651e964cf363fe9f062713c7bcb61a8a4116e764d",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "8146b4b56a9036f6da32d0c942b3e7ee6e73f20872b7ef01e6075377196351d7",
-      "rule_id": "SEC-629",
+      "fingerprint": "0d8147cb7562865d24137528f345bb492f005794dfadc9390a1a58fe2bb26f9b",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "5a317cfbb2c63d8da86b5ef3515e97b26ccb094baef68a038656a279038ff150",
-      "rule_id": "SEC-629",
+      "fingerprint": "acc0d039b19ad9fd1fb3a1641f320c180bcb7f64691271a6598bcdc8c29bffa3",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "e63c1191fd09684a257caf5cab1c12e27506caa03792c6aac6c210cc262e155d",
-      "rule_id": "SEC-629",
+      "fingerprint": "a07fa8b728b8e6fc46f0b64fc51c324c48673ab712960fa960b41dce6e828bf2",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "914096c79ac0a36863c5e711d371b452d3266383f3d636d05a43c5d4555612c0",
-      "rule_id": "SEC-629",
+      "fingerprint": "2017ea0a12a1785fbfa19edd7b4e9b3b9c6a74f29372fe02aa2c99f7d1d7f5e4",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "779e91c6c255ee4841f12398ccaff561a2c3191c065acdb9cab6f19e617751e7",
-      "rule_id": "SEC-629",
+      "fingerprint": "d67776f8b79c53c7fab549c12882353f937c45e8f82c5adab9bc6a120433f6f7",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "97a3da8dd067ecc1bcb44b481a91b4d6e1944872d6c60b840a98177c07f74251",
-      "rule_id": "SEC-629",
+      "fingerprint": "81a86139b76105e1a5457c394c9b929ad372630aae262d5bac7754e378859e1c",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "961030ce5705954d6a0db68e3ea0ecbaed0f64a2f346b93be043982cd950f2e2",
-      "rule_id": "SEC-629",
+      "fingerprint": "f7a9093bf5dc22329e951009c8fbb36e0b1a3d673869c6809e52a874294cf44d",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "ddb0f60caf9edb8dbf5201e26b887c7917fdc7dd2027fe0f2a35ea9040aa1b03",
-      "rule_id": "SEC-629",
+      "fingerprint": "b31dd4a30fa75d7bb370de2a9fda1a27a0cc71cfb405128486167a96fe91e22e",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "e6bb096ba4e42929a8483f3a18772a0580b8db50979a303984994c629eda227f",
-      "rule_id": "SEC-629",
+      "fingerprint": "83cba47d49fc62b559779023e3f1a385a8a4e209f80c48db36e30a1d8f4d5ff6",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "20857b4b48a73df22d0d3365dbbf47c0eaef7d13d202e4c07b5c07fb27a1ff8a",
-      "rule_id": "SEC-629",
+      "fingerprint": "6c55a92cf2733aa0a155f713bc1cbdf81336cdc754dce08871f38d206d91ba98",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "b2ff43c38d973fcc395f080ade33688d9e5e4b37f379fdac5b71af4082a77caf",
-      "rule_id": "SEC-629",
+      "fingerprint": "1069d961bbc14137b62610bda1bebe728dbff4c0836a225528db209d3466a4c4",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "de09d00813d68250d215d3a8f785bcae6e2189c57572ba1fd9d46cc470427437",
-      "rule_id": "SEC-629",
+      "fingerprint": "3f02117c18df9b42d9196d4ddd3d2a8259490bfeacaa791cf578b787b4766fab",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "cfdfd0ff59aecd07e800f3ec0eaddd64004a409cbc1a8e6c943bc8698823b9bd",
-      "rule_id": "SEC-629",
+      "fingerprint": "cac021c55f28b32d86780cdb644f7e09cfced43e8bb84ab46240745c5f924e91",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "68742c5f6212a9af11b1a14e664bb29a3f172c377e89b4c76907662996298857",
-      "rule_id": "SEC-629",
+      "fingerprint": "68c71102c93c44e81ca61e6b15e3761fdae302597e223db94831bad1096f8500",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "c35c5c7762944a0bcaab0ad18a2daf147bd8257f9813a133b1ba92f8b4103e94",
-      "rule_id": "SEC-629",
+      "fingerprint": "468466e8633b51ba4812180cbba230209a3997903f8924b03df1e06f33e5db4b",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "22e6150bb7e72de8fc4a7d549618787e8784861b915299ffc3ca66c4dea3da4c",
-      "rule_id": "SEC-629",
+      "fingerprint": "4ae28017c0e37f8033fed3f742bad767c29ac94cf89760e37ca4cbcde304aec2",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "858a84d01029cf80593ebfd83dbe92af1155f49e94cfe8f462489cb1979366e0",
-      "rule_id": "SEC-629",
+      "fingerprint": "280496a306837e0b7f8b6342d34f4dd1d46afd740642585c2138ccb768ca0c3a",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "53db44c8e25aed8b0a9003a79936e3c7b610611fd7483d4ff0cfbad9b384c2e2",
-      "rule_id": "SEC-629",
+      "fingerprint": "06a41124de8ae39b037cc15a0807a0c12a19d4a657191a69bfd412241ddf8e87",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "210b5659c690e9ac376a80e78e441c0a095d246bd0a4b978015331a9a78c0788",
-      "rule_id": "SEC-629",
+      "fingerprint": "bf4cbc5061fbe85b21919f890c7287f075517d6010eba8cd2fa19cd56a6ab16e",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "66dd774153b93f8beb5dbdff598c8033ecfd00f74019fe0dd7f2858a81bf51cd",
-      "rule_id": "SEC-629",
+      "fingerprint": "0dcfbc01444849450720e1ce7268d970586b32557b2e435bda77435cd865d4b2",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "7dad506f3a08aeb3f16101c23923e0d1b6e50e5b3903704f87d6de983ab95ce7",
-      "rule_id": "SEC-629",
+      "fingerprint": "f58dac2f600c9d2a751b7621505892152f67fc89f77f03a6588bcee964197bb9",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "909df94e20840b89cc1ea9acd948445098b68e87b47116081c646fcc7bf74395",
-      "rule_id": "SEC-629",
+      "fingerprint": "3af4d7fe7333df61d273e69720382f0f56757c6fa19bfdf3493661ffdceaf37a",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "5cb2576039dcecadc6e33e16419ddf05e513e25bd6b20d70d017e26053cd5373",
-      "rule_id": "SEC-629",
+      "fingerprint": "6906aa616849eec6664648616e641d10769698a2417402f4da47980768c07381",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "616d2941b97d541b0ea4a4a8a35849cd633c688ea5be3195177b2f9fcb719978",
-      "rule_id": "SEC-629",
+      "fingerprint": "c21e1b427a43a2d9d63002de1c6a3ed0ae84a7a35e8eafc5b8c83eed0b7e56d2",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "44f9787da5e3a394e58c54439904dd24d050b9538d2444e3a1f4e7d4e38e2536",
-      "rule_id": "SEC-629",
+      "fingerprint": "ed82c6c28f1af3bf265086f1b2770b59cf7fa15021c5c39eb9f5ebe271d9401a",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "e60468186e1a9a7faf9a9de6202221b1bafba02e2614e1808adae493f9605336",
-      "rule_id": "SEC-629",
+      "fingerprint": "7f44c0d3f9a4fde49895ef2e8894debe942e68cf16921db8937cc49141fc72a7",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "10065ea13bd1491afd14d4f442d60afce15635f669c966b964d5af381d934497",
-      "rule_id": "SEC-629",
+      "fingerprint": "0a3c2c2b1d7f4ed50efccdb47a9ff7bc4df72a1191f2eadae1bd25086cd3a68b",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "883df57402e52cfdcd5f9ee76812fb345175ac732978765d8424ede7d4d3baa2",
-      "rule_id": "SEC-629",
+      "fingerprint": "fb4ade1041970b820af36728d71451a4255f9819c68c5d4b536d04270b48250f",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "c555a1620721110504db9efa5acce057ea4592b190cad010ac4175e7907b5a02",
-      "rule_id": "SEC-629",
+      "fingerprint": "4224241de31cf0fe7d67c140ce522c721486633f0d18908d17c2e1b749df8b6d",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "aab16d22ba2ce3b1eba8636c3c3c1eb11d15392d3120dbd6f144eba47f155774",
-      "rule_id": "SEC-629",
+      "fingerprint": "2517d6d1b11c7e084bfd430f642d319924d1727917d39639ce0fb280def55479",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "e6839b730b38fe77268ed8f21c065bcd5c27d55aa270216d8de0abd1f4bf58bc",
-      "rule_id": "SEC-629",
+      "fingerprint": "575e98e482c52e8e152029f8e7ce6146a5bb5ebe5e357be4d9b15aa8445859fc",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "ff469005f255bf581b84b0febd48df95ea4ee5dad9f22907294a3c7eef67de64",
-      "rule_id": "SEC-629",
+      "fingerprint": "206a9238eb2a1315234988750a33f33249d6006639772aadd32aa9f1a63c498b",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "a2bdc9e1aeb7d3a44bd466500b5b673b95d979bcb8053149eb7d653407dd5ec1",
-      "rule_id": "SEC-629",
+      "fingerprint": "c5d485859571e729322270cb2d93e5ce3c50ec449191619f9722b5db1e44f147",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "ade7f57075ddc93e807244c4b7959d850454015205dd7919a53e321e54287bf7",
-      "rule_id": "SEC-629",
+      "fingerprint": "29af0af47efbc2bf2d694a88677e60034243ec144c2f45614b0ce2a4b6e718b4",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "3324fb4ff838c6dc6b88ae44c27ad39720516bfa6d1dfe881b7c421aa8c40e07",
-      "rule_id": "SEC-629",
+      "fingerprint": "f23840919b0d4a8dd225ac6911dd2e11b99f0adecf76efcaa4887fc8e7141861",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "083d109bdf95fb8a00ef0f6a4ba97a0bed44f93ca0e57796837973149298d3e6",
-      "rule_id": "SEC-629",
+      "fingerprint": "d08dc8351dc69653ca0b812ea231768815de934619b84876f8ba3fcf94cc28cc",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "05c115057f6c496cdc095213f57f631564404eda162cc57b25a36020a6541731",
-      "rule_id": "SEC-629",
+      "fingerprint": "e63a91e47fa2ddc3abff2f46012566de0fa69985542001d61699a2e7e45e2db3",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "85b0bc69617759e6d544f3d862023e96dfc142521c4158a753de3636046b10b0",
-      "rule_id": "SEC-629",
+      "fingerprint": "9fc365184391b8f9c72ab2e8c72dd258cbd96d9fb9427e8fe9d776a8a7597a57",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "4cd4e5636f3b105f6a7d86baec82b838a318c467c475bfb4be14fcbe864bb081",
-      "rule_id": "SEC-629",
+      "fingerprint": "6b854847dc9c3c6c0081e4e6709ea3f34fe7326fbc03e1493148f4d91b8b1a29",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "fc7ef5199b5a98da1fd493c6e6f86569986a98beaa889d38eb1da2fc09ff7c98",
-      "rule_id": "SEC-629",
+      "fingerprint": "80833d9b05a10027d405458b18471464e045b7544bce39789d2242ed981cda1e",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "f1ad2a3cdaaeb8da7b881a0610dbf84f2279f1d89acfc448d5e076d763b32c74",
-      "rule_id": "SEC-629",
+      "fingerprint": "0117e58f330e7eb2dc7f903e17a4121ec75daea4de7aab980ad7d20121c9e9c8",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "3596c3b0e7b8326e4f395d93b71fc39829ee0ff0c3e73636db90b403a4a60be7",
-      "rule_id": "SEC-629",
+      "fingerprint": "d058cfec7155ddee46a63fab9fcd1b35189665073d1628df7d6e9e99233eef13",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "bb4445b4b199487807980b01a81cf0fde9d3d4b6ed87c0b5cde47ab4331f730f",
-      "rule_id": "SEC-629",
+      "fingerprint": "62738877e0683f88bb156a756f90f683b4e54b621909e3be0a778be50a40ef63",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "d4dc293583c4fc4915183db4e42abedccbdc26d612af000f5920178e4ff5d30f",
-      "rule_id": "SEC-629",
+      "fingerprint": "50d37778adb7b31b25f751b6758fde555472dfb000e0630e3b8ab110bf979814",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "5e12551469143210f5a12aabe5c957e0770600cf1e81067f7525e9a02f67a834",
-      "rule_id": "SEC-629",
+      "fingerprint": "374bb5a58c2dcdc2b3fd299cf8880df526f503499c500f263d701d867752a9be",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     },
     {
-      "fingerprint": "9a6c1e62d414f6e49eab57a5ac48fe3eae4c409d65d242924f3cc74ccfd70be1",
-      "rule_id": "SEC-629",
+      "fingerprint": "15ac21fa085a992c3df90c7b2b02d13c0123e1a03567256f9911ceca9e110cd2",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "674f7cfcf21c024d544baf1c45e90a3e2c007f61f56b8b23115b0ebdba027892",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d4c676e66af46d288fcec0a13c8cfcf16bcd8037a13048333422fff26d8b168a",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2897fa1e37f398aeb1a1723250284cb0a3555aeb95b0b411289935f2761cb057",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "055473dab4d82afc2689ada40de3a703c7cfe6bd582bd17d56476e3cfde28143",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "ad9d964c9c8a411e4ecf7d989db64e6f5c2dee0e9565b300c6d1768b55f5a2bf",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fd1836588b4d7a97cdef5edd59bd60c2c05ad120447dca2d7dfbe960eeb6ce46",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d486e60c8cd3cfc5fe96e9508b20cc98d003e1d5b436f7664f660d91fbae1fce",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "8471990b2115c99b55614c2032416cf65f44fb9e521b9e97b84c7231dbab9de6",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "58bf725a39919648426d5297f1e0b1060a7f85bb98c2f0f2153b759193351ddb",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "5bf3d80e8fa3dfa556cbf933b980634482851e791516944624c91de2d66adc83",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "1618d3e7eefa627926a3b6c575d7b722271196169e0f663c7f34f289405cbc32",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "b543b3aed3d021c52d940140e51700757989ada2b7d227a652f1c68915a86c17",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "73d8505dec6597d084a9dace6308ea63578480e2d291f11b3c6c628607e62c93",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d58985fbb1eef8e40bf0a3558f733952e7023fc952c0a799e43a29458908f59f",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "29110ba6c99b3fbeb2710e54f5db6f72c2523b54e4105cfdf336b7510a1b84a6",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "e55c969ef84b0c18a2a345e14382d4b68c7b2fb93902568063cfbb797924c547",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4eeefccecaafb77999335d7c2c27d57eb47e8ff57ee580f925039e4753effc12",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "94d6ba17a6fece3a86f9c9a7788ba259bcbfd1d0a591365c29beb1cf091b7d73",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "50755f3bafa79d9f4f9d2cd088d9fb78c9f6003a9f5e539729829bbf94cf8ec6",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "024a5af234669c70cc6b92dad0ffb6405614912e97db8fe28400041bd863a509",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "afa32690af0b10cc5928282b14b8c99f97db399c3849b279b381869eba4fabcd",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "54000661334034d38ce00205d9aeb7e6a6890cdd1a7197b75b9a8359d03ddbb9",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "07da3386c728c115b1e7c06979a9bc38b345061bda3d11190e00d379286de696",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "823e8164162ee9f6547d4056539507059555407964c938eba11460346a94ddcc",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "9f3cdd6c2ba44db8a026742fdab1c319fa0085f3eeec5361d352a0f24f7729c5",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "0359f5e9089d630b4f24f8e691baa5a8217f3c4eefb391575835ec9ebf9440d3",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "615f0e01c644af541f21ca5a1697185c3144e16b53d55d7f29e6d40f150ab592",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "8b8fe0f4db72bacefa7a7728c55dcb79211ff534ac50021ff932abba0d12fc80",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "14a14b7a9aa4e9947e68206b086b50e76bc7e1204d4b079299b5e6a67c41ba94",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f9c534567f06d3325343d543f15064a9b7e91d11e36613ee1c6e6d3d596b8b58",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "24a085a0625f9ab3e741daf0f5e230c979c2574b2ad59ed43f262c52e599e327",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "78d58cd65578fe3ca9a0230b43bc91f3fae4f1c41b84874862385e3e08646c10",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "90d5c7511abb60b35d7c3fd04a7881c1d05c6473906614c69edd4789d3c34208",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d51925a50e740346c2b0de0951bcd788c60ff2425e77f2f18f746a5c1dd97671",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "d846656cc99de04e4f3e21d4e99ef83a9c4778293651f9183f0d91576f45b813",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "22d1f7bc899dcd07d3a58d25b67153433923d0fcb2d30d076bd1051a83545df5",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "189f4dc7b3888a49a43df5bed9d2a93167bc2c375aec2c5744c0624d8bc779d1",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "4aeb8a4dabd0d6519f5fa21450cf2dea56e36de8f73fb9ae7e387bc5331e3c47",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fcd00dab32641d68bdcef7f8e018231b56823e3ad62b3a2e63c7a079ebc2a41b",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "86c8f1b311e3cd7a5ccc63948fc77874ab4acbe2c7717c6548c6b08f2e3c6c52",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "de61a0595b5426f91a78b12d8b7f58d621669d0e897790fd9d9be11f8cbfa640",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "f81b6c9288dcbf236a8798a15980a2d227668271b638d222107da1eaafb0cba3",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fa51ed3043f0ac2dfac149677c8c55c68e81eee24ca9ba7f2cf1e35c604bc0a7",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "aa6274eb3842d0385faa681da6c76701b763f3d80824a8e28054ad06c0afa601",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "911b9fb364caefc5747b1d029126c750c657cbe1787c9d39e5d5661d63dc2b7d",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "54dfa8a108a7798ee5a9a5e733a8fbb31f43da39be72ec72b893f969b77e9af8",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "fb22c76d5910312cd34e8e4fb76ecd7441ae18c41a069e40821224df5e68dcd2",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "c7ecc468432bf4d1b4aca5c9d0a6f8b27b36f434ae0d4e505ca0d1e988a33d90",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "2847340e74eda8db4237a1bb1b5a9034176452658dd8ef3b1e71465da24544ae",
+      "rule_id": "SEC-659",
+      "file_path": "findings.json",
+      "severity": "high",
+      "created_at": "2026-04-28T13:18:37.708241Z"
+    },
+    {
+      "fingerprint": "45bcaab75471e8cd803122f710163f586ad62e68a28743d8a754f725c802674f",
+      "rule_id": "SEC-659",
       "file_path": "findings.json",
       "severity": "high",
-      "created_at": "2026-04-28T07:29:09.695981Z"
+      "created_at": "2026-04-28T13:18:37.708241Z"
     }
   ]
 }

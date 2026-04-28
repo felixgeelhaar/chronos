@@ -258,15 +258,26 @@ func TestStream_DeliversSignalAsSSEEvent(t *testing.T) {
 		t.Errorf("Content-Type = %q, want text/event-stream", got)
 	}
 
-	// Read enough bytes to capture the heartbeat + the first event.
-	buf := make([]byte, 2048)
-	n, _ := resp.Body.Read(buf)
-	body := string(buf[:n])
-	if !bytes.Contains(buf[:n], []byte("event: signal")) {
-		t.Errorf("missing event line:\n%s", body)
+	// Read repeatedly until we capture both the heartbeat and the
+	// first signal frame (the heartbeat may flush separately) or hit
+	// the test deadline.
+	var body bytes.Buffer
+	buf := make([]byte, 1024)
+	deadline := time.Now().Add(2 * time.Second)
+	for time.Now().Before(deadline) {
+		n, _ := resp.Body.Read(buf)
+		if n > 0 {
+			body.Write(buf[:n])
+		}
+		if bytes.Contains(body.Bytes(), []byte(signalID.String())) {
+			break
+		}
 	}
-	if !bytes.Contains(buf[:n], []byte(signalID.String())) {
-		t.Errorf("missing signal id in payload:\n%s", body)
+	if !bytes.Contains(body.Bytes(), []byte("event: signal")) {
+		t.Errorf("missing event line:\n%s", body.String())
+	}
+	if !bytes.Contains(body.Bytes(), []byte(signalID.String())) {
+		t.Errorf("missing signal id in payload:\n%s", body.String())
 	}
 	if bc.subCalls != 1 || bc.lastScope != scope || bc.lastPattern != "recurrence" {
 		t.Errorf("subscribe called wrong: calls=%d scope=%v pattern=%q", bc.subCalls, bc.lastScope, bc.lastPattern)

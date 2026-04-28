@@ -102,6 +102,33 @@ func (q *SignalQuery) List(ctx context.Context) ([]Signal, error) {
 	return body.Signals, nil
 }
 
+// Stream subscribes to /v1/signals/stream and returns a channel that
+// emits each newly-detected signal until ctx is cancelled or the
+// server closes the stream. Scope is required (the SSE endpoint
+// rejects unscoped streams). Pattern is honoured server-side when set.
+//
+// The returned channel is closed by the SDK on ctx cancellation,
+// connection drop, or fatal protocol error — `for sig := range ch`
+// is safe.
+//
+// Streaming bypasses the client's Timeout so connections can outlive
+// the configured per-request deadline; cancel via ctx instead.
+//
+// For at-most-once gap recovery, pair the stream with a Since-keyed
+// List call: the persisted /v1/signals query is the source of truth,
+// the stream is a courtesy. De-duplicate by Signal.ID.
+func (q *SignalQuery) Stream(ctx context.Context) (<-chan Signal, error) {
+	if q.scope == uuid.Nil {
+		return nil, errors.New("chronos client: Scope is required for Stream")
+	}
+	v := url.Values{}
+	v.Set("scope_id", q.scope.String())
+	if q.pattern != nil {
+		v.Set("pattern", *q.pattern)
+	}
+	return q.c.openStream(ctx, "/v1/signals/stream?"+v.Encode())
+}
+
 // Get returns a single signal by ID.
 func (q *SignalQuery) Get(ctx context.Context, id uuid.UUID) (Signal, error) {
 	var out Signal
