@@ -1,168 +1,251 @@
 # Chronos
 
 <p align="center">
-  <strong>Generic pattern detection engine for time-series data</strong>
+  <strong>Time & Pattern Perception in the Cognitive Stack</strong>
 </p>
 
 <p align="center">
   <a href="https://github.com/felixgeelhaar/chronos/actions"><img src="https://github.com/felixgeelhaar/chronos/workflows/CI/badge.svg" alt="CI Status"></a>
-  <a href="https://codecov.io/gh/felixgeelhaar/chronos"><img src="https://codecov.io/gh/felixgeelhaar/chronos/branch/main/graph/badge.svg" alt="Coverage"></a>
   <a href="https://goreportcard.com/report/github.com/felixgeelhaar/chronos"><img src="https://goreportcard.com/badge/github.com/felixgeelhaar/chronos" alt="Go Report Card"></a>
   <a href="https://github.com/felixgeelhaar/chronos/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
 </p>
 
 ---
 
-Chronos ingests structured time-series data from any source, extracts feature vectors, detects similarity patterns across entities, and surfaces actionable insights with statistical confidence.
+Chronos ingests time-series observations from any source and emits structured **signals** describing the patterns it sees — recurrences, trends, spikes, drops, stalls. It does not decide, act, or render prose. Signals are perception, not opinion.
 
-Think of it as **"Mnemos for numbers"** — where [Mnemos](https://github.com/felixgeelhaar/Mnemos) reasons about claims and contradictions in text, Chronos reasons about trajectories and patterns in structured data.
+Chronos sits between **Mnemos** (memory) and **Nous** (decisions) in the cognitive stack, alongside **Praxis** (execution). See [`docs/cognitive-stack.md`](docs/cognitive-stack.md) for how the four systems compose.
 
-## Features
+## Design principles
 
-- **Generic engine** — Works with any time-series data: athletes, servers, sensors, stocks
-- **Multi-database** — SQLite for local/embedded, PostgreSQL for production
-- **Pluggable adapters** — Bring your own data source via a simple interface
-- **Statistical insights** — Cosine similarity, confidence scoring, sample-size awareness
-- **Coach-in-the-loop** — Every insight is suggest-review-approve, never autonomous
-- **Lightweight** — Single Go binary, no ML frameworks, no GPU required
-- **Well-tested** — Table-driven tests, race detection, coverage reporting
-
-## Quick Start
-
-### Installation
-
-```bash
-# From source
-go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
-
-# Or clone and build
-git clone https://github.com/felixgeelhaar/chronos.git
-cd chronos
-make build
-```
-
-### Basic Usage
-
-```bash
-# Set database (sqlite, postgres, or memory)
-export CHRONOS_DB_TYPE=sqlite
-export CHRONOS_DB_CONN=chronos.db
-
-# Compute patterns from an adapter
-./bin/chronos compute --adapter=ascend --coach-id=your-coach-id
-
-# Start HTTP API
-./bin/chronos serve --port=7778
-
-# Query insights
-curl http://localhost:7778/v1/insights?scope_id=your-coach-id
-```
-
-## Adapters
-
-Chronos is data-source agnostic. Adapters map external data into Chronos' generic model:
-
-| Adapter | Status | Description |
-|---------|--------|-------------|
-| `ascend` | Proof of concept | Weightlifting coaching platform (PostgreSQL) |
-| `memory` | Built-in | In-memory for testing |
-| `prometheus` | Planned | Metrics monitoring |
-| `influxdb` | Planned | IoT time-series |
-
-**Writing an adapter** is simple — implement the `adapter.Source` interface:
-
-```go
-type Source interface {
-    Name() string
-    Fetch(ctx context.Context, cfg map[string]string) ([]vector.EntityState, error)
-}
-```
-
-See `adapters/ascend/` for a complete example.
+- **Signals, not opinions.** Each signal carries Pattern, Strength, Confidence, Window, and Evidence. There is no Title, no Summary, no Suggestion. Interpretation is Nous's job.
+- **Domain-agnostic.** Athletes, servers, sensors, stocks — all flow through the `chronos.Source` adapter port.
+- **Loosely coupled.** Chronos works standalone. The stack composes through stable contracts, not internal coupling.
+- **Lightweight.** Single Go binary. Pure-Go SQLite (no CGO). Optional PostgreSQL for production.
 
 ## Architecture
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  Adapter    │     │  Chronos    │     │  Chronicle  │
-│  (external) │ --> │  (engine)   │ --> │  (insights) │
+│  Adapter    │     │  Engine     │     │  API + SDK  │
+│  (Source)   │ ──▶ │ (detectors) │ ──▶ │  (signals)  │
 │             │     │             │     │             │
-│ • Ascend    │     │ • Extract   │     │ • Similarity│
-│ • Prometheus│     │ • Vectorise │     │ • Patterns  │
-│ • InfluxDB  │     │ • Store     │     │ • Surface   │
+│ • Ascend    │     │ • Detect    │     │ • REST      │
+│ • Prometheus│     │ • Score     │     │ • client/   │
+│ • InfluxDB  │     │ • Persist   │     │ • Ingest    │
 └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-## Configuration
+Detailed layering and invariants: [`docs/architecture.md`](docs/architecture.md). Cognitive-stack context: [`docs/cognitive-stack.md`](docs/cognitive-stack.md).
 
-All configuration is via environment variables:
+## Quick start
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CHRONOS_DB_TYPE` | `sqlite` | Database type: `sqlite`, `postgres`, `memory` |
-| `CHRONOS_DB_CONN` | `chronos.db` | Connection string or file path |
-| `CHRONOS_SIM_THRESHOLD` | `0.85` | Minimum cosine similarity for pattern matching |
-| `CHRONOS_MIN_SAMPLE` | `2` | Minimum similar cases to generate an insight |
-| `CHRONOS_MAX_INSIGHTS` | `10` | Maximum insights per computation run |
-| `CHRONOS_HTTP_PORT` | `7778` | HTTP API port |
-| `CHRONOS_HTTP_HOST` | `127.0.0.1` | HTTP API host |
+### Install
+
+Chronos ships as a single static binary (no CGO, no runtime dependencies). Pick whichever channel suits your environment.
+
+**Homebrew (macOS, Linux)**
+
+```bash
+brew tap felixgeelhaar/tap
+brew install chronos
+```
+
+**Docker (any OCI runtime)**
+
+```bash
+docker run --rm -p 7778:7778 ghcr.io/felixgeelhaar/chronos:latest
+# Multi-arch image: linux/amd64 + linux/arm64. Distroless, ~2 MB.
+```
+
+**Debian / Ubuntu (.deb)**
+
+```bash
+# Replace <version> and <arch> (amd64|arm64) with the desired release.
+curl -fsSL -o chronos.deb \
+  https://github.com/felixgeelhaar/chronos/releases/download/v<version>/chronos_<version>_linux_<arch>.deb
+sudo dpkg -i chronos.deb
+```
+
+**RHEL / Fedora (.rpm)** and **Alpine (.apk)** are produced for the same OS/arch matrix; substitute the file extension.
+
+**Prebuilt binary archive (any OS)**
+
+```bash
+# Linux/macOS/Windows × amd64/arm64 (windows-arm64 is intentionally skipped).
+curl -fsSL -o chronos.tar.gz \
+  https://github.com/felixgeelhaar/chronos/releases/download/v<version>/chronos_<version>_<os>_<arch>.tar.gz
+# Verify against the published checksums.
+curl -fsSL -O \
+  https://github.com/felixgeelhaar/chronos/releases/download/v<version>/checksums.txt
+shasum -a 256 -c checksums.txt --ignore-missing
+tar -xzf chronos.tar.gz && sudo install -m 0755 chronos /usr/local/bin/chronos
+```
+
+**Go install (HEAD)**
+
+```bash
+go install github.com/felixgeelhaar/chronos/cmd/chronos@latest   # requires Go 1.23+
+```
+
+**Source build**
+
+```bash
+git clone https://github.com/felixgeelhaar/chronos.git
+cd chronos
+make build   # binary lands in ./bin/chronos with version/commit/buildDate ldflags
+```
+
+**Supported targets**
+
+| OS      | amd64 | arm64 | Distribution channels                              |
+|---------|:-----:|:-----:|----------------------------------------------------|
+| linux   |  ✓    |  ✓    | Homebrew, Docker, .deb, .rpm, .apk, tar.gz, source |
+| darwin  |  ✓    |  ✓    | Homebrew, tar.gz, source                           |
+| windows |  ✓    |  —    | zip archive, source                                |
+
+### Run
+
+```bash
+# Configure
+export CHRONOS_DB_TYPE=sqlite
+export CHRONOS_DB_CONN=chronos.db
+
+# Compute signals from a pull-based adapter
+./bin/chronos compute --adapter=ascend --scope-id=<uuid>
+
+# Start the HTTP API (also accepts streaming /v1/ingest)
+./bin/chronos serve --port=7778
+
+# Query signals
+curl 'http://localhost:7778/v1/signals?scope_id=<uuid>&pattern=recurrence&min_confidence=0.7'
+```
+
+Full configuration reference: [`docs/configuration.md`](docs/configuration.md).
+
+## Writing an adapter
+
+```go
+package myadapter
+
+import (
+    "context"
+
+    "github.com/felixgeelhaar/chronos"
+)
+
+type Source struct{}
+
+func (s *Source) Name() string { return "my-source" }
+
+func (s *Source) Fetch(ctx context.Context, cfg map[string]string) ([]chronos.EntityState, error) {
+    // Map your domain into chronos.EntityState. Last feature is the outcome metric.
+    return states, nil
+}
+
+func init() { chronos.Register(&Source{}) }
+```
+
+Adapters self-register. Add a blank import in your binary so `init()` fires:
+
+```go
+import _ "example.com/myadapter"
+```
+
+Full guide: [`docs/adapters.md`](docs/adapters.md).
+
+## Reading signals
+
+```go
+import "github.com/felixgeelhaar/chronos/client"
+
+c, _ := client.New("http://chronos.local:7778",
+    client.WithToken(os.Getenv("CHRONOS_TOKEN")),
+    client.WithTimeout(10*time.Second),
+)
+
+// Recent recurrence signals for a scope
+signals, err := c.Signals().
+    Scope(scopeID).
+    Pattern(client.PatternTypeRecurrence).
+    MinConfidence(0.7).
+    Limit(20).
+    List(ctx)
+```
+
+For streaming sources you can ingest single observations:
+
+```go
+_, err := c.Ingest(ctx, client.IngestRequest{
+    EntityID:  entityID,
+    ScopeID:   scopeID,
+    Timestamp: time.Now(),
+    Features:  []float64{f1, f2, f3, outcome},
+    Adapter:   "my-source",
+})
+```
 
 ## API
 
-### Health Check
-
-```bash
-GET /health
+```
+GET  /health                              Liveness/readiness
+POST /v1/ingest                           Stream a single observation
+GET  /v1/signals                          List signals (filter by scope/pattern/series/since/until/min_confidence/limit)
+GET  /v1/signals/<id>                     Fetch a single signal with evidence
 ```
 
-### List Insights
+Full filter reference is in the API docs.
 
-```bash
-GET /v1/insights?scope_id=<uuid>
-```
+## Pattern detectors
 
-### Dismiss Insight
+| Pattern         | What it detects                                                            | Evidence kind          |
+|-----------------|----------------------------------------------------------------------------|------------------------|
+| `recurrence`    | Subject is in a state other entities have been in before (cosine peers)    | `similar_state`        |
+| `trend`         | Sustained directional movement of the outcome metric (linear regression)   | `regression_summary`   |
+| `spike`         | Sharp positive deviation from the rolling baseline (z-score)               | `baseline_deviation`   |
+| `drop`          | Sharp negative deviation from the rolling baseline (z-score)               | `baseline_deviation`   |
+| `stall`         | Outcome variance falls below threshold over a window (normalised stddev)   | `variance_window`      |
+| `anomaly`       | Subject is unlike its peers' current states (cross-entity dual of `recurrence`) | `peer_distance`   |
+| `seasonality`   | Periodic structure in the outcome series (autocorrelation peak)            | `autocorrelation_peak` |
+| `correlation`   | Two series in the same scope move together (pairwise Pearson)              | `pair_correlation`     |
 
-```bash
-POST /v1/insights/<id>
-Content-Type: application/json
+## Bundled adapters
 
-{
-  "dismissed_by": "<user-uuid>"
-}
-```
+| Name     | Status        | Purpose                                              |
+|----------|---------------|------------------------------------------------------|
+| `ascend` | First-party   | Ascend coaching platform (PostgreSQL source)         |
+| `memory` | Built-in      | In-memory backend used by tests                      |
 
 ## Development
 
 ```bash
-# Run tests
-make test
-
-# Run checks (fmt, vet, test)
-make check
-
-# Regenerate sqlc code
-make sqlc
-
-# Build
-make build
-
-# Run with memory store for testing
-CHRONOS_DB_TYPE=memory ./bin/chronos serve
+make test          # go test -race -count=1 ./...
+make check         # fmt + vet + test
+make sqlc          # Regenerate SQLite query code
+make build         # Builds with version/commit/buildDate ldflags
 ```
 
-## Contributing
+### Pre-commit hooks
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Pre-commit catches style and lint failures locally, before CI. One-time setup per clone:
+
+```bash
+pip install pre-commit                   # or: brew install pre-commit
+make precommit-install                   # installs pre-commit + commit-msg hooks
+make precommit                           # run all hooks against the working tree
+```
+
+The hook set (gofmt, go vet, go mod tidy, golangci-lint, file hygiene, Conventional Commits) is a strict subset of CI; passing locally guarantees CI will not reject on style or lint.
+
+Working conventions for human and agent contributors: [`AGENTS.md`](AGENTS.md). Contribution guidelines: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## License
 
-Chronos is released under the [MIT License](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
 
-## Acknowledgments
+## Companion projects
 
-Chronos was created as a companion to [Ascend](https://github.com/felixgeelhaar/ascend) and [Mnemos](https://github.com/felixgeelhaar/Mnemos), forming a complete evidence stack for coaching decisions:
-
-- **Ascend** = The coaching platform
-- **Mnemos** = "What does the literature say?"
-- **Chronos** = "What do athletes like mine actually do?"
+- **[Mnemos](https://github.com/felixgeelhaar/Mnemos)** — Memory & Knowledge ("what happened, what do we know")
+- **Chronos** — Time & Pattern Perception ("what is changing, what's emerging")
+- **Praxis** — Execution / Capabilities ("what can be done")
+- **Nous** — Coordination / Intelligence ("what should happen, by whom, when")

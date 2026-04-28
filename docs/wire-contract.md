@@ -1,0 +1,113 @@
+# Wire contract
+
+This document is the authoritative list of strings consumers may rely on when reading Chronos signals: the `Pattern` enum values, every `Evidence.Kind` a detector emits, and every key that may appear in `Signal.Metrics` or `Evidence.Metrics`. Renaming any of these is a breaking change.
+
+The wire shape itself (field names, JSON tags, types) is in `client/types.go` and `internal/api/dto.go`; this document covers only the string-valued fields whose stability matters to consumers that branch on them.
+
+## Pattern enum
+
+`Signal.Pattern` is one of:
+
+| Value           | Constant                          | Detector       |
+|-----------------|-----------------------------------|----------------|
+| `recurrence`    | `client.PatternTypeRecurrence`    | Recurrence     |
+| `trend`         | `client.PatternTypeTrend`         | Trend          |
+| `spike`         | `client.PatternTypeSpike`         | Spike          |
+| `drop`          | `client.PatternTypeDrop`          | Drop           |
+| `stall`         | `client.PatternTypeStall`         | Stall          |
+| `anomaly`       | `client.PatternTypeAnomaly`       | Anomaly        |
+| `seasonality`   | `client.PatternTypeSeasonality`   | Seasonality    |
+| `correlation`   | `client.PatternTypeCorrelation`   | Correlation    |
+
+Consumers should switch on the `client.PatternType*` constants. New patterns will be added with new string values; consumers using a closed switch on a typed enum will surface unknown patterns naturally.
+
+## Evidence kinds and metric keys per detector
+
+Each detector emits a stable `Evidence.Kind` (single string) and a stable set of keys in `Signal.Metrics` and `Evidence.Metrics`. Future evolutions add keys; renames or removals are breaking changes.
+
+### Recurrence — `Pattern: "recurrence"`
+
+- **Evidence.Kind**: `similar_state` — one per peer state above the similarity threshold.
+- **Evidence.Score**: cosine similarity to the peer (`[0, 1]`).
+- **Evidence.Metrics**:
+  - `outcome_diff` — `peer.outcome - subject.outcome`. Higher means the peer's outcome was better than the subject's at that observation.
+- **Signal.Metrics**:
+  - `avg_similarity` — mean of evidence scores.
+  - `sample_size` — number of peer cases.
+  - `avg_outcome_diff` — mean of evidence `outcome_diff`.
+
+### Trend — `Pattern: "trend"`
+
+- **Evidence.Kind**: `regression_summary` — exactly one per signal.
+- **Evidence.Score**: R² of the regression.
+- **Evidence.Metrics** *(equal to Signal.Metrics)*:
+  - `slope` — OLS slope of outcome vs. ordinal index.
+  - `intercept` — OLS intercept.
+  - `r2` — coefficient of determination.
+  - `n` — number of observations in the window.
+
+### Spike / Drop — `Pattern: "spike" | "drop"`
+
+Spike and Drop share the same evidence shape; sign of `z` distinguishes them.
+
+- **Evidence.Kind**: `baseline_deviation` — exactly one per signal.
+- **Evidence.Score**: `|z|`.
+- **Evidence.Metrics**:
+  - `z` — z-score of the latest outcome against the rolling baseline (signed).
+  - `baseline_mean` — mean of the previous `SpikeWindow` outcomes.
+  - `baseline_stddev` — sample stddev of the baseline.
+- **Signal.Metrics** *(superset of evidence)*:
+  - `z`, `baseline_mean`, `baseline_stddev` — same as evidence.
+  - `observed_outcome` — the latest outcome value.
+  - `window` — `SpikeWindow` size (number of baseline points).
+
+### Stall — `Pattern: "stall"`
+
+- **Evidence.Kind**: `variance_window` — exactly one per signal.
+- **Evidence.Score**: normalised stddev.
+- **Evidence.Metrics** *(equal to Signal.Metrics)*:
+  - `normalised_stddev` — stddev divided by a non-zero baseline (first value, or mean if first is zero).
+  - `mean` — mean outcome over the window.
+  - `n` — number of observations.
+
+### Anomaly — `Pattern: "anomaly"`
+
+- **Evidence.Kind**: `peer_distance` — one per peer (sorted similarity-descending so `evidence[0]` is the closest peer).
+- **Evidence.Score**: cosine similarity to the peer (`[0, 1]`).
+- **Evidence.Metrics**: empty.
+- **Signal.Metrics**:
+  - `max_peer_similarity` — highest similarity to any peer (the subject is isolated when this is below `AnomalyMaxSimilarity`).
+  - `peer_count` — number of peers compared.
+- **Window invariant**: `Window.Start == Window.End == subject.Timestamp`. Anomaly is a snapshot, not an interval; consumers computing duration must special-case this.
+
+### Seasonality — `Pattern: "seasonality"`
+
+- **Evidence.Kind**: `autocorrelation_peak` — exactly one per signal.
+- **Evidence.Score**: autocorrelation value at the peak lag.
+- **Evidence.Metrics** *(equal to Signal.Metrics)*:
+  - `period` — lag at which autocorrelation peaks (in samples; multiply by the adapter's cadence to get wall-clock period).
+  - `autocorrelation` — the peak Pearson autocorrelation.
+  - `n` — number of observations.
+
+### Correlation — `Pattern: "correlation"`
+
+One signal per pair, deterministically owned by the lex-smaller series ID; the partner appears in evidence.
+
+- **Evidence.Kind**: `pair_correlation` — exactly one per signal, pointing at the partner series.
+- **Evidence.Score**: `|r|`.
+- **Evidence.Metrics** *(equal to Signal.Metrics)*:
+  - `r` — signed Pearson correlation.
+  - `abs_r` — `|r|`.
+  - `n` — number of aligned observations.
+  - `direction` — `+1` for positive `r`, `-1` for negative, `0` for zero.
+
+## Sort order
+
+`SignalRepository.List` and the HTTP `/v1/signals` endpoint return signals sorted by `detected_at` descending, then `confidence` descending. Within a single compute run the engine emits in the same order; persistence preserves it.
+
+## Stability policy
+
+- **Adding a new key** to `Signal.Metrics` or `Evidence.Metrics` is non-breaking. Consumers must tolerate unknown keys.
+- **Adding a new `Pattern` value** is non-breaking. Consumers using a closed switch will surface unknowns naturally.
+- **Adding a new `Evidence.Kind`** under an existing detector is reserved as a future evolution path. Consumers branching on `Kind` should default-case unknowns rather than panic.
+- **Renaming or removing** any of the strings above is a breaking change and requires an `/v2` API.
