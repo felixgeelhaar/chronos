@@ -121,6 +121,25 @@ func (r *EntityStateRepository) Count(ctx context.Context, adapterName string) (
 	return n, nil
 }
 
+// ListScopes returns the distinct ScopeIDs that have at least one
+// observation. Used by the in-process detection scheduler.
+func (r *EntityStateRepository) ListScopes(ctx context.Context) ([]uuid.UUID, error) {
+	rows, err := r.conn.DB.QueryContext(ctx, `SELECT DISTINCT scope_id FROM entity_states`)
+	if err != nil {
+		return nil, fmt.Errorf("entity_state list scopes: %w", err)
+	}
+	defer func() { _ = rows.Close() }()
+	var out []uuid.UUID
+	for rows.Next() {
+		var id uuid.UUID
+		if err := rows.Scan(&id); err != nil {
+			return nil, fmt.Errorf("entity_state list scopes scan: %w", err)
+		}
+		out = append(out, id)
+	}
+	return out, rows.Err()
+}
+
 func scanEntityStates(rows *sql.Rows) ([]chronos.EntityState, error) {
 	defer func() { _ = rows.Close() }()
 	var out []chronos.EntityState

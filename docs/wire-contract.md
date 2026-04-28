@@ -105,6 +105,20 @@ One signal per pair, deterministically owned by the lex-smaller series ID; the p
 
 `SignalRepository.List` and the HTTP `/v1/signals` endpoint return signals sorted by `detected_at` descending, then `confidence` descending. Within a single compute run the engine emits in the same order; persistence preserves it.
 
+## Push transports
+
+Webhook bodies and SSE event payloads use the **same JSON shape** as `/v1/signals` responses (`SignalDTO`). Anything described above applies to push consumers identically.
+
+Webhook headers carry the only push-specific contract:
+
+| Header | Stable? | Meaning |
+|---|---|---|
+| `X-Chronos-Event` | yes — currently always `signal.detected` | event kind; future versions may add `signal.batch` etc. Switch defensively. |
+| `X-Chronos-Delivery` | yes | UUID v4 unique per send attempt; idempotency key for retries. |
+| `X-Chronos-Signature` | yes — `sha256=<hex>` | HMAC-SHA256 of the raw body keyed on `CHRONOS_WEBHOOK_SECRET`. Absent when no secret is configured. |
+
+SSE frames use the SSE event name `signal` and a single `data:` line containing `SignalDTO` JSON. The endpoint sends an initial `: connected` comment line for connection-readiness signalling.
+
 ## Stability policy
 
 - **Adding a new key** to `Signal.Metrics` or `Evidence.Metrics` is non-breaking. Consumers must tolerate unknown keys.

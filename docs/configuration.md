@@ -28,6 +28,11 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 | `CHRONOS_CORRELATION_MIN_POINTS` | `5` | Correlation | Minimum aligned observations between two series. |
 | `CHRONOS_HTTP_PORT` | `7778` | `serve` | HTTP listen port. |
 | `CHRONOS_HTTP_HOST` | `127.0.0.1` | `serve` | HTTP listen host. Use `0.0.0.0` to bind all interfaces. |
+| `CHRONOS_WEBHOOK_URLS` | unset | both | Comma-separated POST endpoints; empty disables webhooks. |
+| `CHRONOS_WEBHOOK_SECRET` | unset | both | HMAC-SHA256 key for `X-Chronos-Signature`. Empty omits the header. |
+| `CHRONOS_WEBHOOK_TIMEOUT` | `5s` | both | Per-request HTTP client timeout (Go duration). |
+| `CHRONOS_WEBHOOK_RETRIES` | `1` | both | Best-effort retries on 5xx. No retry on 2xx or 4xx. |
+| `CHRONOS_DETECTION_INTERVAL` | `0` | `serve` | Background detection cadence; `0` disables. Required for SSE to receive signals. |
 | `CHRONOS_VERBOSE` | unset | CLI | When set to any non-empty value, prints the cause chain on errors. |
 
 `serve` flags `--port` and `--host` override their env counterparts. `compute` accepts `--scope-id` (preferred) or `--coach-id` (legacy alias).
@@ -58,6 +63,40 @@ Each detector has its own knob namespace (`CHRONOS_<DETECTOR>_*`) so you can tun
 - The compute pipeline applies `CHRONOS_JOB_TIMEOUT` as a `context.WithTimeout` covering fetch, save, detect, and persist. Long-running upstreams should respect the supplied `context.Context`.
 - `POST /v1/ingest` is the streaming entry point. Compute does not run automatically on ingest; run `chronos compute` (or call detection from a scheduler) at the cadence appropriate for your patterns.
 - Logs are emitted via `log/slog` to stderr with a text handler at info level.
+
+## Push notifications
+
+Chronos can push newly-detected signals to consumers in addition to (or instead of) the polling API. Two transports ship today; both implement `internal/ports.Notifier` and fan out off the same `SignalRepository.Save` boundary.
+
+### Webhooks
+
+Configured via `CHRONOS_WEBHOOK_URLS` (comma-separated). Each signal becomes a POST with these headers:
+
+- `Content-Type: application/json`
+- `X-Chronos-Event: signal.detected`
+- `X-Chronos-Delivery: <uuid-v4>` — unique per send attempt; consumers de-duplicate by this when retrying.
+- `X-Chronos-Signature: sha256=<hex hmac>` — only when `CHRONOS_WEBHOOK_SECRET` is set. Computed over the raw body.
+
+Body shape is identical to `/v1/signals` responses (see [`wire-contract.md`](wire-contract.md)). Best-effort delivery: `CHRONOS_WEBHOOK_RETRIES` retries on 5xx with 1s linear backoff, no retry on 2xx (success) or 4xx (consumer rejected). Failures are logged and counted in the `chronos_webhook_deliveries_total` metric.
+
+**De-duplication is the consumer's responsibility.** Treat `Signal.ID` as the idempotency key.
+
+### Server-Sent Events (SSE)
+
+Available at `GET /v1/signals/stream?scope_id=<uuid>&pattern=<optional>`. Set `CHRONOS_DETECTION_INTERVAL` to a non-zero duration to enable the in-process detection scheduler — without it, `serve` only ingests, so the SSE stream would never produce events.
+
+Each event has the form:
+
+```
+event: signal
+data: {SignalDTO JSON}
+```
+
+Per-client buffer is bounded; slow consumers are silently dropped. The endpoint sends a `: connected\n\n` heartbeat comment immediately after subscription so clients can detect a successful connection before the first signal.
+
+### Reliability
+
+Both transports are at-most-once. The persistence record (`SignalRepository`) is the source of truth — push is a courtesy. Consumers needing replay should pair the live stream with a `/v1/signals` query keyed on the last-seen `detected_at`.
 
 ## Authentication (HTTP API)
 

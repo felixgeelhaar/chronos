@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -56,6 +57,15 @@ type Config struct {
 	HTTPPort  int
 	HTTPHost  string
 	APIToken  string // optional bearer token; empty disables auth on the API
+
+	// Notifications — Webhooks
+	WebhookURLs    []string      // comma-separated POST endpoints; empty disables webhooks
+	WebhookSecret  string        // HMAC-SHA256 key for X-Chronos-Signature
+	WebhookTimeout time.Duration // per-request timeout
+	WebhookRetries int           // best-effort retries on 5xx (no retry on 2xx/4xx)
+
+	// Notifications — Detection scheduler (serve only)
+	DetectionInterval time.Duration // 0 disables the in-process scheduler
 }
 
 // Default returns sensible defaults.
@@ -93,6 +103,13 @@ func Default() *Config {
 		HTTPPort: defaultEnvInt("CHRONOS_HTTP_PORT", 7778),
 		HTTPHost: defaultEnv("CHRONOS_HTTP_HOST", "127.0.0.1"),
 		APIToken: defaultEnv("CHRONOS_API_TOKEN", ""),
+
+		WebhookURLs:    defaultEnvSlice("CHRONOS_WEBHOOK_URLS", nil),
+		WebhookSecret:  defaultEnv("CHRONOS_WEBHOOK_SECRET", ""),
+		WebhookTimeout: defaultEnvDuration("CHRONOS_WEBHOOK_TIMEOUT", 5*time.Second),
+		WebhookRetries: defaultEnvInt("CHRONOS_WEBHOOK_RETRIES", 1),
+
+		DetectionInterval: defaultEnvDuration("CHRONOS_DETECTION_INTERVAL", 0),
 	}
 }
 
@@ -154,6 +171,24 @@ func defaultEnvFloat64(key string, fallback float64) float64 {
 		}
 	}
 	return fallback
+}
+
+func defaultEnvSlice(key string, fallback []string) []string {
+	v := os.Getenv(key)
+	if v == "" {
+		return fallback
+	}
+	parts := strings.Split(v, ",")
+	out := make([]string, 0, len(parts))
+	for _, p := range parts {
+		if trimmed := strings.TrimSpace(p); trimmed != "" {
+			out = append(out, trimmed)
+		}
+	}
+	if len(out) == 0 {
+		return fallback
+	}
+	return out
 }
 
 func defaultEnvDuration(key string, fallback time.Duration) time.Duration {

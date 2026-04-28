@@ -13,7 +13,10 @@ import (
 
 	"github.com/felixgeelhaar/chronos/internal/api"
 	"github.com/felixgeelhaar/chronos/internal/config"
+	"github.com/felixgeelhaar/chronos/internal/notify"
 	"github.com/felixgeelhaar/chronos/internal/observability"
+	"github.com/felixgeelhaar/chronos/internal/pipeline"
+	"github.com/felixgeelhaar/chronos/internal/ports"
 	"github.com/felixgeelhaar/chronos/internal/store"
 )
 
@@ -44,7 +47,37 @@ func runServe(args []string) error {
 
 	logger := slog.Default().With("cmd", "serve")
 	metrics := observability.New()
-	srv := api.NewServer(conn.EntityStates, conn.Signals, metrics, logger)
+
+	// Build the notifier set: webhooks (cross-process) + SSE
+	// (in-process / browser). Both implement ports.Notifier and fan
+	// out off the same Save call. SSE lives in this process; signals
+	// reach it only when the in-process detection scheduler runs, so
+	// we pair them: scheduler enabled <=> SSE useful.
+	var notifiers notify.Multi
+	if len(cfg.WebhookURLs) > 0 {
+		notifiers = append(notifiers, notify.NewWebhook(notify.WebhookConfig{
+			URLs:    cfg.WebhookURLs,
+			Secret:  cfg.WebhookSecret,
+			Timeout: cfg.WebhookTimeout,
+			Retries: cfg.WebhookRetries,
+		}, metrics, logger))
+	}
+	var sse *notify.SSE
+	if cfg.DetectionInterval > 0 {
+		sse = notify.NewSSE(16) // small per-client buffer; slow clients are dropped
+		notifiers = append(notifiers, sse)
+	}
+	var notifier ports.Notifier
+	if len(notifiers) > 0 {
+		notifier = notifiers
+	}
+
+	signals := wrapWithNotifier(conn.Signals, notifier)
+
+	srv := api.NewServer(conn.EntityStates, signals, metrics, logger)
+	if sse != nil {
+		srv = srv.WithSSE(sse)
+	}
 	mux := http.NewServeMux()
 	srv.RegisterRoutes(mux)
 
@@ -68,6 +101,26 @@ func runServe(args []string) error {
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
+	// rootCtx propagates shutdown to background goroutines (scheduler,
+	// SSE drain). The HTTP server has its own Shutdown; cancelling
+	// rootCtx unwinds everything else.
+	rootCtx, cancelRoot := context.WithCancel(context.Background())
+	defer cancelRoot()
+
+	// In-process detection scheduler. Disabled when interval == 0 so
+	// `serve` keeps its historical behaviour: streaming ingest only,
+	// no detection. Enabled, it ticks Engine.Detect over each scope's
+	// observations and writes signals via the notifier-wrapped repo —
+	// which is what makes SSE see anything.
+	if cfg.DetectionInterval > 0 {
+		sched := pipeline.NewScheduler(conn.EntityStates, signals, pipeline.NewEngine(cfg), cfg.DetectionInterval, logger)
+		go func() {
+			if err := sched.Run(rootCtx); err != nil {
+				logger.Error("scheduler exited with error", "err", err)
+			}
+		}()
+	}
+
 	// Graceful shutdown on SIGINT / SIGTERM. Stops accepting new
 	// requests; lets in-flight ones drain for up to 10 seconds.
 	go func() {
@@ -75,12 +128,14 @@ func runServe(args []string) error {
 		signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
 		<-sigCh
 		logger.Info("shutdown signal received")
+		cancelRoot() // stop the scheduler before draining HTTP
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		_ = httpSrv.Shutdown(ctx)
 	}()
 
-	logger.Info("listening", "addr", addr, "store", cfg.DBType)
+	logger.Info("listening", "addr", addr, "store", cfg.DBType,
+		"detection_interval", cfg.DetectionInterval, "webhooks", len(cfg.WebhookURLs))
 	if err := httpSrv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		return NewSystemError(err, "serve: %v", err)
 	}

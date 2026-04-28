@@ -85,6 +85,21 @@ func (r *EntityStateRepository) DeleteOlderThan(_ context.Context, cutoff time.T
 	return nil
 }
 
+// ListScopes returns the distinct ScopeIDs that have at least one
+// observation. Order is unspecified. The scheduler uses this to know
+// which scopes to detect over.
+func (r *EntityStateRepository) ListScopes(_ context.Context) ([]uuid.UUID, error) {
+	r.conn.mu.RLock()
+	defer r.conn.mu.RUnlock()
+	out := make([]uuid.UUID, 0, len(r.conn.entityStates))
+	for scopeID, list := range r.conn.entityStates {
+		if len(list) > 0 {
+			out = append(out, scopeID)
+		}
+	}
+	return out, nil
+}
+
 // Count returns the total number of states recorded by adapterName.
 func (r *EntityStateRepository) Count(_ context.Context, adapterName string) (int64, error) {
 	r.conn.mu.RLock()

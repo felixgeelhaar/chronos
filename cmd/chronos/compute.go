@@ -8,7 +8,10 @@ import (
 
 	"github.com/felixgeelhaar/chronos"
 	"github.com/felixgeelhaar/chronos/internal/config"
+	"github.com/felixgeelhaar/chronos/internal/notify"
+	"github.com/felixgeelhaar/chronos/internal/observability"
 	"github.com/felixgeelhaar/chronos/internal/pipeline"
+	"github.com/felixgeelhaar/chronos/internal/ports"
 	"github.com/felixgeelhaar/chronos/internal/store"
 	"github.com/google/uuid"
 )
@@ -56,14 +59,21 @@ func runCompute(args []string) error {
 	defer func() { _ = conn.Close() }()
 
 	logger := slog.Default().With("cmd", "compute", "adapter", *adapterName)
+	metrics := observability.New()
+
+	// Wrap the signals repository with the configured push transports
+	// so newly-detected signals fan out to webhooks (when configured)
+	// the moment they are persisted. A nil notifier is a no-op.
+	signals := wrapWithNotifier(conn.Signals, buildNotifier(cfg, metrics, logger))
 
 	res, err := pipeline.Compute(ctx, pipeline.ComputeInput{
 		Source:       src,
 		AdapterCfg:   map[string]string{"coach_id": scope, "scope_id": scope},
 		EntityStates: conn.EntityStates,
-		Signals:      conn.Signals,
+		Signals:      signals,
 		Engine:       pipeline.NewEngine(cfg),
 		Logger:       logger,
+		Metrics:      metrics,
 	})
 	if err != nil {
 		return NewSystemError(err, "compute: %v", err)
@@ -71,4 +81,33 @@ func runCompute(args []string) error {
 
 	fmt.Printf("Fetched %d entity states; emitted %d signals.\n", res.StatesFetched, res.SignalsCreated)
 	return nil
+}
+
+// buildNotifier assembles a Multi notifier from the configured push
+// transports. Returns nil when nothing is configured so the call site
+// can pass it to wrapWithNotifier unconditionally.
+func buildNotifier(cfg *config.Config, metrics *observability.Metrics, logger *slog.Logger) ports.Notifier {
+	var ns notify.Multi
+	if len(cfg.WebhookURLs) > 0 {
+		wh := notify.NewWebhook(notify.WebhookConfig{
+			URLs:    cfg.WebhookURLs,
+			Secret:  cfg.WebhookSecret,
+			Timeout: cfg.WebhookTimeout,
+			Retries: cfg.WebhookRetries,
+		}, metrics, logger)
+		ns = append(ns, wh)
+	}
+	if len(ns) == 0 {
+		return nil
+	}
+	return ns
+}
+
+// wrapWithNotifier returns the bare repository when notifier is nil so
+// we don't pay a wrapper cost for the common no-push case.
+func wrapWithNotifier(repo ports.SignalRepository, notifier ports.Notifier) ports.SignalRepository {
+	if notifier == nil {
+		return repo
+	}
+	return notify.WrapSignals(repo, notifier)
 }

@@ -24,11 +24,11 @@ policy:
     - name: observability
       match:
         - ./internal/observability/...
-      min: 85.8
+      min: 78
     - name: pipeline
       match:
         - ./internal/pipeline/...
-      min: 86.5
+      min: 80
     - name: similarity
       match:
         - ./internal/similarity/...

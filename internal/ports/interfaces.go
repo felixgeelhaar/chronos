@@ -50,6 +50,12 @@ type EntityStateRepository interface {
 
 	// Count returns the number of states recorded by the named adapter.
 	Count(ctx context.Context, adapterName string) (int64, error)
+
+	// ListScopes returns the set of distinct ScopeIDs that have at
+	// least one observation. Order is unspecified. Used by the
+	// in-process detection scheduler to know which scopes to detect
+	// over without requiring callers to maintain a parallel index.
+	ListScopes(ctx context.Context) ([]uuid.UUID, error)
 }
 
 // SignalFilter is a structured query against the signals store. All
@@ -76,6 +82,19 @@ type SignalFilter struct {
 
 	// Limit caps the number of returned signals; 0 means no limit.
 	Limit int
+}
+
+// Notifier is the outbound port for pushing newly-persisted signals to
+// downstream consumers (webhooks, SSE clients, in-process listeners).
+//
+// Implementations are fire-and-forget: failures must NOT propagate to
+// the persistence path, must NOT panic the caller, and must respect
+// ctx cancellation. Delivery semantics are at-most-once per consumer;
+// consumers de-duplicate by Signal.ID. Per the cognitive-stack vision,
+// notification is a transport concern only — the decision of what a
+// signal means lives in Nous, never here.
+type Notifier interface {
+	Notify(ctx context.Context, sig domain.Signal)
 }
 
 // SignalRepository persists and queries signals. There is no Dismiss or

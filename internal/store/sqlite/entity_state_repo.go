@@ -96,6 +96,31 @@ func (r *EntityStateRepository) DeleteOlderThan(ctx context.Context, cutoff time
 	return nil
 }
 
+// ListScopes returns the distinct ScopeIDs that have at least one
+// observation. Used by the in-process detection scheduler. The query
+// is direct SQL rather than sqlc-generated to keep the surface
+// minimal — there is exactly one query and it has no parameters.
+func (r *EntityStateRepository) ListScopes(ctx context.Context) ([]uuid.UUID, error) {
+	rows, err := r.conn.DB.QueryContext(ctx, `SELECT DISTINCT scope_id FROM entity_states`)
+	if err != nil {
+		return nil, fmt.Errorf("entity_state list scopes: %w", err)
+	}
+	defer func() { _ = rows.Close() }()
+	var out []uuid.UUID
+	for rows.Next() {
+		var s string
+		if err := rows.Scan(&s); err != nil {
+			return nil, fmt.Errorf("entity_state list scopes scan: %w", err)
+		}
+		id, err := uuid.Parse(s)
+		if err != nil {
+			return nil, fmt.Errorf("entity_state list scopes parse %q: %w", s, err)
+		}
+		out = append(out, id)
+	}
+	return out, rows.Err()
+}
+
 // Count returns the number of states stored under adapterName.
 func (r *EntityStateRepository) Count(ctx context.Context, adapterName string) (int64, error) {
 	n, err := r.conn.q.CountEntityStates(ctx, adapterName)

@@ -37,6 +37,7 @@ type Metrics struct {
 	httpRequestsTotal map[labelKey]uint64
 	httpDurationSum   map[labelKey]float64
 	httpDurationCount map[labelKey]uint64
+	webhookDeliveries map[labelKey]uint64
 }
 
 // labelKey is a string in the form "k1=v1,k2=v2" with keys sorted
@@ -52,6 +53,7 @@ func New() *Metrics {
 		httpRequestsTotal: make(map[labelKey]uint64),
 		httpDurationSum:   make(map[labelKey]float64),
 		httpDurationCount: make(map[labelKey]uint64),
+		webhookDeliveries: make(map[labelKey]uint64),
 	}
 }
 
@@ -76,6 +78,20 @@ func (m *Metrics) ObserveObservations(adapter string, n int) {
 	k := makeLabelKey("adapter", adapter)
 	m.mu.Lock()
 	m.observationsTotal[k] += uint64(n)
+	m.mu.Unlock()
+}
+
+// ObserveWebhook records the outcome of a single webhook delivery
+// attempt. outcome is one of "success", "client_error", "failure";
+// status is the final HTTP status code observed (0 when the request
+// never returned, e.g., DNS failure).
+func (m *Metrics) ObserveWebhook(outcome string, status int) {
+	if m == nil {
+		return
+	}
+	k := makeLabelKey("outcome", outcome, "status", fmt.Sprintf("%d", status))
+	m.mu.Lock()
+	m.webhookDeliveries[k]++
 	m.mu.Unlock()
 }
 
@@ -123,9 +139,14 @@ func (m *Metrics) Render(w io.Writer) error {
 		mapToSortedFloats(m.httpDurationSum)); err != nil {
 		return err
 	}
-	return writeFamily(w, "chronos_http_request_duration_seconds_count", "counter",
+	if err := writeFamily(w, "chronos_http_request_duration_seconds_count", "counter",
 		"Number of HTTP requests, labelled by path. Divide _sum by _count for mean latency.",
-		mapToSorted(m.httpDurationCount))
+		mapToSorted(m.httpDurationCount)); err != nil {
+		return err
+	}
+	return writeFamily(w, "chronos_webhook_deliveries_total", "counter",
+		"Total webhook delivery attempts, labelled by outcome (success|client_error|failure) and final status code.",
+		mapToSorted(m.webhookDeliveries))
 }
 
 // kvSample pairs a labelKey with a numeric value for rendering.

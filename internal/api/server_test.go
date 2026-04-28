@@ -161,3 +161,114 @@ func TestSignalDetail_NotFound(t *testing.T) {
 
 // Compile-time assertion that EntityState satisfies our DTO conversion.
 var _ = chronos.EntityState{}
+
+// fakeBroadcaster is a minimal SSEBroadcaster for handler-level tests.
+// It returns a channel the test pre-loads with a signal so we can
+// assert what handleStream writes onto the wire without standing up
+// the real notify.SSE.
+type fakeBroadcaster struct {
+	ch          chan domain.Signal
+	subCalls    int
+	lastScope   uuid.UUID
+	lastPattern string
+}
+
+func (f *fakeBroadcaster) Subscribe(scope uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal) {
+	f.subCalls++
+	f.lastScope = scope
+	f.lastPattern = pattern
+	return uuid.New(), f.ch
+}
+
+func (f *fakeBroadcaster) Unsubscribe(uuid.UUID) {
+	close(f.ch)
+}
+
+func TestStream_RejectsWithoutBroadcaster(t *testing.T) {
+	ts, _ := setupServer(t) // setupServer does not attach SSE
+	defer ts.Close()
+	resp, err := http.Get(ts.URL + "/v1/signals/stream?scope_id=" + uuid.New().String())
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusNotImplemented {
+		t.Errorf("status = %d, want 501", resp.StatusCode)
+	}
+}
+
+func TestStream_RequiresScopeID(t *testing.T) {
+	mem := memory.New()
+	srv := NewServer(mem.EntityStates, mem.Signals, nil, nil).
+		WithSSE(&fakeBroadcaster{ch: make(chan domain.Signal, 1)})
+	mux := http.NewServeMux()
+	srv.RegisterRoutes(mux)
+	ts := httptest.NewServer(mux)
+	defer ts.Close()
+
+	resp, err := http.Get(ts.URL + "/v1/signals/stream")
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400", resp.StatusCode)
+	}
+}
+
+func TestStream_DeliversSignalAsSSEEvent(t *testing.T) {
+	mem := memory.New()
+	bc := &fakeBroadcaster{ch: make(chan domain.Signal, 1)}
+	srv := NewServer(mem.EntityStates, mem.Signals, nil, nil).WithSSE(bc)
+	mux := http.NewServeMux()
+	srv.RegisterRoutes(mux)
+	ts := httptest.NewServer(mux)
+	defer ts.Close()
+
+	scope := uuid.New()
+	signalID := uuid.New()
+	bc.ch <- domain.Signal{
+		ID:         signalID,
+		ScopeID:    scope,
+		Series:     uuid.New(),
+		Pattern:    domain.PatternTypeRecurrence,
+		DetectedAt: time.Now(),
+		Window:     domain.TimeWindow{Start: time.Now().Add(-time.Hour), End: time.Now()},
+		Strength:   0.9,
+		Confidence: 0.8,
+	}
+
+	// Use a context to bound the read; the handler holds the
+	// connection open until we cancel.
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet,
+		ts.URL+"/v1/signals/stream?scope_id="+scope.String()+"&pattern=recurrence", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+	if got := resp.Header.Get("Content-Type"); got != "text/event-stream" {
+		t.Errorf("Content-Type = %q, want text/event-stream", got)
+	}
+
+	// Read enough bytes to capture the heartbeat + the first event.
+	buf := make([]byte, 2048)
+	n, _ := resp.Body.Read(buf)
+	body := string(buf[:n])
+	if !bytes.Contains(buf[:n], []byte("event: signal")) {
+		t.Errorf("missing event line:\n%s", body)
+	}
+	if !bytes.Contains(buf[:n], []byte(signalID.String())) {
+		t.Errorf("missing signal id in payload:\n%s", body)
+	}
+	if bc.subCalls != 1 || bc.lastScope != scope || bc.lastPattern != "recurrence" {
+		t.Errorf("subscribe called wrong: calls=%d scope=%v pattern=%q", bc.subCalls, bc.lastScope, bc.lastPattern)
+	}
+}
