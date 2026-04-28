@@ -114,6 +114,12 @@ brews:
       owner: felixgeelhaar
       name: homebrew-tap
       branch: main
+      # PAT with `contents: write` on felixgeelhaar/homebrew-tap.
+      # The workflow's GITHUB_TOKEN cannot push to a different repo,
+      # so a separate token is required. Stored as HOMEBREW_TAP_TOKEN
+      # repo secret; the release workflow exposes it as
+      # TAP_GITHUB_TOKEN.
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
     directory: Formula
     homepage: "https://github.com/felixgeelhaar/chronos"
     description: "Time / Pattern Perception in the cognitive stack"

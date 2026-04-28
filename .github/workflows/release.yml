@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # create the GitHub Release and upload artefacts
+  packages: write   # push the multi-arch image to ghcr.io
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history is required for the changelog filter and for
+          # `git describe` to compute the version when invoked manually.
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache: true
+
+      - name: Set up QEMU
+        # Required for cross-arch Docker builds (linux/arm64 on a
+        # linux/amd64 runner).
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify Homebrew tap secret is present
+        # Without this PAT, goreleaser would silently skip pushing the
+        # formula update to felixgeelhaar/homebrew-tap. Fail loud
+        # instead so a misconfigured release is caught before the
+        # release artefacts are published.
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          if [ -z "${HOMEBREW_TAP_TOKEN:-}" ]; then
+            echo "::error::HOMEBREW_TAP_TOKEN secret is not set."
+            echo "Create a PAT with 'contents: write' on felixgeelhaar/homebrew-tap and store it as HOMEBREW_TAP_TOKEN in this repo's Actions secrets."
+            exit 1
+          fi
+
+      - name: Run goreleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # goreleaser's brews block reads {{ .Env.TAP_GITHUB_TOKEN }}
+          # for cross-repo formula pushes; GITHUB_TOKEN cannot reach
+          # the tap repo.
+          TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
