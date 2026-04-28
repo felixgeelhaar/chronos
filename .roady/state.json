@@ -1,0 +1,524 @@
+{
+  "project_id": "chronos",
+  "version": 98,
+  "task_states": {
+    "task-adapter-ascend": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "adapters/ascend/ascend.go"
+      ],
+      "started_at": "2026-04-27T22:53:22.804473+02:00",
+      "completed_at": "2026-04-27T22:54:04.430535+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-add-homebrew-tap": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".goreleaser.yaml: homebrew_casks block targeting felixgeelhaar/homebrew-tap (verified existing repo); v2-modern syntax (homebrew_casks not deprecated brews); macOS quarantine bit stripped on install since binary is unsigned; goreleaser check passes"
+      ],
+      "started_at": "2026-04-27T23:17:48.969493+02:00",
+      "completed_at": "2026-04-27T23:28:43.584291+02:00",
+      "elapsed_minutes": 10
+    },
+    "task-add-nfpms-packages": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".goreleaser.yaml: nfpms block produces .deb/.rpm/.apk; binary at /usr/local/bin/chronos; LICENSE+README at /usr/share/doc/chronos/; goreleaser check passes"
+      ],
+      "started_at": "2026-04-27T23:28:44.456802+02:00",
+      "completed_at": "2026-04-27T23:29:03.44205+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-add-precommit-config": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".pre-commit-config.yaml (4 repos, 11 hooks: 6 hygiene + go-fmt + go-mod-tidy + local go vet ./... + golangci-lint v2.1.6 + conventional commits); Makefile precommit + precommit-install targets; README Development section updated"
+      ],
+      "started_at": "2026-04-27T23:09:46.827948+02:00",
+      "completed_at": "2026-04-27T23:16:40.806412+02:00",
+      "elapsed_minutes": 6
+    },
+    "task-bearer-auth": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "client/"
+      ],
+      "started_at": "2026-04-27T22:53:01.46742+02:00",
+      "completed_at": "2026-04-27T22:53:38.92534+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-configuration": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/config/config.go"
+      ],
+      "started_at": "2026-04-27T22:53:23.5576+02:00",
+      "completed_at": "2026-04-27T22:54:05.570536+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-anomaly": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/anomaly.go"
+      ],
+      "started_at": "2026-04-27T22:53:12.52579+02:00",
+      "completed_at": "2026-04-27T22:53:51.511478+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-correlation": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/correlation.go"
+      ],
+      "started_at": "2026-04-27T22:53:14.033922+02:00",
+      "completed_at": "2026-04-27T22:53:53.76191+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-interface": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/"
+      ],
+      "started_at": "2026-04-27T22:53:06.038745+02:00",
+      "completed_at": "2026-04-27T22:53:44.206444+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-recurrence": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/recurrence.go"
+      ],
+      "started_at": "2026-04-27T22:53:08.712182+02:00",
+      "completed_at": "2026-04-27T22:53:47.37657+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-seasonality": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/seasonality.go"
+      ],
+      "started_at": "2026-04-27T22:53:13.268707+02:00",
+      "completed_at": "2026-04-27T22:53:52.619056+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-spike-drop": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/spike.go,drop.go"
+      ],
+      "started_at": "2026-04-27T22:53:10.625736+02:00",
+      "completed_at": "2026-04-27T22:53:49.558115+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-stall": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/stall.go"
+      ],
+      "started_at": "2026-04-27T22:53:11.371573+02:00",
+      "completed_at": "2026-04-27T22:53:50.346511+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-detector-trend": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/trend.go"
+      ],
+      "started_at": "2026-04-27T22:53:09.471567+02:00",
+      "completed_at": "2026-04-27T22:53:48.234689+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-document-anomaly-window": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "docs/cognitive-stack.md (Window bullet) and docs/architecture.md (Anomaly entry) updated"
+      ],
+      "started_at": "2026-04-27T23:04:08.560086+02:00",
+      "completed_at": "2026-04-27T23:05:14.453767+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-document-install-channels": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "README.md Install section now lists all channels: Homebrew cask, Docker (ghcr.io multi-arch), .deb/.rpm/.apk, prebuilt tar.gz with checksum verification, go install, source build; supported OS/arch matrix table"
+      ],
+      "started_at": "2026-04-27T23:29:04.14694+02:00",
+      "completed_at": "2026-04-27T23:29:23.226706+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-document-stable-evidence-keys": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "docs/wire-contract.md created; cognitive-stack.md and architecture.md link to it"
+      ],
+      "started_at": "2026-04-27T23:04:09.434093+02:00",
+      "completed_at": "2026-04-27T23:05:15.813707+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-fix-api-test-signatures": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/api/middleware_test.go: Logging(logger,nil); internal/api/server_test.go: NewServer(...nil,nil); cmd/chronos/serve.go: wired observability.New() into NewServer + Logging"
+      ],
+      "started_at": "2026-04-27T23:02:57.298988+02:00",
+      "completed_at": "2026-04-27T23:04:02.427572+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-fix-pipeline-observability-import": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/pipeline/compute.go: added internal/observability import"
+      ],
+      "started_at": "2026-04-27T23:02:56.490264+02:00",
+      "completed_at": "2026-04-27T23:04:00.247661+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-fluent-builder": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "client/"
+      ],
+      "started_at": "2026-04-27T22:52:59.567595+02:00",
+      "completed_at": "2026-04-27T22:53:37.104458+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-functional-options": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "client/"
+      ],
+      "started_at": "2026-04-27T22:53:00.397138+02:00",
+      "completed_at": "2026-04-27T22:53:37.79339+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-graceful-shutdown": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "cmd/chronos/serve.go"
+      ],
+      "started_at": "2026-04-27T22:53:20.919813+02:00",
+      "completed_at": "2026-04-27T22:54:02.510303+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-ingest-endpoint": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/api/server.go"
+      ],
+      "started_at": "2026-04-27T22:53:19.410864+02:00",
+      "completed_at": "2026-04-27T22:54:00.268574+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-no-feedback-repo": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/ports/"
+      ],
+      "started_at": "2026-04-27T22:53:04.12791+02:00",
+      "completed_at": "2026-04-27T22:53:42.017181+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-no-prose": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/domain/types.go"
+      ],
+      "started_at": "2026-04-27T22:52:15.416526+02:00",
+      "completed_at": "2026-04-27T22:53:31.269905+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-observability": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/observability/"
+      ],
+      "started_at": "2026-04-27T22:53:24.042373+02:00",
+      "completed_at": "2026-04-27T22:54:06.343395+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-outcome-convention": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "docs/adapters.md"
+      ],
+      "started_at": "2026-04-27T22:52:58.421579+02:00",
+      "completed_at": "2026-04-27T22:53:35.862446+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-output-ordering": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/"
+      ],
+      "started_at": "2026-04-27T22:53:07.940444+02:00",
+      "completed_at": "2026-04-27T22:53:46.192541+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-pipeline": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/pipeline/"
+      ],
+      "started_at": "2026-04-27T22:53:15.171675+02:00",
+      "completed_at": "2026-04-27T22:53:54.520505+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-reconcile-sort-order": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/engine.go: sort detected-at desc then confidence desc; comment updated; docs/architecture.md updated"
+      ],
+      "started_at": "2026-04-27T23:02:58.156417+02:00",
+      "completed_at": "2026-04-27T23:04:03.716263+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-registry": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "chronos.go"
+      ],
+      "started_at": "2026-04-27T22:52:57.649756+02:00",
+      "completed_at": "2026-04-27T22:53:34.706051+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-remove-empty-extract-dir": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/extract/ removed"
+      ],
+      "started_at": "2026-04-27T23:04:07.371658+02:00",
+      "completed_at": "2026-04-27T23:05:14.439834+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-scope-flag": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "cmd/chronos/compute.go"
+      ],
+      "started_at": "2026-04-27T22:53:21.631689+02:00",
+      "completed_at": "2026-04-27T22:54:03.645037+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-scope-isolation": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/detect/"
+      ],
+      "started_at": "2026-04-27T22:53:06.802059+02:00",
+      "completed_at": "2026-04-27T22:53:45.100338+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-signal-repo": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/ports/"
+      ],
+      "started_at": "2026-04-27T22:53:02.988406+02:00",
+      "completed_at": "2026-04-27T22:53:40.81004+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-signal-shape": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/domain/types.go"
+      ],
+      "started_at": "2026-04-27T22:52:14.608149+02:00",
+      "completed_at": "2026-04-27T22:53:30.619048+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-similarity": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/similarity/"
+      ],
+      "started_at": "2026-04-27T22:53:04.990847+02:00",
+      "completed_at": "2026-04-27T22:53:43.076445+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-source-interface": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "chronos.go"
+      ],
+      "started_at": "2026-04-27T22:52:56.885727+02:00",
+      "completed_at": "2026-04-27T22:53:33.569519+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-sqlc-source": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "sqlc.yaml,sql/sqlite/queries.sql"
+      ],
+      "started_at": "2026-04-27T22:53:16.70902+02:00",
+      "completed_at": "2026-04-27T22:53:57.163915+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-state-repo": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/ports/"
+      ],
+      "started_at": "2026-04-27T22:53:02.222797+02:00",
+      "completed_at": "2026-04-27T22:53:40.089099+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-store-factory": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/store.go"
+      ],
+      "started_at": "2026-04-27T22:53:18.226869+02:00",
+      "completed_at": "2026-04-27T22:53:59.094134+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-store-memory": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/memory/"
+      ],
+      "started_at": "2026-04-27T22:53:15.939715+02:00",
+      "completed_at": "2026-04-27T22:53:55.667899+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-store-postgres": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/store/postgres/"
+      ],
+      "started_at": "2026-04-27T22:53:17.463792+02:00",
+      "completed_at": "2026-04-27T22:53:57.989525+02:00",
+      "elapsed_minutes": 0
+    },
+    "task-validation": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/domain/validate.go"
+      ],
+      "started_at": "2026-04-27T22:52:16.141019+02:00",
+      "completed_at": "2026-04-27T22:53:32.424977+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-wire-coverctl-gate-ci": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".coverctl.yaml: 10 domains with no-regression thresholds (5 high-coverage at current-2pp, api at 65, store at 45, cmd/config/ports at 0); .github/workflows/ci.yml: coverctl check --from-profile after go test; Makefile: coverctl-check + coverctl-suggest targets; sqlcgen excluded; passes locally"
+      ],
+      "started_at": "2026-04-27T23:43:55.585815+02:00",
+      "completed_at": "2026-04-28T08:16:41.053324+02:00",
+      "elapsed_minutes": 512
+    },
+    "task-wire-nox-scan-ci": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".github/workflows/security.yml: nox scan with all formats, SARIF upload to Code Scanning, PR annotation, SBOM as 30-day artefact, weekly cron; .nox/baseline.json (29 findings) tracked so CI gates only on new findings; Makefile: nox-scan + nox-baseline-update targets; .gitignore: .nox/out/ + .nox/cache/; clean local run, exit 0"
+      ],
+      "started_at": "2026-04-27T23:43:56.553341+02:00",
+      "completed_at": "2026-04-28T08:16:42.173162+02:00",
+      "elapsed_minutes": 512
+    },
+    "task-wire-shape-only": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/api/dto.go"
+      ],
+      "started_at": "2026-04-27T22:53:20.14169+02:00",
+      "completed_at": "2026-04-27T22:54:01.389459+02:00",
+      "elapsed_minutes": 0
+    }
+  },
+  "updated_at": "2026-04-28T08:16:42.173163+02:00"
+}

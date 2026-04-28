@@ -1,0 +1,432 @@
+{
+  "id": "plan-chronos-1777322788",
+  "spec_id": "chronos",
+  "tasks": [
+    {
+      "id": "task-add-precommit-config",
+      "title": "Add pre-commit hooks for fmt, vet, lint, conventional commits",
+      "description": "Add .pre-commit-config.yaml using the pre-commit framework. Hooks: trailing-whitespace, end-of-file-fixer, check-yaml, check-merge-conflict, check-added-large-files (--maxkb=500), mixed-line-ending; Go-specific: gofmt, go vet, go-mod-tidy; golangci-lint v2.1.6 (matching CI); commit-msg: conventional-pre-commit. Update README with `pre-commit install` instructions. The hooks must be a strict subset of what CI already runs, so a passing pre-commit guarantees CI will not reject on style/lint.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-wire-nox-scan-ci",
+      "title": "Wire nox vulnerability / SBOM scanning into CI and releases",
+      "description": "Add nox vulnerability scanning, SBOM generation, and VEX status reporting to the release pipeline. SBOM should be published as a release artefact alongside the binary archives. Findings should fail CI when severity exceeds a configured threshold. If nox provides a GitHub Action, prefer that; otherwise wire the CLI in .github/workflows/ci.yml. Document the threshold and how to suppress false positives in docs/security.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-wire-coverctl-gate-ci",
+      "title": "Wire coverctl coverage gating into CI",
+      "description": "Establish a coverage baseline via coverctl, then gate PRs on regressions beyond a configured threshold and post a PR comment with the diff. Replace or complement the current Codecov upload depending on which fits better. Capture the baseline in .coverctl/ (or wherever coverctl persists state) and document the workflow in CONTRIBUTING.md or docs/quality.md.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-add-homebrew-tap",
+      "title": "Add Homebrew tap distribution via goreleaser",
+      "description": "Add a brews: block to .goreleaser.yaml pointing at a homebrew-tap repository (felixgeelhaar/homebrew-tap or similar). Configure formula name, description, license, dependencies (none for a static binary), and test stanza (`chronos version`). On release, goreleaser will commit the formula update to the tap automatically. Document the install command in README.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-add-nfpms-packages",
+      "title": "Add .deb / .rpm packages via goreleaser",
+      "description": "Add an nfpms: block to .goreleaser.yaml producing .deb (Debian/Ubuntu) and .rpm (RHEL/Fedora) packages. Configure maintainer, description, license, package name, and install paths (binary at /usr/local/bin/chronos). Packages publish alongside the existing tar.gz archives in the GitHub Release.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-document-install-channels",
+      "title": "Document all install channels in README",
+      "description": "Extend README's 'Install' section so users see every distribution option side-by-side: `go install`, prebuilt binary download (with checksum verification), Docker (`docker run ghcr.io/felixgeelhaar/chronos`), Homebrew (once available), .deb/.rpm (once available). Note the supported OS/arch matrix.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-detector-anomaly",
+      "title": "Implement Detector — Anomaly",
+      "description": "Implement the feature: Detector — Anomaly. Cross-entity dual of Recurrence. For each entity's most recent state,\ncosine-compare to peers' most recent states; emit when highest peer similarity\nis below AnomalyMaxSimilarity. Strength = 1 - max_similarity. Evidence kind\npeer_distance, one per peer.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-anomaly"
+    },
+    {
+      "id": "task-ingest-endpoint",
+      "title": " (HTTP API)",
+      "description": "POST /v1/ingest is the streaming entry point.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-fix-pipeline-observability-import",
+      "title": "Fix pipeline import for observability.Metrics",
+      "description": "internal/pipeline/compute.go references *observability.Metrics on line 29 and calls in.Metrics.ObserveObservations / ObserveSignal but does not import internal/observability. Add the import. After fix, `go build ./...` must succeed for the pipeline package.",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "pipeline"
+    },
+    {
+      "id": "task-document-anomaly-window",
+      "title": "Document Anomaly's degenerate window in consumer docs",
+      "description": "internal/detect/anomaly.go:94-96 sets Window.Start == Window.End == subject.Timestamp because Anomaly is a snapshot in time across peers. Consumers computing window duration will get zero and must special-case it. Add a note to docs/cognitive-stack.md (Signal section) and the Anomaly entry in docs/architecture.md so it is part of the consumer-facing contract, not just an internal source comment.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "detector-anomaly"
+    },
+    {
+      "id": "task-graceful-shutdown",
+      "title": " (HTTP API)",
+      "description": "Shutdown drains in-flight requests for up to 10 seconds.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-no-feedback-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "ports"
+    },
+    {
+      "id": "task-fix-api-test-signatures",
+      "title": "Update api test call sites for new signatures",
+      "description": "internal/api/middleware_test.go calls Logging(logger) but signature is now Logging(logger, metrics). internal/api/server_test.go calls NewServer(states, signals, nil) but signature is now NewServer(states, signals, metrics, logger). Update both tests to pass an *observability.Metrics value (nil acceptable per NewServer doc).",
+      "priority": "high",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-registry",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-store-memory",
+      "title": "Implement Store backend — memory",
+      "description": "Implement the feature: Store backend — memory. Thread-safe in-memory backend used for tests and ephemeral exploration.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-memory"
+    },
+    {
+      "id": "task-adapter-ascend",
+      "title": "Implement Adapter — Ascend",
+      "description": "Implement the feature: Adapter — Ascend. adapters/ascend — bundled working adapter backed by PostgreSQL. Divides tonnage\nby bodyweight to normalise features so cosine similarity is meaningful across\nathletes of different sizes.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-ascend"
+    },
+    {
+      "id": "task-source-interface",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-remove-empty-extract-dir",
+      "title": "Remove empty internal/extract directory",
+      "description": "internal/extract/ exists as an empty directory not referenced anywhere in code or spec. Remove it.",
+      "priority": "low",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-state-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "ports"
+    },
+    {
+      "id": "task-detector-stall",
+      "title": "Implement Detector — Stall",
+      "description": "Implement the feature: Detector — Stall. Normalised stddev of outcomes below StallMaxStdDev over at least StallMinPoints.\nStrength reflects flatness (1 - normalised_stddev / threshold). Evidence kind\nvariance_window.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-stall"
+    },
+    {
+      "id": "task-detector-recurrence",
+      "title": "Implement Detector — Recurrence",
+      "description": "Implement the feature: Detector — Recurrence. For each entity's most recent state, look at strictly historical states of\nOTHER entities in the same scope. Cosine similarity ≥ threshold counts as a\nsimilar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).\nEvidence kind similar_state with metrics[\"outcome_diff\"] = peer.outcome - subject.outcome.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-recurrence"
+    },
+    {
+      "id": "task-detector-correlation",
+      "title": "Implement Detector — Correlation",
+      "description": "Implement the feature: Detector — Correlation. Pairwise Pearson on aligned outcome series within a scope. One signal per pair,\ndeterministically owned by the lex-smaller series ID; the other appears as evidence.\nStrength = |r|; metrics carry r and direction. Evidence kind pair_correlation.\nCost is O(N²) in series count per scope.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-correlation"
+    },
+    {
+      "id": "task-functional-options",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-signal-shape",
+      "title": " (Core domain types)",
+      "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-document-stable-evidence-keys",
+      "title": "Document stable evidence kinds and metrics keys as wire contract",
+      "description": "Detector emissions use stable string keys (similar_state, regression_summary, baseline_deviation, variance_window, peer_distance, autocorrelation_peak, pair_correlation) and metric names (outcome_diff, slope, intercept, r2, n, z, baseline_mean, baseline_stddev, observed_outcome, normalised_stddev, max_peer_similarity, peer_count, period, autocorrelation, r, abs_r, direction, avg_similarity, sample_size, avg_outcome_diff, mean, window). These are de-facto wire contract for any consumer that switches on Evidence.Kind or reads Metrics[k]. Add a 'Stable wire keys' section to docs/cognitive-stack.md (or a new docs/wire-contract.md) listing every kind and key per detector so future renames are recognised as breaking changes.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-fluent-builder",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "c.Signals().Scope(id).Pattern(...).List(ctx) reads signals from a server.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-similarity",
+      "title": "Implement Similarity math",
+      "description": "Implement the feature: Similarity math. Pure-math package (cosine, weighted, Euclidean) used by detectors. No I/O.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "similarity"
+    },
+    {
+      "id": "task-validation",
+      "title": " (Core domain types)",
+      "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-reconcile-sort-order",
+      "title": "Reconcile detector output sort order",
+      "description": "docs/architecture.md:107 documents output as 'sorted by detected-at descending then confidence descending'. internal/detect/engine.go:70-75 sorts by confidence desc then detected-at desc. Pick one as truth and update the other so spec, code, and tests agree.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": null,
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-outcome-convention",
+      "title": " (Public adapter SDK (chronos package))",
+      "description": "Last feature is the outcome metric; higher is conventionally better.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "adapter-sdk"
+    },
+    {
+      "id": "task-detector-trend",
+      "title": "Implement Detector — Trend",
+      "description": "Implement the feature: Detector — Trend. OLS linear regression on outcome vs ordinal index. Trigger:\n|slope| \u003e TrendMinSlope ∧ R² \u003e 0.3 ∧ n \u003e= TrendMinPoints. Strength = R²;\nmetrics carry slope, intercept, R², n. Evidence kind regression_summary.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-trend"
+    },
+    {
+      "id": "task-no-prose",
+      "title": " (Core domain types)",
+      "description": "Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "domain-types"
+    },
+    {
+      "id": "task-bearer-auth",
+      "title": " (Public HTTP client SDK (client/))",
+      "description": "WithToken sets the Authorization Bearer header.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "client-sdk"
+    },
+    {
+      "id": "task-detector-interface",
+      "title": " (Detection engine)",
+      "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-detector-spike-drop",
+      "title": "Implement Detector — Spike / Drop",
+      "description": "Implement the feature: Detector — Spike / Drop. Z-score of most recent outcome against previous SpikeWindow points. Trigger:\n|z| \u003e= threshold in configured direction. Strength = min(|z|/5, 1); metrics\ncarry z, baseline mean / stddev. Evidence kind baseline_deviation.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-spike-drop"
+    },
+    {
+      "id": "task-configuration",
+      "title": "Implement Configuration system",
+      "description": "Implement the feature: Configuration system. Env-var driven (CHRONOS_*). Defaults in config.Default(). Precedence:\nCLI flags \u003e env vars \u003e defaults. Detectors have their own knob namespaces\n(CHRONOS_\u003cDETECTOR\u003e_*).\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "configuration"
+    },
+    {
+      "id": "task-detector-seasonality",
+      "title": "Implement Detector — Seasonality",
+      "description": "Implement the feature: Detector — Seasonality. Pearson autocorrelation at lags [MinPeriod, n/2]. Emit when largest peak exceeds\nSeasonalityMinAutocorr. Strength = peak value; metrics carry the period (lag).\nEvidence kind autocorrelation_peak.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detector-seasonality"
+    },
+    {
+      "id": "task-scope-flag",
+      "title": " (Command-line interface)",
+      "description": "compute accepts --scope-id (preferred) or --coach-id (legacy alias).",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "cli"
+    },
+    {
+      "id": "task-sqlc-source",
+      "title": " (Store backend — SQLite)",
+      "description": "To change SQL, edit sql/sqlite/queries.sql and/or the migration, then run make sqlc.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-sqlite"
+    },
+    {
+      "id": "task-wire-shape-only",
+      "title": " (HTTP API)",
+      "description": "API does not render prose; the wire shape carries structured fields only.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "http-api"
+    },
+    {
+      "id": "task-scope-isolation",
+      "title": " (Detection engine)",
+      "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-store-factory",
+      "title": "Implement Store factory",
+      "description": "Implement the feature: Store factory. internal/store.Open(ctx, dbType, connStr) returns a uniform port-typed *Conn\nwiring EntityStateRepository and SignalRepository over a shared *sql.DB\n(memory / sqlite / postgres).\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-factory"
+    },
+    {
+      "id": "task-pipeline",
+      "title": "Implement Compute pipeline orchestrator",
+      "description": "Implement the feature: Compute pipeline orchestrator. internal/pipeline — Compute(ctx, ComputeInput) runs fetch → save observations →\ndetect → save signals. CHRONOS_JOB_TIMEOUT bounds the whole run as a\ncontext.WithTimeout.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "pipeline"
+    },
+    {
+      "id": "task-observability",
+      "title": "Implement Observability",
+      "description": "Implement the feature: Observability. Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "observability"
+    },
+    {
+      "id": "task-output-ordering",
+      "title": " (Detection engine)",
+      "description": "Output is sorted by detected-at desc, then by confidence desc.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "detect-engine"
+    },
+    {
+      "id": "task-store-postgres",
+      "title": "Implement Store backend — Postgres",
+      "description": "Implement the feature: Store backend — Postgres. Hand-written queries (Postgres is the secondary backend). Schema embedded via\ngo:embed from internal/store/postgres/migrations/001_initial.sql. Filters compose\npositional placeholders for parametrised execution.\n",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "store-postgres"
+    },
+    {
+      "id": "task-signal-repo",
+      "title": " (Outbound ports (per-aggregate repositories))",
+      "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
+      "priority": "medium",
+      "estimate": "",
+      "depends_on": [],
+      "feature_id": "ports"
+    }
+  ],
+  "approval_status": "approved",
+  "created_at": "2026-04-27T22:46:28.198554+02:00",
+  "updated_at": "2026-04-27T23:09:35.822532+02:00"
+}

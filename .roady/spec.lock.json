@@ -1,0 +1,356 @@
+{
+  "id": "chronos",
+  "title": "Chronos — Time / Pattern Perception",
+  "description": "Chronos is the Time / Pattern Perception layer of the cognitive stack\n(Mnemos → Chronos → Nous → Praxis). It ingests time-series observations\nvia domain-specific adapters and emits structured signals — Recurrence,\nTrend, Spike, Drop, Stall, Anomaly, Seasonality, Correlation. Each signal\ncarries Pattern, Strength (intensity), Confidence (sureness), Window,\nEvidence, and Metrics. Chronos perceives change; it does not interpret,\ndecide, render prose, or execute actions — those are Nous / Praxis concerns.\n",
+  "features": [
+    {
+      "id": "domain-types",
+      "title": "Core domain types",
+      "description": "Pure types in internal/domain — Signal, Evidence, TimeWindow, PatternType\nenum, plus Validate / Normalise. No I/O, no prose, no imports outside\nstdlib + google/uuid + chronos.\n",
+      "requirements": [
+        {
+          "id": "signal-shape",
+          "title": "",
+          "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "no-prose",
+          "title": "",
+          "description": "Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "validation",
+          "title": "",
+          "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "adapter-sdk",
+      "title": "Public adapter SDK (chronos package)",
+      "description": "Top-level chronos package — EntityState, Source interface, registry\n(Register, Get, Adapters). Adapter authors import this.\n",
+      "requirements": [
+        {
+          "id": "source-interface",
+          "title": "",
+          "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "registry",
+          "title": "",
+          "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "outcome-convention",
+          "title": "",
+          "description": "Last feature is the outcome metric; higher is conventionally better.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "client-sdk",
+      "title": "Public HTTP client SDK (client/)",
+      "description": "client/ package — HTTP-API SDK for consumers (Nous integrators, dashboards,\nruntimes) reading signals from a running Chronos server.\n",
+      "requirements": [
+        {
+          "id": "fluent-builder",
+          "title": "",
+          "description": "c.Signals().Scope(id).Pattern(...).List(ctx) reads signals from a server.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "functional-options",
+          "title": "",
+          "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "bearer-auth",
+          "title": "",
+          "description": "WithToken sets the Authorization Bearer header.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "ports",
+      "title": "Outbound ports (per-aggregate repositories)",
+      "description": "internal/ports — outbound interfaces. Per-aggregate repositories following\nInterface Segregation.\n",
+      "requirements": [
+        {
+          "id": "state-repo",
+          "title": "",
+          "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "signal-repo",
+          "title": "",
+          "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "no-feedback-repo",
+          "title": "",
+          "description": "There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "similarity",
+      "title": "Similarity math",
+      "description": "Pure-math package (cosine, weighted, Euclidean) used by detectors. No I/O.",
+      "requirements": []
+    },
+    {
+      "id": "detect-engine",
+      "title": "Detection engine",
+      "description": "internal/detect — Engine + Detector interface. Engine groups input states by\nscope, sorts each group ascending by timestamp, fans out to all registered\ndetectors, sorts output and caps at MaxSignalsPerRun.\n",
+      "requirements": [
+        {
+          "id": "detector-interface",
+          "title": "",
+          "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "scope-isolation",
+          "title": "",
+          "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "output-ordering",
+          "title": "",
+          "description": "Output is sorted by detected-at desc, then by confidence desc.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "detector-recurrence",
+      "title": "Detector — Recurrence",
+      "description": "For each entity's most recent state, look at strictly historical states of\nOTHER entities in the same scope. Cosine similarity ≥ threshold counts as a\nsimilar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).\nEvidence kind similar_state with metrics[\"outcome_diff\"] = peer.outcome - subject.outcome.\n",
+      "requirements": []
+    },
+    {
+      "id": "detector-trend",
+      "title": "Detector — Trend",
+      "description": "OLS linear regression on outcome vs ordinal index. Trigger:\n|slope| \u003e TrendMinSlope ∧ R² \u003e 0.3 ∧ n \u003e= TrendMinPoints. Strength = R²;\nmetrics carry slope, intercept, R², n. Evidence kind regression_summary.\n",
+      "requirements": []
+    },
+    {
+      "id": "detector-spike-drop",
+      "title": "Detector — Spike / Drop",
+      "description": "Z-score of most recent outcome against previous SpikeWindow points. Trigger:\n|z| \u003e= threshold in configured direction. Strength = min(|z|/5, 1); metrics\ncarry z, baseline mean / stddev. Evidence kind baseline_deviation.\n",
+      "requirements": []
+    },
+    {
+      "id": "detector-stall",
+      "title": "Detector — Stall",
+      "description": "Normalised stddev of outcomes below StallMaxStdDev over at least StallMinPoints.\nStrength reflects flatness (1 - normalised_stddev / threshold). Evidence kind\nvariance_window.\n",
+      "requirements": []
+    },
+    {
+      "id": "detector-anomaly",
+      "title": "Detector — Anomaly",
+      "description": "Cross-entity dual of Recurrence. For each entity's most recent state,\ncosine-compare to peers' most recent states; emit when highest peer similarity\nis below AnomalyMaxSimilarity. Strength = 1 - max_similarity. Evidence kind\npeer_distance, one per peer.\n",
+      "requirements": []
+    },
+    {
+      "id": "detector-seasonality",
+      "title": "Detector — Seasonality",
+      "description": "Pearson autocorrelation at lags [MinPeriod, n/2]. Emit when largest peak exceeds\nSeasonalityMinAutocorr. Strength = peak value; metrics carry the period (lag).\nEvidence kind autocorrelation_peak.\n",
+      "requirements": []
+    },
+    {
+      "id": "detector-correlation",
+      "title": "Detector — Correlation",
+      "description": "Pairwise Pearson on aligned outcome series within a scope. One signal per pair,\ndeterministically owned by the lex-smaller series ID; the other appears as evidence.\nStrength = |r|; metrics carry r and direction. Evidence kind pair_correlation.\nCost is O(N²) in series count per scope.\n",
+      "requirements": []
+    },
+    {
+      "id": "pipeline",
+      "title": "Compute pipeline orchestrator",
+      "description": "internal/pipeline — Compute(ctx, ComputeInput) runs fetch → save observations →\ndetect → save signals. CHRONOS_JOB_TIMEOUT bounds the whole run as a\ncontext.WithTimeout.\n",
+      "requirements": []
+    },
+    {
+      "id": "store-memory",
+      "title": "Store backend — memory",
+      "description": "Thread-safe in-memory backend used for tests and ephemeral exploration.",
+      "requirements": []
+    },
+    {
+      "id": "store-sqlite",
+      "title": "Store backend — SQLite",
+      "description": "Pure-Go modernc.org/sqlite driver. PRAGMAs (foreign_keys=1, journal_mode=wal,\nbusy_timeout=5000) encoded in the DSN. Migration embedded via\ngo:embed migrations/001_initial.sql. sqlc-generated code in\ninternal/store/sqlite/sqlcgen/.\n",
+      "requirements": [
+        {
+          "id": "sqlc-source",
+          "title": "",
+          "description": "To change SQL, edit sql/sqlite/queries.sql and/or the migration, then run make sqlc.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "store-postgres",
+      "title": "Store backend — Postgres",
+      "description": "Hand-written queries (Postgres is the secondary backend). Schema embedded via\ngo:embed from internal/store/postgres/migrations/001_initial.sql. Filters compose\npositional placeholders for parametrised execution.\n",
+      "requirements": []
+    },
+    {
+      "id": "store-factory",
+      "title": "Store factory",
+      "description": "internal/store.Open(ctx, dbType, connStr) returns a uniform port-typed *Conn\nwiring EntityStateRepository and SignalRepository over a shared *sql.DB\n(memory / sqlite / postgres).\n",
+      "requirements": []
+    },
+    {
+      "id": "http-api",
+      "title": "HTTP API",
+      "description": "internal/api — HTTP transport with SignalDTO and IngestRequest. Strictly\ntransport, no rendering of human-readable copy. SIGINT / SIGTERM drains in-flight\nrequests for up to 10s before shutdown.\n",
+      "requirements": [
+        {
+          "id": "ingest-endpoint",
+          "title": "",
+          "description": "POST /v1/ingest is the streaming entry point.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "wire-shape-only",
+          "title": "",
+          "description": "API does not render prose; the wire shape carries structured fields only.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        },
+        {
+          "id": "graceful-shutdown",
+          "title": "",
+          "description": "Shutdown drains in-flight requests for up to 10 seconds.",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "cli",
+      "title": "Command-line interface",
+      "description": "cmd/chronos — hand-rolled CLI (no Cobra). Subcommands compute, serve, version.\nFailures return *ChronosError{Code, Message, Cause, Hint}; main translates them\ninto stderr output and exit codes. CHRONOS_VERBOSE=1 reveals the cause chain.\n",
+      "requirements": [
+        {
+          "id": "scope-flag",
+          "title": "",
+          "description": "compute accepts --scope-id (preferred) or --coach-id (legacy alias).",
+          "priority": "",
+          "estimate": "",
+          "depends_on": null
+        }
+      ]
+    },
+    {
+      "id": "adapter-ascend",
+      "title": "Adapter — Ascend",
+      "description": "adapters/ascend — bundled working adapter backed by PostgreSQL. Divides tonnage\nby bodyweight to normalise features so cosine similarity is meaningful across\nathletes of different sizes.\n",
+      "requirements": []
+    },
+    {
+      "id": "configuration",
+      "title": "Configuration system",
+      "description": "Env-var driven (CHRONOS_*). Defaults in config.Default(). Precedence:\nCLI flags \u003e env vars \u003e defaults. Detectors have their own knob namespaces\n(CHRONOS_\u003cDETECTOR\u003e_*).\n",
+      "requirements": []
+    },
+    {
+      "id": "observability",
+      "title": "Observability",
+      "description": "Logging via log/slog at info level to stderr (text handler). Libraries return\nerrors; only cmd/ and internal/api log.\n",
+      "requirements": []
+    }
+  ],
+  "constraints": [
+    {
+      "id": "signals-not-opinions",
+      "description": "Chronos perceives; Nous interprets. No Title, Summary, or Suggestion in domain\nor wire types. No dismissal, feedback, or IsActive. Those are Nous / Mnemos\nconcerns.\n"
+    },
+    {
+      "id": "domain-isolation",
+      "description": "The core engine knows nothing about the domain it serves. All domain knowledge\nenters only through adapters producing chronos.EntityState. Domain-specific code\nmust not leak into internal/ or the top-level chronos package.\n"
+    },
+    {
+      "id": "layer-discipline",
+      "description": "Dependency direction: domain → ports → similarity → detect → store → pipeline →\napi → cmd. Inner layers must not import outer layers. internal/domain has no\nimports outside stdlib + google/uuid + chronos.\n"
+    },
+    {
+      "id": "outcome-convention",
+      "description": "Last feature is the outcome metric. Higher is conventionally better."
+    },
+    {
+      "id": "scope-grouping",
+      "description": "ScopeID is the grouping primitive. Detectors never compare across scopes."
+    },
+    {
+      "id": "immutable-signals",
+      "description": "Once detected and persisted, signals are immutable. No mutation on read."
+    },
+    {
+      "id": "stdlib-tests",
+      "description": "Tests are stdlib-only and table-driven where useful. SQLite tests use :memory:\nto exercise the real driver.\n"
+    },
+    {
+      "id": "conventional-commits",
+      "description": "Commit messages follow Conventional Commits (feat:, fix:, docs:, test:, chore:, ...)."
+    },
+    {
+      "id": "errors-as-values",
+      "description": "Wrap errors with %w. Libraries return errors; only cmd/ and internal/api log."
+    },
+    {
+      "id": "go-version",
+      "description": "Targets Go 1.23. CI runs Go 1.22 and 1.23."
+    }
+  ],
+  "version": "0.1.0"
+}
