@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 111,
+  "version": 118,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -23,6 +23,28 @@
       "started_at": "2026-04-28T15:05:49.917525+02:00",
       "completed_at": "2026-04-28T15:18:47.909867+02:00",
       "elapsed_minutes": 12
+    },
+    "task-add-cmd-tests": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "cmd/chronos/errors_test.go: 5 tests on ChronosError + 3 constructors + Unwrap; cmd/chronos/version_test.go: stdout-capture test verifying ldflags substitution; .coverctl.yaml: cmd ratcheted from 0 to 4 (errors + version 100%, integration paths still outside profile); config_test.go takes config to 100% with threshold ratcheted from 0 to 95"
+      ],
+      "started_at": "2026-04-28T15:46:15.219889+02:00",
+      "completed_at": "2026-04-28T15:47:23.08278+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-add-config-tests": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "internal/config/config_test.go: 8 tests covering defaults, env override, bad-env fallback, defaultEnvSlice trimming, all Validate branches, and per-helper coverage. Package coverage 100%."
+      ],
+      "started_at": "2026-04-28T15:43:57.227213+02:00",
+      "completed_at": "2026-04-28T15:46:14.032293+02:00",
+      "elapsed_minutes": 2
     },
     "task-add-homebrew-tap": {
       "status": "done",
@@ -530,6 +552,17 @@
       "completed_at": "2026-04-27T22:53:57.989525+02:00",
       "elapsed_minutes": 0
     },
+    "task-triage-nox-baseline": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        ".github/workflows/{ci,release,security}.yml: 10 unique Actions pinned to commit SHAs with version-tag comments; Dockerfile: golang:1.23-alpine and gcr.io/distroless/static:nonroot pinned to sha256 digests; baseline 381 → 30 (92% reduction); remaining 30 are documented-intent or low-value false positives"
+      ],
+      "started_at": "2026-04-28T15:33:01.513077+02:00",
+      "completed_at": "2026-04-28T15:43:56.44822+02:00",
+      "elapsed_minutes": 10
+    },
     "task-validation": {
       "status": "done",
       "path": "",
@@ -575,5 +608,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T15:18:47.909868+02:00"
+  "updated_at": "2026-04-28T15:47:23.082781+02:00"
 }
