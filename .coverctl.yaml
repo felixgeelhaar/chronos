@@ -47,16 +47,19 @@ policy:
       match:
         - ./internal/store/...
       min: 40
-    # CLI entrypoints exercised via integration tests outside this
-    # profile. Threshold is 0 until unit tests are added.
+    # CLI: errors.go and version.go are unit-tested. runCompute and
+    # runServe are integration paths exercised outside this profile;
+    # threshold floors at the current ratio so we don't regress on the
+    # tested paths.
     - name: cmd
       match:
         - ./cmd/...
-      min: 0
+      min: 4
+    # Config is fully unit-tested (Default, Validate, every env helper).
     - name: config
       match:
         - ./internal/config/...
-      min: 0
+      min: 95
     # Ports are pure interface declarations (no executable statements
     # to cover); 0 is the only meaningful threshold.
     - name: ports
