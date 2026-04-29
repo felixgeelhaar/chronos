@@ -5,7 +5,7 @@
 # so the resulting binary runs on any Linux/amd64 or arm64 base image
 # without a libc dependency.
 
-FROM golang:1.23-alpine@sha256:383395b794dffa5b53012a212365d40c8e37109a626ca30d6151c8348d380b5f AS builder
+FROM golang:1.25-alpine@sha256:5caaf1cca9dc351e13deafbc3879fd4754801acba8653fa9540cea125d01a71f AS builder
 
 WORKDIR /src
 

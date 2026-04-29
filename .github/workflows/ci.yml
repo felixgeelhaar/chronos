@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go-version: ["1.23", "1.24"]
+        go-version: ["1.25"]
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -30,11 +30,11 @@ jobs:
         run: go test -race -count=1 -coverprofile=coverage.out ./...
 
       - name: Install coverctl
-        if: matrix.go-version == '1.24'
+        if: matrix.go-version == '1.25'
         run: go install github.com/felixgeelhaar/coverctl@latest
 
       - name: Enforce coverage policy
-        if: matrix.go-version == '1.24'
+        if: matrix.go-version == '1.25'
         run: coverctl check --from-profile coverage.out -o json
         # `coverctl check` exits 1 on any domain falling below its
         # threshold in .coverctl.yaml. Tighten thresholds with
@@ -42,7 +42,7 @@ jobs:
         # rises; loosening them is a code review concern.
 
       - name: Upload coverage to Codecov
-        if: matrix.go-version == '1.24'
+        if: matrix.go-version == '1.25'
         uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4
         with:
           file: ./coverage.out
@@ -56,7 +56,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: "1.24"
+          go-version: "1.25"
           cache: true
 
       - name: golangci-lint
@@ -73,7 +73,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: "1.24"
+          go-version: "1.25"
           cache: true
 
       - name: Build
@@ -107,7 +107,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: "1.24"
+          go-version: "1.25"
           cache: true
 
       - name: Run postgres integration tests
@@ -140,7 +140,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: "1.24"
+          go-version: "1.25"
           cache: true
 
       - name: Run mysql integration tests
@@ -161,7 +161,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
-          go-version: "1.24"
+          go-version: "1.25"
           cache: true
 
       - name: Validate goreleaser config

@@ -202,7 +202,7 @@ tar -xzf chronos.tar.gz && sudo install -m 0755 chronos /usr/local/bin/chronos
 **Go install (HEAD)**
 
 ```bash
-go install github.com/felixgeelhaar/chronos/cmd/chronos@latest   # requires Go 1.23+
+go install github.com/felixgeelhaar/chronos/cmd/chronos@latest   # requires Go 1.25+
 ```
 
 **Source build**
