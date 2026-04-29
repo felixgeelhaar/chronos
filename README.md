@@ -105,8 +105,8 @@ Chronos doesn't replace any of these. It complements them by giving you a layer 
 │  Adapter    │     │   Engine    │     │  API + SDK  │
 │  (Source)   │ ──▶ │ (detectors) │ ──▶ │  (signals)  │
 │             │     │             │     │             │
-│ • Ascend    │     │ • Detect    │     │ • REST      │
-│ • Yours     │     │ • Score     │     │ • SSE       │
+│ Out of tree │     │ • Detect    │     │ • REST      │
+│ Yours       │     │ • Score     │     │ • SSE       │
 │             │     │ • Persist   │     │ • Webhooks  │
 └─────────────┘     └─────────────┘     └─────────────┘
                           │
@@ -316,11 +316,27 @@ GET  /v1/signals/stream                   Server-Sent Events feed (requires sche
 
 Wire shape and stability policy: [`docs/wire-contract.md`](docs/wire-contract.md).
 
-## Bundled adapters
+## Adapters
 
-| Name     | Status        | Purpose                                              |
-|----------|---------------|------------------------------------------------------|
-| `ascend` | First-party   | Ascend coaching platform (PostgreSQL source)         |
+Chronos itself ships with no adapters — by design. The engine is domain-agnostic; every adapter lives in the repo that owns the domain it bridges. Build a custom binary that imports `chronos` plus the adapters you need:
+
+```go
+package main
+
+import (
+    _ "example.com/your-adapter"   // registers itself via init()
+    _ "github.com/felixgeelhaar/chronos/internal/store/sqlite"
+    // ... etc.
+)
+
+// re-use chronos's CLI subcommands or write your own main()
+```
+
+Known integrations:
+
+| Repo | Domain |
+|---|---|
+| [`felixgeelhaar/ascend`](https://github.com/felixgeelhaar/ascend) | Ascend weightlifting coaching platform — maps athlete training weeks into `chronos.EntityState`. |
 
 ## Development
 

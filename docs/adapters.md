@@ -13,7 +13,7 @@ type Source interface {
 }
 ```
 
-`Name()` returns a stable identifier (`"ascend"`, `"prometheus"`). It is used to look the adapter up by name and is persisted alongside each entity state for retention queries.
+`Name()` returns a stable identifier (`"prometheus"`, `"datadog"`, `"my-source"`). It is used to look the adapter up by name and is persisted alongside each entity state for retention queries.
 
 `Fetch` reads from the external system and returns observations. `cfg` is a free-form string→string map that comes through the CLI / API verbatim — typically used to parameterise the query (a coach ID, a tenant ID, a time window).
 
@@ -40,7 +40,7 @@ type EntityState struct {
 ## Engine conventions adapters must follow
 
 1. **Last feature is the outcome metric.** Detectors emit metrics derived from this convention: Recurrence's evidence carries `outcome_diff = peer.outcome - subject.outcome`; Trend reports `slope` on it; Spike/Drop compute z-scores on it. **Higher is conventionally better.** If your domain treats "lower is better" (e.g. error rate, latency), invert it before producing the feature.
-2. **Features should be on comparable scales.** Cosine similarity is scale-insensitive in direction but feature magnitudes still influence which dimensions dominate. Normalise where it matters (the bundled Ascend adapter divides tonnage by bodyweight).
+2. **Features should be on comparable scales.** Cosine similarity is scale-insensitive in direction but feature magnitudes still influence which dimensions dominate. Normalise where it matters — for example, divide an aggregate count by a per-entity baseline (e.g. tonnage by bodyweight, request count by RPS budget) so two entities of different sizes are comparable.
 3. **`ScopeID` is your authority boundary.** Detectors operate within a scope only; the engine never compares across scopes. Pick the right grain — usually the tenant or owner, not a finer slice like "active session."
 4. **`Meta` is for downstream consumers, not for similarity.** Anything you put in `Meta` is preserved through the persistence layer and visible at the API; it never enters cosine, regression, or z-score computations.
 
@@ -104,8 +104,8 @@ Adapters self-register via `init()`, but `init()` only runs when the package is 
 
 ```go
 import (
-    _ "github.com/felixgeelhaar/chronos/adapters/ascend"
-    _ "github.com/felixgeelhaar/chronos/adapters/myadapter"
+    _ "example.com/myadapter"
+    _ "example.com/anotheradapter"
 )
 ```
 
@@ -113,7 +113,7 @@ Out-of-tree adapters (in your own repo) follow the same pattern in your own `mai
 
 ## Using cfg
 
-`Fetch` accepts a `cfg map[string]string`. The CLI populates `cfg["scope_id"]` (and `cfg["coach_id"]` as the legacy alias) from the `--scope-id` / `--coach-id` flag. If your adapter needs more, pull it from environment variables inside `Fetch`:
+`Fetch` accepts a `cfg map[string]string`. The CLI populates `cfg["scope_id"]` (and `cfg["coach_id"]` as a deprecated alias) from the `--scope-id` / `--coach-id` flag. If your adapter needs more, pull it from environment variables inside `Fetch`:
 
 ```go
 func (s *Source) Fetch(ctx context.Context, cfg map[string]string) ([]chronos.EntityState, error) {
@@ -137,7 +137,7 @@ func TestSource_Fetch(t *testing.T) {
 }
 ```
 
-The `adapters/ascend/` package is a working example backed by PostgreSQL.
+For a worked example of an out-of-tree adapter, see [`felixgeelhaar/ascend`](https://github.com/felixgeelhaar/ascend) — a Chronos integration that maps Ascend's training-week records (PostgreSQL source) into `chronos.EntityState` so the engine can detect patterns across athletes within a coach's roster.
 
 ## Pitfalls
 

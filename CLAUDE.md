@@ -40,13 +40,13 @@ Public surface (stable):
 Private (everything under `internal/`, may change without notice):
 
 ```
-adapters/<name>/   →  internal/pipeline   →  internal/store/...   →  internal/api
-   chronos.Source     orchestrator wired       per-aggregate           HTTP transport
-                      from cmd/chronos         repositories             + DTO conversion
-                            ↓
-                      internal/detect.Engine
-                            ↓
-                      detectors (one per PatternType)
+(out-of-tree      →  internal/pipeline   →  internal/store/...   →  internal/api
+ chronos.Source)     orchestrator wired       per-aggregate           HTTP transport
+ from cmd/chronos         repositories             + DTO conversion
+       ↓
+ internal/detect.Engine
+       ↓
+ detectors (one per PatternType)
 ```
 
 Layering, in dependency order (inner → outer):

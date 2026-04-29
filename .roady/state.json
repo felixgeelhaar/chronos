@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 151,
+  "version": 154,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -34,6 +34,11 @@
       "started_at": "2026-04-28T22:46:13.05814+02:00",
       "completed_at": "2026-04-28T22:49:36.850184+02:00",
       "elapsed_minutes": 3
+    },
+    "task-add-chronos-adapter-to-ascend-repo": {
+      "status": "pending",
+      "path": "",
+      "elapsed_minutes": 0
     },
     "task-add-client-stream": {
       "status": "done",
@@ -552,6 +557,17 @@
       "completed_at": "2026-04-27T22:53:34.706051+02:00",
       "elapsed_minutes": 0
     },
+    "task-remove-ascend-from-chronos": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "adapters/ascend/ deleted (snapshot saved to /tmp/ascend-adapter-snapshot for the repo move); cmd/chronos/main.go blank import removed and replaced with comment about out-of-tree adapters; cmd/chronos/compute.go --coach-id flag re-described as a deprecated alias rather than ascend-specific; chronos.go EntityState field comment updated; docs/adapters.md no longer uses ascend as the worked example, links to felixgeelhaar/ascend repo for the integration; README architecture diagram + bundled-adapters table replaced with a generic \"Adapters\" section that documents the out-of-tree pattern and lists felixgeelhaar/ascend as a known integration; go mod tidy clean; build + 17 packages of tests pass."
+      ],
+      "started_at": "2026-04-29T09:48:39.129238+02:00",
+      "completed_at": "2026-04-29T09:50:17.084689+02:00",
+      "elapsed_minutes": 1
+    },
     "task-remove-empty-extract-dir": {
       "status": "done",
       "path": "",
@@ -760,7 +776,12 @@
       "started_at": "2026-04-27T22:53:20.14169+02:00",
       "completed_at": "2026-04-27T22:54:01.389459+02:00",
       "elapsed_minutes": 0
+    },
+    "task-write-nox-vex-document": {
+      "status": "pending",
+      "path": "",
+      "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-29T09:42:52.071035+02:00"
+  "updated_at": "2026-04-29T09:50:17.08469+02:00"
 }

@@ -12,10 +12,11 @@ import (
 	"github.com/felixgeelhaar/chronos/internal/config"
 	"github.com/felixgeelhaar/chronos/internal/store"
 
-	// Adapters must be imported here for their init() registrations to take
-	// effect. New adapters are added to this list (or to a build-tagged
-	// shim file) so they appear in chronos.Adapters().
-	_ "github.com/felixgeelhaar/chronos/adapters/ascend"
+	// Adapters self-register via init(). The bundled chronos binary
+	// ships with no adapters baked in — out-of-tree adapters import
+	// chronos as a library and register themselves; downstream
+	// binaries blank-import the adapters they need. See
+	// docs/adapters.md for the contract.
 
 	// Persistence providers self-register with the store factory in
 	// init(); blank-imports here ensure those side effects fire before

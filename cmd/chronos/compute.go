@@ -18,9 +18,9 @@ import (
 
 func runCompute(args []string) error {
 	fs := flag.NewFlagSet("compute", flag.ContinueOnError)
-	adapterName := fs.String("adapter", "", "adapter name (e.g. ascend)")
+	adapterName := fs.String("adapter", "", "adapter name (registered via chronos.Register from a blank-imported package)")
 	scopeIDStr := fs.String("scope-id", "", "scope ID (UUID); alias for --coach-id retained for backward compatibility")
-	coachIDStr := fs.String("coach-id", "", "scope ID (UUID), supplied to the adapter as coach_id")
+	coachIDStr := fs.String("coach-id", "", "deprecated alias for --scope-id; supplied to the adapter as cfg[\"coach_id\"] for back-compat with adapters that key on it")
 	if err := fs.Parse(args); err != nil {
 		return NewUserError("compute: %v", err)
 	}

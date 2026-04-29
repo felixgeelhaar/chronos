@@ -15,7 +15,6 @@ or vision references where relevant. -->
 - [ ] Public surface (`chronos.go`, `client/`)
 - [ ] HTTP API (`internal/api/`)
 - [ ] CLI (`cmd/chronos/`)
-- [ ] Adapters (`adapters/`)
 - [ ] Docs / README / cognitive-stack
 - [ ] CI / release / Docker
 

@@ -9,7 +9,7 @@ Chronos is the **Time / Pattern Perception** layer of the cognitive stack. It ac
 Two design rules everything else follows:
 
 1. **Signals, not opinions.** Chronos perceives; Nous interprets. There is no Title/Summary/Suggestion, no dismissal, no feedback. Domain types carry only structured perception.
-2. **The engine knows nothing about the domain it serves.** All domain knowledge lives in adapters under `adapters/`. `internal/domain` has no imports outside the standard library, `github.com/google/uuid`, and `chronos` itself.
+2. **The engine knows nothing about the domain it serves.** All domain knowledge enters through `chronos.Source` implementations that live in their own repositories. `internal/domain` has no imports outside the standard library, `github.com/google/uuid`, and `chronos` itself.
 
 ## Layered design (DDD / hexagonal)
 
@@ -24,10 +24,10 @@ Layers run from inside (pure) to outside (I/O):
                 ┌─────────────────────────────┼─────────────────────────────┐
                 ▼                             ▼                             ▼
         ┌───────────────┐           ┌───────────────────┐           ┌──────────────┐
-        │ adapters/...  │           │ internal/api      │           │  client/     │
-        │ chronos.Source│           │ HTTP transport    │           │  HTTP SDK    │
-        └───────────────┘           │ + DTO conversion  │           └──────────────┘
-                │                   └───────────────────┘
+        │  (out-of-tree)│           │ internal/api      │           │  client/     │
+        │  chronos.Source│          │ HTTP transport    │           │  HTTP SDK    │
+        │  adapters     │           │ + DTO conversion  │           └──────────────┘
+        └───────────────┘           └───────────────────┘
                 │                             │
                 ▼                             ▼
                        ┌──────────────────────────────┐
@@ -160,7 +160,7 @@ There is no `insights` table, no `insight_feedback`, no `similarities`, no FTS5 
 
 The CLI in `cmd/chronos/` is hand-rolled (no Cobra). Each subcommand lives in its own file. Failures return `*ChronosError{Code, Message, Cause, Hint}`; `main` translates them into stderr output and exit codes. `CHRONOS_VERBOSE=1` reveals the underlying cause chain.
 
-Adapters are activated by blank imports in `cmd/chronos/main.go`. To add a new adapter to the bundled binary, add one line to that import group.
+Adapters are activated by blank imports in `cmd/chronos/main.go`. Because adapters live in their own repositories, the CLI ships with no adapters baked in; downstream binaries blank-import the adapter packages they need.
 
 ## Test strategy
 

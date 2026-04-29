@@ -30,8 +30,6 @@ internal/
     sqlite/                    modernc.org/sqlite-backed; sqlcgen subpkg holds generated code
     postgres/                  PostgreSQL backend (hand-written queries)
 sql/sqlite/                    sqlc query file
-adapters/
-  ascend/                      First-party adapter for the Ascend coaching platform
 docs/                          Architecture, cognitive-stack, adapter authoring, configuration
 ```
 
@@ -72,10 +70,15 @@ make sqlc       # regenerate internal/store/sqlite/sqlcgen
 
 ## Adding an adapter
 
-1. Create a package under `adapters/<name>/`.
+Adapters live **out-of-tree** in their own repositories. They import `github.com/felixgeelhaar/chronos` as a library.
+
+1. Create a new Go module (e.g. `github.com/felixgeelhaar/ascend`).
 2. Implement `chronos.Source` (`Name`, `Fetch`).
 3. Call `chronos.Register(&Source{})` in `init()`.
-4. Add a blank import to `cmd/chronos/main.go` so `init()` runs in CLI builds.
+4. In your own `main.go` (or the Chronos CLI fork you ship), add a blank import so `init()` runs:
+   ```go
+   import _ "github.com/felixgeelhaar/ascend"
+   ```
 5. Document the required `cfg` keys (e.g. `coach_id`).
 
-See `adapters/ascend/ascend.go` for a complete example.
+See [`felixgeelhaar/ascend`](https://github.com/felixgeelhaar/ascend) for a complete example.

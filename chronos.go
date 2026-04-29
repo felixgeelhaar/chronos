@@ -88,7 +88,7 @@ func (s EntityState) Outcome() float64 {
 
 // Source is the inbound contract for adapters. Implementations map external
 // data into a slice of [EntityState]s. The cfg map carries adapter-specific
-// parameters (for example "coach_id" for the Ascend adapter); the engine
+// parameters (for example "tenant_id" for a SaaS adapter); the engine
 // passes through whatever was supplied at the CLI or API boundary.
 type Source interface {
 	// Name returns the stable adapter identifier (e.g. "ascend", "prometheus").
