@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 148,
+  "version": 151,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -695,6 +695,17 @@
       "completed_at": "2026-04-28T22:27:57.996844+02:00",
       "elapsed_minutes": 394
     },
+    "task-tag-v0-1-0": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "v0.1.0 release pipeline succeeded on third attempt (run 25096669073, 3m11s) after two false starts: (1) go.mod required Go 1.25 but Dockerfile pinned 1.23 — bumped Go floor across go.mod/Dockerfile/three workflows/README; (2) Dockerfile was multi-stage building from source but goreleaser only puts the pre-built binary into the docker context — switched to runtime-only distroless Dockerfile, Makefile docker-build target updated to stage the binary first. Final artefacts: GitHub Release with 12 assets (cross-arch binaries, .deb/.rpm/.apk, checksums); Homebrew formula bumped at felixgeelhaar/homebrew-tap; ghcr.io/felixgeelhaar/chronos:0.1.0 + :latest multi-arch (linux/amd64 + linux/arm64); release published (draft → live)."
+      ],
+      "started_at": "2026-04-29T08:58:49.169968+02:00",
+      "completed_at": "2026-04-29T09:42:52.071034+02:00",
+      "elapsed_minutes": 44
+    },
     "task-triage-nox-baseline": {
       "status": "done",
       "path": "",
@@ -751,5 +762,5 @@
       "elapsed_minutes": 0
     }
   },
-  "updated_at": "2026-04-28T22:59:36.947361+02:00"
+  "updated_at": "2026-04-29T09:42:52.071035+02:00"
 }
