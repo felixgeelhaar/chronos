@@ -1,39 +1,17 @@
 # syntax=docker/dockerfile:1.7
 
-# Multi-stage build producing a static, distroless chronos binary.
-# CGO is disabled because we use the pure-Go modernc.org/sqlite driver,
-# so the resulting binary runs on any Linux/amd64 or arm64 base image
-# without a libc dependency.
+# Runtime-only image. The binary is built by goreleaser (see
+# .goreleaser.yaml dockers:) and dropped into the build context as
+# `chronos`; this file just packages it on top of distroless.
+#
+# CGO is disabled in the goreleaser build because Chronos uses the
+# pure-Go modernc.org/sqlite driver, so the binary runs on any
+# Linux/amd64 or arm64 base image without a libc dependency.
+#
+# For local Docker builds (no goreleaser), `make docker-build` runs
+# `make build` first to populate ./bin/chronos and re-uses this same
+# Dockerfile via a copy step in the Makefile.
 
-FROM golang:1.25-alpine@sha256:5caaf1cca9dc351e13deafbc3879fd4754801acba8653fa9540cea125d01a71f AS builder
-
-WORKDIR /src
-
-# Cache module downloads independently from source changes.
-COPY go.mod go.sum ./
-RUN go mod download
-
-COPY . .
-
-# Build args wired from CI / Make to inject version metadata.
-ARG VERSION=dev
-ARG COMMIT=none
-ARG BUILD_DATE=unknown
-ARG TARGETOS=linux
-ARG TARGETARCH=amd64
-
-ENV CGO_ENABLED=0 \
-    GOOS=${TARGETOS} \
-    GOARCH=${TARGETARCH}
-
-RUN go build \
-    -trimpath \
-    -ldflags "-s -w -X main.version=${VERSION} -X main.commit=${COMMIT} -X main.buildDate=${BUILD_DATE}" \
-    -o /chronos \
-    ./cmd/chronos
-
-# Distroless static gives us a minimal runtime image (~2MB) with a
-# non-root user, /etc/passwd, and ca-certificates baked in. No shell.
 FROM gcr.io/distroless/static:nonroot@sha256:e3f945647ffb95b5839c07038d64f9811adf17308b9121d8a2b87b6a22a80a39
 
 LABEL org.opencontainers.image.title="chronos" \
@@ -41,7 +19,7 @@ LABEL org.opencontainers.image.title="chronos" \
       org.opencontainers.image.source="https://github.com/felixgeelhaar/chronos" \
       org.opencontainers.image.licenses="MIT"
 
-COPY --from=builder /chronos /chronos
+COPY chronos /chronos
 
 # The HTTP server defaults to :7778. Bind 0.0.0.0 in containerised
 # deployments via CHRONOS_HTTP_HOST=0.0.0.0.

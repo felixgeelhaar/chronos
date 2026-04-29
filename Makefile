@@ -88,14 +88,16 @@ release-snapshot:
 release-check:
 	goreleaser check
 
-docker-build:
+docker-build: build
+	# Stage the binary at the repo root where the runtime-only
+	# Dockerfile expects it (matches goreleaser's docker context),
+	# build the image, then clean up.
+	cp $(BUILD_DIR)/$(BINARY_NAME) chronos
 	docker build \
-		--build-arg VERSION=$(VERSION) \
-		--build-arg COMMIT=$(COMMIT) \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		-t $(BINARY_NAME):$(VERSION) \
 		-t $(BINARY_NAME):latest \
 		.
+	rm -f chronos
 
 run-compute: build
 	$(BUILD_DIR)/$(BINARY_NAME) compute --adapter=ascend --scope-id=$${CHRONOS_COACH_ID}
