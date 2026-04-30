@@ -46,13 +46,14 @@ jobs:
         run: |
           # SARIF for GitHub Code Scanning, JSON for the annotate step,
           # CycloneDX SBOM as a release artefact. The committed
-          # .nox/baseline.json silences historic findings, so a non-zero
-          # exit means the PR introduced a new finding. Update the
-          # baseline locally with `make nox-baseline-update` after
-          # legitimately accepting a finding.
+          # .nox/vex.json provides explicit waivers with justification
+          # for known findings; any finding not covered by the VEX
+          # document fails the scan. Update the VEX document (not the
+          # baseline) when accepting new findings.
           nox scan . \
             -format all \
-            -output ./.nox/out
+            -output ./.nox/out \
+            -vex ./.nox/vex.json
 
       - name: Upload SARIF to Code Scanning
         if: always()

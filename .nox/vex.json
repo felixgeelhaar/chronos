@@ -1,0 +1,505 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://github.com/felixgeelhaar/chronos/.nox/vex.json",
+  "author": "Felix Geelhaar",
+  "role": "maintainer",
+  "timestamp": "2026-04-29T00:00:00Z",
+  "version": 1,
+  "statements": [
+    {
+      "vulnerability": {
+        "@id": "AI-036",
+        "name": "AI-036",
+        "description": "Using deprecated GPT-3.5 model"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings occur in .roady/state.json, an append-only project-management journal that records historical agent metadata. The file does not contain model-selection logic; it is audit bookkeeping. The model reference is not executed or loaded by the Chronos engine."
+    },
+    {
+      "vulnerability": {
+        "@id": "AI-050",
+        "name": "AI-050",
+        "description": "AI API retries disabled"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Finding is a false positive: internal/notify/webhook.go implements an HTTP webhook notifier (not an AI API). The Webhook type has its own best-effort retry logic on 5xx responses. The rule matched the 'retries' field name without understanding the domain context."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-082",
+        "name": "SEC-082",
+        "description": "Hardcoded secret in string literal"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Finding is the literal string 'Bearer ' used as the RFC 6750 authorization scheme prefix in BearerAuth middleware. This is a protocol constant, not a secret token. The actual token is supplied via CHRONOS_API_TOKEN at runtime and compared with subtle.ConstantTimeCompare."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-574",
+        "name": "SEC-574",
+        "description": "Potential hardcoded UUID"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings are random UUIDs used as test fixtures (e.g. internal/pipeline/compute_test.go). They are generated with uuid.New() in test setup and have no production value. The rule's entropy heuristic cannot distinguish test data from secrets."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-659",
+        "name": "SEC-659",
+        "description": "Potential hardcoded UUID"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings are random UUIDs used as test fixtures (e.g. client/sse_test.go). They are generated with uuid.New() in test setup and have no production value. The rule's entropy heuristic cannot distinguish test data from secrets."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-073",
+        "name": "SEC-073",
+        "description": "Database Connection String with credentials detected"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md are documented DSN examples for operator reference (e.g. postgres://user:pw@host/db). No real credentials are present. Findings in internal/store/mysql/mysql_test.go and internal/store/postgres/postgres_test.go use ephemeral testcontainer credentials (chronos/chronos) that exist only for the duration of a CI run. internal/config/config.go contains a GoDoc comment showing DSN syntax."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-430",
+        "name": "SEC-430",
+        "description": "Detected PostgreSQL"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md are documented DSN syntax examples. Findings in .github/workflows/ci.yml are ephemeral CI service-container configurations with test-only credentials. No production secrets are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-431",
+        "name": "SEC-431",
+        "description": "Detected MySQL"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md are documented DSN syntax examples. Findings in .github/workflows/ci.yml are ephemeral CI service-container configurations with test-only credentials. No production secrets are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-356",
+        "name": "SEC-356",
+        "description": "Detected PostgreSQL connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md are documented DSN syntax examples for operators. internal/store/postgres/db.go contains connection-string parsing logic, not embedded secrets. No production credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-357",
+        "name": "SEC-357",
+        "description": "Detected MySQL connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md and .github/workflows/ci.yml are documented DSN syntax examples and ephemeral test-only CI service-container configurations. internal/store/mysql/db.go contains connection-string parsing logic, not embedded secrets."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-358",
+        "name": "SEC-358",
+        "description": "Detected MariaDB connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md are documented DSN syntax examples for operators. No production credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-364",
+        "name": "SEC-364",
+        "description": "Detected SQLite connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md and .roady/plan.json are documented DSN syntax examples or project-planning artifacts. SQLite DSNs (e.g. sqlite:///path/to.db) contain no credentials."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-533",
+        "name": "SEC-533",
+        "description": "Detected IBM Cloud API Key"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Finding is a false positive on the SHA-256 digest of the postgres:16-alpine container image (sha256:4e6e670bb069649261c9c18031f0aded7bb249a5b6664ddec29c013a89310d50). The hex string matches IBM Cloud API key entropy heuristics but is actually an immutable image digest used for supply-chain integrity."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-254",
+        "name": "IAC-254",
+        "description": "Serverless environment variable with hardcoded secret"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .github/workflows/ci.yml are ephemeral test-database credentials (POSTGRES_PASSWORD: chronos, MARIADB_ROOT_PASSWORD: chronos) for GitHub Actions service containers. These containers exist only for the duration of a CI job, are not reachable from the internet, and use a trivial password acceptable for throwaway test data."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-351",
+        "name": "IAC-351",
+        "description": "CI variable with hardcoded secret"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .github/workflows/ci.yml are ephemeral test-database DSNs (TEST_POSTGRES_DSN, TEST_MYSQL_DSN) pointing at localhost service containers with test-only credentials. These exist only for the duration of a CI job."
+    },
+    {
+      "vulnerability": {
+        "@id": "DATA-001",
+        "name": "DATA-001",
+        "description": "Email address in code or config"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": ".goreleaser.yaml contains the public package maintainer email (felix.geelhaar@gmail.com) required by Debian/RPM packaging conventions. This is intentionally public contact information, not a secret. internal/store/mysql/mysql_test.go contains a test-only email placeholder."
+    },
+    {
+      "vulnerability": {
+        "@id": "DATA-005",
+        "name": "DATA-005",
+        "description": "Hardcoded public IP address in configuration"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Finding in Dockerfile line 25 is the comment 'Bind 0.0.0.0 in containerised deployments via CHRONOS_HTTP_HOST=0.0.0.0'. 0.0.0.0 is a documented configuration hint for container networking, not a hardcoded production IP. The actual bind address is controlled by the CHRONOS_HTTP_HOST environment variable at runtime."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-308",
+        "name": "IAC-308",
+        "description": "GHA manual workflow dispatch enabled"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_cannot_be_controlled_by_adversary",
+      "impact_statement": "workflow_dispatch on .github/workflows/release.yml is intentional: it allows maintainers to trigger a release manually when automatic tag-push detection fails or when a hotfix must be built from a non-standard ref. The workflow requires write permissions and secrets that are only available to repository maintainers."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-314",
+        "name": "IAC-314",
+        "description": "GHA workflow has contents write permission"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_cannot_be_controlled_by_adversary",
+      "impact_statement": "contents:write in .github/workflows/release.yml is required for goreleaser to create GitHub Releases and upload artefacts. The .goreleaser.yaml brews block also needs contents:write to push formula updates to the Homebrew tap repository. The workflow triggers only on tag push (v*) or manual dispatch by maintainers, limiting blast radius."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-315",
+        "name": "IAC-315",
+        "description": "GHA workflow has packages write permission"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_cannot_be_controlled_by_adversary",
+      "impact_statement": "packages:write in .github/workflows/release.yml is required for goreleaser to push multi-arch Docker images to ghcr.io. The workflow triggers only on tag push (v*) or manual dispatch by maintainers. The ghcr.io registry is scoped to this repository."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-161",
+        "name": "SEC-161",
+        "description": "High-entropy string in assignment (possible secret)"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Findings are commit SHA pins and content hashes used for supply-chain integrity. In .github/workflows/*.yml these are immutable action-commit SHAs (e.g. actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5). In .roady files they are internal plan fingerprints. These are security controls, not secrets."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-162",
+        "name": "SEC-162",
+        "description": "High-entropy base64 blob detected (possible encoded secret)"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Findings are SHA-256 content hashes and base64-encoded image digests used for supply-chain integrity (e.g. distroless base image digest, postgres/mariadb service-image digests). These are immutable references that prevent supply-chain tampering, not encoded secrets."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-163",
+        "name": "SEC-163",
+        "description": "High-entropy hex string detected (possible secret key)"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "affected_with_mitigation",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "Findings are SHA-256 hex digests used for supply-chain integrity: pinned GitHub Action commit SHAs, container image digests (e.g. postgres:16-alpine@sha256:4e6e670bb069649261c9c18031f0aded7bb249a5b6664ddec29c013a89310d50), and cryptographic fingerprints in .roady plan files. These are security controls, not secret keys."
+    },
+    {
+      "vulnerability": {
+        "@id": "DATA-001",
+        "name": "DATA-001",
+        "description": "Email address in code or config"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .relicta/releases/*.json are release-tool metadata that record the same public maintainer email already documented in .goreleaser.yaml. These are generated artefacts, not source code, and contain no secret information."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-073",
+        "name": "SEC-073",
+        "description": "Database Connection String with credentials detected"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .roady/plan.json are DSN syntax examples embedded in task descriptions for documentation purposes. No real credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-357",
+        "name": "SEC-357",
+        "description": "Detected MySQL connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .roady/plan.json are DSN syntax examples embedded in task descriptions for documentation purposes. No real credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-364",
+        "name": "SEC-364",
+        "description": "Detected SQLite connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .roady/plan.json are DSN syntax examples embedded in task descriptions for documentation purposes. SQLite DSNs contain no credentials."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-430",
+        "name": "SEC-430",
+        "description": "Detected PostgreSQL"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .roady/plan.json are DSN syntax examples embedded in task descriptions for documentation purposes. No real credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-431",
+        "name": "SEC-431",
+        "description": "Detected MySQL"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in .roady/plan.json are DSN syntax examples embedded in task descriptions for documentation purposes. No real credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-163",
+        "name": "SEC-163",
+        "description": "High-entropy hex string detected (possible secret key)"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in api/proto/chronos/v1/chronos.pb.go and api/proto/chronos/v1/chronos_grpc.pb.go are generated protobuf wire-format tags and method descriptors. These are protoc-generated field identifiers, not secret keys. Generated code should not be manually edited."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-356",
+        "name": "SEC-356",
+        "description": "Detected PostgreSQL connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md and README.md are documented DSN syntax examples for operators. internal/store/postgres/db.go contains connection-string parsing logic, not embedded secrets. No production credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-357",
+        "name": "SEC-357",
+        "description": "Detected MySQL connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md and README.md are documented DSN syntax examples for operators. .github/workflows/ci.yml contains ephemeral test-only CI service-container configurations. internal/store/mysql/db.go contains connection-string parsing logic, not embedded secrets. No production credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "SEC-358",
+        "name": "SEC-358",
+        "description": "Detected MariaDB connection string"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "inline_not_present",
+      "impact_statement": "Findings in docs/configuration.md and README.md are documented DSN syntax examples for operators. .github/workflows/ci.yml contains ephemeral test-only CI service-container configurations. No production credentials are present."
+    }
+  ]
+}
