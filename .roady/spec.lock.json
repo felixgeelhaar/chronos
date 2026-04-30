@@ -14,7 +14,7 @@
           "description": "Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "no-prose",
@@ -22,7 +22,7 @@
           "description": "Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "validation",
@@ -30,7 +30,7 @@
           "description": "Validate enforces non-zero IDs, non-empty features, and label/feature length parity.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -45,7 +45,7 @@
           "description": "Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "registry",
@@ -53,7 +53,7 @@
           "description": "Register panics on nil source or empty name; Get / Adapters expose registered sources.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "outcome-convention",
@@ -61,7 +61,7 @@
           "description": "Last feature is the outcome metric; higher is conventionally better.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -76,7 +76,7 @@
           "description": "c.Signals().Scope(id).Pattern(...).List(ctx) reads signals from a server.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "functional-options",
@@ -84,7 +84,7 @@
           "description": "WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "bearer-auth",
@@ -92,7 +92,7 @@
           "description": "WithToken sets the Authorization Bearer header.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -107,7 +107,7 @@
           "description": "EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "signal-repo",
@@ -115,7 +115,7 @@
           "description": "SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "no-feedback-repo",
@@ -123,7 +123,7 @@
           "description": "There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -144,7 +144,7 @@
           "description": "Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "scope-isolation",
@@ -152,7 +152,7 @@
           "description": "Detectors operate within a ScopeID; the engine never compares across scopes.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "output-ordering",
@@ -160,7 +160,7 @@
           "description": "Output is sorted by detected-at desc, then by confidence desc.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -229,7 +229,7 @@
           "description": "To change SQL, edit sql/sqlite/queries.sql and/or the migration, then run make sqlc.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -256,7 +256,7 @@
           "description": "POST /v1/ingest is the streaming entry point.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "wire-shape-only",
@@ -264,7 +264,7 @@
           "description": "API does not render prose; the wire shape carries structured fields only.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "graceful-shutdown",
@@ -272,7 +272,7 @@
           "description": "Shutdown drains in-flight requests for up to 10 seconds.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -287,7 +287,7 @@
           "description": "compute accepts --scope-id (preferred) or --coach-id (legacy alias).",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
     },
@@ -320,7 +320,7 @@
           "description": "ports.Notifier interface; fire-and-forget; failures must not propagate to persistence.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "webhook-transport",
@@ -328,7 +328,7 @@
           "description": "HMAC-SHA256-signed POST with X-Chronos-Signature, X-Chronos-Delivery, X-Chronos-Event headers; best-effort retry on 5xx.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "sse-transport",
@@ -336,7 +336,7 @@
           "description": "GET /v1/signals/stream with text/event-stream; bounded per-client buffer, drops slow consumers.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         },
         {
           "id": "detection-scheduler",
@@ -344,9 +344,15 @@
           "description": "Background detection inside serve so SSE has signals to stream; configurable interval.",
           "priority": "",
           "estimate": "",
-          "depends_on": null
+          "depends_on": []
         }
       ]
+    },
+    {
+      "id": "grpc-transport",
+      "title": "gRPC transport",
+      "description": "Add gRPC as a first-class transport alongside the existing HTTP REST API. Define protobuf messages for EntityState, Signal, and service methods for Ingest and ListSignals. Implement a gRPC server in internal/api/grpc/, wire it into cmd/chronos/serve.go, and provide a gRPC client constructor in client/. Both transports share the same domain ports (EntityStateRepository, SignalRepository). The gRPC service mirrors the HTTP surface: Ingest (streaming or unary) and ListSignals (with ScopeID, PatternType, MinConfidence filters). Include reflection and health checks for operational discoverability.",
+      "requirements": []
     }
   ],
   "constraints": [

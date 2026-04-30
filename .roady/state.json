@@ -1,6 +1,6 @@
 {
   "project_id": "chronos",
-  "version": 154,
+  "version": 175,
   "task_states": {
     "task-adapter-ascend": {
       "status": "done",
@@ -36,8 +36,14 @@
       "elapsed_minutes": 3
     },
     "task-add-chronos-adapter-to-ascend-repo": {
-      "status": "pending",
+      "status": "done",
       "path": "",
+      "owner": "ai-agent",
+      "evidence": [
+        "ascend.go moved to /Users/felixgeelhaar/Developer/projects/business-felix-geelhaar/ascend/chronos/ascend.go; go.mod updated with chronos v0.2.0; blank import wired in cmd/ascend/main.go; README updated with Chronos Adapter section; ascend binary compiles cleanly"
+      ],
+      "started_at": "2026-04-30T09:22:15.515145+02:00",
+      "completed_at": "2026-04-30T09:22:24.32617+02:00",
       "elapsed_minutes": 0
     },
     "task-add-client-stream": {
@@ -425,6 +431,70 @@
       "completed_at": "2026-04-27T22:54:02.510303+02:00",
       "elapsed_minutes": 0
     },
+    "task-grpc-client": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:51:54.961931+02:00",
+      "completed_at": "2026-04-29T22:53:28.076373+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-grpc-client-test": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:55:02.754852+02:00",
+      "completed_at": "2026-04-29T22:57:00.503158+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-grpc-config": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:44:34.990931+02:00",
+      "completed_at": "2026-04-29T22:45:43.318033+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-grpc-generate": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:46:00.713057+02:00",
+      "completed_at": "2026-04-29T22:47:03.853099+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-grpc-proto": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:44:34.637067+02:00",
+      "completed_at": "2026-04-29T22:45:55.421604+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-grpc-server": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:47:09.413586+02:00",
+      "completed_at": "2026-04-29T22:49:25.896288+02:00",
+      "elapsed_minutes": 2
+    },
+    "task-grpc-server-test": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:53:35.442242+02:00",
+      "completed_at": "2026-04-29T22:54:55.472944+02:00",
+      "elapsed_minutes": 1
+    },
+    "task-grpc-wire-serve": {
+      "status": "done",
+      "path": "",
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T22:49:32.518241+02:00",
+      "completed_at": "2026-04-29T22:51:48.83874+02:00",
+      "elapsed_minutes": 2
+    },
     "task-ingest-endpoint": {
       "status": "done",
       "path": "",
@@ -778,10 +848,13 @@
       "elapsed_minutes": 0
     },
     "task-write-nox-vex-document": {
-      "status": "pending",
+      "status": "done",
       "path": "",
-      "elapsed_minutes": 0
+      "owner": "ai-agent",
+      "started_at": "2026-04-29T23:07:08.823738+02:00",
+      "completed_at": "2026-04-30T09:08:35.639118+02:00",
+      "elapsed_minutes": 601
     }
   },
-  "updated_at": "2026-04-29T09:50:17.08469+02:00"
+  "updated_at": "2026-04-30T09:22:24.326173+02:00"
 }

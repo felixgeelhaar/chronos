@@ -17,12 +17,23 @@ features:
         stdlib + google/uuid + chronos.
       requirements:
         - id: signal-shape
+          title: ""
           description: Signal carries Pattern, Series, Window, Strength, Confidence, Evidence, Metrics.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: no-prose
+          title: ""
           description: Domain types must not carry Title, Summary, Suggestion, dismissal, or feedback fields.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: validation
+          title: ""
           description: Validate enforces non-zero IDs, non-empty features, and label/feature length parity.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: adapter-sdk
       title: Public adapter SDK (chronos package)
       description: |
@@ -30,12 +41,23 @@ features:
         (Register, Get, Adapters). Adapter authors import this.
       requirements:
         - id: source-interface
+          title: ""
           description: Source has Name() string and Fetch(ctx, cfg) ([]EntityState, error).
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: registry
+          title: ""
           description: Register panics on nil source or empty name; Get / Adapters expose registered sources.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: outcome-convention
+          title: ""
           description: Last feature is the outcome metric; higher is conventionally better.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: client-sdk
       title: Public HTTP client SDK (client/)
       description: |
@@ -43,12 +65,23 @@ features:
         runtimes) reading signals from a running Chronos server.
       requirements:
         - id: fluent-builder
+          title: ""
           description: c.Signals().Scope(id).Pattern(...).List(ctx) reads signals from a server.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: functional-options
+          title: ""
           description: WithToken, WithLogger, WithTimeout, WithUserAgent are the supported options.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: bearer-auth
+          title: ""
           description: WithToken sets the Authorization Bearer header.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: ports
       title: Outbound ports (per-aggregate repositories)
       description: |
@@ -56,17 +89,27 @@ features:
         Interface Segregation.
       requirements:
         - id: state-repo
+          title: ""
           description: EntityStateRepository has Ingest, Save (batch), ListByScope, ListByEntity, DeleteOlderThan, Count.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: signal-repo
+          title: ""
           description: SignalRepository has Save, List(filter), Get, Count — no Dismiss, no Active.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: no-feedback-repo
+          title: ""
           description: There is no FeedbackRepository in Chronos; reviewer feedback lives in Mnemos.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: similarity
       title: Similarity math
       description: Pure-math package (cosine, weighted, Euclidean) used by detectors. No I/O.
       requirements: []
-
     - id: detect-engine
       title: Detection engine
       description: |
@@ -75,12 +118,23 @@ features:
         detectors, sorts output and caps at MaxSignalsPerRun.
       requirements:
         - id: detector-interface
+          title: ""
           description: Detector has Pattern() and Detect(ctx, scopeID, []EntityState) []Signal.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: scope-isolation
+          title: ""
           description: Detectors operate within a ScopeID; the engine never compares across scopes.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: output-ordering
+          title: ""
           description: Output is sorted by detected-at desc, then by confidence desc.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: detector-recurrence
       title: Detector — Recurrence
       description: |
@@ -89,7 +143,6 @@ features:
         similar peer. Strength = avg(peer similarity). Confidence = strength × min(samples/5, 1).
         Evidence kind similar_state with metrics["outcome_diff"] = peer.outcome - subject.outcome.
       requirements: []
-
     - id: detector-trend
       title: Detector — Trend
       description: |
@@ -97,7 +150,6 @@ features:
         |slope| > TrendMinSlope ∧ R² > 0.3 ∧ n >= TrendMinPoints. Strength = R²;
         metrics carry slope, intercept, R², n. Evidence kind regression_summary.
       requirements: []
-
     - id: detector-spike-drop
       title: Detector — Spike / Drop
       description: |
@@ -105,7 +157,6 @@ features:
         |z| >= threshold in configured direction. Strength = min(|z|/5, 1); metrics
         carry z, baseline mean / stddev. Evidence kind baseline_deviation.
       requirements: []
-
     - id: detector-stall
       title: Detector — Stall
       description: |
@@ -113,7 +164,6 @@ features:
         Strength reflects flatness (1 - normalised_stddev / threshold). Evidence kind
         variance_window.
       requirements: []
-
     - id: detector-anomaly
       title: Detector — Anomaly
       description: |
@@ -122,7 +172,6 @@ features:
         is below AnomalyMaxSimilarity. Strength = 1 - max_similarity. Evidence kind
         peer_distance, one per peer.
       requirements: []
-
     - id: detector-seasonality
       title: Detector — Seasonality
       description: |
@@ -130,7 +179,6 @@ features:
         SeasonalityMinAutocorr. Strength = peak value; metrics carry the period (lag).
         Evidence kind autocorrelation_peak.
       requirements: []
-
     - id: detector-correlation
       title: Detector — Correlation
       description: |
@@ -139,7 +187,6 @@ features:
         Strength = |r|; metrics carry r and direction. Evidence kind pair_correlation.
         Cost is O(N²) in series count per scope.
       requirements: []
-
     - id: pipeline
       title: Compute pipeline orchestrator
       description: |
@@ -147,12 +194,10 @@ features:
         detect → save signals. CHRONOS_JOB_TIMEOUT bounds the whole run as a
         context.WithTimeout.
       requirements: []
-
     - id: store-memory
       title: Store backend — memory
       description: Thread-safe in-memory backend used for tests and ephemeral exploration.
       requirements: []
-
     - id: store-sqlite
       title: Store backend — SQLite
       description: |
@@ -162,8 +207,11 @@ features:
         internal/store/sqlite/sqlcgen/.
       requirements:
         - id: sqlc-source
+          title: ""
           description: To change SQL, edit sql/sqlite/queries.sql and/or the migration, then run make sqlc.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: store-postgres
       title: Store backend — Postgres
       description: |
@@ -171,7 +219,6 @@ features:
         go:embed from internal/store/postgres/migrations/001_initial.sql. Filters compose
         positional placeholders for parametrised execution.
       requirements: []
-
     - id: store-factory
       title: Store factory
       description: |
@@ -179,7 +226,6 @@ features:
         wiring EntityStateRepository and SignalRepository over a shared *sql.DB
         (memory / sqlite / postgres).
       requirements: []
-
     - id: http-api
       title: HTTP API
       description: |
@@ -188,12 +234,23 @@ features:
         requests for up to 10s before shutdown.
       requirements:
         - id: ingest-endpoint
+          title: ""
           description: POST /v1/ingest is the streaming entry point.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: wire-shape-only
+          title: ""
           description: API does not render prose; the wire shape carries structured fields only.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: graceful-shutdown
+          title: ""
           description: Shutdown drains in-flight requests for up to 10 seconds.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: cli
       title: Command-line interface
       description: |
@@ -202,8 +259,11 @@ features:
         into stderr output and exit codes. CHRONOS_VERBOSE=1 reveals the cause chain.
       requirements:
         - id: scope-flag
+          title: ""
           description: compute accepts --scope-id (preferred) or --coach-id (legacy alias).
-
+          priority: ""
+          estimate: ""
+          depends_on: []
     - id: adapter-ascend
       title: Adapter — Ascend
       description: |
@@ -211,7 +271,6 @@ features:
         by bodyweight to normalise features so cosine similarity is meaningful across
         athletes of different sizes.
       requirements: []
-
     - id: configuration
       title: Configuration system
       description: |
@@ -219,14 +278,12 @@ features:
         CLI flags > env vars > defaults. Detectors have their own knob namespaces
         (CHRONOS_<DETECTOR>_*).
       requirements: []
-
     - id: observability
       title: Observability
       description: |
         Logging via log/slog at info level to stderr (text handler). Libraries return
         errors; only cmd/ and internal/api log.
       requirements: []
-
     - id: notifications
       title: Push notifications (webhook + SSE)
       description: |
@@ -236,14 +293,33 @@ features:
         At-most-once delivery semantics; consumers de-duplicate by Signal.ID.
       requirements:
         - id: notifier-port
+          title: ""
           description: ports.Notifier interface; fire-and-forget; failures must not propagate to persistence.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: webhook-transport
+          title: ""
           description: HMAC-SHA256-signed POST with X-Chronos-Signature, X-Chronos-Delivery, X-Chronos-Event headers; best-effort retry on 5xx.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: sse-transport
+          title: ""
           description: GET /v1/signals/stream with text/event-stream; bounded per-client buffer, drops slow consumers.
+          priority: ""
+          estimate: ""
+          depends_on: []
         - id: detection-scheduler
+          title: ""
           description: Background detection inside serve so SSE has signals to stream; configurable interval.
-
+          priority: ""
+          estimate: ""
+          depends_on: []
+    - id: grpc-transport
+      title: gRPC transport
+      description: 'Add gRPC as a first-class transport alongside the existing HTTP REST API. Define protobuf messages for EntityState, Signal, and service methods for Ingest and ListSignals. Implement a gRPC server in internal/api/grpc/, wire it into cmd/chronos/serve.go, and provide a gRPC client constructor in client/. Both transports share the same domain ports (EntityStateRepository, SignalRepository). The gRPC service mirrors the HTTP surface: Ingest (streaming or unary) and ListSignals (with ScopeID, PatternType, MinConfidence filters). Include reflection and health checks for operational discoverability.'
+      requirements: []
 constraints:
     - id: signals-not-opinions
       description: |
