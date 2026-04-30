@@ -92,3 +92,6 @@ chronos.db
 # (UUIDs in the journal trip secret-detection heuristics).
 .roady/events.jsonl
 .roady/usage.json
+
+# Relicta release tooling
+.relicta/
