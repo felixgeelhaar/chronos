@@ -59,9 +59,13 @@ type Config struct {
 	CorrelationMinPoints int     // Minimum aligned observations between two series
 
 	// HTTP API
-	HTTPPort  int
-	HTTPHost  string
-	APIToken  string // optional bearer token; empty disables auth on the API
+	HTTPPort int
+	HTTPHost string
+	APIToken string // optional bearer token; empty disables auth on the API
+
+	// gRPC API
+	GRPCPort int    // 0 disables the gRPC server
+	GRPCHost string // defaults to "" (all interfaces)
 
 	// Notifications — Webhooks
 	WebhookURLs    []string      // comma-separated POST endpoints; empty disables webhooks
@@ -109,6 +113,9 @@ func Default() *Config {
 		HTTPPort: defaultEnvInt("CHRONOS_HTTP_PORT", 7778),
 		HTTPHost: defaultEnv("CHRONOS_HTTP_HOST", "127.0.0.1"),
 		APIToken: defaultEnv("CHRONOS_API_TOKEN", ""),
+
+		GRPCPort: defaultEnvInt("CHRONOS_GRPC_PORT", 0),
+		GRPCHost: defaultEnv("CHRONOS_GRPC_HOST", ""),
 
 		WebhookURLs:    defaultEnvSlice("CHRONOS_WEBHOOK_URLS", nil),
 		WebhookSecret:  defaultEnv("CHRONOS_WEBHOOK_SECRET", ""),

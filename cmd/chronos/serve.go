@@ -5,25 +5,33 @@ import (
 	"flag"
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	chronosv1 "github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
 	"github.com/felixgeelhaar/chronos/internal/api"
+	grpctransport "github.com/felixgeelhaar/chronos/internal/api/grpc"
 	"github.com/felixgeelhaar/chronos/internal/config"
 	"github.com/felixgeelhaar/chronos/internal/notify"
 	"github.com/felixgeelhaar/chronos/internal/observability"
 	"github.com/felixgeelhaar/chronos/internal/pipeline"
 	"github.com/felixgeelhaar/chronos/internal/ports"
 	"github.com/felixgeelhaar/chronos/internal/store"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	grpcmetadata "google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 )
 
 func runServe(args []string) error {
 	fs := flag.NewFlagSet("serve", flag.ContinueOnError)
 	port := fs.Int("port", 0, "HTTP port (overrides CHRONOS_HTTP_PORT)")
 	host := fs.String("host", "", "HTTP host (overrides CHRONOS_HTTP_HOST)")
+	grpcPort := fs.Int("grpc-port", 0, "gRPC port (overrides CHRONOS_GRPC_PORT)")
 	if err := fs.Parse(args); err != nil {
 		return NewUserError("serve: %v", err)
 	}
@@ -34,6 +42,9 @@ func runServe(args []string) error {
 	}
 	if *host != "" {
 		cfg.HTTPHost = *host
+	}
+	if *grpcPort > 0 {
+		cfg.GRPCPort = *grpcPort
 	}
 	if err := cfg.Validate(); err != nil {
 		return NewUserError("serve: invalid configuration: %v", err)
@@ -105,6 +116,30 @@ func runServe(args []string) error {
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
+	// gRPC server — optional, started only when GRPCPort > 0.
+	var grpcSrv *grpc.Server
+	var grpcListener net.Listener
+	if cfg.GRPCPort > 0 {
+		grpcAddr := fmt.Sprintf("%s:%d", cfg.GRPCHost, cfg.GRPCPort)
+		var err error
+		grpcListener, err = net.Listen("tcp", grpcAddr)
+		if err != nil {
+			return NewSystemError(err, "serve: grpc listen: %v", err)
+		}
+		grpcOpts := []grpc.ServerOption{}
+		if cfg.APIToken != "" {
+			grpcOpts = append(grpcOpts, grpc.UnaryInterceptor(bearerAuthInterceptor(cfg.APIToken)))
+		}
+		grpcSrv = grpc.NewServer(grpcOpts...)
+		chronosv1.RegisterChronosServiceServer(grpcSrv, grpctransport.NewServer(conn.EntityStates, signals, metrics, logger))
+		go func() {
+			logger.Info("grpc listening", "addr", grpcAddr)
+			if err := grpcSrv.Serve(grpcListener); err != nil {
+				logger.Error("grpc server exited", "err", err)
+			}
+		}()
+	}
+
 	// rootCtx propagates shutdown to background goroutines (scheduler,
 	// SSE drain). The HTTP server has its own Shutdown; cancelling
 	// rootCtx unwinds everything else.
@@ -133,15 +168,36 @@ func runServe(args []string) error {
 		<-sigCh
 		logger.Info("shutdown signal received")
 		cancelRoot() // stop the scheduler before draining HTTP
+		if grpcSrv != nil {
+			grpcSrv.GracefulStop()
+		}
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		_ = httpSrv.Shutdown(ctx)
 	}()
 
 	logger.Info("listening", "addr", addr, "store", cfg.DBType,
-		"detection_interval", cfg.DetectionInterval, "webhooks", len(cfg.WebhookURLs))
+		"detection_interval", cfg.DetectionInterval, "webhooks", len(cfg.WebhookURLs),
+		"grpc_port", cfg.GRPCPort)
 	if err := httpSrv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		return NewSystemError(err, "serve: %v", err)
 	}
 	return nil
+}
+
+// bearerAuthInterceptor returns a gRPC unary interceptor that rejects
+// requests whose "authorization" metadata does not contain "Bearer <token>".
+// When token is empty the interceptor is a no-op.
+func bearerAuthInterceptor(token string) grpc.UnaryServerInterceptor {
+	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+		md, ok := grpcmetadata.FromIncomingContext(ctx)
+		if !ok {
+			return nil, status.Error(codes.Unauthenticated, "missing metadata")
+		}
+		auth := md.Get("authorization")
+		if len(auth) == 0 || auth[0] != "Bearer "+token {
+			return nil, status.Error(codes.Unauthenticated, "invalid token")
+		}
+		return handler(ctx, req)
+	}
 }

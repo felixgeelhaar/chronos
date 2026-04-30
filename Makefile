@@ -31,6 +31,7 @@ help:
 	@echo "  nox-scan           Security scan, gates on new findings vs .nox/baseline.json"
 	@echo "  nox-baseline-update Refresh the committed nox baseline after accepting findings"
 	@echo "  clean              Remove build artefacts and *.db"
+	@echo "  proto              Regenerate Go code from api/proto/chronos/v1/chronos.proto"
 	@echo "  sqlc               Regenerate sqlc code into internal/store/sqlite/sqlcgen"
 	@echo "  release-snapshot   Build snapshot release artefacts via goreleaser"
 	@echo "  release-check      Validate .goreleaser.yaml without publishing"
@@ -70,7 +71,7 @@ coverctl-suggest:
 	coverctl suggest --strategy current --apply --force
 
 nox-scan:
-	nox scan . -format all -output ./.nox/out
+	nox scan . -format all -output ./.nox/out -vex ./.nox/vex.json
 
 nox-baseline-update:
 	nox baseline update .
@@ -78,6 +79,12 @@ nox-baseline-update:
 clean:
 	rm -rf $(BUILD_DIR) dist
 	rm -f *.db *.db-journal *.db-shm *.db-wal
+
+proto:
+	protoc \
+		--go_out=. --go_opt=paths=source_relative \
+		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+		api/proto/chronos/v1/chronos.proto
 
 sqlc:
 	sqlc generate

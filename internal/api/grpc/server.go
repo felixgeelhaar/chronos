@@ -1,0 +1,192 @@
+// Package grpc provides Chronos's gRPC transport layer. It mirrors the HTTP
+// REST surface: ingest observations and query signals. The gRPC server shares
+// the same domain ports (EntityStateRepository, SignalRepository) as the HTTP
+// server; it is a thin transport adapter only.
+package grpc
+
+import (
+	"context"
+	"errors"
+	"log/slog"
+	"time"
+
+	"github.com/felixgeelhaar/chronos"
+	"github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
+	"github.com/felixgeelhaar/chronos/internal/domain"
+	"github.com/felixgeelhaar/chronos/internal/observability"
+	"github.com/felixgeelhaar/chronos/internal/ports"
+	"github.com/google/uuid"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+)
+
+// Server implements chronosv1.ChronosServiceServer.
+type Server struct {
+	chronosv1.UnimplementedChronosServiceServer
+
+	states  ports.EntityStateRepository
+	signals ports.SignalRepository
+	metrics *observability.Metrics
+	logger  *slog.Logger
+}
+
+// NewServer wires a gRPC server. Pass slog.Default() for the logger if the
+// caller has no preference. metrics may be nil.
+func NewServer(states ports.EntityStateRepository, signals ports.SignalRepository, metrics *observability.Metrics, logger *slog.Logger) *Server {
+	if logger == nil {
+		logger = slog.Default()
+	}
+	return &Server{states: states, signals: signals, metrics: metrics, logger: logger}
+}
+
+// Ingest persists a single EntityState observation.
+func (s *Server) Ingest(ctx context.Context, req *chronosv1.IngestRequest) (*chronosv1.IngestResponse, error) {
+	if s.states == nil {
+		return nil, status.Error(codes.Unimplemented, "ingest disabled")
+	}
+
+	state, err := ingestRequestToEntityState(req)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	adapter := req.Adapter
+	if adapter == "" {
+		adapter = "grpc"
+	}
+
+	if err := s.states.Ingest(ctx, adapter, state); err != nil {
+		s.logger.Error("grpc ingest failed", "err", err)
+		return nil, status.Error(codes.Internal, "ingest failed")
+	}
+
+	if s.metrics != nil {
+		s.metrics.ObserveObservations(adapter, 1)
+	}
+
+	return &chronosv1.IngestResponse{
+		Id:     state.ID.String(),
+		Status: "accepted",
+	}, nil
+}
+
+// ListSignals returns signals matching the provided filter.
+func (s *Server) ListSignals(ctx context.Context, req *chronosv1.ListSignalsRequest) (*chronosv1.ListSignalsResponse, error) {
+	filter, err := parseListSignalsRequest(req)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	sigs, err := s.signals.List(ctx, filter)
+	if err != nil {
+		s.logger.Error("grpc list signals failed", "err", err)
+		return nil, status.Error(codes.Internal, "list signals failed")
+	}
+
+	out := make([]*chronosv1.Signal, 0, len(sigs))
+	for _, sig := range sigs {
+		out = append(out, fromDomainSignal(sig))
+	}
+
+	return &chronosv1.ListSignalsResponse{
+		Signals: out,
+		Count:   int32(len(out)),
+	}, nil
+}
+
+// GetSignal returns a single signal by ID.
+func (s *Server) GetSignal(ctx context.Context, req *chronosv1.GetSignalRequest) (*chronosv1.Signal, error) {
+	id, err := uuid.Parse(req.Id)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid signal id")
+	}
+
+	sig, err := s.signals.Get(ctx, id)
+	if errors.Is(err, domain.ErrSignalNotFound) {
+		return nil, status.Error(codes.NotFound, "signal not found")
+	}
+	if err != nil {
+		s.logger.Error("grpc get signal failed", "id", id, "err", err)
+		return nil, status.Error(codes.Internal, "get signal failed")
+	}
+
+	return fromDomainSignal(sig), nil
+}
+
+// ingestRequestToEntityState converts a proto IngestRequest into a validated
+// chronos.EntityState after applying defaults.
+func ingestRequestToEntityState(req *chronosv1.IngestRequest) (chronos.EntityState, error) {
+	if req.EntityId == "" {
+		return chronos.EntityState{}, errors.New("entity_id required")
+	}
+	if req.ScopeId == "" {
+		return chronos.EntityState{}, errors.New("scope_id required")
+	}
+	if len(req.Features) == 0 {
+		return chronos.EntityState{}, errors.New("features required")
+	}
+
+	ts := protoTime(req.Timestamp)
+	if ts.IsZero() {
+		ts = time.Now().UTC()
+	}
+
+	id := parseUUID(req.Id)
+	if id == uuid.Nil {
+		id = uuid.New()
+	}
+
+	state := chronos.EntityState{
+		ID:        id,
+		EntityID:  parseUUID(req.EntityId),
+		ScopeID:   parseUUID(req.ScopeId),
+		Timestamp: ts,
+		Features:  req.Features,
+		Labels:    req.Labels,
+		Meta:      req.Meta,
+	}
+	if err := state.Validate(); err != nil {
+		return chronos.EntityState{}, err
+	}
+	return state, nil
+}
+
+// parseListSignalsRequest converts a proto ListSignalsRequest into a
+// ports.SignalFilter.
+func parseListSignalsRequest(req *chronosv1.ListSignalsRequest) (ports.SignalFilter, error) {
+	if req.ScopeId == "" {
+		return ports.SignalFilter{}, errors.New("scope_id required")
+	}
+	scopeID, err := uuid.Parse(req.ScopeId)
+	if err != nil {
+		return ports.SignalFilter{}, errors.New("invalid scope_id")
+	}
+	f := ports.SignalFilter{ScopeID: scopeID}
+
+	if req.Series != "" {
+		s, err := uuid.Parse(req.Series)
+		if err != nil {
+			return ports.SignalFilter{}, errors.New("invalid series")
+		}
+		f.Series = &s
+	}
+	if req.Pattern != chronosv1.PatternType_PATTERN_TYPE_UNSPECIFIED {
+		p := patternTypeToDomain(req.Pattern)
+		f.Pattern = &p
+	}
+	if req.Since != nil {
+		t := req.Since.AsTime()
+		f.Since = &t
+	}
+	if req.Until != nil {
+		t := req.Until.AsTime()
+		f.Until = &t
+	}
+	if req.MinConfidence > 0 {
+		f.MinConfidence = &req.MinConfidence
+	}
+	if req.Limit > 0 {
+		f.Limit = int(req.Limit)
+	}
+	return f, nil
+}

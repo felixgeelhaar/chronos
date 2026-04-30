@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package chronos.v1;
+
+option go_package = "github.com/felixgeelhaar/chronos/api/proto/chronos/v1;chronosv1";
+
+import "google/protobuf/timestamp.proto";
+
+// ChronosService is the gRPC transport for the Chronos perception engine.
+// It mirrors the HTTP REST surface: ingest observations and query signals.
+// The service is signals-only: no Title, Summary, Suggestion, or dismissal.
+service ChronosService {
+  // Ingest persists a single EntityState observation. Detection is not
+  // triggered automatically; the scheduler or compute pipeline handles
+  // detection separately.
+  rpc Ingest(IngestRequest) returns (IngestResponse);
+
+  // ListSignals returns signals matching the provided filter.
+  rpc ListSignals(ListSignalsRequest) returns (ListSignalsResponse);
+
+  // GetSignal returns a single signal by ID.
+  rpc GetSignal(GetSignalRequest) returns (Signal);
+}
+
+// PatternType is the enum mirror of domain.PatternType.
+enum PatternType {
+  PATTERN_TYPE_UNSPECIFIED = 0;
+  PATTERN_TYPE_RECURRENCE  = 1;
+  PATTERN_TYPE_TREND       = 2;
+  PATTERN_TYPE_SPIKE       = 3;
+  PATTERN_TYPE_DROP        = 4;
+  PATTERN_TYPE_STALL       = 5;
+  PATTERN_TYPE_ANOMALY     = 6;
+  PATTERN_TYPE_SEASONALITY = 7;
+  PATTERN_TYPE_CORRELATION = 8;
+}
+
+// EntityState is a single observation of an entity at a point in time.
+message EntityState {
+  string id = 1;        // UUID
+  string entity_id = 2; // UUID
+  string scope_id = 3;  // UUID
+  google.protobuf.Timestamp timestamp = 4;
+  repeated double features = 5;
+  repeated string labels = 6;
+  map<string, string> meta = 7;
+}
+
+// Signal is a structured description of a detected pattern.
+message Signal {
+  string id = 1;         // UUID
+  string scope_id = 2;   // UUID
+  string series = 3;     // UUID — the entity the pattern was detected in
+  PatternType pattern = 4;
+  google.protobuf.Timestamp detected_at = 5;
+  TimeWindow window = 6;
+  double strength = 7;
+  double confidence = 8;
+  map<string, double> metrics = 9;
+  repeated Evidence evidence = 10;
+}
+
+// TimeWindow describes the analysis window over which a signal was detected.
+message TimeWindow {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+}
+
+// Evidence is one piece of supporting data backing a signal.
+message Evidence {
+  string series = 1;  // UUID
+  google.protobuf.Timestamp time = 2;
+  string kind = 3;
+  double score = 4;
+  map<string, double> metrics = 5;
+}
+
+// IngestRequest is the wire shape for the Ingest RPC.
+message IngestRequest {
+  string id = 1;        // UUID; optional, server generates if empty
+  string entity_id = 2; // UUID
+  string scope_id = 3;  // UUID
+  google.protobuf.Timestamp timestamp = 4; // optional, server sets to now if not present
+  repeated double features = 5;
+  repeated string labels = 6;
+  map<string, string> meta = 7;
+  string adapter = 8; // source label; defaults to "grpc"
+}
+
+// IngestResponse confirms persistence.
+message IngestResponse {
+  string id = 1;
+  string status = 2;
+}
+
+// ListSignalsRequest filters the signals store.
+message ListSignalsRequest {
+  string scope_id = 1;  // UUID; required
+  string series = 2;    // UUID; optional
+  PatternType pattern = 3; // optional
+  google.protobuf.Timestamp since = 4; // optional
+  google.protobuf.Timestamp until = 5; // optional
+  double min_confidence = 6; // optional
+  int32 limit = 7;           // 0 = no limit
+}
+
+// ListSignalsResponse carries the matched signals.
+message ListSignalsResponse {
+  repeated Signal signals = 1;
+  int32 count = 2;
+}
+
+// GetSignalRequest looks up a single signal.
+message GetSignalRequest {
+  string id = 1; // UUID
+}

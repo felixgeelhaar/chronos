@@ -1,0 +1,121 @@
+package grpc
+
+import (
+	"time"
+
+	"github.com/felixgeelhaar/chronos"
+	"github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
+	"github.com/felixgeelhaar/chronos/internal/domain"
+	"github.com/google/uuid"
+	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+// patternTypeToDomain maps proto PatternType to domain.PatternType.
+func patternTypeToDomain(p chronosv1.PatternType) domain.PatternType {
+	switch p {
+	case chronosv1.PatternType_PATTERN_TYPE_RECURRENCE:
+		return domain.PatternTypeRecurrence
+	case chronosv1.PatternType_PATTERN_TYPE_TREND:
+		return domain.PatternTypeTrend
+	case chronosv1.PatternType_PATTERN_TYPE_SPIKE:
+		return domain.PatternTypeSpike
+	case chronosv1.PatternType_PATTERN_TYPE_DROP:
+		return domain.PatternTypeDrop
+	case chronosv1.PatternType_PATTERN_TYPE_STALL:
+		return domain.PatternTypeStall
+	case chronosv1.PatternType_PATTERN_TYPE_ANOMALY:
+		return domain.PatternTypeAnomaly
+	case chronosv1.PatternType_PATTERN_TYPE_SEASONALITY:
+		return domain.PatternTypeSeasonality
+	case chronosv1.PatternType_PATTERN_TYPE_CORRELATION:
+		return domain.PatternTypeCorrelation
+	default:
+		return ""
+	}
+}
+
+// patternTypeFromDomain maps domain.PatternType to proto PatternType.
+func patternTypeFromDomain(p domain.PatternType) chronosv1.PatternType {
+	switch p {
+	case domain.PatternTypeRecurrence:
+		return chronosv1.PatternType_PATTERN_TYPE_RECURRENCE
+	case domain.PatternTypeTrend:
+		return chronosv1.PatternType_PATTERN_TYPE_TREND
+	case domain.PatternTypeSpike:
+		return chronosv1.PatternType_PATTERN_TYPE_SPIKE
+	case domain.PatternTypeDrop:
+		return chronosv1.PatternType_PATTERN_TYPE_DROP
+	case domain.PatternTypeStall:
+		return chronosv1.PatternType_PATTERN_TYPE_STALL
+	case domain.PatternTypeAnomaly:
+		return chronosv1.PatternType_PATTERN_TYPE_ANOMALY
+	case domain.PatternTypeSeasonality:
+		return chronosv1.PatternType_PATTERN_TYPE_SEASONALITY
+	case domain.PatternTypeCorrelation:
+		return chronosv1.PatternType_PATTERN_TYPE_CORRELATION
+	default:
+		return chronosv1.PatternType_PATTERN_TYPE_UNSPECIFIED
+	}
+}
+
+// toDomainEntityState converts a proto EntityState to a chronos.EntityState.
+func toDomainEntityState(p *chronosv1.EntityState) chronos.EntityState {
+	if p == nil {
+		return chronos.EntityState{}
+	}
+	return chronos.EntityState{
+		ID:        parseUUID(p.Id),
+		EntityID:  parseUUID(p.EntityId),
+		ScopeID:   parseUUID(p.ScopeId),
+		Timestamp: protoTime(p.Timestamp),
+		Features:  p.Features,
+		Labels:    p.Labels,
+		Meta:      p.Meta,
+	}
+}
+
+// fromDomainSignal converts a domain.Signal to a proto Signal.
+func fromDomainSignal(s domain.Signal) *chronosv1.Signal {
+	evidence := make([]*chronosv1.Evidence, 0, len(s.Evidence))
+	for _, e := range s.Evidence {
+		evidence = append(evidence, &chronosv1.Evidence{
+			Series:  e.Series.String(),
+			Time:    timestamppb.New(e.Time),
+			Kind:    e.Kind,
+			Score:   e.Score,
+			Metrics: e.Metrics,
+		})
+	}
+	return &chronosv1.Signal{
+		Id:         s.ID.String(),
+		ScopeId:    s.ScopeID.String(),
+		Series:     s.Series.String(),
+		Pattern:    patternTypeFromDomain(s.Pattern),
+		DetectedAt: timestamppb.New(s.DetectedAt),
+		Window: &chronosv1.TimeWindow{
+			Start: timestamppb.New(s.Window.Start),
+			End:   timestamppb.New(s.Window.End),
+		},
+		Strength:   s.Strength,
+		Confidence: s.Confidence,
+		Metrics:    s.Metrics,
+		Evidence:   evidence,
+	}
+}
+
+// parseUUID safely parses a UUID string; returns uuid.Nil on error.
+func parseUUID(s string) uuid.UUID {
+	id, err := uuid.Parse(s)
+	if err != nil {
+		return uuid.Nil
+	}
+	return id
+}
+
+// protoTime converts a protobuf Timestamp to time.Time, returning zero on nil.
+func protoTime(t *timestamppb.Timestamp) time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+	return t.AsTime()
+}
