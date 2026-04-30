@@ -75,11 +75,11 @@ func TestMetrics_ConcurrentObservations(t *testing.T) {
 
 func TestNormalisePath_OnlySignalsByID(t *testing.T) {
 	tests := map[string]string{
-		"/health":              "/health",
-		"/v1/signals":          "/v1/signals",
-		"/v1/signals/abc-123":  "/v1/signals/:id",
-		"/v1/signals/":         "/v1/signals/",
-		"/v1/ingest":           "/v1/ingest",
+		"/health":             "/health",
+		"/v1/signals":         "/v1/signals",
+		"/v1/signals/abc-123": "/v1/signals/:id",
+		"/v1/signals/":        "/v1/signals/",
+		"/v1/ingest":          "/v1/ingest",
 	}
 	for in, want := range tests {
 		if got := normalisePath(in); got != want {

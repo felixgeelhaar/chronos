@@ -11,34 +11,34 @@ import (
 
 func TestParseDSN(t *testing.T) {
 	cases := []struct {
-		name        string
-		in          string
-		wantNS      string
+		name         string
+		in           string
+		wantNS       string
 		wantInDriver string // substring expected in the driver DSN
-		wantErr     bool
+		wantErr      bool
 	}{
 		{
-			name:        "default port + namespace default",
-			in:          "mysql://root:secret@host/?",
-			wantNS:      "chronos",
+			name:         "default port + namespace default",
+			in:           "mysql://root:secret@host/?",
+			wantNS:       "chronos",
 			wantInDriver: "@tcp(host:3306)/chronos",
 		},
 		{
-			name:        "explicit port",
-			in:          "mysql://user:pw@db.local:6603/?namespace=tenant_a",
-			wantNS:      "tenant_a",
+			name:         "explicit port",
+			in:           "mysql://user:pw@db.local:6603/?namespace=tenant_a",
+			wantNS:       "tenant_a",
 			wantInDriver: "@tcp(db.local:6603)/tenant_a",
 		},
 		{
-			name:        "mariadb alias accepted",
-			in:          "mariadb://u:p@host/?",
-			wantNS:      "chronos",
+			name:         "mariadb alias accepted",
+			in:           "mariadb://u:p@host/?",
+			wantNS:       "chronos",
 			wantInDriver: "@tcp(host:3306)/chronos",
 		},
 		{
-			name:        "no userinfo defaults to root",
-			in:          "mysql://host/?",
-			wantNS:      "chronos",
+			name:         "no userinfo defaults to root",
+			in:           "mysql://host/?",
+			wantNS:       "chronos",
 			wantInDriver: "root@tcp(host:3306)/chronos",
 		},
 		{

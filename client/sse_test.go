@@ -121,7 +121,7 @@ func TestStream_IgnoresHeartbeatsAndUnknownEvents(t *testing.T) {
 	wanted := Signal{ID: uuid.New(), ScopeID: scope, Series: uuid.New(), Pattern: "spike", Strength: 1, Confidence: 1}
 	body, _ := json.Marshal(wanted)
 	frames := []string{
-		": keep-alive\n\n", // SSE comment
+		": keep-alive\n\n",          // SSE comment
 		"event: ping\ndata: {}\n\n", // unrelated event type
 		fmt.Sprintf("event: signal\ndata: %s\n\n", body),
 	}

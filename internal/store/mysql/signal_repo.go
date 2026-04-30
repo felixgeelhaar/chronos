@@ -222,10 +222,10 @@ func scanOneSignal(row *sql.Row) (domain.Signal, error) {
 
 func scanSignalRow(scan func(...any) error) (domain.Signal, error) {
 	var (
-		sig                                domain.Signal
-		idStr, scopeStr, seriesStr         string
-		patternStr                         string
-		metricsJSON                        []byte
+		sig                        domain.Signal
+		idStr, scopeStr, seriesStr string
+		patternStr                 string
+		metricsJSON                []byte
 	)
 	if err := scan(
 		&idStr, &scopeStr, &seriesStr, &patternStr,
