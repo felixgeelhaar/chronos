@@ -19,7 +19,7 @@ jobs:
   nox-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           # Full history so nox can scan past commits for secrets when
           # `-history` is enabled.
