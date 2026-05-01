@@ -1,6 +1,11 @@
+# Backlog
 
-## gRPC transport
+Open items not yet scoped into a release. Closed items move out of this file once shipped.
 
-Add gRPC as a first-class transport alongside the existing HTTP REST API. Define protobuf messages for EntityState, Signal, and service methods for Ingest and ListSignals. Implement a gRPC server in internal/api/grpc/, wire it into cmd/chronos/serve.go, and provide a gRPC client constructor in client/. Both transports share the same domain ports (EntityStateRepository, SignalRepository). The gRPC service mirrors the HTTP surface: Ingest (streaming or unary) and ListSignals (with ScopeID, PatternType, MinConfidence filters). Include reflection and health checks for operational discoverability.
+## Recently shipped
 
----
+- **gRPC transport** — Implemented in `internal/api/grpc/`, schema in `api/proto/chronos/v1/chronos.proto`. Wired into `cmd/chronos/serve.go` via `--grpc-port` / `CHRONOS_GRPC_PORT`. Provides `Ingest` (client-streaming) and `ListSignals` with the same filter shape as `/v1/signals`. Bearer auth shared with HTTP.
+
+## Open
+
+_(none currently)_

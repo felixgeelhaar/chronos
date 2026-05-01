@@ -31,7 +31,7 @@ go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
 #    every 5 seconds. SQLite at /tmp/demo.db; no setup needed.
 export CHRONOS_DB_DSN="sqlite:///tmp/chronos-demo.db"
 export CHRONOS_DETECTION_INTERVAL=5s
-chronos serve --port 7778 &
+chronos serve --port 7778 &  # add --grpc-port 7779 to also expose gRPC
 SERVER_PID=$!
 sleep 1
 
@@ -305,6 +305,8 @@ _, err := c.Ingest(ctx, client.IngestRequest{
 
 ## API
 
+### HTTP
+
 ```
 GET  /health                              Liveness/readiness
 GET  /metrics                             Prometheus exposition
@@ -314,7 +316,18 @@ GET  /v1/signals/<id>                     Fetch a single signal with evidence
 GET  /v1/signals/stream                   Server-Sent Events feed (requires scheduler enabled)
 ```
 
-Wire shape and stability policy: [`docs/wire-contract.md`](docs/wire-contract.md).
+### gRPC
+
+The gRPC service is defined in [`api/proto/chronos/v1/chronos.proto`](api/proto/chronos/v1/chronos.proto) and runs alongside the HTTP server on a separate port when `CHRONOS_GRPC_PORT` (or `--grpc-port`) is set:
+
+| Method | Description |
+|---|---|
+| `Ingest` (client-streaming) | Push observations as a stream of `EntityStateProto` messages |
+| `ListSignals` | Filter by scope/pattern/series/since/until/min_confidence/limit (mirrors HTTP `/v1/signals`) |
+
+Bearer-token auth via the `authorization` metadata header reuses `CHRONOS_API_TOKEN`. HTTP and gRPC return the same domain shape — see [`docs/wire-contract.md`](docs/wire-contract.md) for the canonical contract.
+
+Wire shape and stability policy: [`docs/wire-contract.md`](docs/wire-contract.md). Roadmap: [`ROADMAP.md`](ROADMAP.md).
 
 ## Adapters
 

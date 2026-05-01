@@ -29,6 +29,12 @@ func patternTypeToDomain(p chronosv1.PatternType) domain.PatternType {
 		return domain.PatternTypeSeasonality
 	case chronosv1.PatternType_PATTERN_TYPE_CORRELATION:
 		return domain.PatternTypeCorrelation
+	case chronosv1.PatternType_PATTERN_TYPE_CHANGE_POINT:
+		return domain.PatternTypeChangePoint
+	case chronosv1.PatternType_PATTERN_TYPE_OUTLIER_CLUSTER:
+		return domain.PatternTypeOutlierCluster
+	case chronosv1.PatternType_PATTERN_TYPE_CROSS_SCOPE_CORRELATION:
+		return domain.PatternTypeCrossScopeCorrelation
 	default:
 		return ""
 	}
@@ -53,6 +59,12 @@ func patternTypeFromDomain(p domain.PatternType) chronosv1.PatternType {
 		return chronosv1.PatternType_PATTERN_TYPE_SEASONALITY
 	case domain.PatternTypeCorrelation:
 		return chronosv1.PatternType_PATTERN_TYPE_CORRELATION
+	case domain.PatternTypeChangePoint:
+		return chronosv1.PatternType_PATTERN_TYPE_CHANGE_POINT
+	case domain.PatternTypeOutlierCluster:
+		return chronosv1.PatternType_PATTERN_TYPE_OUTLIER_CLUSTER
+	case domain.PatternTypeCrossScopeCorrelation:
+		return chronosv1.PatternType_PATTERN_TYPE_CROSS_SCOPE_CORRELATION
 	default:
 		return chronosv1.PatternType_PATTERN_TYPE_UNSPECIFIED
 	}

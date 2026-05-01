@@ -4,6 +4,17 @@ This document is the authoritative list of strings consumers may rely on when re
 
 The wire shape itself (field names, JSON tags, types) is in `client/types.go` and `internal/api/dto.go`; this document covers only the string-valued fields whose stability matters to consumers that branch on them.
 
+## Transport parity (HTTP and gRPC)
+
+The same domain shape ships over both transports. Evidence.Kind strings and metric keys are identical regardless of transport. The gRPC schema lives at [`api/proto/chronos/v1/chronos.proto`](../api/proto/chronos/v1/chronos.proto). Field-name conventions across the two:
+
+- HTTP returns JSON shaped by `internal/api/dto.go` with `snake_case` keys (e.g. `"pattern": "recurrence"`).
+- gRPC returns proto messages shaped by `chronos/v1/chronos.proto`. The `pattern` field is a typed `PatternType` enum (`PATTERN_TYPE_RECURRENCE`, `PATTERN_TYPE_TREND`, ...) — the wire integer is what travels, but generated clients expose the named constants. Consumers should switch on the typed enum, not the raw integer.
+- Mapping HTTP string ↔ gRPC enum is one-to-one; conversion lives in `internal/api/grpc/convert.go`.
+- Metric keys (`avg_similarity`, `slope`, `z_score`, ...) appear in `map<string, double>` fields in proto and `Record<string, number>` in HTTP JSON; the keys themselves are identical.
+
+Adding a new transport without updating this document is a contract bug.
+
 ## Pattern enum
 
 `Signal.Pattern` is one of:
@@ -18,6 +29,9 @@ The wire shape itself (field names, JSON tags, types) is in `client/types.go` an
 | `anomaly`       | `client.PatternTypeAnomaly`       | Anomaly        |
 | `seasonality`   | `client.PatternTypeSeasonality`   | Seasonality    |
 | `correlation`   | `client.PatternTypeCorrelation`   | Correlation    |
+| `change_point`  | `client.PatternTypeChangePoint`   | ChangePoint    |
+| `outlier_cluster` | `client.PatternTypeOutlierCluster` | OutlierCluster |
+| `cross_scope_correlation` | `client.PatternTypeCrossScopeCorrelation` | CrossScopeCorrelation |
 
 Consumers should switch on the `client.PatternType*` constants. New patterns will be added with new string values; consumers using a closed switch on a typed enum will surface unknown patterns naturally.
 
@@ -101,6 +115,41 @@ One signal per pair, deterministically owned by the lex-smaller series ID; the p
   - `n` — number of aligned observations.
   - `direction` — `+1` for positive `r`, `-1` for negative, `0` for zero.
 
+### ChangePoint — `Pattern: "change_point"`
+
+Detects a step change in the mean of the outcome metric — a sustained shift between two regimes (distinct from Spike/Drop, which are short-lived deviations).
+
+- **Evidence.Kind**: two evidence rows per signal, in this order: `regime_before` and `regime_after`. Both carry `mean`, `stddev`, `n`.
+- **Evidence.Score**: regime mean (so consumers can read the before / after means without joining metrics).
+- **Signal.Metrics**:
+  - `shift` — `|mean_before − mean_after| / pooled_stddev` (always positive).
+  - `split_index` — index of the first observation in the post-change regime (0-based).
+  - `mean_before`, `mean_after` — the two regime means.
+  - `delta_mean` — signed change (`mean_after − mean_before`).
+  - `n_before`, `n_after` — observation counts on each side.
+
+### OutlierCluster — `Pattern: "outlier_cluster"`
+
+Cohort-level signal: multiple series in the same scope went anomalous around the same time.
+
+- **Series**: `uuid.Nil` (cohort-level, not entity-level).
+- **Evidence.Kind**: `outlier_member` — one row per participating series, sorted by series ID for deterministic ordering.
+- **Evidence.Score**: peak |z| of that series within the cluster window.
+- **Evidence.Metrics**: `peak_z`.
+- **Signal.Metrics**:
+  - `member_count` — number of distinct series in the cluster.
+  - `window_seconds` — cluster bucket width (`CHRONOS_OUTLIER_CLUSTER_WINDOW`).
+
+### CrossScopeCorrelation — `Pattern: "cross_scope_correlation"`
+
+Two series in DIFFERENT scopes that move together. Same-scope pairs are handled by `correlation`.
+
+- **ScopeID**: lex-smaller of the two participating scopes.
+- **Series**: lex-smaller series within the chosen scope.
+- **Evidence.Kind**: `cross_scope_pair` — exactly one row, pointing at the partner series.
+- **Evidence.Score**: `|r|`.
+- **Signal.Metrics**: same shape as `correlation` (`r`, `abs_r`, `n`, `direction`).
+
 ## Sort order
 
 `SignalRepository.List` and the HTTP `/v1/signals` endpoint return signals sorted by `detected_at` descending, then `confidence` descending. Within a single compute run the engine emits in the same order; persistence preserves it.
@@ -117,7 +166,9 @@ Webhook headers carry the only push-specific contract:
 | `X-Chronos-Delivery` | yes | UUID v4 unique per send attempt; idempotency key for retries. |
 | `X-Chronos-Signature` | yes — `sha256=<hex>` | HMAC-SHA256 of the raw body keyed on `CHRONOS_WEBHOOK_SECRET`. Absent when no secret is configured. |
 
-SSE frames use the SSE event name `signal` and a single `data:` line containing `SignalDTO` JSON. The endpoint sends an initial `: connected` comment line for connection-readiness signalling.
+SSE frames use the SSE event name `signal`, an `id:` line carrying the `Signal.ID` UUID, and a `data:` line containing `SignalDTO` JSON. The endpoint sends an initial `: connected` comment line for connection-readiness signalling.
+
+**Replay.** Clients may resume after a disconnect by re-issuing the request with the standard `Last-Event-ID` HTTP header set to the last `Signal.ID` they received. Environments where browsers strip the header (some service-worker setups) can use the `?last_event_id=<uuid>` query parameter as a fallback. On reconnect the server queries the persistence layer for signals detected at or after the cursor's `detected_at` (filtered by the same `scope_id` and `pattern`) and emits them before continuing with the live stream. The cursor signal itself is never re-emitted. If the cursor ID is unknown (the row was deleted, the client reconnected to a different deployment), replay is skipped and the live stream begins as if no header was set.
 
 ## Stability policy
 

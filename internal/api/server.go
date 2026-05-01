@@ -7,6 +7,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -158,13 +159,22 @@ func (s *Server) handleSignals(w http.ResponseWriter, r *http.Request) {
 // or the request context is cancelled. Each emitted signal becomes a
 // single SSE event:
 //
+//	id: <signal-uuid>
 //	event: signal
 //	data: {SignalDTO JSON}
 //
-// Filters: scope_id (required) and pattern (optional). When no
-// broadcaster is attached the route returns 501 — the cmd/chronos
-// `serve` binary attaches one whenever the detection scheduler is
-// enabled (CHRONOS_DETECTION_INTERVAL > 0).
+// Filters: scope_id (required) and pattern (optional).
+//
+// Replay: clients may resume after a disconnect by re-issuing the
+// request with the `Last-Event-ID` header set to the last signal ID
+// they received (or the equivalent `last_event_id` query parameter,
+// for environments where browsers strip the header). On reconnect
+// the server replays signals detected at or after the referenced
+// signal's detected_at, then continues with the live stream.
+//
+// When no broadcaster is attached the route returns 501 — the
+// cmd/chronos `serve` binary attaches one whenever the detection
+// scheduler is enabled (CHRONOS_DETECTION_INTERVAL > 0).
 func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -199,13 +209,22 @@ func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	flusher.Flush()
 
-	id, ch := s.sse.Subscribe(scope, r.URL.Query().Get("pattern"))
+	pattern := r.URL.Query().Get("pattern")
+	id, ch := s.sse.Subscribe(scope, pattern)
 	defer s.sse.Unsubscribe(id)
 
 	// Send a comment line as the initial heartbeat so the client knows
 	// the stream is established before the first signal arrives.
 	_, _ = io.WriteString(w, ": connected\n\n")
 	flusher.Flush()
+
+	// Replay any signals missed since the client's last seen ID.
+	if cursor := strings.TrimSpace(firstNonEmpty(r.Header.Get("Last-Event-ID"), r.URL.Query().Get("last_event_id"))); cursor != "" {
+		if err := s.replaySinceCursor(r.Context(), w, flusher, scope, pattern, cursor); err != nil {
+			s.logger.Error("stream: replay failed", "err", err, "cursor", cursor)
+			// Replay failure is non-fatal: keep the live stream going.
+		}
+	}
 
 	ctx := r.Context()
 	for {
@@ -216,17 +235,65 @@ func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 			if !open {
 				return // broadcaster shut down or unsubscribed
 			}
-			payload, err := json.Marshal(ToSignalDTO(sig))
-			if err != nil {
-				s.logger.Error("stream: marshal failed", "err", err, "signal_id", sig.ID)
-				continue
-			}
-			if _, err := fmt.Fprintf(w, "event: signal\ndata: %s\n\n", payload); err != nil {
+			if err := writeSignalFrame(w, sig); err != nil {
 				return // client disconnected
 			}
 			flusher.Flush()
 		}
 	}
+}
+
+// replaySinceCursor emits any signals detected at or after the
+// timestamp of the cursor signal, scoped to the same filter as the
+// live stream. Self-cursor row is excluded so consumers don't re-see
+// the last event they already processed.
+func (s *Server) replaySinceCursor(ctx context.Context, w io.Writer, flusher http.Flusher, scope uuid.UUID, pattern, cursor string) error {
+	cursorID, err := uuid.Parse(cursor)
+	if err != nil {
+		return fmt.Errorf("parse cursor: %w", err)
+	}
+	cursorSig, err := s.signals.Get(ctx, cursorID)
+	if err != nil {
+		return fmt.Errorf("lookup cursor: %w", err)
+	}
+	since := cursorSig.DetectedAt
+	filter := ports.SignalFilter{ScopeID: scope, Since: &since}
+	if pattern != "" {
+		pt := domain.PatternType(pattern)
+		filter.Pattern = &pt
+	}
+	missed, err := s.signals.List(ctx, filter)
+	if err != nil {
+		return fmt.Errorf("list since cursor: %w", err)
+	}
+	for _, sig := range missed {
+		if sig.ID == cursorID {
+			continue // skip the row the client already saw
+		}
+		if err := writeSignalFrame(w, sig); err != nil {
+			return err
+		}
+		flusher.Flush()
+	}
+	return nil
+}
+
+func writeSignalFrame(w io.Writer, sig domain.Signal) error {
+	payload, err := json.Marshal(ToSignalDTO(sig))
+	if err != nil {
+		return err
+	}
+	_, err = fmt.Fprintf(w, "id: %s\nevent: signal\ndata: %s\n\n", sig.ID, payload)
+	return err
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, v := range values {
+		if v != "" {
+			return v
+		}
+	}
+	return ""
 }
 
 func (s *Server) handleSignalDetail(w http.ResponseWriter, r *http.Request) {

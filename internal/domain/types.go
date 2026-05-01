@@ -68,6 +68,23 @@ const (
 	// PatternTypeCorrelation — two or more series move together. Reserved
 	// for future implementation.
 	PatternTypeCorrelation PatternType = "correlation"
+
+	// PatternTypeChangePoint — the series exhibits a step change: a
+	// sustained shift in mean that does not look like Spike/Drop (which
+	// are short-lived deviations). Detected via best-split mean-shift
+	// test over the analysis window.
+	PatternTypeChangePoint PatternType = "change_point"
+
+	// PatternTypeOutlierCluster — multiple series in the same scope go
+	// anomalous around the same time. Distinct from per-series Anomaly:
+	// this is the cohort-level signal that something systemic is going
+	// on (a deploy gone wrong, an upstream dependency incident, etc.).
+	PatternTypeOutlierCluster PatternType = "outlier_cluster"
+
+	// PatternTypeCrossScopeCorrelation — two series in DIFFERENT scopes
+	// move together. The within-scope correlation detector misses these
+	// because it groups by scope; this detector looks across scopes.
+	PatternTypeCrossScopeCorrelation PatternType = "cross_scope_correlation"
 )
 
 // TimeWindow describes the analysis window over which a signal was

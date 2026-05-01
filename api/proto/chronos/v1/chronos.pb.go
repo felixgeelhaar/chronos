@@ -26,40 +26,49 @@ const (
 type PatternType int32
 
 const (
-	PatternType_PATTERN_TYPE_UNSPECIFIED PatternType = 0
-	PatternType_PATTERN_TYPE_RECURRENCE  PatternType = 1
-	PatternType_PATTERN_TYPE_TREND       PatternType = 2
-	PatternType_PATTERN_TYPE_SPIKE       PatternType = 3
-	PatternType_PATTERN_TYPE_DROP        PatternType = 4
-	PatternType_PATTERN_TYPE_STALL       PatternType = 5
-	PatternType_PATTERN_TYPE_ANOMALY     PatternType = 6
-	PatternType_PATTERN_TYPE_SEASONALITY PatternType = 7
-	PatternType_PATTERN_TYPE_CORRELATION PatternType = 8
+	PatternType_PATTERN_TYPE_UNSPECIFIED             PatternType = 0
+	PatternType_PATTERN_TYPE_RECURRENCE              PatternType = 1
+	PatternType_PATTERN_TYPE_TREND                   PatternType = 2
+	PatternType_PATTERN_TYPE_SPIKE                   PatternType = 3
+	PatternType_PATTERN_TYPE_DROP                    PatternType = 4
+	PatternType_PATTERN_TYPE_STALL                   PatternType = 5
+	PatternType_PATTERN_TYPE_ANOMALY                 PatternType = 6
+	PatternType_PATTERN_TYPE_SEASONALITY             PatternType = 7
+	PatternType_PATTERN_TYPE_CORRELATION             PatternType = 8
+	PatternType_PATTERN_TYPE_CHANGE_POINT            PatternType = 9
+	PatternType_PATTERN_TYPE_OUTLIER_CLUSTER         PatternType = 10
+	PatternType_PATTERN_TYPE_CROSS_SCOPE_CORRELATION PatternType = 11
 )
 
 // Enum value maps for PatternType.
 var (
 	PatternType_name = map[int32]string{
-		0: "PATTERN_TYPE_UNSPECIFIED",
-		1: "PATTERN_TYPE_RECURRENCE",
-		2: "PATTERN_TYPE_TREND",
-		3: "PATTERN_TYPE_SPIKE",
-		4: "PATTERN_TYPE_DROP",
-		5: "PATTERN_TYPE_STALL",
-		6: "PATTERN_TYPE_ANOMALY",
-		7: "PATTERN_TYPE_SEASONALITY",
-		8: "PATTERN_TYPE_CORRELATION",
+		0:  "PATTERN_TYPE_UNSPECIFIED",
+		1:  "PATTERN_TYPE_RECURRENCE",
+		2:  "PATTERN_TYPE_TREND",
+		3:  "PATTERN_TYPE_SPIKE",
+		4:  "PATTERN_TYPE_DROP",
+		5:  "PATTERN_TYPE_STALL",
+		6:  "PATTERN_TYPE_ANOMALY",
+		7:  "PATTERN_TYPE_SEASONALITY",
+		8:  "PATTERN_TYPE_CORRELATION",
+		9:  "PATTERN_TYPE_CHANGE_POINT",
+		10: "PATTERN_TYPE_OUTLIER_CLUSTER",
+		11: "PATTERN_TYPE_CROSS_SCOPE_CORRELATION",
 	}
 	PatternType_value = map[string]int32{
-		"PATTERN_TYPE_UNSPECIFIED": 0,
-		"PATTERN_TYPE_RECURRENCE":  1,
-		"PATTERN_TYPE_TREND":       2,
-		"PATTERN_TYPE_SPIKE":       3,
-		"PATTERN_TYPE_DROP":        4,
-		"PATTERN_TYPE_STALL":       5,
-		"PATTERN_TYPE_ANOMALY":     6,
-		"PATTERN_TYPE_SEASONALITY": 7,
-		"PATTERN_TYPE_CORRELATION": 8,
+		"PATTERN_TYPE_UNSPECIFIED":             0,
+		"PATTERN_TYPE_RECURRENCE":              1,
+		"PATTERN_TYPE_TREND":                   2,
+		"PATTERN_TYPE_SPIKE":                   3,
+		"PATTERN_TYPE_DROP":                    4,
+		"PATTERN_TYPE_STALL":                   5,
+		"PATTERN_TYPE_ANOMALY":                 6,
+		"PATTERN_TYPE_SEASONALITY":             7,
+		"PATTERN_TYPE_CORRELATION":             8,
+		"PATTERN_TYPE_CHANGE_POINT":            9,
+		"PATTERN_TYPE_OUTLIER_CLUSTER":         10,
+		"PATTERN_TYPE_CROSS_SCOPE_CORRELATION": 11,
 	}
 )
 
@@ -850,7 +859,7 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\asignals\x18\x01 \x03(\v2\x12.chronos.v1.SignalR\asignals\x12\x14\n" +
 	"\x05count\x18\x02 \x01(\x05R\x05count\"\"\n" +
 	"\x10GetSignalRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id*\xfd\x01\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id*\xe8\x02\n" +
 	"\vPatternType\x12\x1c\n" +
 	"\x18PATTERN_TYPE_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17PATTERN_TYPE_RECURRENCE\x10\x01\x12\x16\n" +
@@ -860,7 +869,11 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x12PATTERN_TYPE_STALL\x10\x05\x12\x18\n" +
 	"\x14PATTERN_TYPE_ANOMALY\x10\x06\x12\x1c\n" +
 	"\x18PATTERN_TYPE_SEASONALITY\x10\a\x12\x1c\n" +
-	"\x18PATTERN_TYPE_CORRELATION\x10\b2\xe0\x01\n" +
+	"\x18PATTERN_TYPE_CORRELATION\x10\b\x12\x1d\n" +
+	"\x19PATTERN_TYPE_CHANGE_POINT\x10\t\x12 \n" +
+	"\x1cPATTERN_TYPE_OUTLIER_CLUSTER\x10\n" +
+	"\x12(\n" +
+	"$PATTERN_TYPE_CROSS_SCOPE_CORRELATION\x10\v2\xe0\x01\n" +
 	"\x0eChronosService\x12?\n" +
 	"\x06Ingest\x12\x19.chronos.v1.IngestRequest\x1a\x1a.chronos.v1.IngestResponse\x12N\n" +
 	"\vListSignals\x12\x1e.chronos.v1.ListSignalsRequest\x1a\x1f.chronos.v1.ListSignalsResponse\x12=\n" +

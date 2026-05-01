@@ -83,5 +83,9 @@ func Compute(ctx context.Context, in ComputeInput) (ComputeResult, error) {
 }
 
 // NewEngine is a thin alias so callers can build an Engine from this
-// package without depending directly on internal/detect.
-func NewEngine(cfg *config.Config) *detect.Engine { return detect.NewEngine(cfg) }
+// package without depending directly on internal/detect. The
+// DetectorParallelism config knob is honoured here so cmd/chronos
+// doesn't need to wire it manually.
+func NewEngine(cfg *config.Config) *detect.Engine {
+	return detect.NewEngine(cfg).WithParallelDetectors(cfg.DetectorParallelism)
+}

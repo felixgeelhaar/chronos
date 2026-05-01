@@ -32,3 +32,18 @@ type Detector interface {
 	// supplied scopeID. May return an empty slice.
 	Detect(ctx context.Context, scopeID uuid.UUID, states []chronos.EntityState) []domain.Signal
 }
+
+// CrossScopeDetector is a detector whose input is the full state list
+// across every scope, not a single per-scope group. The engine calls
+// CrossDetect exactly once per Detect run, after the per-scope
+// detectors have finished.
+type CrossScopeDetector interface {
+	// Pattern returns the PatternType this detector emits.
+	Pattern() domain.PatternType
+
+	// CrossDetect runs once over every state in the input. ScopeID on
+	// emitted signals is uuid.Nil unless the detector picks one of the
+	// participating scopes; choose deterministically so signals are
+	// stable across runs.
+	CrossDetect(ctx context.Context, states []chronos.EntityState) []domain.Signal
+}

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/felixgeelhaar/chronos"
@@ -23,7 +24,16 @@ func (r *EntityStateRepository) Ingest(ctx context.Context, adapterName string, 
 }
 
 // Save upserts a batch of observations inside a single transaction.
+// Above [BulkSaveThreshold] rows the batch switches to a multi-row
+// INSERT (chunks of [bulkChunkSize]) instead of one statement per
+// row. This avoids the round-trip overhead of per-row INSERT against
+// the wire protocol while staying portable across every Postgres-
+// wire-compatible engine (CockroachDB, YugabyteDB, Neon, etc.) —
+// including engines whose pgx COPY support is incomplete.
 func (r *EntityStateRepository) Save(ctx context.Context, adapterName string, states []chronos.EntityState) error {
+	if len(states) >= BulkSaveThreshold {
+		return r.bulkSave(ctx, adapterName, states)
+	}
 	tx, err := r.conn.DB.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("entity_state save: begin: %w", err)
@@ -39,6 +49,76 @@ func (r *EntityStateRepository) Save(ctx context.Context, adapterName string, st
 	}
 	if err := tx.Commit(); err != nil {
 		return fmt.Errorf("entity_state save: commit: %w", err)
+	}
+	return nil
+}
+
+// BulkSaveThreshold is the row count above which Save switches to
+// the chunked multi-row INSERT path.
+const BulkSaveThreshold = 200
+
+// bulkChunkSize caps the rows per multi-row INSERT statement so we
+// never exceed Postgres's 65535 placeholder limit (9 columns × 7280
+// rows = 65520).
+const bulkChunkSize = 1000
+
+// bulkSave emits multi-row INSERT…VALUES…ON CONFLICT statements in
+// chunks so a 100k-row batch becomes 100 round-trips instead of
+// 100k. All chunks run in a single transaction so partial failure
+// rolls back the whole batch.
+func (r *EntityStateRepository) bulkSave(ctx context.Context, adapterName string, states []chronos.EntityState) error {
+	for _, s := range states {
+		if err := s.Validate(); err != nil {
+			return fmt.Errorf("entity_state bulksave: validate %s: %w", s.ID, err)
+		}
+	}
+	tx, err := r.conn.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("entity_state bulksave: begin: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+	now := time.Now()
+	for start := 0; start < len(states); start += bulkChunkSize {
+		end := start + bulkChunkSize
+		if end > len(states) {
+			end = len(states)
+		}
+		chunk := states[start:end]
+		if err := r.bulkInsertChunk(ctx, tx, adapterName, chunk, now); err != nil {
+			return err
+		}
+	}
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("entity_state bulksave: commit: %w", err)
+	}
+	return nil
+}
+
+func (r *EntityStateRepository) bulkInsertChunk(ctx context.Context, tx *sql.Tx, adapterName string, chunk []chronos.EntityState, now time.Time) error {
+	const cols = 9
+	args := make([]any, 0, len(chunk)*cols)
+	placeholders := make([]string, 0, len(chunk))
+	for i, s := range chunk {
+		base := i*cols + 1
+		placeholders = append(placeholders, fmt.Sprintf(
+			"($%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d)",
+			base, base+1, base+2, base+3, base+4, base+5, base+6, base+7, base+8,
+		))
+		featuresJSON, _ := json.Marshal(s.Features)
+		labelsJSON, _ := json.Marshal(s.Labels)
+		metaJSON, _ := json.Marshal(s.Meta)
+		args = append(args,
+			s.ID, s.EntityID, s.ScopeID,
+			s.Timestamp,
+			featuresJSON, labelsJSON, metaJSON,
+			adapterName, now,
+		)
+	}
+	q := "INSERT INTO entity_states (id, entity_id, scope_id, timestamp, features, labels, meta, adapter, created_at) VALUES " +
+		strings.Join(placeholders, ", ") +
+		" ON CONFLICT (id) DO UPDATE SET features = EXCLUDED.features, labels = EXCLUDED.labels, meta = EXCLUDED.meta, adapter = EXCLUDED.adapter"
+	if _, err := tx.ExecContext(ctx, q, args...); err != nil {
+		return fmt.Errorf("entity_state bulksave: chunk: %w", err)
 	}
 	return nil
 }

@@ -27,8 +27,18 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 | `CHRONOS_SEASONALITY_MIN_PERIOD` | `2` | Seasonality | Minimum lag (period) considered. |
 | `CHRONOS_CORRELATION_MIN` | `0.7` | Correlation | Minimum |Pearson r| between two series to emit. |
 | `CHRONOS_CORRELATION_MIN_POINTS` | `5` | Correlation | Minimum aligned observations between two series. |
+| `CHRONOS_CHANGEPOINT_MIN_SHIFT` | `1.5` | ChangePoint | Minimum standardised mean shift (`|Δmean| / pooled_stddev`) to emit. |
+| `CHRONOS_CHANGEPOINT_MIN_POINTS` | `8` | ChangePoint | Minimum observations required (split needs ≥ 2 each side). |
+| `CHRONOS_OUTLIER_CLUSTER_MIN_SERIES` | `3` | OutlierCluster | Minimum distinct series in a single time bucket to emit. |
+| `CHRONOS_OUTLIER_CLUSTER_Z` | `2.5` | OutlierCluster | Per-series \|z-score\| threshold for an observation to count as an outlier. |
+| `CHRONOS_OUTLIER_CLUSTER_WINDOW` | `5m` | OutlierCluster | Sliding-window width for "around the same time". |
+| `CHRONOS_CROSS_SCOPE_MIN` | `0.8` | CrossScopeCorrelation | Minimum \|Pearson r\| across scopes. |
+| `CHRONOS_CROSS_SCOPE_MIN_POINTS` | `5` | CrossScopeCorrelation | Minimum aligned observations between two series. |
+| `CHRONOS_DETECTOR_PARALLELISM` | `false` | Engine | Run per-scope detectors in parallel goroutines. Off by default (deterministic ordering); flip on for many-scope deployments. |
 | `CHRONOS_HTTP_PORT` | `7778` | `serve` | HTTP listen port. |
 | `CHRONOS_HTTP_HOST` | `127.0.0.1` | `serve` | HTTP listen host. Use `0.0.0.0` to bind all interfaces. |
+| `CHRONOS_GRPC_PORT` | `0` | `serve` | gRPC listen port. `0` disables gRPC; HTTP and gRPC servers run concurrently when both are set. |
+| `CHRONOS_GRPC_HOST` | unset | `serve` | gRPC listen host. Empty binds all interfaces. |
 | `CHRONOS_WEBHOOK_URLS` | unset | both | Comma-separated POST endpoints; empty disables webhooks. |
 | `CHRONOS_WEBHOOK_SECRET` | unset | both | HMAC-SHA256 key for `X-Chronos-Signature`. Empty omits the header. |
 | `CHRONOS_WEBHOOK_TIMEOUT` | `5s` | both | Per-request HTTP client timeout (Go duration). |
@@ -36,7 +46,7 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 | `CHRONOS_DETECTION_INTERVAL` | `0` | `serve` | Background detection cadence; `0` disables. Required for SSE to receive signals. |
 | `CHRONOS_VERBOSE` | unset | CLI | When set to any non-empty value, prints the cause chain on errors. |
 
-`serve` flags `--port` and `--host` override their env counterparts. `compute` accepts `--scope-id` (preferred) or `--coach-id` (legacy alias).
+`serve` flags `--port`, `--host`, and `--grpc-port` override their env counterparts. `compute` accepts `--scope-id` (preferred) or `--coach-id` (legacy alias).
 
 ## Precedence
 
@@ -156,6 +166,8 @@ Per-client buffer is bounded; slow consumers are silently dropped. The endpoint 
 
 Both transports are at-most-once. The persistence record (`SignalRepository`) is the source of truth — push is a courtesy. Consumers needing replay should pair the live stream with a `/v1/signals` query keyed on the last-seen `detected_at`.
 
-## Authentication (HTTP API)
+## Authentication
 
-The reference server does not authenticate today. Deployments that need auth wrap `internal/api.Server` in their own middleware (token check, mTLS, JWT) before mounting the routes. The `client.WithToken(...)` option is wire-ready for the standard `Authorization: Bearer <token>` header.
+The HTTP server does not authenticate today. Deployments that need auth wrap `internal/api.Server` in their own middleware (token check, mTLS, JWT) before mounting the routes. The `client.WithToken(...)` option is wire-ready for the standard `Authorization: Bearer <token>` header.
+
+The gRPC server, when enabled (`CHRONOS_GRPC_PORT > 0`), checks the `authorization` metadata header against `CHRONOS_API_TOKEN`. Calls without a matching bearer token are rejected with `Unauthenticated`. Set `CHRONOS_API_TOKEN` empty to skip auth in development.

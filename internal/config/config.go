@@ -58,6 +58,25 @@ type Config struct {
 	CorrelationMin       float64 // Minimum |Pearson r| to emit
 	CorrelationMinPoints int     // Minimum aligned observations between two series
 
+	// Detection — ChangePoint (best-split mean-shift)
+	ChangePointMinShift  float64 // Minimum |Δmean / pooled_stddev| to emit
+	ChangePointMinPoints int     // Minimum points required (split needs ≥ 2 either side)
+
+	// Detection — OutlierCluster (cohort-level anomaly clusters)
+	OutlierClusterMinSeries  int           // Minimum series sharing a cluster
+	OutlierClusterZ          float64       // |z-score| threshold to count a series as anomalous at a tick
+	OutlierClusterTimeWindow time.Duration // sliding-window width for "around the same time"
+
+	// Detection — CrossScopeCorrelation
+	CrossScopeMin       float64 // Minimum |Pearson r| to emit (cross-scope tightness)
+	CrossScopeMinPoints int     // Minimum aligned observations between two series
+
+	// DetectorParallelism enables parallel execution of per-scope
+	// detectors. Off by default; flip on for deployments with many
+	// detectors and many scopes where wall-clock matters more than
+	// deterministic signal ordering.
+	DetectorParallelism bool
+
 	// HTTP API
 	HTTPPort int
 	HTTPHost string
@@ -109,6 +128,18 @@ func Default() *Config {
 
 		CorrelationMin:       defaultEnvFloat64("CHRONOS_CORRELATION_MIN", 0.7),
 		CorrelationMinPoints: defaultEnvInt("CHRONOS_CORRELATION_MIN_POINTS", 5),
+
+		ChangePointMinShift:  defaultEnvFloat64("CHRONOS_CHANGEPOINT_MIN_SHIFT", 1.5),
+		ChangePointMinPoints: defaultEnvInt("CHRONOS_CHANGEPOINT_MIN_POINTS", 8),
+
+		OutlierClusterMinSeries:  defaultEnvInt("CHRONOS_OUTLIER_CLUSTER_MIN_SERIES", 3),
+		OutlierClusterZ:          defaultEnvFloat64("CHRONOS_OUTLIER_CLUSTER_Z", 2.5),
+		OutlierClusterTimeWindow: defaultEnvDuration("CHRONOS_OUTLIER_CLUSTER_WINDOW", 5*time.Minute),
+
+		CrossScopeMin:       defaultEnvFloat64("CHRONOS_CROSS_SCOPE_MIN", 0.8),
+		CrossScopeMinPoints: defaultEnvInt("CHRONOS_CROSS_SCOPE_MIN_POINTS", 5),
+
+		DetectorParallelism: defaultEnvBool("CHRONOS_DETECTOR_PARALLELISM", false),
 
 		HTTPPort: defaultEnvInt("CHRONOS_HTTP_PORT", 7778),
 		HTTPHost: defaultEnv("CHRONOS_HTTP_HOST", "127.0.0.1"),
@@ -216,6 +247,18 @@ func defaultEnvDuration(key string, fallback time.Duration) time.Duration {
 		if d, err := time.ParseDuration(v); err == nil {
 			return d
 		}
+	}
+	return fallback
+}
+
+func defaultEnvBool(key string, fallback bool) bool {
+	switch strings.ToLower(strings.TrimSpace(os.Getenv(key))) {
+	case "":
+		return fallback
+	case "1", "true", "yes", "on":
+		return true
+	case "0", "false", "no", "off":
+		return false
 	}
 	return fallback
 }
