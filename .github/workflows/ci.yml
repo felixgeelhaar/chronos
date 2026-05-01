@@ -35,7 +35,7 @@ jobs:
 
       - name: Enforce coverage policy
         if: matrix.go-version == '1.25'
-        run: coverctl check --from-profile coverage.out -o json
+        run: coverctl check --profile ./coverage.out --from-profile -o json
         # `coverctl check` exits 1 on any domain falling below its
         # threshold in .coverctl.yaml. Tighten thresholds with
         # `coverctl suggest --strategy current --apply` after coverage
@@ -53,7 +53,7 @@ jobs:
           cache: true
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: v2.1.6
           args: --timeout=5m
