@@ -49,6 +49,25 @@ repos:
         types: [go]
         pass_filenames: false
 
+      # gocritic — opinionated static checker. Runs against every Go
+      # file changed in the commit. golangci-lint also enables gocritic
+      # (see .golangci.yml), but running it separately gives faster
+      # feedback during incremental edits.
+      - id: gocritic
+        name: gocritic
+        entry: bash -c 'command -v gocritic >/dev/null 2>&1 || go install github.com/go-critic/go-critic/cmd/gocritic@latest; gocritic check ./...'
+        language: system
+        types: [go]
+        pass_filenames: false
+
+      # nox security baseline — flags new findings not present in
+      # findings.json. Fast: scans the working tree only.
+      - id: nox-scan
+        name: nox scan
+        entry: bash -c 'command -v nox >/dev/null 2>&1 && nox scan . || echo "nox not installed; skipping"'
+        language: system
+        pass_filenames: false
+
   # golangci-lint pinned to the same version CI runs (.github/workflows/ci.yml).
   # Bump both at the same time when upgrading.
   - repo: https://github.com/golangci/golangci-lint
