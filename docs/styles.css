@@ -429,6 +429,35 @@ pre code { background: transparent; padding: 0; }
   .pipe-band .row > strong { padding-top: 8px; }
 }
 
+/* "What you can build" / "Use cases" bullets right under the hero. */
+.use-cases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 28px 0 0;
+}
+.use-cases > div {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.use-cases p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.use-cases p strong {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .vs-table {
   margin: 24px 0;
   background: var(--bg-elev);

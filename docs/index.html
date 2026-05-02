@@ -41,14 +41,13 @@
   <div class="cta-row">
     <a class="cta primary" href="#run">Run the demo</a>
     <a class="cta" href="https://github.com/felixgeelhaar/chronos" aria-label="View Chronos on GitHub">★ on GitHub</a>
-    <a class="cta ghost" href="#scenario">See the scenario ↓</a>
+    <a class="cta ghost" href="#scenario">See it work ↓</a>
   </div>
-  <ul class="badges" aria-label="At a glance">
-    <li>MIT licensed</li>
-    <li>Go · single binary · 2 MB</li>
-    <li>HTTP · gRPC · SSE</li>
-    <li>SQLite · Postgres · MySQL · libSQL · in-memory</li>
-  </ul>
+  <div class="use-cases">
+    <div><p><strong>Switch on patterns, not text</strong><code>case "stall": kick_worker()</code> instead of 50 lines of NumPy or a paged human reading an alert.</p></div>
+    <div><p><strong>Detect "regression after deploy"</strong>In code. Not in a PagerDuty rule that nobody trusts.</p></div>
+    <div><p><strong>Stop maintaining alert names</strong>Eight named patterns ship with Chronos. Add your own; consumers don't change.</p></div>
+  </div>
 </section>
 
 <section id="scenario" aria-labelledby="scenario-heading">
@@ -134,27 +133,11 @@ $ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
       <span role="cell">Chronos is a 2 MB Go binary, MIT, your DB, your data, eight named pattern types you import as Go constants.</span>
     </div>
     <div class="vs-row" role="row">
-      <span role="cell"><strong>Anomalo · Monte Carlo</strong></span>
-      <span role="cell">Scheduled SQL data-quality on warehouses.</span>
-      <span role="cell">Chronos runs in your request path, sub-tick latency, on any streaming source — adapter-agnostic.</span>
-    </div>
-    <div class="vs-row" role="row">
       <span role="cell"><strong>Roll-your-own NumPy</strong></span>
       <span role="cell">Bespoke detectors per project.</span>
-      <span role="cell">Chronos is the same eight detectors you'd write, already typed, persisted, and stable behind a wire contract.</span>
+      <span role="cell">Same eight detectors, already typed, persisted, and stable behind a pinned wire contract.</span>
     </div>
   </div>
-
-  <h3 class="subhead">Eight detectors, one signal contract</h3>
-  <p>
-    <code>spike</code> · <code>dip</code> · <code>stall</code> ·
-    <code>plateau</code> · <code>regression</code> ·
-    <code>seasonality</code> · <code>trend_change</code> ·
-    <code>outlier</code>. Every detector emits the same
-    <code>Signal</code> shape with its own evidence payload. New
-    detector = one new variant in the enum + one new evidence type;
-    consumers don't change.
-  </p>
 </section>
 
 <section id="architecture" aria-labelledby="arch-heading">
