@@ -60,6 +60,7 @@ linters:
       - path: _test\.go
         linters:
           - gosec
+          - errcheck   # cleanup Close()/Serve() in tests is acceptable
       # Generated sqlc code is owned by the generator; we do not edit it.
       - path: internal/store/sqlite/sqlcgen/.*
         linters:
