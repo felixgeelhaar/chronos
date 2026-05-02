@@ -6,7 +6,7 @@
   <title>Chronos — pattern detection for time-series</title>
   <meta name="description" content="Chronos emits typed signals (Pattern + Evidence + Metrics) for code to switch on, not string alerts for humans. Single Go binary, MIT.">
   <meta property="og:title" content="Chronos — pattern detection for time-series">
-  <meta property="og:description" content="Typed signals for downstream code. Eight detectors. Five backends. One binary.">
+  <meta property="og:description" content="Typed signals for downstream code. Eleven detectors. Five backends. One binary.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -33,8 +33,8 @@
   <h1>Typed signals. <span class="accent">Not string alerts.</span></h1>
   <p class="lede">
     Chronos turns observation streams into structured patterns —
-    <em>spike</em>, <em>stall</em>, <em>plateau</em>, <em>regression</em> —
-    that downstream code can switch on. Eight named detectors, five
+    <em>spike</em>, <em>drop</em>, <em>stall</em>, <em>change_point</em> —
+    that downstream code can switch on. Eleven named detectors, five
     storage backends, one MIT-licensed Go binary. No PromQL DSL, no
     "AIOps platform," no cloud lock-in.
   </p>
@@ -45,8 +45,8 @@
   </div>
   <div class="use-cases">
     <div><p><strong>Switch on patterns, not text</strong><code>case "stall": kick_worker()</code> instead of 50 lines of NumPy or a paged human reading an alert.</p></div>
-    <div><p><strong>Detect "regression after deploy"</strong>In code. Not in a PagerDuty rule that nobody trusts.</p></div>
-    <div><p><strong>Stop maintaining alert names</strong>Eight named patterns ship with Chronos. Add your own; consumers don't change.</p></div>
+    <div><p><strong>Detect "level shift after deploy"</strong>In code via <code>change_point</code>. Not in a PagerDuty rule that nobody trusts.</p></div>
+    <div><p><strong>Stop maintaining alert names</strong>Eleven typed patterns ship with Chronos. Add your own; consumers don't change.</p></div>
   </div>
 </section>
 
@@ -70,21 +70,23 @@ $ CHRONOS_DB_DSN="sqlite:///tmp/chronos.db" \
   CHRONOS_DETECTION_INTERVAL=5s \
   chronos serve --port 7778 &amp;
 
+$ ENTITY=$(uuidgen | tr A-Z a-z) SCOPE=$(uuidgen | tr A-Z a-z)
+
 # Seven observations, all stuck at 11.0
 $ for i in 1 2 3 4 5 6 7; do
-    curl -s -XPOST localhost:7778/v1/ingest -d '{
-      "entity_id":"e1","scope_id":"s1","outcome":11.0,
-      "timestamp":"2026-05-02T'"$i"':00:00Z" }' &gt; /dev/null
+    curl -s -XPOST localhost:7778/v1/ingest -d "{
+      \"entity_id\":\"$ENTITY\",\"scope_id\":\"$SCOPE\",\"outcome\":11.0,
+      \"timestamp\":\"2026-05-02T0$i:00:00Z\" }" &gt; /dev/null
   done
 $ sleep 6   # one detection tick
 
-$ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
+$ curl -s "localhost:7778/v1/signals?scope_id=$SCOPE&amp;pattern=stall" | jq
 {
   "signals": [
     {
       "pattern": "stall",
-      "scope_id": "s1",
-      "entity_id": "e1",
+      "scope_id": "9d…",
+      "entity_id": "1c…",
       "strength": 1.0,
       "confidence": 0.875,
       "metrics": { "normalised_stddev": 0.0, "window_n": 7 },
@@ -102,7 +104,7 @@ $ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
     <strong>That's the contract.</strong>
     A typed <code>Signal</code> downstream code switches on:
     <code>case "stall":</code> kick the worker. <code>case "spike":</code>
-    rate-limit. <code>case "regression":</code> rollback. No NLP on
+    rate-limit. <code>case "change_point":</code> rollback. No NLP on
     alert strings, no fragile threshold tuning, no "rule engine."
   </div>
 </section>
@@ -130,12 +132,12 @@ $ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
     <div class="vs-row" role="row">
       <span role="cell"><strong>Datadog · Anodot · DynaTrace</strong></span>
       <span role="cell">Closed-vendor anomaly detection.</span>
-      <span role="cell">Chronos is a 2 MB Go binary, MIT, your DB, your data, eight named pattern types you import as Go constants.</span>
+      <span role="cell">Chronos is a 2 MB Go binary, MIT, your DB, your data, eleven named pattern types you import as Go constants.</span>
     </div>
     <div class="vs-row" role="row">
       <span role="cell"><strong>Roll-your-own NumPy</strong></span>
       <span role="cell">Bespoke detectors per project.</span>
-      <span role="cell">Same eight detectors, already typed, persisted, and stable behind a pinned wire contract.</span>
+      <span role="cell">Same eleven detectors, already typed, persisted, and stable behind a pinned wire contract.</span>
     </div>
   </div>
 </section>
@@ -175,8 +177,8 @@ $ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
     </div>
 
     <div class="pipe-band accent">
-      <h4>Eight detectors · one Signal contract</h4>
-      <p>spike · dip · stall · plateau · regression · seasonality · trend_change · outlier</p>
+      <h4>Eleven detectors · one Signal contract</h4>
+      <p>recurrence · trend · spike · drop · stall · anomaly · seasonality · correlation · change_point · outlier_cluster · cross_scope_correlation</p>
       <p>Each emits the same <code>Signal</code> shape with its own evidence payload. New detector = one enum variant; consumers don't change.</p>
     </div>
 
@@ -205,7 +207,7 @@ chronos serve --port 7778</code></pre>
 
   <div class="callout callout-honest">
     <strong>What's shipped today.</strong>
-    Eight detectors, five backends, HTTP + gRPC + SSE, bearer auth,
+    Eleven detectors, five backends, HTTP + gRPC + SSE, bearer auth,
     GoReleaser distribution, in-process detection on every tick. The
     only public adapter is <code>ascend</code> (athletes sample); the
     Mnemos / Nous integration adapters described in the cognitive-stack
