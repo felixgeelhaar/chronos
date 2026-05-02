@@ -145,7 +145,7 @@ func (q *GRPCSignalQuery) List(ctx context.Context) ([]Signal, error) {
 	}
 	req := &chronosv1.ListSignalsRequest{
 		ScopeId: q.scope.String(),
-		Limit:   int32(q.limit),
+		Limit:   int32(q.limit), //nolint:gosec // limit is operator-bounded; no overflow risk
 	}
 	if q.series != nil {
 		req.Series = q.series.String()

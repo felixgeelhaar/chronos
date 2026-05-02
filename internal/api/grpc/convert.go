@@ -3,8 +3,7 @@ package grpc
 import (
 	"time"
 
-	"github.com/felixgeelhaar/chronos"
-	"github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
+	chronosv1 "github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
 	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -67,22 +66,6 @@ func patternTypeFromDomain(p domain.PatternType) chronosv1.PatternType {
 		return chronosv1.PatternType_PATTERN_TYPE_CROSS_SCOPE_CORRELATION
 	default:
 		return chronosv1.PatternType_PATTERN_TYPE_UNSPECIFIED
-	}
-}
-
-// toDomainEntityState converts a proto EntityState to a chronos.EntityState.
-func toDomainEntityState(p *chronosv1.EntityState) chronos.EntityState {
-	if p == nil {
-		return chronos.EntityState{}
-	}
-	return chronos.EntityState{
-		ID:        parseUUID(p.Id),
-		EntityID:  parseUUID(p.EntityId),
-		ScopeID:   parseUUID(p.ScopeId),
-		Timestamp: protoTime(p.Timestamp),
-		Features:  p.Features,
-		Labels:    p.Labels,
-		Meta:      p.Meta,
 	}
 }
 

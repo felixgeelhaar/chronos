@@ -48,10 +48,10 @@ type Outbox struct {
 }
 
 type pendingDelivery struct {
-	signal     domain.Signal
-	attempts   int
-	nextRetry  time.Time
-	lastError  error
+	signal    domain.Signal
+	attempts  int
+	nextRetry time.Time
+	lastError error
 }
 
 // OutboxConfig tunes the retrier. All fields default to sensible

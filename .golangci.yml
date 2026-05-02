@@ -61,12 +61,22 @@ linters:
         linters:
           - gosec
           - errcheck   # cleanup Close()/Serve() in tests is acceptable
+          - revive     # unused parameters on interface impls / fakes
+          - gocritic   # appendAssign on intentional fan-out
+          - staticcheck # S1039 fmt.Sprintf-only-literal in test fixtures
+          - unused     # synchronisation helpers reserved for future use
       # Generated sqlc code is owned by the generator; we do not edit it.
       - path: internal/store/sqlite/sqlcgen/.*
         linters:
           - revive
           - staticcheck
           - unused
+      # cmd/chronos serve interceptor — `info *grpc.UnaryServerInfo` is
+      # part of the gRPC interceptor signature, not optional.
+      - path: cmd/chronos/serve\.go
+        linters:
+          - revive
+        text: "unused-parameter"
 
 issues:
   max-issues-per-linter: 0

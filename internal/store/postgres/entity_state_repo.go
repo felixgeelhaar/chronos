@@ -114,7 +114,9 @@ func (r *EntityStateRepository) bulkInsertChunk(ctx context.Context, tx *sql.Tx,
 			adapterName, now,
 		)
 	}
-	q := "INSERT INTO entity_states (id, entity_id, scope_id, timestamp, features, labels, meta, adapter, created_at) VALUES " +
+	// G202 false positive: placeholders is a fixed string list ("$1, $2, ...")
+	// generated programmatically; no user input is concatenated into the SQL.
+	q := "INSERT INTO entity_states (id, entity_id, scope_id, timestamp, features, labels, meta, adapter, created_at) VALUES " + //nolint:gosec
 		strings.Join(placeholders, ", ") +
 		" ON CONFLICT (id) DO UPDATE SET features = EXCLUDED.features, labels = EXCLUDED.labels, meta = EXCLUDED.meta, adapter = EXCLUDED.adapter"
 	if _, err := tx.ExecContext(ctx, q, args...); err != nil {

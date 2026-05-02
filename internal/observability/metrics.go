@@ -200,7 +200,9 @@ func makeLabelKey(kv ...string) labelKey {
 	}
 	pairs := make([]string, 0, len(kv)/2)
 	for i := 0; i < len(kv); i += 2 {
-		pairs = append(pairs, kv[i]+"="+escapeValue(kv[i+1]))
+		// G602 false positive: panic above on odd argument count
+		// guarantees i+1 is in range.
+		pairs = append(pairs, kv[i]+"="+escapeValue(kv[i+1])) //nolint:gosec
 	}
 	sort.Strings(pairs)
 	return labelKey(strings.Join(pairs, ","))
@@ -212,13 +214,10 @@ func renderLabels(k labelKey) string {
 	if k == "" {
 		return ""
 	}
-	parts := strings.Split(string(k), ",")
-	rendered := make([]string, 0, len(parts))
-	for _, p := range parts {
-		// Each part is k=quoted-v already (escapeValue wraps quotes).
-		rendered = append(rendered, p)
-	}
-	return "{" + strings.Join(rendered, ",") + "}"
+	// Each part is `k="v"` already (escapeValue wraps quotes), so no
+	// per-part transformation needed — the split halves are the
+	// rendered halves.
+	return "{" + string(k) + "}"
 }
 
 // escapeValue returns the value wrapped in double quotes with

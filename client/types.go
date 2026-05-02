@@ -57,15 +57,15 @@ type IngestRequest struct {
 // callers can switch on stable string values without importing
 // internal packages.
 const (
-	PatternTypeRecurrence  = "recurrence"
-	PatternTypeTrend       = "trend"
-	PatternTypeSpike       = "spike"
-	PatternTypeDrop        = "drop"
-	PatternTypeStall       = "stall"
-	PatternTypeAnomaly     = "anomaly"
-	PatternTypeSeasonality = "seasonality"
-	PatternTypeCorrelation = "correlation"
-	PatternTypeChangePoint            = "change_point"
-	PatternTypeOutlierCluster         = "outlier_cluster"
-	PatternTypeCrossScopeCorrelation  = "cross_scope_correlation"
+	PatternTypeRecurrence            = "recurrence"
+	PatternTypeTrend                 = "trend"
+	PatternTypeSpike                 = "spike"
+	PatternTypeDrop                  = "drop"
+	PatternTypeStall                 = "stall"
+	PatternTypeAnomaly               = "anomaly"
+	PatternTypeSeasonality           = "seasonality"
+	PatternTypeCorrelation           = "correlation"
+	PatternTypeChangePoint           = "change_point"
+	PatternTypeOutlierCluster        = "outlier_cluster"
+	PatternTypeCrossScopeCorrelation = "cross_scope_correlation"
 )

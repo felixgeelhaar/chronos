@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/felixgeelhaar/chronos"
-	"github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
+	chronosv1 "github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
 	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/felixgeelhaar/chronos/internal/observability"
 	"github.com/felixgeelhaar/chronos/internal/ports"
@@ -90,7 +90,7 @@ func (s *Server) ListSignals(ctx context.Context, req *chronosv1.ListSignalsRequ
 
 	return &chronosv1.ListSignalsResponse{
 		Signals: out,
-		Count:   int32(len(out)),
+		Count:   int32(len(out)), //nolint:gosec // bounded by query limit; no overflow risk
 	}, nil
 }
 

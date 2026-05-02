@@ -40,7 +40,7 @@ func (f *fakeUpstream) ListByEntity(_ context.Context, _ uuid.UUID) ([]chronos.E
 }
 func (f *fakeUpstream) DeleteOlderThan(_ context.Context, _ time.Time, _ string) error { return nil }
 func (f *fakeUpstream) Count(_ context.Context, _ string) (int64, error)               { return 0, nil }
-func (f *fakeUpstream) ListScopes(_ context.Context) ([]uuid.UUID, error)               { return nil, nil }
+func (f *fakeUpstream) ListScopes(_ context.Context) ([]uuid.UUID, error)              { return nil, nil }
 
 func mkState() chronos.EntityState {
 	return chronos.EntityState{
