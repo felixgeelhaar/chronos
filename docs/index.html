@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chronos — pattern detection for time-series</title>
+  <meta name="description" content="Chronos emits typed signals (Pattern + Evidence + Metrics) for code to switch on, not string alerts for humans. Single Go binary, MIT.">
+  <meta property="og:title" content="Chronos — pattern detection for time-series">
+  <meta property="og:description" content="Typed signals for downstream code. Eight detectors. Five backends. One binary.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header>
+  <div class="wrap">
+    <div class="logo" aria-label="Chronos">chronos<span aria-hidden="true">.</span></div>
+    <nav aria-label="Primary">
+      <a href="#scenario">Scenario</a>
+      <a href="#vs">Vs. alternatives</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#run">Run it</a>
+      <a href="https://github.com/felixgeelhaar/chronos">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+<section class="hero">
+  <p class="kicker">For platform & applied-AI engineers wiring agents on top of time-series.</p>
+  <h1>Typed signals. <span class="accent">Not string alerts.</span></h1>
+  <p class="lede">
+    Chronos turns observation streams into structured patterns —
+    <em>spike</em>, <em>stall</em>, <em>plateau</em>, <em>regression</em> —
+    that downstream code can switch on. Eight named detectors, five
+    storage backends, one MIT-licensed Go binary. No PromQL DSL, no
+    "AIOps platform," no cloud lock-in.
+  </p>
+  <div class="cta-row">
+    <a class="cta primary" href="#run">Run the demo</a>
+    <a class="cta" href="https://github.com/felixgeelhaar/chronos" aria-label="View Chronos on GitHub">★ on GitHub</a>
+    <a class="cta ghost" href="#scenario">See the scenario ↓</a>
+  </div>
+  <ul class="badges" aria-label="At a glance">
+    <li>MIT licensed</li>
+    <li>Go · single binary · 2 MB</li>
+    <li>HTTP · gRPC · SSE</li>
+    <li>SQLite · Postgres · MySQL · libSQL · in-memory</li>
+  </ul>
+</section>
+
+<section id="scenario" aria-labelledby="scenario-heading">
+  <p class="kicker">Scenario</p>
+  <h2 id="scenario-heading">Seven flat observations. One typed signal back.</h2>
+  <p>
+    The whole product fits in one demo: ingest a stuck metric, wait
+    one detection tick, read a structured <code>Signal</code> with
+    pattern, strength, confidence, and evidence. SQLite, no setup, 30
+    seconds. The shape of that JSON is the pitch.
+  </p>
+
+  <div class="terminal" role="figure" aria-label="Stall detector demo">
+    <div class="bar" aria-hidden="true">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="label">$ chronos · stall demo</span>
+    </div>
+<pre><code>$ go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
+$ CHRONOS_DB_DSN="sqlite:///tmp/chronos.db" \
+  CHRONOS_DETECTION_INTERVAL=5s \
+  chronos serve --port 7778 &amp;
+
+# Seven observations, all stuck at 11.0
+$ for i in 1 2 3 4 5 6 7; do
+    curl -s -XPOST localhost:7778/v1/ingest -d '{
+      "entity_id":"e1","scope_id":"s1","outcome":11.0,
+      "timestamp":"2026-05-02T'"$i"':00:00Z" }' &gt; /dev/null
+  done
+$ sleep 6   # one detection tick
+
+$ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
+{
+  "signals": [
+    {
+      "pattern": "stall",
+      "scope_id": "s1",
+      "entity_id": "e1",
+      "strength": 1.0,
+      "confidence": 0.875,
+      "metrics": { "normalised_stddev": 0.0, "window_n": 7 },
+      "evidence": [
+        { "kind": "variance_window", "window_n": 7, "stddev": 0.0 }
+      ],
+      "detected_at": "2026-05-02T07:00:06Z"
+    }
+  ],
+  "count": 1
+}</code></pre>
+  </div>
+
+  <div class="callout">
+    <strong>That's the contract.</strong>
+    A typed <code>Signal</code> downstream code switches on:
+    <code>case "stall":</code> kick the worker. <code>case "spike":</code>
+    rate-limit. <code>case "regression":</code> rollback. No NLP on
+    alert strings, no fragile threshold tuning, no "rule engine."
+  </div>
+</section>
+
+<section id="vs" aria-labelledby="vs-heading">
+  <p class="kicker">How it differs</p>
+  <h2 id="vs-heading">Where Chronos fits.</h2>
+  <p>
+    Threshold alerting is for humans on call. Anomaly SaaS owns your
+    data and renders dashboards. Chronos sits in your request path,
+    on streaming observations, and emits one row of structured Go
+    types per detected pattern.
+  </p>
+  <div class="vs-table" role="table" aria-label="Comparison with related tools">
+    <div class="vs-row vs-head" role="row">
+      <span role="columnheader">Tool</span>
+      <span role="columnheader">Solves</span>
+      <span role="columnheader">Chronos's seam</span>
+    </div>
+    <div class="vs-row" role="row">
+      <span role="cell"><strong>Prometheus + Alertmanager</strong></span>
+      <span role="cell">String alerts to humans on call.</span>
+      <span role="cell">Chronos emits typed <code>Signal</code> structs (Pattern enum + Evidence + Metrics) for code to switch on.</span>
+    </div>
+    <div class="vs-row" role="row">
+      <span role="cell"><strong>Datadog · Anodot · DynaTrace</strong></span>
+      <span role="cell">Closed-vendor anomaly detection.</span>
+      <span role="cell">Chronos is a 2 MB Go binary, MIT, your DB, your data, eight named pattern types you import as Go constants.</span>
+    </div>
+    <div class="vs-row" role="row">
+      <span role="cell"><strong>Anomalo · Monte Carlo</strong></span>
+      <span role="cell">Scheduled SQL data-quality on warehouses.</span>
+      <span role="cell">Chronos runs in your request path, sub-tick latency, on any streaming source — adapter-agnostic.</span>
+    </div>
+    <div class="vs-row" role="row">
+      <span role="cell"><strong>Roll-your-own NumPy</strong></span>
+      <span role="cell">Bespoke detectors per project.</span>
+      <span role="cell">Chronos is the same eight detectors you'd write, already typed, persisted, and stable behind a wire contract.</span>
+    </div>
+  </div>
+
+  <h3 class="subhead">Eight detectors, one signal contract</h3>
+  <p>
+    <code>spike</code> · <code>dip</code> · <code>stall</code> ·
+    <code>plateau</code> · <code>regression</code> ·
+    <code>seasonality</code> · <code>trend_change</code> ·
+    <code>outlier</code>. Every detector emits the same
+    <code>Signal</code> shape with its own evidence payload. New
+    detector = one new variant in the enum + one new evidence type;
+    consumers don't change.
+  </p>
+</section>
+
+<section id="architecture" aria-labelledby="arch-heading">
+  <p class="kicker">Architecture</p>
+  <h2 id="arch-heading">Adapter → Engine → Surface.</h2>
+  <p>
+    Chronos itself ships zero adapters by design — domain knowledge
+    lives in the consumer. Inputs land via <code>POST /v1/ingest</code>
+    or the streaming SDK; the engine runs detectors on every tick;
+    signals leave via HTTP, gRPC, or SSE.
+  </p>
+
+  <div class="diagram">
+<svg viewBox="0 0 920 360" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" role="img" aria-labelledby="chronos-arch-title chronos-arch-desc">
+  <title id="chronos-arch-title">Chronos data flow</title>
+  <desc id="chronos-arch-desc">Adapters push observations into Chronos via /v1/ingest; the detection engine runs on each tick; typed signals are surfaced over HTTP, gRPC, and SSE.</desc>
+  <style>
+    .box { fill: #14181d; stroke: #2a323d; stroke-width: 1; }
+    .box-accent { stroke: #7ad1ff; }
+    .label { fill: #e6e8eb; }
+    .label-dim { fill: #8a93a0; font-size: 11px; }
+    .label-accent { fill: #7ad1ff; }
+    .arrow { stroke: #4a5562; stroke-width: 1.5; fill: none; }
+    .arrow-accent { stroke: #7ad1ff; stroke-width: 1.5; fill: none; }
+    @media (prefers-color-scheme: light) {
+      .box { fill: #ffffff; stroke: #d1d5db; }
+      .box-accent { stroke: #0066b3; }
+      .label { fill: #131720; }
+      .label-dim { fill: #5a6272; }
+      .label-accent { fill: #0066b3; }
+      .arrow { stroke: #9aa3af; }
+      .arrow-accent { stroke: #0066b3; }
+    }
+  </style>
+  <defs>
+    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5562"/>
+    </marker>
+    <marker id="aha2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7ad1ff"/>
+    </marker>
+  </defs>
+
+  <text class="label-dim" x="100" y="40" text-anchor="middle">your adapters</text>
+  <rect class="box" x="20" y="60" width="160" height="50" rx="6"/>
+  <text class="label" x="100" y="82" text-anchor="middle">prom2chronos</text>
+  <text class="label-dim" x="100" y="98" text-anchor="middle">your push agent</text>
+
+  <rect class="box" x="20" y="130" width="160" height="50" rx="6"/>
+  <text class="label" x="100" y="152" text-anchor="middle">ascend</text>
+  <text class="label-dim" x="100" y="168" text-anchor="middle">athletes (sample)</text>
+
+  <rect class="box" x="20" y="200" width="160" height="50" rx="6"/>
+  <text class="label" x="100" y="222" text-anchor="middle">SDK · streaming</text>
+  <text class="label-dim" x="100" y="238" text-anchor="middle">EntityState</text>
+
+  <text class="label-accent" x="430" y="40" text-anchor="middle">chronos engine</text>
+  <rect class="box box-accent" x="270" y="60" width="320" height="190" rx="10"/>
+  <text class="label-accent" x="430" y="90" text-anchor="middle" font-size="15" font-weight="bold">Detection</text>
+  <text class="label-dim" x="430" y="115" text-anchor="middle">spike · dip · stall · plateau</text>
+  <text class="label-dim" x="430" y="135" text-anchor="middle">regression · seasonality</text>
+  <text class="label-dim" x="430" y="155" text-anchor="middle">trend_change · outlier</text>
+  <text class="label-dim" x="430" y="195" text-anchor="middle">tick interval = CHRONOS_DETECTION_INTERVAL</text>
+  <text class="label-dim" x="430" y="220" text-anchor="middle">store: SQLite · Postgres · MySQL · libSQL · memory</text>
+
+  <text class="label-dim" x="780" y="40" text-anchor="middle">consumers</text>
+  <rect class="box" x="700" y="60" width="180" height="50" rx="6"/>
+  <text class="label" x="790" y="82" text-anchor="middle">HTTP · /v1/signals</text>
+  <text class="label-dim" x="790" y="98" text-anchor="middle">filter by pattern + scope</text>
+
+  <rect class="box" x="700" y="130" width="180" height="50" rx="6"/>
+  <text class="label" x="790" y="152" text-anchor="middle">SSE · /signals/stream</text>
+  <text class="label-dim" x="790" y="168" text-anchor="middle">live feed for agents</text>
+
+  <rect class="box" x="700" y="200" width="180" height="50" rx="6"/>
+  <text class="label" x="790" y="222" text-anchor="middle">gRPC · ChronosService</text>
+  <text class="label-dim" x="790" y="238" text-anchor="middle">low-latency consumers</text>
+
+  <path class="arrow" d="M 180 85 L 270 90" marker-end="url(#ah2)"/>
+  <path class="arrow" d="M 180 155 L 270 155" marker-end="url(#ah2)"/>
+  <path class="arrow" d="M 180 225 L 270 220" marker-end="url(#ah2)"/>
+
+  <path class="arrow-accent" d="M 590 90 L 700 85" marker-end="url(#aha2)"/>
+  <path class="arrow-accent" d="M 590 155 L 700 155" marker-end="url(#aha2)"/>
+  <path class="arrow-accent" d="M 590 220 L 700 225" marker-end="url(#aha2)"/>
+
+  <rect class="box" x="20" y="290" width="880" height="40" rx="6"/>
+  <text class="label-dim" x="60" y="316">Wire contract pinned: <tspan font-family="ui-monospace,Menlo">docs/wire-contract.md</tspan>. Same shapes across HTTP, gRPC, SSE. Bump v1 to break.</text>
+</svg>
+  </div>
+</section>
+
+<section id="run" aria-labelledby="run-heading">
+  <p class="kicker">Run it</p>
+  <h2 id="run-heading">30 seconds from install to first signal.</h2>
+  <pre><code>brew install felixgeelhaar/tap/chronos
+# or: go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
+
+CHRONOS_DB_DSN="sqlite:///tmp/chronos.db" \
+CHRONOS_DETECTION_INTERVAL=5s \
+chronos serve --port 7778</code></pre>
+
+  <p>Then push observations and read signals — see the scenario above for the full Stall walkthrough. Postgres for production:</p>
+  <pre><code>CHRONOS_DB_DSN="postgres://user:pw@host/chronos?sslmode=disable" chronos serve</code></pre>
+
+  <div class="callout callout-honest">
+    <strong>What's shipped today.</strong>
+    Eight detectors, five backends, HTTP + gRPC + SSE, bearer auth,
+    GoReleaser distribution, in-process detection on every tick. The
+    only public adapter is <code>ascend</code> (athletes sample); the
+    Mnemos / Nous integration adapters described in the cognitive-stack
+    docs are illustrative — wire your own, or run Chronos standalone.
+    No hosted UI; bring Grafana.
+  </div>
+</section>
+
+<section id="stack" aria-labelledby="stack-heading">
+  <p class="kicker">Cognitive stack context</p>
+  <h2 id="stack-heading">Chronos works alone. Plugs into a four-system stack.</h2>
+  <p>
+    The four-system split lets each layer evolve independently:
+    Mnemos remembers, Chronos watches time, Nous decides, Praxis
+    executes. Olymp drives the loop. Each is independently usable.
+  </p>
+  <div class="cols">
+    <div class="card"><h3><a href="https://felixgeelhaar.github.io/mnemos/">Mnemos · memory</a></h3><p>Evidence-linked claims with point-in-time replay and contradiction detection.</p></div>
+    <div class="card"><h3><a href="https://felixgeelhaar.github.io/nous/">Nous · decisions</a></h3><p>Commitment extraction, risk evaluation, intervention generation.</p></div>
+    <div class="card"><h3><a href="https://felixgeelhaar.github.io/praxis/">Praxis · execution</a></h3><p>Three-verb action layer with idempotency and replay-from-audit.</p></div>
+    <div class="card"><h3><a href="https://felixgeelhaar.github.io/olymp/">Olymp · runtime</a></h3><p>Drives observe → understand → decide → act → learn end-to-end.</p></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="logo">chronos<span aria-hidden="true">.</span></div>
+      <p class="dim">MIT licensed · single Go binary · pinned wire contract · zero hosted dependencies.</p>
+    </div>
+    <div>
+      <h4>Project</h4>
+      <ul>
+        <li><a href="https://github.com/felixgeelhaar/chronos">GitHub repo</a></li>
+        <li><a href="https://github.com/felixgeelhaar/chronos/blob/main/ROADMAP.md">Roadmap</a></li>
+        <li><a href="https://github.com/felixgeelhaar/chronos/blob/main/docs/wire-contract.md">Wire contract</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Stack</h4>
+      <ul>
+        <li><a href="https://felixgeelhaar.github.io/mnemos/">Mnemos</a></li>
+        <li><a href="https://felixgeelhaar.github.io/nous/">Nous</a></li>
+        <li><a href="https://felixgeelhaar.github.io/praxis/">Praxis</a></li>
+        <li><a href="https://felixgeelhaar.github.io/olymp/">Olymp</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://github.com/felixgeelhaar/chronos/discussions">Discussions</a></li>
+        <li><a href="https://github.com/felixgeelhaar/chronos/issues">Issues</a></li>
+        <li><a href="mailto:felix.geelhaar@gmail.com">Design partners →</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

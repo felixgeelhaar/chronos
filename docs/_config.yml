@@ -1,0 +1,4 @@
+# Bypass Jekyll. The /docs site is pure static HTML + CSS — no theme,
+# no markdown rendering, no plugin chain. GitHub Pages still serves it
+# correctly; the empty file just signals "no Jekyll processing needed."
+plugins: []
