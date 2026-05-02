@@ -167,83 +167,43 @@ $ curl -s "localhost:7778/v1/signals?scope_id=s1&amp;pattern=stall" | jq
     signals leave via HTTP, gRPC, or SSE.
   </p>
 
-  <div class="diagram">
-<svg viewBox="0 0 920 360" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" role="img" aria-labelledby="chronos-arch-title chronos-arch-desc">
-  <title id="chronos-arch-title">Chronos data flow</title>
-  <desc id="chronos-arch-desc">Adapters push observations into Chronos via /v1/ingest; the detection engine runs on each tick; typed signals are surfaced over HTTP, gRPC, and SSE.</desc>
-  <style>
-    .box { fill: #14181d; stroke: #2a323d; stroke-width: 1; }
-    .box-accent { stroke: #7ad1ff; }
-    .label { fill: #e6e8eb; }
-    .label-dim { fill: #8a93a0; font-size: 11px; }
-    .label-accent { fill: #7ad1ff; }
-    .arrow { stroke: #4a5562; stroke-width: 1.5; fill: none; }
-    .arrow-accent { stroke: #7ad1ff; stroke-width: 1.5; fill: none; }
-    @media (prefers-color-scheme: light) {
-      .box { fill: #ffffff; stroke: #d1d5db; }
-      .box-accent { stroke: #0066b3; }
-      .label { fill: #131720; }
-      .label-dim { fill: #5a6272; }
-      .label-accent { fill: #0066b3; }
-      .arrow { stroke: #9aa3af; }
-      .arrow-accent { stroke: #0066b3; }
-    }
-  </style>
-  <defs>
-    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5562"/>
-    </marker>
-    <marker id="aha2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7ad1ff"/>
-    </marker>
-  </defs>
+  <div class="diagram" role="img" aria-label="Chronos data flow: adapters push observations into /v1/ingest; the detection engine runs on each tick; typed signals leave via HTTP, gRPC, and SSE.">
+    <div class="pipe">
+      <div class="pipe-cell">
+        <span class="pipe-kicker">adapters</span>
+        <p class="pipe-title">your push agent</p>
+        <p class="pipe-sub">prom2chronos · ascend · custom</p>
+      </div>
+      <div class="pipe-cell accent">
+        <span class="pipe-kicker">ingest</span>
+        <p class="pipe-title">POST /v1/ingest</p>
+        <p class="pipe-sub">EntityState · timestamped</p>
+      </div>
+      <div class="pipe-cell accent">
+        <span class="pipe-kicker">detection engine</span>
+        <p class="pipe-title">tick → detectors</p>
+        <p class="pipe-sub">CHRONOS_DETECTION_INTERVAL</p>
+      </div>
+      <div class="pipe-cell">
+        <span class="pipe-kicker">consumers</span>
+        <p class="pipe-title">HTTP · gRPC · SSE</p>
+        <p class="pipe-sub">filter by pattern + scope</p>
+      </div>
+    </div>
 
-  <text class="label-dim" x="100" y="40" text-anchor="middle">your adapters</text>
-  <rect class="box" x="20" y="60" width="160" height="50" rx="6"/>
-  <text class="label" x="100" y="82" text-anchor="middle">prom2chronos</text>
-  <text class="label-dim" x="100" y="98" text-anchor="middle">your push agent</text>
+    <div class="pipe-band accent">
+      <h4>Eight detectors · one Signal contract</h4>
+      <p>spike · dip · stall · plateau · regression · seasonality · trend_change · outlier</p>
+      <p>Each emits the same <code>Signal</code> shape with its own evidence payload. New detector = one enum variant; consumers don't change.</p>
+    </div>
 
-  <rect class="box" x="20" y="130" width="160" height="50" rx="6"/>
-  <text class="label" x="100" y="152" text-anchor="middle">ascend</text>
-  <text class="label-dim" x="100" y="168" text-anchor="middle">athletes (sample)</text>
-
-  <rect class="box" x="20" y="200" width="160" height="50" rx="6"/>
-  <text class="label" x="100" y="222" text-anchor="middle">SDK · streaming</text>
-  <text class="label-dim" x="100" y="238" text-anchor="middle">EntityState</text>
-
-  <text class="label-accent" x="430" y="40" text-anchor="middle">chronos engine</text>
-  <rect class="box box-accent" x="270" y="60" width="320" height="190" rx="10"/>
-  <text class="label-accent" x="430" y="90" text-anchor="middle" font-size="15" font-weight="bold">Detection</text>
-  <text class="label-dim" x="430" y="115" text-anchor="middle">spike · dip · stall · plateau</text>
-  <text class="label-dim" x="430" y="135" text-anchor="middle">regression · seasonality</text>
-  <text class="label-dim" x="430" y="155" text-anchor="middle">trend_change · outlier</text>
-  <text class="label-dim" x="430" y="195" text-anchor="middle">tick interval = CHRONOS_DETECTION_INTERVAL</text>
-  <text class="label-dim" x="430" y="220" text-anchor="middle">store: SQLite · Postgres · MySQL · libSQL · memory</text>
-
-  <text class="label-dim" x="780" y="40" text-anchor="middle">consumers</text>
-  <rect class="box" x="700" y="60" width="180" height="50" rx="6"/>
-  <text class="label" x="790" y="82" text-anchor="middle">HTTP · /v1/signals</text>
-  <text class="label-dim" x="790" y="98" text-anchor="middle">filter by pattern + scope</text>
-
-  <rect class="box" x="700" y="130" width="180" height="50" rx="6"/>
-  <text class="label" x="790" y="152" text-anchor="middle">SSE · /signals/stream</text>
-  <text class="label-dim" x="790" y="168" text-anchor="middle">live feed for agents</text>
-
-  <rect class="box" x="700" y="200" width="180" height="50" rx="6"/>
-  <text class="label" x="790" y="222" text-anchor="middle">gRPC · ChronosService</text>
-  <text class="label-dim" x="790" y="238" text-anchor="middle">low-latency consumers</text>
-
-  <path class="arrow" d="M 180 85 L 270 90" marker-end="url(#ah2)"/>
-  <path class="arrow" d="M 180 155 L 270 155" marker-end="url(#ah2)"/>
-  <path class="arrow" d="M 180 225 L 270 220" marker-end="url(#ah2)"/>
-
-  <path class="arrow-accent" d="M 590 90 L 700 85" marker-end="url(#aha2)"/>
-  <path class="arrow-accent" d="M 590 155 L 700 155" marker-end="url(#aha2)"/>
-  <path class="arrow-accent" d="M 590 220 L 700 225" marker-end="url(#aha2)"/>
-
-  <rect class="box" x="20" y="290" width="880" height="40" rx="6"/>
-  <text class="label-dim" x="60" y="316">Wire contract pinned: <tspan font-family="ui-monospace,Menlo">docs/wire-contract.md</tspan>. Same shapes across HTTP, gRPC, SSE. Bump v1 to break.</text>
-</svg>
+    <div class="pipe-band">
+      <div class="row">
+        <strong>Storage</strong><span>SQLite (default · pure-Go) · Postgres · MySQL · libSQL/Turso · in-memory</span>
+        <strong>Surface</strong><span>HTTP /v1/signals · SSE /signals/stream · gRPC ChronosService</span>
+        <strong>Contract</strong><span>bearer auth · pinned wire contract — same shapes across all three transports</span>
+      </div>
+    </div>
   </div>
 </section>
 

@@ -319,10 +319,115 @@ pre code { background: transparent; padding: 0; }
   background: var(--bg-elev);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 20px;
+  padding: 24px;
   overflow-x: auto;
 }
 .diagram svg { display: block; width: 100%; height: auto; min-width: 720px; }
+
+/* HTML-based pipeline diagram: rows of boxes connected by arrows.
+ * Used in lieu of SVG text-math when the labels are dynamic-length. */
+.pipe {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+.pipe-cell {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+  min-height: 84px;
+}
+.pipe-cell.accent { border-color: var(--accent); }
+.pipe-cell .pipe-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  display: block;
+}
+.pipe-cell.accent .pipe-kicker { color: var(--accent); }
+.pipe-cell .pipe-title {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  word-break: break-word;
+}
+.pipe-cell .pipe-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+.pipe-cell + .pipe-cell::before {
+  content: "→";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.pipe-band {
+  margin-top: 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.pipe-band.accent { border-color: var(--accent); }
+.pipe-band h4 {
+  font-family: var(--mono);
+  font-size: 13px;
+  margin: 0 0 8px;
+  color: var(--text);
+  font-weight: 600;
+}
+.pipe-band.accent h4 { color: var(--accent); }
+.pipe-band p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.pipe-band p + p { margin-top: 6px; }
+.pipe-band .row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px 16px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+.pipe-band .row > strong {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  align-self: start;
+  padding-top: 2px;
+}
+
+@media (max-width: 720px) {
+  .pipe { grid-template-columns: 1fr; }
+  .pipe-cell + .pipe-cell::before {
+    content: "↓";
+    left: 50%;
+    top: -16px;
+    transform: translateX(-50%);
+  }
+  .pipe-band .row { grid-template-columns: 1fr; gap: 2px 0; }
+  .pipe-band .row > strong { padding-top: 8px; }
+}
 
 .vs-table {
   margin: 24px 0;
