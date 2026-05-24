@@ -11,8 +11,8 @@ import (
 
 func TestSSE_BroadcastsToAllSubscribers(t *testing.T) {
 	s := NewSSE(8)
-	_, chA := s.Subscribe(uuid.Nil, "")
-	_, chB := s.Subscribe(uuid.Nil, "")
+	_, chA := s.Subscribe(nil, "")
+	_, chB := s.Subscribe(nil, "")
 
 	sig := sampleSignal()
 	s.Notify(context.Background(), sig)
@@ -34,8 +34,8 @@ func TestSSE_FilterByScope(t *testing.T) {
 	scopeA := uuid.New()
 	scopeB := uuid.New()
 
-	_, chA := s.Subscribe(scopeA, "")
-	_, chB := s.Subscribe(scopeB, "")
+	_, chA := s.Subscribe([]uuid.UUID{scopeA}, "")
+	_, chB := s.Subscribe([]uuid.UUID{scopeB}, "")
 
 	sigA := sampleSignal()
 	sigA.ScopeID = scopeA
@@ -58,10 +58,67 @@ func TestSSE_FilterByScope(t *testing.T) {
 	}
 }
 
+// TestSSE_AllowlistFiltersMultipleScopes pins the multi-scope
+// matcher: a subscriber asks for two scopes and gets signals from
+// both, but a third scope's signal is dropped silently.
+func TestSSE_AllowlistFiltersMultipleScopes(t *testing.T) {
+	s := NewSSE(4)
+	scopeA := uuid.New()
+	scopeB := uuid.New()
+	scopeC := uuid.New() // outside the allowlist
+
+	_, chMulti := s.Subscribe([]uuid.UUID{scopeA, scopeB}, "")
+
+	for _, sc := range []uuid.UUID{scopeA, scopeB, scopeC} {
+		sig := sampleSignal()
+		sig.ScopeID = sc
+		s.Notify(context.Background(), sig)
+	}
+
+	// Expect exactly two deliveries (scopeA + scopeB).
+	got := map[uuid.UUID]bool{}
+	deadline := time.After(500 * time.Millisecond)
+	for i := 0; i < 2; i++ {
+		select {
+		case sig := <-chMulti:
+			got[sig.ScopeID] = true
+		case <-deadline:
+			t.Fatalf("only received %d signals, want 2", len(got))
+		}
+	}
+	if !got[scopeA] || !got[scopeB] {
+		t.Errorf("allowlist missed an in-list scope: %v", got)
+	}
+	// scopeC must NOT deliver — drain briefly to confirm.
+	select {
+	case sig := <-chMulti:
+		if sig.ScopeID == scopeC {
+			t.Fatalf("scope outside allowlist leaked: %v", sig.ScopeID)
+		}
+	case <-time.After(50 * time.Millisecond):
+	}
+}
+
+// TestSSE_EmptyAllowlistMatchesNothing pins the fail-closed default:
+// a non-nil empty allowlist drops every signal. This is the safe
+// failure mode for a handler that constructs an empty list from a
+// malformed query — silently delivering everything would be a tenant
+// breach.
+func TestSSE_EmptyAllowlistMatchesNothing(t *testing.T) {
+	s := NewSSE(4)
+	_, ch := s.Subscribe([]uuid.UUID{}, "")
+	s.Notify(context.Background(), sampleSignal())
+	select {
+	case sig := <-ch:
+		t.Fatalf("empty allowlist should not have delivered: %v", sig)
+	case <-time.After(50 * time.Millisecond):
+	}
+}
+
 func TestSSE_FilterByPattern(t *testing.T) {
 	s := NewSSE(4)
-	_, chR := s.Subscribe(uuid.Nil, string(domain.PatternTypeRecurrence))
-	_, chT := s.Subscribe(uuid.Nil, string(domain.PatternTypeTrend))
+	_, chR := s.Subscribe(nil, string(domain.PatternTypeRecurrence))
+	_, chT := s.Subscribe(nil, string(domain.PatternTypeTrend))
 
 	sig := sampleSignal() // Pattern = recurrence
 	s.Notify(context.Background(), sig)
@@ -80,7 +137,7 @@ func TestSSE_FilterByPattern(t *testing.T) {
 
 func TestSSE_SlowConsumerIsDropped(t *testing.T) {
 	s := NewSSE(1) // tiny buffer so we can overflow easily
-	_, ch := s.Subscribe(uuid.Nil, "")
+	_, ch := s.Subscribe(nil, "")
 
 	// Fill the buffer.
 	s.Notify(context.Background(), sampleSignal())
@@ -103,7 +160,7 @@ func TestSSE_SlowConsumerIsDropped(t *testing.T) {
 
 func TestSSE_UnsubscribeClosesChannel(t *testing.T) {
 	s := NewSSE(4)
-	id, ch := s.Subscribe(uuid.Nil, "")
+	id, ch := s.Subscribe(nil, "")
 	if s.SubscriberCount() != 1 {
 		t.Fatalf("subscriber count should be 1, got %d", s.SubscriberCount())
 	}

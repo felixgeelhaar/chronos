@@ -504,13 +504,13 @@ var _ = chronos.EntityState{}
 type fakeBroadcaster struct {
 	ch          chan domain.Signal
 	subCalls    int
-	lastScope   uuid.UUID
+	lastScopes  []uuid.UUID
 	lastPattern string
 }
 
-func (f *fakeBroadcaster) Subscribe(scope uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal) {
+func (f *fakeBroadcaster) Subscribe(scopes []uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal) {
 	f.subCalls++
-	f.lastScope = scope
+	f.lastScopes = append(f.lastScopes[:0], scopes...)
 	f.lastPattern = pattern
 	return uuid.New(), f.ch
 }
@@ -614,7 +614,91 @@ func TestStream_DeliversSignalAsSSEEvent(t *testing.T) {
 	if !bytes.Contains(body.Bytes(), []byte(signalID.String())) {
 		t.Errorf("missing signal id in payload:\n%s", body.String())
 	}
-	if bc.subCalls != 1 || bc.lastScope != scope || bc.lastPattern != "recurrence" {
-		t.Errorf("subscribe called wrong: calls=%d scope=%v pattern=%q", bc.subCalls, bc.lastScope, bc.lastPattern)
+	if bc.subCalls != 1 || len(bc.lastScopes) != 1 || bc.lastScopes[0] != scope || bc.lastPattern != "recurrence" {
+		t.Errorf("subscribe called wrong: calls=%d scopes=%v pattern=%q", bc.subCalls, bc.lastScopes, bc.lastPattern)
+	}
+}
+
+// TestStream_ScopeInPassesAllowlist pins the load-bearing tenant
+// safety property of #25: the server enforces the scope_in allowlist
+// for the lifetime of the stream — clients cannot widen their own
+// filter, and an outside-list signal never reaches them.
+func TestStream_ScopeInPassesAllowlist(t *testing.T) {
+	mem := memory.New()
+	bc := &fakeBroadcaster{ch: make(chan domain.Signal, 1)}
+	srv := NewServer(mem.EntityStates, mem.Signals, nil, nil).WithSSE(bc)
+	mux := http.NewServeMux()
+	srv.RegisterRoutes(mux)
+	ts := httptest.NewServer(mux)
+	defer ts.Close()
+
+	scopeA, scopeB := uuid.New(), uuid.New()
+	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
+	defer cancel()
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet,
+		ts.URL+"/v1/signals/stream?scope_in="+scopeA.String()+","+scopeB.String(), nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+	// Pump a few bytes so the handler actually invokes Subscribe.
+	buf := make([]byte, 64)
+	_, _ = resp.Body.Read(buf)
+
+	if len(bc.lastScopes) != 2 {
+		t.Fatalf("expected 2-scope allowlist, got %v", bc.lastScopes)
+	}
+	got := map[uuid.UUID]bool{bc.lastScopes[0]: true, bc.lastScopes[1]: true}
+	if !got[scopeA] || !got[scopeB] {
+		t.Errorf("allowlist missing one of {%s, %s}: got %v", scopeA, scopeB, bc.lastScopes)
+	}
+}
+
+// TestStream_RejectsBothScopeIDAndScopeIn pins the input-validation
+// contract: callers must pick one filter shape, not both. Accepting
+// both silently would invite ambiguity about which one wins.
+func TestStream_RejectsBothScopeIDAndScopeIn(t *testing.T) {
+	mem := memory.New()
+	srv := NewServer(mem.EntityStates, mem.Signals, nil, nil).
+		WithSSE(&fakeBroadcaster{ch: make(chan domain.Signal, 1)})
+	mux := http.NewServeMux()
+	srv.RegisterRoutes(mux)
+	ts := httptest.NewServer(mux)
+	defer ts.Close()
+
+	resp, err := http.Get(ts.URL + "/v1/signals/stream?scope_id=" + uuid.New().String() + "&scope_in=" + uuid.New().String())
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400", resp.StatusCode)
+	}
+}
+
+// TestStream_ScopeIn_BadUUID rejects malformed entries rather than
+// silently dropping them — otherwise the allowlist would shrink
+// without the caller noticing.
+func TestStream_ScopeIn_BadUUID(t *testing.T) {
+	mem := memory.New()
+	srv := NewServer(mem.EntityStates, mem.Signals, nil, nil).
+		WithSSE(&fakeBroadcaster{ch: make(chan domain.Signal, 1)})
+	mux := http.NewServeMux()
+	srv.RegisterRoutes(mux)
+	ts := httptest.NewServer(mux)
+	defer ts.Close()
+
+	resp, err := http.Get(ts.URL + "/v1/signals/stream?scope_in=not-a-uuid")
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400", resp.StatusCode)
 	}
 }

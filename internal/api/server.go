@@ -30,7 +30,13 @@ import (
 // either package importing the other (notify -> api would otherwise
 // cycle through webhook.go's use of ToSignalDTO).
 type SSEBroadcaster interface {
-	Subscribe(scope uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal)
+	// Subscribe registers a stream client. scopes is a server-side
+	// allowlist: nil delivers every scope (operator-grade reads),
+	// non-nil restricts delivery to the listed scope ids. The handler
+	// constructs the allowlist from ?scope_id= (single-element) or
+	// ?scope_in= (multi-element) so clients can't widen their own
+	// filter post-handshake.
+	Subscribe(scopes []uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal)
 	Unsubscribe(uuid.UUID)
 }
 
@@ -306,15 +312,54 @@ func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	scopeStr := r.URL.Query().Get("scope_id")
-	if scopeStr == "" {
-		http.Error(w, "scope_id required", http.StatusBadRequest)
+	// Build the scope allowlist from either scope_id (single) or
+	// scope_in (multi). One of the two must be set so a forgotten
+	// query param can never produce an unfiltered firehose. Multi-
+	// scope is the load-bearing tenant-safety feature: a per-user UI
+	// listing N entities owned by one owner subscribes once with all
+	// N scope ids and the server enforces the filter for the life of
+	// the stream.
+	scopeStr := strings.TrimSpace(r.URL.Query().Get("scope_id"))
+	scopeInStr := strings.TrimSpace(r.URL.Query().Get("scope_in"))
+	if scopeStr == "" && scopeInStr == "" {
+		http.Error(w, "scope_id or scope_in required", http.StatusBadRequest)
 		return
 	}
-	scope, err := uuid.Parse(scopeStr)
-	if err != nil {
-		http.Error(w, "invalid scope_id", http.StatusBadRequest)
+	if scopeStr != "" && scopeInStr != "" {
+		http.Error(w, "set scope_id OR scope_in, not both", http.StatusBadRequest)
 		return
+	}
+	var scopes []uuid.UUID
+	var primaryScope uuid.UUID // used by replay (single-scope path)
+	if scopeStr != "" {
+		s, err := uuid.Parse(scopeStr)
+		if err != nil {
+			http.Error(w, "invalid scope_id", http.StatusBadRequest)
+			return
+		}
+		scopes = []uuid.UUID{s}
+		primaryScope = s
+	} else {
+		for _, raw := range strings.Split(scopeInStr, ",") {
+			raw = strings.TrimSpace(raw)
+			if raw == "" {
+				continue
+			}
+			id, err := uuid.Parse(raw)
+			if err != nil {
+				http.Error(w, "invalid scope_in entry: "+raw, http.StatusBadRequest)
+				return
+			}
+			scopes = append(scopes, id)
+		}
+		if len(scopes) == 0 {
+			http.Error(w, "scope_in must contain at least one uuid", http.StatusBadRequest)
+			return
+		}
+		// Replay needs a single scope; with scope_in we replay only
+		// the first listed scope (replay is non-fatal and conserved
+		// for single-scope continuity).
+		primaryScope = scopes[0]
 	}
 
 	flusher, ok := w.(http.Flusher)
@@ -331,7 +376,7 @@ func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 	flusher.Flush()
 
 	pattern := r.URL.Query().Get("pattern")
-	id, ch := s.sse.Subscribe(scope, pattern)
+	id, ch := s.sse.Subscribe(scopes, pattern)
 	defer s.sse.Unsubscribe(id)
 
 	// Send a comment line as the initial heartbeat so the client knows
@@ -341,7 +386,7 @@ func (s *Server) handleStream(w http.ResponseWriter, r *http.Request) {
 
 	// Replay any signals missed since the client's last seen ID.
 	if cursor := strings.TrimSpace(firstNonEmpty(r.Header.Get("Last-Event-ID"), r.URL.Query().Get("last_event_id"))); cursor != "" {
-		if err := s.replaySinceCursor(r.Context(), w, flusher, scope, pattern, cursor); err != nil {
+		if err := s.replaySinceCursor(r.Context(), w, flusher, primaryScope, pattern, cursor); err != nil {
 			s.logger.Error("stream: replay failed", "err", err, "cursor", cursor)
 			// Replay failure is non-fatal: keep the live stream going.
 		}

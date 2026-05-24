@@ -25,9 +25,13 @@ type SSE struct {
 }
 
 type subscriber struct {
-	ch      chan domain.Signal
-	scope   uuid.UUID // uuid.Nil means "any scope"
-	pattern string    // "" means "any pattern"
+	ch chan domain.Signal
+	// scopes is the allowlist of scope ids this subscriber is willing
+	// to receive. nil means "any scope". A non-nil empty slice means
+	// "match nothing" — used as a fail-closed default the handler
+	// reaches for when an empty scope_in= is passed.
+	scopes  []uuid.UUID
+	pattern string // "" means "any pattern"
 }
 
 // NewSSE returns a broadcaster with the given per-client buffer
@@ -45,8 +49,9 @@ func NewSSE(bufferSize int) *SSE {
 	}
 }
 
-// Subscribe registers a new client filtered by scope (uuid.Nil = any
-// scope) and pattern (empty = any pattern). It returns:
+// Subscribe registers a new client filtered by an allowlist of scope
+// ids (nil = any scope, single-element slice = legacy per-scope
+// stream) and pattern (empty = any pattern). It returns:
 //   - id used to unregister
 //   - read-only channel of domain.Signal matching the filter
 //
@@ -55,11 +60,18 @@ func NewSSE(bufferSize int) *SSE {
 // deliberately bare types so internal/api can declare a matching
 // interface without importing this package — that breaks what would
 // otherwise be a cycle (api -> notify -> api via the wire shape).
-func (s *SSE) Subscribe(scope uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal) {
+func (s *SSE) Subscribe(scopes []uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal) {
 	id := uuid.New()
+	// Copy the allowlist so a caller mutating their slice can't
+	// retroactively change what we deliver to this subscriber.
+	var owned []uuid.UUID
+	if scopes != nil {
+		owned = make([]uuid.UUID, len(scopes))
+		copy(owned, scopes)
+	}
 	sub := &subscriber{
 		ch:      make(chan domain.Signal, s.bufferSize),
-		scope:   scope,
+		scopes:  owned,
 		pattern: pattern,
 	}
 	s.mu.Lock()
@@ -112,8 +124,19 @@ func (s *SSE) SubscriberCount() int {
 }
 
 func matches(sub *subscriber, sig domain.Signal) bool {
-	if sub.scope != uuid.Nil && sub.scope != sig.ScopeID {
-		return false
+	if sub.scopes != nil {
+		// Empty allowlist matches nothing (fail-closed). Non-empty
+		// must contain the signal's scope.
+		hit := false
+		for _, id := range sub.scopes {
+			if id == sig.ScopeID {
+				hit = true
+				break
+			}
+		}
+		if !hit {
+			return false
+		}
 	}
 	if sub.pattern != "" && sub.pattern != string(sig.Pattern) {
 		return false
