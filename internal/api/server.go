@@ -71,6 +71,7 @@ func (s *Server) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/metrics", s.handleMetrics)
 	mux.HandleFunc("/v1/ingest", s.handleIngest)
 	mux.HandleFunc("/v1/ingest/batch", s.handleIngestBatch)
+	mux.HandleFunc("/v1/config/validate", s.handleConfigValidate)
 	mux.HandleFunc("/v1/signals", s.handleSignals)
 	mux.HandleFunc("/v1/signals/stream", s.handleStream)
 	mux.HandleFunc("/v1/signals/", s.handleSignalDetail)
