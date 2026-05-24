@@ -62,8 +62,16 @@ type EntityStateRepository interface {
 // fields are optional; an empty filter matches everything in the scope
 // (ScopeID is required by repositories that use this filter).
 type SignalFilter struct {
-	// ScopeID restricts results to a single scope. Required by callers.
+	// ScopeID restricts results to a single scope. At least one of
+	// ScopeID or ScopeIDs must be set unless the repo explicitly allows
+	// unscoped queries.
 	ScopeID uuid.UUID
+
+	// ScopeIDs restricts results to a set of scopes (server-side
+	// allowlist). Use this when fetching across N entities owned by one
+	// consumer to avoid the N+1 round-trip pattern. May be combined
+	// with ScopeID (ScopeID acts as a single additional allowed scope).
+	ScopeIDs []uuid.UUID
 
 	// Series, when set, restricts results to signals about a single
 	// entity.

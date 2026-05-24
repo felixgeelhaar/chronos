@@ -185,6 +185,14 @@ func buildWhere(f ports.SignalFilter) (string, []any) {
 		clauses = append(clauses, "scope_id = ?")
 		args = append(args, f.ScopeID.String())
 	}
+	if len(f.ScopeIDs) > 0 {
+		placeholders := make([]string, len(f.ScopeIDs))
+		for i, id := range f.ScopeIDs {
+			placeholders[i] = "?"
+			args = append(args, id.String())
+		}
+		clauses = append(clauses, "scope_id IN ("+strings.Join(placeholders, ",")+")")
+	}
 	if f.Series != nil {
 		clauses = append(clauses, "series_id = ?")
 		args = append(args, f.Series.String())

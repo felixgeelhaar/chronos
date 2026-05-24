@@ -323,14 +323,38 @@ func (s *Server) handleSignalDetail(w http.ResponseWriter, r *http.Request) {
 func parseSignalFilter(r *http.Request) (ports.SignalFilter, error) {
 	q := r.URL.Query()
 	scopeIDStr := q.Get("scope_id")
-	if scopeIDStr == "" {
-		return ports.SignalFilter{}, errors.New("scope_id required")
+	scopeInRaw := q.Get("scope_in")
+
+	if scopeIDStr == "" && scopeInRaw == "" {
+		return ports.SignalFilter{}, errors.New("scope_id or scope_in required")
 	}
-	scopeID, err := uuid.Parse(scopeIDStr)
-	if err != nil {
-		return ports.SignalFilter{}, errors.New("invalid scope_id")
+
+	f := ports.SignalFilter{}
+	if scopeIDStr != "" {
+		scopeID, err := uuid.Parse(scopeIDStr)
+		if err != nil {
+			return ports.SignalFilter{}, errors.New("invalid scope_id")
+		}
+		f.ScopeID = scopeID
 	}
-	f := ports.SignalFilter{ScopeID: scopeID}
+	if scopeInRaw != "" {
+		ids := strings.Split(scopeInRaw, ",")
+		f.ScopeIDs = make([]uuid.UUID, 0, len(ids))
+		for _, raw := range ids {
+			raw = strings.TrimSpace(raw)
+			if raw == "" {
+				continue
+			}
+			id, err := uuid.Parse(raw)
+			if err != nil {
+				return ports.SignalFilter{}, fmt.Errorf("invalid scope_in entry %q", raw)
+			}
+			f.ScopeIDs = append(f.ScopeIDs, id)
+		}
+		if len(f.ScopeIDs) == 0 {
+			return ports.SignalFilter{}, errors.New("scope_in must contain at least one uuid")
+		}
+	}
 
 	if v := q.Get("series"); v != "" {
 		series, err := uuid.Parse(v)

@@ -83,6 +83,18 @@ func matches(sig domain.Signal, f ports.SignalFilter) bool {
 	if f.ScopeID != uuid.Nil && sig.ScopeID != f.ScopeID {
 		return false
 	}
+	if len(f.ScopeIDs) > 0 {
+		found := false
+		for _, allowed := range f.ScopeIDs {
+			if sig.ScopeID == allowed {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
 	if f.Series != nil && sig.Series != *f.Series {
 		return false
 	}

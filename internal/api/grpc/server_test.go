@@ -150,6 +150,66 @@ func TestListSignals_MissingScope(t *testing.T) {
 	}
 }
 
+// TestListSignals_ScopeIDsAllowlist pins the multi-scope tenant
+// boundary: scope_ids returns only signals from explicitly listed
+// scopes, never from scopes outside it. Same contract as the HTTP
+// scope_in parameter — gRPC parity.
+func TestListSignals_ScopeIDsAllowlist(t *testing.T) {
+	srv, mem := setupServer(t)
+	ctx := context.Background()
+
+	scopeA := uuid.New()
+	scopeB := uuid.New()
+	scopeC := uuid.New() // outside allowlist
+	now := time.Now()
+
+	for _, sc := range []uuid.UUID{scopeA, scopeB, scopeC} {
+		if err := mem.Signals.Save(ctx, domain.Signal{
+			ID: uuid.New(), ScopeID: sc, Series: uuid.New(),
+			Pattern:    domain.PatternTypeRecurrence,
+			DetectedAt: now,
+			Window:     domain.TimeWindow{Start: now.Add(-time.Hour), End: now},
+			Strength:   0.9, Confidence: 0.9,
+		}); err != nil {
+			t.Fatalf("Save: %v", err)
+		}
+	}
+
+	resp, err := srv.ListSignals(ctx, &chronosv1.ListSignalsRequest{
+		ScopeIds: []string{scopeA.String(), scopeB.String()},
+	})
+	if err != nil {
+		t.Fatalf("ListSignals: %v", err)
+	}
+	if resp.Count != 2 {
+		t.Errorf("count = %d, want 2 (allowlist contains 2 scopes)", resp.Count)
+	}
+	for _, s := range resp.Signals {
+		if s.ScopeId == scopeC.String() {
+			t.Errorf("response leaked signal from scope outside allowlist")
+		}
+	}
+}
+
+// TestListSignals_InvalidScopeIDsEntry fails closed on malformed
+// uuids rather than silently dropping them — a silently-dropped entry
+// would shrink the intended allowlist without telling the caller.
+func TestListSignals_InvalidScopeIDsEntry(t *testing.T) {
+	srv, _ := setupServer(t)
+	ctx := context.Background()
+
+	_, err := srv.ListSignals(ctx, &chronosv1.ListSignalsRequest{
+		ScopeIds: []string{uuid.New().String(), "not-a-uuid"},
+	})
+	if err == nil {
+		t.Fatal("expected error for malformed scope_ids entry")
+	}
+	st, ok := status.FromError(err)
+	if !ok || st.Code() != codes.InvalidArgument {
+		t.Fatalf("code = %v, want InvalidArgument", st.Code())
+	}
+}
+
 func TestGetSignal_Found(t *testing.T) {
 	srv, mem := setupServer(t)
 	ctx := context.Background()

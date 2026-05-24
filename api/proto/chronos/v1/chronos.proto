@@ -98,13 +98,18 @@ message IngestResponse {
 
 // ListSignalsRequest filters the signals store.
 message ListSignalsRequest {
-  string scope_id = 1;  // UUID; required
+  string scope_id = 1;  // UUID; required unless scope_ids is set
   string series = 2;    // UUID; optional
   PatternType pattern = 3; // optional
   google.protobuf.Timestamp since = 4; // optional
   google.protobuf.Timestamp until = 5; // optional
   double min_confidence = 6; // optional
   int32 limit = 7;           // 0 = no limit
+  // scope_ids: server-side allowlist for multi-scope queries. Use when
+  // fetching across N entities owned by one consumer to avoid the N+1
+  // round-trip pattern. At least one of scope_id or scope_ids must be
+  // set.
+  repeated string scope_ids = 8;
 }
 
 // ListSignalsResponse carries the matched signals.

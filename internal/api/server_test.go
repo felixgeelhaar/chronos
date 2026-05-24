@@ -146,6 +146,96 @@ func TestListSignals_BadScope(t *testing.T) {
 	}
 }
 
+// TestListSignals_ScopeIn_Allowlist pins the multi-scope filter
+// behaviour: a comma-separated scope_in returns only signals whose
+// scope_id is in the allowlist, never signals from scopes outside it.
+// Critical for tenant-safety: consumers with N entities owned by one
+// user can fetch in one round-trip without trusting the client to
+// post-filter.
+func TestListSignals_ScopeIn_Allowlist(t *testing.T) {
+	ts, mem := setupServer(t)
+	defer ts.Close()
+
+	scopeA := uuid.New()
+	scopeB := uuid.New()
+	scopeC := uuid.New() // not in the allowlist — must NOT appear in response
+	now := time.Now()
+
+	for _, sc := range []uuid.UUID{scopeA, scopeB, scopeC} {
+		sig := domain.Signal{
+			ID: uuid.New(), ScopeID: sc, Series: uuid.New(),
+			Pattern:    domain.PatternTypeRecurrence,
+			DetectedAt: now,
+			Window:     domain.TimeWindow{Start: now.Add(-time.Hour), End: now},
+			Strength:   0.9, Confidence: 0.9,
+		}
+		if err := mem.Signals.Save(context.Background(), sig); err != nil {
+			t.Fatalf("Save: %v", err)
+		}
+	}
+
+	url := ts.URL + "/v1/signals?scope_in=" + scopeA.String() + "," + scopeB.String()
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+	var body struct {
+		Signals []SignalDTO `json:"signals"`
+		Count   int         `json:"count"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		t.Fatalf("decode: %v", err)
+	}
+	if body.Count != 2 {
+		t.Errorf("count = %d, want 2 (only scopeA + scopeB allowed)", body.Count)
+	}
+	for _, s := range body.Signals {
+		if s.ScopeID == scopeC {
+			t.Errorf("response leaked signal from scope %s — outside allowlist", scopeC)
+		}
+		if s.ScopeID != scopeA && s.ScopeID != scopeB {
+			t.Errorf("unexpected scope %s in response", s.ScopeID)
+		}
+	}
+}
+
+// TestListSignals_NeitherScopeIDNorScopeIn pins the input-validation
+// contract: at least one of scope_id or scope_in must be provided.
+// Fail-closed avoids a missing-filter footgun that would dump every
+// tenant's signals to anyone who forgot the query param.
+func TestListSignals_NeitherScopeIDNorScopeIn(t *testing.T) {
+	ts, _ := setupServer(t)
+	defer ts.Close()
+	resp, err := http.Get(ts.URL + "/v1/signals")
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400 when neither scope filter is set", resp.StatusCode)
+	}
+}
+
+// TestListSignals_ScopeIn_BadUUID rejects malformed entries with a
+// descriptive 400 rather than silently dropping them (which would
+// degrade to a leaky filter).
+func TestListSignals_ScopeIn_BadUUID(t *testing.T) {
+	ts, _ := setupServer(t)
+	defer ts.Close()
+	resp, err := http.Get(ts.URL + "/v1/signals?scope_in=not-a-uuid")
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400 for malformed scope_in entry", resp.StatusCode)
+	}
+}
+
 func TestSignalDetail_NotFound(t *testing.T) {
 	ts, _ := setupServer(t)
 	defer ts.Close()

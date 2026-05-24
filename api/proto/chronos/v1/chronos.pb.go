@@ -596,13 +596,18 @@ func (x *IngestResponse) GetStatus() string {
 // ListSignalsRequest filters the signals store.
 type ListSignalsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ScopeId       string                 `protobuf:"bytes,1,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"`                     // UUID; required
+	ScopeId       string                 `protobuf:"bytes,1,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"`                     // UUID; required unless scope_ids is set
 	Series        string                 `protobuf:"bytes,2,opt,name=series,proto3" json:"series,omitempty"`                                      // UUID; optional
 	Pattern       PatternType            `protobuf:"varint,3,opt,name=pattern,proto3,enum=chronos.v1.PatternType" json:"pattern,omitempty"`       // optional
 	Since         *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=since,proto3" json:"since,omitempty"`                                        // optional
 	Until         *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=until,proto3" json:"until,omitempty"`                                        // optional
 	MinConfidence float64                `protobuf:"fixed64,6,opt,name=min_confidence,json=minConfidence,proto3" json:"min_confidence,omitempty"` // optional
 	Limit         int32                  `protobuf:"varint,7,opt,name=limit,proto3" json:"limit,omitempty"`                                       // 0 = no limit
+	// scope_ids: server-side allowlist for multi-scope queries. Use when
+	// fetching across N entities owned by one consumer to avoid the N+1
+	// round-trip pattern. At least one of scope_id or scope_ids must be
+	// set.
+	ScopeIds      []string `protobuf:"bytes,8,rep,name=scope_ids,json=scopeIds,proto3" json:"scope_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -684,6 +689,13 @@ func (x *ListSignalsRequest) GetLimit() int32 {
 		return x.Limit
 	}
 	return 0
+}
+
+func (x *ListSignalsRequest) GetScopeIds() []string {
+	if x != nil {
+		return x.ScopeIds
+	}
+	return nil
 }
 
 // ListSignalsResponse carries the matched signals.
@@ -846,7 +858,7 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"8\n" +
 	"\x0eIngestResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status\"\x9b\x02\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\"\xb8\x02\n" +
 	"\x12ListSignalsRequest\x12\x19\n" +
 	"\bscope_id\x18\x01 \x01(\tR\ascopeId\x12\x16\n" +
 	"\x06series\x18\x02 \x01(\tR\x06series\x121\n" +
@@ -854,7 +866,8 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x05since\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x05since\x120\n" +
 	"\x05until\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x05until\x12%\n" +
 	"\x0emin_confidence\x18\x06 \x01(\x01R\rminConfidence\x12\x14\n" +
-	"\x05limit\x18\a \x01(\x05R\x05limit\"Y\n" +
+	"\x05limit\x18\a \x01(\x05R\x05limit\x12\x1b\n" +
+	"\tscope_ids\x18\b \x03(\tR\bscopeIds\"Y\n" +
 	"\x13ListSignalsResponse\x12,\n" +
 	"\asignals\x18\x01 \x03(\v2\x12.chronos.v1.SignalR\asignals\x12\x14\n" +
 	"\x05count\x18\x02 \x01(\x05R\x05count\"\"\n" +

@@ -163,6 +163,14 @@ func buildWhere(f ports.SignalFilter) (string, []any) {
 	if f.ScopeID != uuid.Nil {
 		add("scope_id =", f.ScopeID)
 	}
+	if len(f.ScopeIDs) > 0 {
+		placeholders := make([]string, len(f.ScopeIDs))
+		for i, id := range f.ScopeIDs {
+			args = append(args, id)
+			placeholders[i] = fmt.Sprintf("$%d", len(args))
+		}
+		clauses = append(clauses, "scope_id IN ("+strings.Join(placeholders, ",")+")")
+	}
 	if f.Series != nil {
 		add("series_id =", *f.Series)
 	}

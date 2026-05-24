@@ -152,16 +152,31 @@ func ingestRequestToEntityState(req *chronosv1.IngestRequest) (chronos.EntitySta
 }
 
 // parseListSignalsRequest converts a proto ListSignalsRequest into a
-// ports.SignalFilter.
+// ports.SignalFilter. At least one of scope_id or scope_ids must be set
+// (server-enforced tenant boundary; matches the HTTP contract).
 func parseListSignalsRequest(req *chronosv1.ListSignalsRequest) (ports.SignalFilter, error) {
-	if req.ScopeId == "" {
-		return ports.SignalFilter{}, errors.New("scope_id required")
+	if req.ScopeId == "" && len(req.ScopeIds) == 0 {
+		return ports.SignalFilter{}, errors.New("scope_id or scope_ids required")
 	}
-	scopeID, err := uuid.Parse(req.ScopeId)
-	if err != nil {
-		return ports.SignalFilter{}, errors.New("invalid scope_id")
+
+	f := ports.SignalFilter{}
+	if req.ScopeId != "" {
+		scopeID, err := uuid.Parse(req.ScopeId)
+		if err != nil {
+			return ports.SignalFilter{}, errors.New("invalid scope_id")
+		}
+		f.ScopeID = scopeID
 	}
-	f := ports.SignalFilter{ScopeID: scopeID}
+	if len(req.ScopeIds) > 0 {
+		f.ScopeIDs = make([]uuid.UUID, 0, len(req.ScopeIds))
+		for _, raw := range req.ScopeIds {
+			id, err := uuid.Parse(raw)
+			if err != nil {
+				return ports.SignalFilter{}, errors.New("invalid scope_ids entry")
+			}
+			f.ScopeIDs = append(f.ScopeIDs, id)
+		}
+	}
 
 	if req.Series != "" {
 		s, err := uuid.Parse(req.Series)
