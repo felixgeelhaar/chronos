@@ -1,0 +1,30 @@
+version: v2
+
+# Modules: every directory containing .proto files maps to one module.
+# Chronos publishes a single v1 service today; the repo root scans
+# api/proto for any future module that gets added without further
+# wiring.
+modules:
+  - path: api/proto
+
+# Lint policy: STANDARD is the buf-recommended set. We exempt nothing
+# at the file/rule level — if a future change can't pass lint, the
+# change is the bug, not the policy.
+lint:
+  use:
+    - STANDARD
+  # GetSignal returns the resource directly (Signal) rather than a
+  # GetSignalResponse wrapper. The wrapper rule is opinionated and
+  # would force a breaking rename of the existing wire shape — the
+  # design choice to return the resource is deliberate.
+  except:
+    - RPC_RESPONSE_STANDARD_NAME
+
+# Breaking-change policy: WIRE_JSON catches every change that breaks
+# either the binary protobuf wire shape OR the JSON shape downstream
+# HTTP/JSON clients depend on. Stricter than WIRE alone — we ship
+# JSON-over-HTTP as a first-class transport so JSON-breaking renames
+# matter just as much as wire-format breaks.
+breaking:
+  use:
+    - WIRE_JSON

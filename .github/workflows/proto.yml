@@ -1,0 +1,58 @@
+name: proto
+
+# Guards the public API surface against accidental breaking changes.
+# Runs on every PR and every push to main:
+#
+#   - buf lint     — style + structural guardrails (STANDARD ruleset)
+#   - buf breaking — wire + JSON breaking-change detection against main
+#
+# The breaking check uses main as the reference (no version tags yet
+# — the team is shipping pre-1.0 directly to main). Once the repo
+# starts cutting tags this should switch to comparing against the
+# most-recent tag instead, but until then "don't break what main
+# already publishes" is the live contract.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api/proto/**'
+      - 'buf.yaml'
+      - '.github/workflows/proto.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'api/proto/**'
+      - 'buf.yaml'
+      - '.github/workflows/proto.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  buf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Fetch enough history that `buf breaking` can resolve the
+          # main branch ref. Depth 1 would prevent the comparison.
+          fetch-depth: 0
+
+      - name: Install buf
+        uses: bufbuild/buf-setup-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint
+        run: buf lint
+
+      - name: Breaking-change check (against main)
+        # Skip the breaking check ON main itself — there is nothing
+        # to diff against on that branch. PRs still run it.
+        if: github.ref != 'refs/heads/main'
+        run: buf breaking --against ".git#branch=main"
