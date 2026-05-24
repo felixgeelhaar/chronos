@@ -95,3 +95,4 @@ chronos.db
 
 # Relicta release tooling
 .relicta/
+ai.inventory.json
