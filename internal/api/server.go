@@ -199,6 +199,12 @@ func (s *Server) handleIngestBatch(w http.ResponseWriter, r *http.Request) {
 
 // handleSignals lists signals matching a filter from the query string.
 // All filters are optional except scope_id, which is required.
+//
+// Pagination: callers polling for "new since last check" pass the
+// next_cursor token returned by their previous response as
+// ?since_cursor=. The cursor encodes (detected_at, id), so equal
+// timestamps tie-break on id and the client never has to trust its
+// own clock.
 func (s *Server) handleSignals(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -209,17 +215,64 @@ func (s *Server) handleSignals(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	// Decode the cursor before calling the repository so a malformed
+	// token fails fast rather than running the query first.
+	var cursor *signalCursor
+	if token := r.URL.Query().Get("since_cursor"); token != "" {
+		c, err := decodeSignalCursor(token)
+		if err != nil {
+			http.Error(w, "invalid since_cursor: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		cursor = &c
+		// Setting Since = cursor.DetectedAt keeps the repository
+		// query cheap (it gets a SQL-level filter). The exact-
+		// timestamp tie-break runs in-handler below so the port
+		// contract stays unchanged.
+		filter.Since = &c.DetectedAt
+	}
+
 	signals, err := s.signals.List(r.Context(), filter)
 	if err != nil {
 		s.logger.Error("list signals failed", "err", err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
 		return
 	}
+
+	// In-handler cursor tie-break: drop rows that aren't strictly
+	// after the cursor in (detected_at, id) lex order. Repositories
+	// already filter detected_at >= cursor.DetectedAt, so the only
+	// rows we still need to skip are those at the exact cursor
+	// timestamp with id <= cursor.ID.
+	if cursor != nil {
+		kept := signals[:0]
+		for _, sig := range signals {
+			if sig.DetectedAt.Equal(cursor.DetectedAt) && sig.ID.String() <= cursor.ID.String() {
+				continue
+			}
+			kept = append(kept, sig)
+		}
+		signals = kept
+	}
+
 	dtos := make([]SignalDTO, 0, len(signals))
 	for _, sig := range signals {
 		dtos = append(dtos, ToSignalDTO(sig))
 	}
-	respondJSON(w, http.StatusOK, map[string]any{"signals": dtos, "count": len(dtos)})
+
+	body := map[string]any{"signals": dtos, "count": len(dtos)}
+	// next_cursor points at the newest signal in the response so the
+	// next poll resumes strictly after it. Repos return DESC by
+	// detected_at, so signals[0] is the newest. Omit when empty so
+	// clients can detect "nothing new" without a sentinel.
+	if len(signals) > 0 {
+		body["next_cursor"] = encodeSignalCursor(signalCursor{
+			DetectedAt: signals[0].DetectedAt,
+			ID:         signals[0].ID,
+		})
+	}
+	respondJSON(w, http.StatusOK, body)
 }
 
 // handleStream is the Server-Sent Events feed for newly-detected
