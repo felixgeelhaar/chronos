@@ -29,7 +29,7 @@ jobs:
       - name: Set up QEMU
         # Required for cross-arch Docker builds (linux/arm64 on a
         # linux/amd64 runner).
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
