@@ -6,8 +6,98 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-05-24
+
+Cognitive-stack alignment release. Twelve issues land that turn
+chronos from a passive perception engine into a tenant-safe,
+agent-facing service that mnemos and downstream LLM hosts can wire
+into directly. Highlights: explainability, MCP transport, CLI
+schema visibility, federation hook.
+
 ### Added
-- **Postgres bulk-load path** — `EntityStateRepository.Save` switches to chunked multi-row `INSERT…ON CONFLICT` above `BulkSaveThreshold` (200 rows). Chunks of 1 000 rows keep us under the 65 535 placeholder limit. Backfills now batch-commit; per-row UPSERT path retained for small batches where round-trip overhead amortises poorly.
+- **Pattern explainability payload on `Signal`** (#21) — optional
+  `Explanation` value object surfaces the feature evolution series
+  the detector inspected, the comparable-peer count, the baseline
+  window, the threshold applied, and a stable detector version
+  string. Persisted via a new `explanation` JSONB / TEXT column on
+  the signals table; surfaced symmetrically on the HTTP DTO
+  (`explanation` field, omitempty) and the gRPC `Signal.explanation`
+  message (tag 11).
+- **Anonymize-cross-scope mode** (#20) — `CHRONOS_ANONYMIZE_CROSS_SCOPE=true`
+  flips `CrossScopeCorrelation` to emit deterministic UUIDv5 hashes
+  in place of the real scope/series ids on emitted signals.
+  Statistical payload (`r`, `n`, `direction`, strength, confidence)
+  survives; `metrics["anonymized"]=1` tells downstream consumers
+  the ids are opaque. Multi-tenant deployments can finally enable
+  the cross-tenant detector without crossing the data boundary.
+- **`POST /v1/ingest/batch`** (#23) — up to `MaxIngestBatchSize=1000`
+  observations per call, single repository write per adapter group
+  via the existing `Save([])` path. All-or-nothing validation;
+  `defer_detection` accepted (and echoed) for forward-compat.
+  Backfills drop from N round-trips to one.
+- **`POST /v1/config/validate`** (#26) — dry-run a candidate env-var
+  map and get back a per-detector report (`enabled` /
+  `disabled-with-reason` / thresholds / warnings). Loads via the
+  same `config.Default()` path the live server uses; env mutations
+  are mutex-guarded and restored on every code path so a validate
+  call cannot leak overrides into the running process. The
+  cross-scope row additionally warns when `AnonymizeCrossScope=false`
+  in a multi-tenant deployment.
+- **Opaque cursor pagination on `/v1/signals`** (#28) —
+  `since_cursor` + `next_cursor` use a base64-wrapped
+  `(DetectedAt, ID)` tuple so polling for "new since last check"
+  tie-breaks on signal id when timestamps collide. Empty response
+  omits `next_cursor` so clients can detect "nothing new" without
+  a sentinel. Bad cursors return 400 — a paste error no longer
+  silently degrades into an unfiltered list.
+- **`scope_in` allowlist on `/v1/signals/stream`** (#25) —
+  multi-scope SSE subscriptions for per-user UIs. The server holds
+  the allowlist for the lifetime of the connection; a client
+  cannot widen its own filter post-handshake. `SSEBroadcaster.Subscribe`
+  now takes `[]uuid.UUID`; nil = any scope, single-element slice =
+  legacy per-scope stream, multi-element = the new allowlist path.
+  An empty (non-nil) slice fails closed.
+- **`confidence_class` on `Signal`** (#24) — qualitative grade
+  (`tentative` / `established` / `strong`) derived from sample
+  size vs `MIN_POINTS`. Env-tunable multipliers
+  `CHRONOS_CONFIDENCE_ESTABLISHED` (default 2.0) and
+  `CHRONOS_CONFIDENCE_STRONG` (default 5.0). Persisted via a new
+  `confidence_class` column; surfaced on HTTP DTO and gRPC proto
+  (tag 12). Lets downstream narrators say "a possible trend" vs "a
+  clear trend" without reverse-engineering the sample size.
+- **`chronos mcp` subcommand** (#22) — MCP stdio server exposing
+  three tools: `list_signals` (single scope or scope_ids
+  allowlist), `ingest` (single observation), `describe_detector`
+  (delegates to the same `BuildConfigReport` /v1/config/validate
+  uses). Companion to the mnemos MCP server so MCP-aware hosts
+  (Claude Code, Letta, Anthropic Desktop) discover the whole
+  cognitive stack natively.
+- **`chronos migrate` CLI** (#27) — `migrate status` reports the
+  declared version ladder, current vs latest, and pending/applied
+  steps. `migrate up` opens the store (triggers the existing
+  auto-apply path) then prints status. `migrate down` is an
+  explicit usage error — migrations are forward-only by design;
+  per-step `.down.sql` files would have to land first.
+- **`GET /v1/federation/export`** (#30) — opt-in
+  (`CHRONOS_FEDERATION_ENABLED=true`) anonymized pattern
+  statistics: per-pattern count, avg/min/max strength + confidence,
+  mean sample size, per-confidence-class histogram. NO scope_ids,
+  NO series ids, NO evidence rows in the payload — community-grade
+  insight without crossing the tenant boundary. Stable
+  alphabetical ordering so two consecutive exports diff cleanly.
+- **buf CI guard on every PR** (#29) — `buf lint` (STANDARD ruleset
+  minus the response-naming opinion) plus `buf breaking`
+  (WIRE_JSON) against main. JSON-over-HTTP is a first-class
+  transport so JSON-shape renames matter as much as wire-format
+  breaks. Skipped on main itself.
+- **Joint chronos+mnemos integration harness** (#31) —
+  `test/integration/docker-compose.yml` stands the stack up;
+  `test/integration/smoke_test.go` (//go:build integration) pins
+  the cross-talk surface: health on both services, chronos ingest
+  → list signals, mnemos events append → list. A nightly +
+  repository_dispatch CI workflow re-runs the smoke against the
+  sister-repo's `main` so version-skew bugs surface within 24h.
+- **Postgres bulk-load path** — `EntityStateRepository.Save` switches to chunked multi-row `INSERT…ON CONFLICT` above `BulkSaveThreshold` (200 rows). Chunks of 1 000 rows keep us under the 65 535 placeholder limit. Backfills now batch-commit; per-row UPSERT path retained for small batches where round-trip overhead amortises poorly. — `EntityStateRepository.Save` switches to chunked multi-row `INSERT…ON CONFLICT` above `BulkSaveThreshold` (200 rows). Chunks of 1 000 rows keep us under the 65 535 placeholder limit. Backfills now batch-commit; per-row UPSERT path retained for small batches where round-trip overhead amortises poorly.
 - **Durable webhook outbox** — `notify.OutboxConfig.PersistencePath` opts the in-memory outbox into JSON-on-disk persistence. Enqueue / flush snapshot to atomic-rename file; startup re-loads pending deliveries. Survives process restart.
 - **Detector parallelism** — `Engine.WithParallelDetectors(true)` runs every (scope, detector) pair in its own goroutine. Off by default; flip on via `CHRONOS_DETECTOR_PARALLELISM=1`. Race tests pass.
 - **At-least-once webhook outbox** (`internal/notify/outbox.go`) — `Outbox` wraps an `AckingNotifier` with retry+exponential-backoff (default 5 attempts, 1s→30s). Failed deliveries reschedule until success or max-attempts. In-memory only; restart loses pending. Operators wanting durable delivery wire their own persistent notifier.
