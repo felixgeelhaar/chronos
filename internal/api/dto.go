@@ -120,6 +120,37 @@ type IngestRequest struct {
 	Adapter string `json:"adapter,omitempty"`
 }
 
+// IngestBatchRequest is the wire shape for POST /v1/ingest/batch. It
+// accepts an array of observations in one HTTP call so integrators
+// backfilling history don't pay one round-trip per datapoint.
+//
+// All observations land in a single repository call; on any one
+// observation failing validation the entire batch is rejected
+// (all-or-nothing semantics — partial writes would be hard to roll
+// back and harder to reason about).
+type IngestBatchRequest struct {
+	Observations []IngestRequest `json:"observations"`
+	// DeferDetection is accepted for API forward-compatibility. Chronos
+	// already separates ingest from detection (the compute pipeline
+	// runs detection at job time, not on ingest), so the flag is
+	// currently a no-op — it is echoed in the response so callers can
+	// rely on the field shape without branching.
+	DeferDetection bool `json:"defer_detection,omitempty"`
+}
+
+// IngestBatchResponse confirms how many observations were persisted
+// and whether detection was deferred.
+type IngestBatchResponse struct {
+	Accepted       int  `json:"accepted"`
+	DeferDetection bool `json:"defer_detection"`
+}
+
+// MaxIngestBatchSize caps a single /v1/ingest/batch payload. Beyond
+// this, callers must chunk — the limit guards memory in the handler
+// path and gives operators a predictable upper bound on transaction
+// duration.
+const MaxIngestBatchSize = 1000
+
 // toEntityState converts the wire request into a chronos.EntityState
 // after applying defaults and validating.
 func (req IngestRequest) toEntityState() (chronos.EntityState, error) {

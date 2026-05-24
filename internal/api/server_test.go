@@ -65,6 +65,146 @@ func TestIngest_PersistsState(t *testing.T) {
 	}
 }
 
+// TestIngestBatch_PersistsAllObservations is the happy path: a batch
+// of N valid observations lands as N rows in the store. Without
+// batch, the integrator would pay N round-trips; this test pins the
+// round-trip-savings contract.
+func TestIngestBatch_PersistsAllObservations(t *testing.T) {
+	ts, mem := setupServer(t)
+	defer ts.Close()
+
+	scope := uuid.New()
+	entity := uuid.New()
+	obs := make([]IngestRequest, 0, 25)
+	for i := 0; i < 25; i++ {
+		obs = append(obs, IngestRequest{
+			EntityID: entity, ScopeID: scope,
+			Timestamp: time.Now().Add(time.Duration(i) * time.Second),
+			Features:  []float64{float64(i)},
+			Adapter:   "test",
+		})
+	}
+	buf, _ := json.Marshal(IngestBatchRequest{Observations: obs})
+	resp, err := http.Post(ts.URL+"/v1/ingest/batch", "application/json", bytes.NewReader(buf))
+	if err != nil {
+		t.Fatalf("POST: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusAccepted {
+		t.Fatalf("status = %d", resp.StatusCode)
+	}
+	var body IngestBatchResponse
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		t.Fatalf("decode: %v", err)
+	}
+	if body.Accepted != 25 {
+		t.Errorf("Accepted = %d, want 25", body.Accepted)
+	}
+	stored, _ := mem.EntityStates.ListByScope(context.Background(), scope)
+	if len(stored) != 25 {
+		t.Errorf("stored = %d, want 25", len(stored))
+	}
+}
+
+// TestIngestBatch_AllOrNothing pins that one bad row aborts the whole
+// batch — partial writes would be hard to roll back and harder to
+// reason about.
+func TestIngestBatch_AllOrNothing(t *testing.T) {
+	ts, mem := setupServer(t)
+	defer ts.Close()
+	scope := uuid.New()
+	body := IngestBatchRequest{
+		Observations: []IngestRequest{
+			{EntityID: uuid.New(), ScopeID: scope, Features: []float64{1, 2, 3, 5}, Adapter: "test"},
+			{EntityID: uuid.New(), ScopeID: scope, Features: []float64{}, Adapter: "test"}, // invalid: no features
+			{EntityID: uuid.New(), ScopeID: scope, Features: []float64{4, 5, 6, 7}, Adapter: "test"},
+		},
+	}
+	buf, _ := json.Marshal(body)
+	resp, err := http.Post(ts.URL+"/v1/ingest/batch", "application/json", bytes.NewReader(buf))
+	if err != nil {
+		t.Fatalf("POST: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400 (one invalid row aborts batch)", resp.StatusCode)
+	}
+	stored, _ := mem.EntityStates.ListByScope(context.Background(), scope)
+	if len(stored) != 0 {
+		t.Errorf("partial write: %d rows stored despite validation error", len(stored))
+	}
+}
+
+// TestIngestBatch_RejectsEmpty fails fast on an empty array rather
+// than silently 202'ing.
+func TestIngestBatch_RejectsEmpty(t *testing.T) {
+	ts, _ := setupServer(t)
+	defer ts.Close()
+	buf, _ := json.Marshal(IngestBatchRequest{})
+	resp, err := http.Post(ts.URL+"/v1/ingest/batch", "application/json", bytes.NewReader(buf))
+	if err != nil {
+		t.Fatalf("POST: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400", resp.StatusCode)
+	}
+}
+
+// TestIngestBatch_RejectsOverLimit guards the memory + transaction-
+// duration cap so a single misbehaving client can't pin a connection.
+func TestIngestBatch_RejectsOverLimit(t *testing.T) {
+	ts, _ := setupServer(t)
+	defer ts.Close()
+	scope := uuid.New()
+	obs := make([]IngestRequest, MaxIngestBatchSize+1)
+	for i := range obs {
+		obs[i] = IngestRequest{EntityID: uuid.New(), ScopeID: scope, Features: []float64{1}, Adapter: "x"}
+	}
+	buf, _ := json.Marshal(IngestBatchRequest{Observations: obs})
+	resp, err := http.Post(ts.URL+"/v1/ingest/batch", "application/json", bytes.NewReader(buf))
+	if err != nil {
+		t.Fatalf("POST: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400 (over cap)", resp.StatusCode)
+	}
+}
+
+// TestIngestBatch_DeferDetectionEchoed pins forward-compat contract
+// for the defer_detection flag: it is accepted, persisted to the
+// response, and the observations still land (chronos already
+// separates ingest from detection so the flag is a no-op semantically).
+func TestIngestBatch_DeferDetectionEchoed(t *testing.T) {
+	ts, mem := setupServer(t)
+	defer ts.Close()
+	scope := uuid.New()
+	body := IngestBatchRequest{
+		DeferDetection: true,
+		Observations: []IngestRequest{
+			{EntityID: uuid.New(), ScopeID: scope, Features: []float64{1, 2, 3, 5}, Adapter: "test"},
+		},
+	}
+	buf, _ := json.Marshal(body)
+	resp, err := http.Post(ts.URL+"/v1/ingest/batch", "application/json", bytes.NewReader(buf))
+	if err != nil {
+		t.Fatalf("POST: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	var got IngestBatchResponse
+	if err := json.NewDecoder(resp.Body).Decode(&got); err != nil {
+		t.Fatalf("decode: %v", err)
+	}
+	if !got.DeferDetection {
+		t.Errorf("DeferDetection not echoed: %+v", got)
+	}
+	stored, _ := mem.EntityStates.ListByScope(context.Background(), scope)
+	if len(stored) != 1 {
+		t.Errorf("stored = %d, want 1", len(stored))
+	}
+}
+
 func TestIngest_RejectsInvalid(t *testing.T) {
 	ts, _ := setupServer(t)
 	defer ts.Close()

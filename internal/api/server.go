@@ -70,6 +70,7 @@ func (s *Server) RegisterRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/health", s.handleHealth)
 	mux.HandleFunc("/metrics", s.handleMetrics)
 	mux.HandleFunc("/v1/ingest", s.handleIngest)
+	mux.HandleFunc("/v1/ingest/batch", s.handleIngestBatch)
 	mux.HandleFunc("/v1/signals", s.handleSignals)
 	mux.HandleFunc("/v1/signals/stream", s.handleStream)
 	mux.HandleFunc("/v1/signals/", s.handleSignalDetail)
@@ -127,6 +128,72 @@ func (s *Server) handleIngest(w http.ResponseWriter, r *http.Request) {
 	}
 	s.metrics.ObserveObservations(adapter, 1)
 	respondJSON(w, http.StatusAccepted, map[string]string{"status": "accepted", "id": state.ID.String()})
+}
+
+// handleIngestBatch accepts an array of observations in one POST and
+// writes them via the repository's batch Save path. Validation is
+// all-or-nothing: any one observation failing returns 400 without
+// persisting any of them, so callers can retry deterministically.
+//
+// The DeferDetection flag is echoed but currently a no-op — chronos
+// already separates ingest from detection (detection runs on its own
+// schedule, never on ingest), so there is nothing to defer. The flag
+// is part of the contract for forward compatibility with backends
+// that might inline detection.
+func (s *Server) handleIngestBatch(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	if s.states == nil {
+		http.Error(w, "ingest disabled", http.StatusNotImplemented)
+		return
+	}
+	var body IngestBatchRequest
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		http.Error(w, "invalid body", http.StatusBadRequest)
+		return
+	}
+	if len(body.Observations) == 0 {
+		http.Error(w, "observations array is empty", http.StatusBadRequest)
+		return
+	}
+	if len(body.Observations) > MaxIngestBatchSize {
+		http.Error(w, fmt.Sprintf("batch size %d exceeds max %d", len(body.Observations), MaxIngestBatchSize), http.StatusBadRequest)
+		return
+	}
+
+	// Group by adapter so the Save path stays single-call per adapter
+	// (Save takes one adapter name and a slice). Most batches will be
+	// from one source, so this is usually a single group.
+	groups := make(map[string][]chronos.EntityState)
+	for i, obs := range body.Observations {
+		state, err := obs.toEntityState()
+		if err != nil {
+			http.Error(w, fmt.Sprintf("observations[%d]: %v", i, err), http.StatusBadRequest)
+			return
+		}
+		adapter := obs.Adapter
+		if adapter == "" {
+			adapter = "http"
+		}
+		groups[adapter] = append(groups[adapter], state)
+	}
+
+	accepted := 0
+	for adapter, states := range groups {
+		if err := s.states.Save(r.Context(), adapter, states); err != nil {
+			s.logger.Error("ingest batch failed", "adapter", adapter, "count", len(states), "err", err)
+			http.Error(w, "internal error", http.StatusInternalServerError)
+			return
+		}
+		s.metrics.ObserveObservations(adapter, len(states))
+		accepted += len(states)
+	}
+	respondJSON(w, http.StatusAccepted, IngestBatchResponse{
+		Accepted:       accepted,
+		DeferDetection: body.DeferDetection,
+	})
 }
 
 // handleSignals lists signals matching a filter from the query string.
