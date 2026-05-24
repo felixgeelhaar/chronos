@@ -156,6 +156,42 @@ func TestSQLite_SignalExplanationRoundTrip(t *testing.T) {
 	}
 }
 
+// TestSQLite_SignalConfidenceClassRoundTrip pins the persistence
+// contract for the qualitative grade: a Signal saved with
+// ConfidenceClass loads back with the same value, and a signal saved
+// without one loads back with the empty string (the explicit "no
+// claim about strength" state).
+func TestSQLite_SignalConfidenceClassRoundTrip(t *testing.T) {
+	c := openTestConn(t)
+	ctx := context.Background()
+	scope := uuid.New()
+	series := uuid.New()
+	now := time.Now().UTC()
+
+	sig := mkSignal(scope, series, domain.PatternTypeTrend, 0.8, now)
+	sig.ConfidenceClass = domain.ConfidenceClassEstablished
+	if err := c.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+	got, err := c.Signals.Get(ctx, sig.ID)
+	if err != nil {
+		t.Fatalf("Get: %v", err)
+	}
+	if got.ConfidenceClass != domain.ConfidenceClassEstablished {
+		t.Errorf("ConfidenceClass = %q, want established", got.ConfidenceClass)
+	}
+
+	// Unclassified signal stays unclassified.
+	plain := mkSignal(scope, uuid.New(), domain.PatternTypeRecurrence, 0.7, now)
+	if err := c.Signals.Save(ctx, plain); err != nil {
+		t.Fatalf("Save plain: %v", err)
+	}
+	gotPlain, _ := c.Signals.Get(ctx, plain.ID)
+	if gotPlain.ConfidenceClass != "" {
+		t.Errorf("unclassified signal loaded with class %q", gotPlain.ConfidenceClass)
+	}
+}
+
 // TestSQLite_SignalNoExplanationLoadsZero confirms a signal saved
 // before the explanation column existed (or saved with the zero value)
 // loads back with an empty Explanation. Avoids regressions on the

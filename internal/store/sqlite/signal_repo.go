@@ -39,17 +39,18 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 		return fmt.Errorf("signal save: encode explanation: %w", err)
 	}
 	if err := q.InsertSignal(ctx, sqlcgen.InsertSignalParams{
-		ID:          sig.ID.String(),
-		ScopeID:     sig.ScopeID.String(),
-		SeriesID:    sig.Series.String(),
-		Pattern:     string(sig.Pattern),
-		DetectedAt:  formatTime(sig.DetectedAt),
-		WindowStart: formatTime(sig.Window.Start),
-		WindowEnd:   formatTime(sig.Window.End),
-		Strength:    sig.Strength,
-		Confidence:  sig.Confidence,
-		Metrics:     string(metricsJSON),
-		Explanation: explanationJSON,
+		ID:              sig.ID.String(),
+		ScopeID:         sig.ScopeID.String(),
+		SeriesID:        sig.Series.String(),
+		Pattern:         string(sig.Pattern),
+		DetectedAt:      formatTime(sig.DetectedAt),
+		WindowStart:     formatTime(sig.Window.Start),
+		WindowEnd:       formatTime(sig.Window.End),
+		Strength:        sig.Strength,
+		Confidence:      sig.Confidence,
+		Metrics:         string(metricsJSON),
+		Explanation:     explanationJSON,
+		ConfidenceClass: string(sig.ConfidenceClass),
 	}); err != nil {
 		return fmt.Errorf("signal save: insert: %w", err)
 	}
@@ -269,16 +270,17 @@ func decodeSignal(row sqlcgen.Signal) (domain.Signal, error) {
 		return domain.Signal{}, fmt.Errorf("decode signal explanation: %w", err)
 	}
 	return domain.Signal{
-		ID:          id,
-		ScopeID:     scope,
-		Series:      series,
-		Pattern:     domain.PatternType(row.Pattern),
-		DetectedAt:  det,
-		Window:      domain.TimeWindow{Start: wStart, End: wEnd},
-		Strength:    row.Strength,
-		Confidence:  row.Confidence,
-		Metrics:     metrics,
-		Explanation: expl,
+		ID:              id,
+		ScopeID:         scope,
+		Series:          series,
+		Pattern:         domain.PatternType(row.Pattern),
+		DetectedAt:      det,
+		Window:          domain.TimeWindow{Start: wStart, End: wEnd},
+		Strength:        row.Strength,
+		Confidence:      row.Confidence,
+		Metrics:         metrics,
+		Explanation:     expl,
+		ConfidenceClass: domain.ConfidenceClass(row.ConfidenceClass),
 	}, nil
 }
 

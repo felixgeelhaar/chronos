@@ -91,11 +91,12 @@ func fromDomainSignal(s domain.Signal) *chronosv1.Signal {
 			Start: timestamppb.New(s.Window.Start),
 			End:   timestamppb.New(s.Window.End),
 		},
-		Strength:    s.Strength,
-		Confidence:  s.Confidence,
-		Metrics:     s.Metrics,
-		Evidence:    evidence,
-		Explanation: explanationToProto(s.Explanation),
+		Strength:        s.Strength,
+		Confidence:      s.Confidence,
+		Metrics:         s.Metrics,
+		Evidence:        evidence,
+		Explanation:     explanationToProto(s.Explanation),
+		ConfidenceClass: string(s.ConfidenceClass),
 	}
 }
 

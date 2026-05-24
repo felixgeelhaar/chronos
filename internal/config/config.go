@@ -71,6 +71,19 @@ type Config struct {
 	CrossScopeMin       float64 // Minimum |Pearson r| to emit (cross-scope tightness)
 	CrossScopeMinPoints int     // Minimum aligned observations between two series
 
+	// ConfidenceClassEstablished is the MIN_POINTS multiplier that a
+	// signal's supporting sample size must clear to be labelled
+	// "established" instead of "tentative". 2.0 by default — a
+	// signal with twice the floor's worth of observations is no
+	// longer borderline.
+	ConfidenceClassEstablished float64
+
+	// ConfidenceClassStrong is the MIN_POINTS multiplier that a
+	// signal's supporting sample size must clear to be labelled
+	// "strong". 5.0 by default — well into the part of the curve
+	// where increasing n stops materially changing the conclusion.
+	ConfidenceClassStrong float64
+
 	// AnonymizeCrossScope strips identifying scope/series ids from
 	// CrossScopeCorrelation signals when true. The detector still
 	// runs and the statistical fields (r, n, direction) survive; the
@@ -149,6 +162,9 @@ func Default() *Config {
 		CrossScopeMin:       defaultEnvFloat64("CHRONOS_CROSS_SCOPE_MIN", 0.8),
 		CrossScopeMinPoints: defaultEnvInt("CHRONOS_CROSS_SCOPE_MIN_POINTS", 5),
 		AnonymizeCrossScope: defaultEnvBool("CHRONOS_ANONYMIZE_CROSS_SCOPE", false),
+
+		ConfidenceClassEstablished: defaultEnvFloat64("CHRONOS_CONFIDENCE_ESTABLISHED", 2.0),
+		ConfidenceClassStrong:      defaultEnvFloat64("CHRONOS_CONFIDENCE_STRONG", 5.0),
 
 		DetectorParallelism: defaultEnvBool("CHRONOS_DETECTOR_PARALLELISM", false),
 

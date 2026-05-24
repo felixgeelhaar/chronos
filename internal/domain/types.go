@@ -162,7 +162,34 @@ type Signal struct {
 	// detector's own version tag. Zero value (default) means the
 	// detector did not surface an explanation; consumers handle absent.
 	Explanation Explanation
+
+	// ConfidenceClass is the qualitative bucket a downstream narrator
+	// uses to phrase the signal: a pattern just over the MIN_POINTS
+	// floor speaks softly ("a possible trend"), one with 5× the floor
+	// speaks plainly ("a clear trend"). Empty string means the
+	// detector did not classify — consumers treat absent as "no claim
+	// about strength". Stable values are defined as constants below.
+	ConfidenceClass ConfidenceClass
 }
+
+// ConfidenceClass is a coarse qualitative grade derived from sample
+// size relative to the detector's MIN_POINTS floor. Three buckets,
+// chosen so a narration consumer can always say "a possible X",
+// "a X", or "a clear X" without inventing extra adjectives.
+type ConfidenceClass string
+
+const (
+	// ConfidenceClassTentative — sample size at or just above the
+	// MIN_POINTS floor. Narration should hedge.
+	ConfidenceClassTentative ConfidenceClass = "tentative"
+	// ConfidenceClassEstablished — sample size ≥ established
+	// multiplier × MIN_POINTS. Narration can state the pattern
+	// without hedging.
+	ConfidenceClassEstablished ConfidenceClass = "established"
+	// ConfidenceClassStrong — sample size ≥ strong multiplier ×
+	// MIN_POINTS. Narration can speak with emphasis ("a clear X").
+	ConfidenceClassStrong ConfidenceClass = "strong"
+)
 
 // FeatureSample is one observation in an Explanation's feature
 // evolution series.

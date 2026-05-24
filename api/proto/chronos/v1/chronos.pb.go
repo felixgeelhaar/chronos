@@ -208,9 +208,14 @@ type Signal struct {
 	// Optional detector-side context that lets downstream consumers
 	// narrate WHY the signal fired without re-deriving the data. Empty
 	// when the detector did not surface one.
-	Explanation   *Explanation `protobuf:"bytes,11,opt,name=explanation,proto3" json:"explanation,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Explanation *Explanation `protobuf:"bytes,11,opt,name=explanation,proto3" json:"explanation,omitempty"`
+	// Qualitative grade the detector assigned ("tentative" |
+	// "established" | "strong") based on sample size vs MIN_POINTS.
+	// Empty when the detector did not classify; consumers treat absent
+	// as "no claim about strength".
+	ConfidenceClass string `protobuf:"bytes,12,opt,name=confidence_class,json=confidenceClass,proto3" json:"confidence_class,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Signal) Reset() {
@@ -318,6 +323,13 @@ func (x *Signal) GetExplanation() *Explanation {
 		return x.Explanation
 	}
 	return nil
+}
+
+func (x *Signal) GetConfidenceClass() string {
+	if x != nil {
+		return x.ConfidenceClass
+	}
+	return ""
 }
 
 // FeatureSample is one observation in the feature-evolution series the
@@ -957,7 +969,7 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x04meta\x18\a \x03(\v2!.chronos.v1.EntityState.MetaEntryR\x04meta\x1a7\n" +
 	"\tMetaEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8b\x04\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb6\x04\n" +
 	"\x06Signal\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
 	"\bscope_id\x18\x02 \x01(\tR\ascopeId\x12\x16\n" +
@@ -973,7 +985,8 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\ametrics\x18\t \x03(\v2\x1f.chronos.v1.Signal.MetricsEntryR\ametrics\x120\n" +
 	"\bevidence\x18\n" +
 	" \x03(\v2\x14.chronos.v1.EvidenceR\bevidence\x129\n" +
-	"\vexplanation\x18\v \x01(\v2\x17.chronos.v1.ExplanationR\vexplanation\x1a:\n" +
+	"\vexplanation\x18\v \x01(\v2\x17.chronos.v1.ExplanationR\vexplanation\x12)\n" +
+	"\x10confidence_class\x18\f \x01(\tR\x0fconfidenceClass\x1a:\n" +
 	"\fMetricsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x01R\x05value:\x028\x01\"Q\n" +

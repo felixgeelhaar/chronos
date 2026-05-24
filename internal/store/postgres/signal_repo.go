@@ -34,16 +34,18 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 		return fmt.Errorf("signal save: encode explanation: %w", err)
 	}
 	_, err = tx.ExecContext(ctx, `
-		INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+		INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
 		ON CONFLICT (id) DO UPDATE SET
 			strength = EXCLUDED.strength,
 			confidence = EXCLUDED.confidence,
 			metrics = EXCLUDED.metrics,
-			explanation = EXCLUDED.explanation
+			explanation = EXCLUDED.explanation,
+			confidence_class = EXCLUDED.confidence_class
 	`, sig.ID, sig.ScopeID, sig.Series, string(sig.Pattern),
 		sig.DetectedAt, sig.Window.Start, sig.Window.End,
 		sig.Strength, sig.Confidence, metricsJSON, explanationJSON,
+		string(sig.ConfidenceClass),
 	)
 	if err != nil {
 		return fmt.Errorf("signal save: insert: %w", err)
@@ -89,7 +91,7 @@ func (r *SignalRepository) List(ctx context.Context, filter ports.SignalFilter) 
 // Get returns a single signal by ID, including its evidence.
 func (r *SignalRepository) Get(ctx context.Context, id uuid.UUID) (domain.Signal, error) {
 	row := r.conn.DB.QueryRowContext(ctx, `
-		SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation
+		SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class
 		FROM signals WHERE id = $1
 	`, id)
 	sig, err := scanOneSignal(row)
@@ -144,7 +146,7 @@ func (r *SignalRepository) loadEvidence(ctx context.Context, id uuid.UUID) ([]do
 }
 
 func buildListQuery(f ports.SignalFilter) (string, []any) {
-	const base = `SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation FROM signals`
+	const base = `SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class FROM signals`
 	where, args := buildWhere(f)
 	q := base + where + " ORDER BY detected_at DESC, confidence DESC"
 	if f.Limit > 0 {
@@ -217,15 +219,16 @@ func scanOneSignal(row *sql.Row) (domain.Signal, error) {
 
 func scanSignalRow(scan func(...any) error) (domain.Signal, error) {
 	var (
-		sig             domain.Signal
-		patternStr      string
-		metricsJSON     []byte
-		explanationJSON []byte
+		sig                domain.Signal
+		patternStr         string
+		metricsJSON        []byte
+		explanationJSON    []byte
+		confidenceClassStr string
 	)
 	if err := scan(
 		&sig.ID, &sig.ScopeID, &sig.Series, &patternStr,
 		&sig.DetectedAt, &sig.Window.Start, &sig.Window.End,
-		&sig.Strength, &sig.Confidence, &metricsJSON, &explanationJSON,
+		&sig.Strength, &sig.Confidence, &metricsJSON, &explanationJSON, &confidenceClassStr,
 	); err != nil {
 		return domain.Signal{}, err
 	}
@@ -238,6 +241,7 @@ func scanSignalRow(scan func(...any) error) (domain.Signal, error) {
 		return domain.Signal{}, fmt.Errorf("decode signal explanation: %w", err)
 	}
 	sig.Explanation = expl
+	sig.ConfidenceClass = domain.ConfidenceClass(confidenceClassStr)
 	return sig, nil
 }
 

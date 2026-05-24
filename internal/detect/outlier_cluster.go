@@ -145,14 +145,15 @@ func (o *OutlierCluster) Detect(_ context.Context, scopeID uuid.UUID, states []c
 		strength := clamp01((seriesCount - float64(o.cfg.OutlierClusterMinSeries)) / float64(o.cfg.OutlierClusterMinSeries+1))
 		confidence := clamp01(strength + 0.3) // a clear cluster is meaningful even at the floor
 		signals = append(signals, domain.Signal{
-			ID:         uuid.New(),
-			ScopeID:    scopeID,
-			Series:     uuid.Nil, // cohort-level
-			Pattern:    domain.PatternTypeOutlierCluster,
-			DetectedAt: o.now(),
-			Window:     domain.TimeWindow{Start: earliest, End: latest},
-			Strength:   strength,
-			Confidence: confidence,
+			ID:              uuid.New(),
+			ScopeID:         scopeID,
+			Series:          uuid.Nil, // cohort-level
+			Pattern:         domain.PatternTypeOutlierCluster,
+			DetectedAt:      o.now(),
+			Window:          domain.TimeWindow{Start: earliest, End: latest},
+			Strength:        strength,
+			Confidence:      confidence,
+			ConfidenceClass: ClassifyConfidence(len(seen), o.cfg.OutlierClusterMinSeries, o.cfg),
 			Metrics: map[string]float64{
 				"member_count":   seriesCount,
 				"window_seconds": window.Seconds(),

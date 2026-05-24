@@ -29,6 +29,10 @@ type SignalDTO struct {
 	// consumers narrate WHY the signal fired without re-deriving the
 	// data. Omitted when the detector did not surface one.
 	Explanation *ExplanationDTO `json:"explanation,omitempty"`
+	// ConfidenceClass is the qualitative grade (tentative /
+	// established / strong) the detector assigned based on sample
+	// size vs MIN_POINTS. Empty when the detector did not classify.
+	ConfidenceClass string `json:"confidence_class,omitempty"`
 }
 
 // ExplanationDTO is the wire shape of an Explanation value object.
@@ -67,15 +71,16 @@ type EvidenceDTO struct {
 // ToSignalDTO renders a domain.Signal into its wire form.
 func ToSignalDTO(s domain.Signal) SignalDTO {
 	dto := SignalDTO{
-		ID:         s.ID,
-		ScopeID:    s.ScopeID,
-		Series:     s.Series,
-		Pattern:    string(s.Pattern),
-		DetectedAt: s.DetectedAt,
-		Window:     TimeWindowDTO{Start: s.Window.Start, End: s.Window.End},
-		Strength:   s.Strength,
-		Confidence: s.Confidence,
-		Metrics:    s.Metrics,
+		ID:              s.ID,
+		ScopeID:         s.ScopeID,
+		Series:          s.Series,
+		Pattern:         string(s.Pattern),
+		DetectedAt:      s.DetectedAt,
+		Window:          TimeWindowDTO{Start: s.Window.Start, End: s.Window.End},
+		Strength:        s.Strength,
+		Confidence:      s.Confidence,
+		Metrics:         s.Metrics,
+		ConfidenceClass: string(s.ConfidenceClass),
 	}
 	dto.Evidence = make([]EvidenceDTO, 0, len(s.Evidence))
 	for _, e := range s.Evidence {

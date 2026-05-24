@@ -95,15 +95,16 @@ func (c *ChangePoint) build(scopeID, series uuid.UUID, observations []chronos.En
 	}
 	splitTime := observations[k].Timestamp
 	return domain.Signal{
-		ID:         uuid.New(),
-		ScopeID:    scopeID,
-		Series:     series,
-		Pattern:    domain.PatternTypeChangePoint,
-		DetectedAt: c.now(),
-		Window:     domain.TimeWindow{Start: observations[0].Timestamp, End: observations[len(observations)-1].Timestamp},
-		Strength:   strength,
-		Confidence: confidence,
-		Metrics:    metrics,
+		ID:              uuid.New(),
+		ScopeID:         scopeID,
+		Series:          series,
+		Pattern:         domain.PatternTypeChangePoint,
+		DetectedAt:      c.now(),
+		Window:          domain.TimeWindow{Start: observations[0].Timestamp, End: observations[len(observations)-1].Timestamp},
+		Strength:        strength,
+		Confidence:      confidence,
+		ConfidenceClass: ClassifyConfidence(len(ys), c.cfg.ChangePointMinPoints, c.cfg),
+		Metrics:         metrics,
 		Evidence: []domain.Evidence{
 			{
 				Series:  series,

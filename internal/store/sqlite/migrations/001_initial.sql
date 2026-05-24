@@ -33,7 +33,8 @@ CREATE TABLE signals (
     strength REAL NOT NULL CHECK (strength >= 0 AND strength <= 1),
     confidence REAL NOT NULL CHECK (confidence >= 0 AND confidence <= 1),
     metrics TEXT NOT NULL DEFAULT '{}', -- JSON map<string,float64>
-    explanation TEXT NOT NULL DEFAULT '{}' -- JSON Explanation value object
+    explanation TEXT NOT NULL DEFAULT '{}', -- JSON Explanation value object
+    confidence_class TEXT NOT NULL DEFAULT ''  -- "" | tentative | established | strong
 );
 
 CREATE INDEX idx_signals_scope_time   ON signals(scope_id, detected_at DESC);

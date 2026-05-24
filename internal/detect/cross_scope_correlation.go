@@ -137,15 +137,16 @@ func (c *CrossScopeCorrelation) build(a, b scopedSeriesKey, r float64, n int, sa
 		metrics["anonymized"] = 1
 	}
 	return domain.Signal{
-		ID:         uuid.New(),
-		ScopeID:    emittedScope,
-		Series:     emittedSeries,
-		Pattern:    domain.PatternTypeCrossScopeCorrelation,
-		DetectedAt: c.now(),
-		Window:     domain.TimeWindow{Start: earliest, End: latest},
-		Strength:   absR,
-		Confidence: clamp01(absR * sampleFactor(n, 2*c.cfg.CrossScopeMinPoints)),
-		Metrics:    metrics,
+		ID:              uuid.New(),
+		ScopeID:         emittedScope,
+		Series:          emittedSeries,
+		Pattern:         domain.PatternTypeCrossScopeCorrelation,
+		DetectedAt:      c.now(),
+		Window:          domain.TimeWindow{Start: earliest, End: latest},
+		Strength:        absR,
+		Confidence:      clamp01(absR * sampleFactor(n, 2*c.cfg.CrossScopeMinPoints)),
+		ConfidenceClass: ClassifyConfidence(n, c.cfg.CrossScopeMinPoints, c.cfg),
+		Metrics:         metrics,
 		Evidence: []domain.Evidence{{
 			Series:  emittedPartner,
 			Time:    latest,

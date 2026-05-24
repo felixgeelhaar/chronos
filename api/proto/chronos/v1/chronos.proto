@@ -65,6 +65,11 @@ message Signal {
   // narrate WHY the signal fired without re-deriving the data. Empty
   // when the detector did not surface one.
   Explanation explanation = 11;
+  // Qualitative grade the detector assigned ("tentative" |
+  // "established" | "strong") based on sample size vs MIN_POINTS.
+  // Empty when the detector did not classify; consumers treat absent
+  // as "no claim about strength".
+  string confidence_class = 12;
 }
 
 // FeatureSample is one observation in the feature-evolution series the

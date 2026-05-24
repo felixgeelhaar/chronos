@@ -114,7 +114,7 @@ func (q *Queries) GetEntityStatesByScope(ctx context.Context, scopeID string) ([
 }
 
 const getSignalByID = `-- name: GetSignalByID :one
-SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation FROM signals WHERE id = ?
+SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class FROM signals WHERE id = ?
 `
 
 func (q *Queries) GetSignalByID(ctx context.Context, id string) (Signal, error) {
@@ -132,6 +132,7 @@ func (q *Queries) GetSignalByID(ctx context.Context, id string) (Signal, error) 
 		&i.Confidence,
 		&i.Metrics,
 		&i.Explanation,
+		&i.ConfidenceClass,
 	)
 	return i, err
 }
@@ -210,27 +211,29 @@ func (q *Queries) InsertEntityState(ctx context.Context, arg InsertEntityStatePa
 }
 
 const insertSignal = `-- name: InsertSignal :exec
-INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     strength = excluded.strength,
     confidence = excluded.confidence,
     metrics = excluded.metrics,
-    explanation = excluded.explanation
+    explanation = excluded.explanation,
+    confidence_class = excluded.confidence_class
 `
 
 type InsertSignalParams struct {
-	ID          string  `json:"id"`
-	ScopeID     string  `json:"scope_id"`
-	SeriesID    string  `json:"series_id"`
-	Pattern     string  `json:"pattern"`
-	DetectedAt  string  `json:"detected_at"`
-	WindowStart string  `json:"window_start"`
-	WindowEnd   string  `json:"window_end"`
-	Strength    float64 `json:"strength"`
-	Confidence  float64 `json:"confidence"`
-	Metrics     string  `json:"metrics"`
-	Explanation string  `json:"explanation"`
+	ID              string  `json:"id"`
+	ScopeID         string  `json:"scope_id"`
+	SeriesID        string  `json:"series_id"`
+	Pattern         string  `json:"pattern"`
+	DetectedAt      string  `json:"detected_at"`
+	WindowStart     string  `json:"window_start"`
+	WindowEnd       string  `json:"window_end"`
+	Strength        float64 `json:"strength"`
+	Confidence      float64 `json:"confidence"`
+	Metrics         string  `json:"metrics"`
+	Explanation     string  `json:"explanation"`
+	ConfidenceClass string  `json:"confidence_class"`
 }
 
 func (q *Queries) InsertSignal(ctx context.Context, arg InsertSignalParams) error {
@@ -246,6 +249,7 @@ func (q *Queries) InsertSignal(ctx context.Context, arg InsertSignalParams) erro
 		arg.Confidence,
 		arg.Metrics,
 		arg.Explanation,
+		arg.ConfidenceClass,
 	)
 	return err
 }

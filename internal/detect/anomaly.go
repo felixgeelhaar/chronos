@@ -93,10 +93,11 @@ func (a *Anomaly) build(scopeID, subjectID uuid.UUID, subject chronos.EntityStat
 		DetectedAt: a.now(),
 		// Anomaly is a snapshot in time across peers; the window is
 		// degenerate (start == end at the subject's observation).
-		Window:     domain.TimeWindow{Start: subject.Timestamp, End: subject.Timestamp},
-		Strength:   strength,
-		Confidence: confidence,
-		Evidence:   evidence,
+		Window:          domain.TimeWindow{Start: subject.Timestamp, End: subject.Timestamp},
+		Strength:        strength,
+		Confidence:      confidence,
+		ConfidenceClass: ClassifyConfidence(len(evidence), a.cfg.AnomalyMinPeers, a.cfg),
+		Evidence:        evidence,
 		Metrics: map[string]float64{
 			"max_peer_similarity": maxSim,
 			"peer_count":          float64(len(evidence)),

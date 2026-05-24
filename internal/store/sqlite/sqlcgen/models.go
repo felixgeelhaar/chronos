@@ -17,17 +17,18 @@ type EntityState struct {
 }
 
 type Signal struct {
-	ID          string  `json:"id"`
-	ScopeID     string  `json:"scope_id"`
-	SeriesID    string  `json:"series_id"`
-	Pattern     string  `json:"pattern"`
-	DetectedAt  string  `json:"detected_at"`
-	WindowStart string  `json:"window_start"`
-	WindowEnd   string  `json:"window_end"`
-	Strength    float64 `json:"strength"`
-	Confidence  float64 `json:"confidence"`
-	Metrics     string  `json:"metrics"`
-	Explanation string  `json:"explanation"`
+	ID              string  `json:"id"`
+	ScopeID         string  `json:"scope_id"`
+	SeriesID        string  `json:"series_id"`
+	Pattern         string  `json:"pattern"`
+	DetectedAt      string  `json:"detected_at"`
+	WindowStart     string  `json:"window_start"`
+	WindowEnd       string  `json:"window_end"`
+	Strength        float64 `json:"strength"`
+	Confidence      float64 `json:"confidence"`
+	Metrics         string  `json:"metrics"`
+	Explanation     string  `json:"explanation"`
+	ConfidenceClass string  `json:"confidence_class"`
 }
 
 type SignalEvidence struct {

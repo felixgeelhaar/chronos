@@ -111,15 +111,16 @@ func (c *Correlation) pair(scopeID, idA, idB uuid.UUID, a, b []chronos.EntitySta
 	}
 
 	return domain.Signal{
-		ID:         uuid.New(),
-		ScopeID:    scopeID,
-		Series:     idA,
-		Pattern:    domain.PatternTypeCorrelation,
-		DetectedAt: c.now(),
-		Window:     domain.TimeWindow{Start: start, End: end},
-		Strength:   strength,
-		Confidence: confidence,
-		Metrics:    metrics,
+		ID:              uuid.New(),
+		ScopeID:         scopeID,
+		Series:          idA,
+		Pattern:         domain.PatternTypeCorrelation,
+		DetectedAt:      c.now(),
+		Window:          domain.TimeWindow{Start: start, End: end},
+		Strength:        strength,
+		Confidence:      confidence,
+		ConfidenceClass: ClassifyConfidence(n, c.cfg.CorrelationMinPoints, c.cfg),
+		Metrics:         metrics,
 		Evidence: []domain.Evidence{{
 			Series:  idB,
 			Time:    end,
