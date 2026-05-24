@@ -15,7 +15,6 @@
 //
 // The tool set is intentionally small. MCP hosts compose these with
 // their own narration; Chronos stays signals-only.
-
 package main
 
 import (
@@ -28,13 +27,13 @@ import (
 	"syscall"
 	"time"
 
-	mcp "github.com/felixgeelhaar/mcp-go"
 	"github.com/felixgeelhaar/chronos"
 	"github.com/felixgeelhaar/chronos/internal/api"
 	"github.com/felixgeelhaar/chronos/internal/config"
 	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/felixgeelhaar/chronos/internal/ports"
 	"github.com/felixgeelhaar/chronos/internal/store"
+	mcp "github.com/felixgeelhaar/mcp-go"
 	"github.com/google/uuid"
 )
 

@@ -24,12 +24,12 @@ func TestClassifyConfidence_Buckets(t *testing.T) {
 		n, min int
 		want   domain.ConfidenceClass
 	}{
-		{4, 4, domain.ConfidenceClassTentative},     // ratio 1.0
-		{7, 4, domain.ConfidenceClassTentative},     // ratio 1.75
-		{8, 4, domain.ConfidenceClassEstablished},   // ratio 2.0
-		{12, 4, domain.ConfidenceClassEstablished},  // ratio 3.0
-		{20, 4, domain.ConfidenceClassStrong},       // ratio 5.0
-		{100, 4, domain.ConfidenceClassStrong},      // ratio 25
+		{4, 4, domain.ConfidenceClassTentative},    // ratio 1.0
+		{7, 4, domain.ConfidenceClassTentative},    // ratio 1.75
+		{8, 4, domain.ConfidenceClassEstablished},  // ratio 2.0
+		{12, 4, domain.ConfidenceClassEstablished}, // ratio 3.0
+		{20, 4, domain.ConfidenceClassStrong},      // ratio 5.0
+		{100, 4, domain.ConfidenceClassStrong},     // ratio 25
 	}
 	for _, c := range cases {
 		got := ClassifyConfidence(c.n, c.min, cfg)

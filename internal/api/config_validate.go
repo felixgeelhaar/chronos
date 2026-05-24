@@ -66,7 +66,10 @@ func loadConfigWithOverrides(env map[string]string) *config.Config {
 	configValidateMu.Lock()
 	defer configValidateMu.Unlock()
 
-	type snap struct{ value string; present bool }
+	type snap struct {
+		value   string
+		present bool
+	}
 	saved := make(map[string]snap, len(env))
 	for k, v := range env {
 		prev, ok := os.LookupEnv(k)

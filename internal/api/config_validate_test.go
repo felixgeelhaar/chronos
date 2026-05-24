@@ -91,8 +91,8 @@ func TestConfigValidate_WarnsOnCrossScopeWithoutAnonymize(t *testing.T) {
 	defer ts.Close()
 	body, _ := json.Marshal(ConfigValidateRequest{
 		Env: map[string]string{
-			"CHRONOS_CROSS_SCOPE_MIN_POINTS":   "5",
-			"CHRONOS_ANONYMIZE_CROSS_SCOPE":    "false",
+			"CHRONOS_CROSS_SCOPE_MIN_POINTS": "5",
+			"CHRONOS_ANONYMIZE_CROSS_SCOPE":  "false",
 		},
 	})
 	resp, _ := http.Post(ts.URL+"/v1/config/validate", "application/json", bytes.NewReader(body))

@@ -48,11 +48,11 @@ var chronosMigrations = []migrationStep{
 // migrateStatusReport is the per-command output shape so tests can
 // assert against a stable struct instead of parsing stdout.
 type migrateStatusReport struct {
-	DSN              string
-	CurrentVersion   int
-	LatestVersion    int
-	PendingSteps     []migrationStep
-	HistorySteps     []migrationStep
+	DSN            string
+	CurrentVersion int
+	LatestVersion  int
+	PendingSteps   []migrationStep
+	HistorySteps   []migrationStep
 }
 
 func runMigrate(args []string) error {
@@ -162,4 +162,3 @@ func currentMigrationVersion() int {
 	}
 	return chronosMigrations[len(chronosMigrations)-1].Version
 }
-

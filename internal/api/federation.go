@@ -22,28 +22,28 @@ import (
 // load-bearing safety property of the federation hook — the export
 // is community-grade statistical insight, not raw data.
 type FederationExportResponse struct {
-	GeneratedAt time.Time                `json:"generated_at"`
-	Source      string                   `json:"source"`        // "chronos"
-	Version     string                   `json:"version"`       // schema version of this payload
-	Patterns    []FederationPatternStats `json:"patterns"`
-	TotalSignals int                     `json:"total_signals"`
+	GeneratedAt  time.Time                `json:"generated_at"`
+	Source       string                   `json:"source"`  // "chronos"
+	Version      string                   `json:"version"` // schema version of this payload
+	Patterns     []FederationPatternStats `json:"patterns"`
+	TotalSignals int                      `json:"total_signals"`
 }
 
 // FederationPatternStats summarises one pattern type's signal
 // population.
 type FederationPatternStats struct {
-	Pattern             string  `json:"pattern"`
-	Count               int     `json:"count"`
-	AvgStrength         float64 `json:"avg_strength"`
-	MinStrength         float64 `json:"min_strength"`
-	MaxStrength         float64 `json:"max_strength"`
-	AvgConfidence       float64 `json:"avg_confidence"`
-	MinConfidence       float64 `json:"min_confidence"`
-	MaxConfidence       float64 `json:"max_confidence"`
-	AvgSampleSize       float64 `json:"avg_sample_size,omitempty"` // mean of metrics["n"] when populated
-	TentativeCount      int     `json:"tentative_count,omitempty"`
-	EstablishedCount    int     `json:"established_count,omitempty"`
-	StrongCount         int     `json:"strong_count,omitempty"`
+	Pattern          string  `json:"pattern"`
+	Count            int     `json:"count"`
+	AvgStrength      float64 `json:"avg_strength"`
+	MinStrength      float64 `json:"min_strength"`
+	MaxStrength      float64 `json:"max_strength"`
+	AvgConfidence    float64 `json:"avg_confidence"`
+	MinConfidence    float64 `json:"min_confidence"`
+	MaxConfidence    float64 `json:"max_confidence"`
+	AvgSampleSize    float64 `json:"avg_sample_size,omitempty"` // mean of metrics["n"] when populated
+	TentativeCount   int     `json:"tentative_count,omitempty"`
+	EstablishedCount int     `json:"established_count,omitempty"`
+	StrongCount      int     `json:"strong_count,omitempty"`
 }
 
 // FederationExportVersion is the wire-format generation. Bump on
@@ -104,12 +104,12 @@ func (s *Server) handleFederationExport(w http.ResponseWriter, r *http.Request) 
 // the HTTP server.
 func aggregateFederationStats(signals []domain.Signal) []FederationPatternStats {
 	type bucket struct {
-		count                                         int
-		strSum, strMin, strMax                        float64
-		confSum, confMin, confMax                     float64
-		nSum                                          float64
-		nCount                                        int
-		tentative, established, strong                int
+		count                          int
+		strSum, strMin, strMax         float64
+		confSum, confMin, confMax      float64
+		nSum                           float64
+		nCount                         int
+		tentative, established, strong int
 	}
 	buckets := map[domain.PatternType]*bucket{}
 	for _, sig := range signals {

@@ -287,11 +287,11 @@ func decodeSignal(row sqlcgen.Signal) (domain.Signal, error) {
 // explanationWire is the JSONB shape persisted in the explanation
 // column. Domain time.Time → RFC3339Nano string for stable storage.
 type explanationWire struct {
-	FeatureEvolution []featureSampleWire `json:"feature_evolution,omitempty"`
-	ComparablePeers    int     `json:"comparable_peers,omitempty"`
-	BaselineWindowDays int     `json:"baseline_window_days,omitempty"`
-	ThresholdUsed      float64 `json:"threshold_used,omitempty"`
-	DetectorVersion    string  `json:"detector_version,omitempty"`
+	FeatureEvolution   []featureSampleWire `json:"feature_evolution,omitempty"`
+	ComparablePeers    int                 `json:"comparable_peers,omitempty"`
+	BaselineWindowDays int                 `json:"baseline_window_days,omitempty"`
+	ThresholdUsed      float64             `json:"threshold_used,omitempty"`
+	DetectorVersion    string              `json:"detector_version,omitempty"`
 }
 
 type featureSampleWire struct {
