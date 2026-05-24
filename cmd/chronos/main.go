@@ -47,6 +47,8 @@ func main() {
 		err = runServe(os.Args[2:])
 	case "mcp":
 		err = runMCP(os.Args[2:])
+	case "migrate":
+		err = runMigrate(os.Args[2:])
 	case "version", "-v", "--version":
 		runVersion()
 		return
@@ -72,6 +74,7 @@ Commands:
   compute    Run pattern detection for a scope
   serve      Start HTTP API server
   mcp        Start the MCP stdio server (list_signals / ingest / describe_detector)
+  migrate    Inspect or apply schema migrations (status / up)
   version    Print version
   help       Show this help
 
