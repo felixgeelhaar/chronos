@@ -1,0 +1,53 @@
+name: integration
+
+# Joint smoke test stack (Refs #31). Stands up chronos + mnemos via
+# docker compose, then runs the build-tag-gated test suite under
+# test/integration/. Runs on:
+#
+#   - workflow_dispatch (manual trigger from the Actions tab)
+#   - schedule (nightly, so version-skew bugs surface within 24h)
+#   - repository_dispatch (the mnemos repo fires this when its main
+#     advances; the chronos workflow re-tests against the new image)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"   # 04:00 UTC nightly
+  repository_dispatch:
+    types: [mnemos-main-advanced]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+          cache: true
+
+      - name: Boot stack
+        run: docker compose -f test/integration/docker-compose.yml up -d --wait
+
+      - name: Smoke test
+        env:
+          CHRONOS_INTEGRATION_URL: http://127.0.0.1:7778
+          MNEMOS_INTEGRATION_URL: http://127.0.0.1:7777
+        run: go test -tags=integration -v -count=1 -timeout=2m ./test/integration/...
+
+      - name: Compose logs (on failure)
+        if: failure()
+        run: docker compose -f test/integration/docker-compose.yml logs --no-color
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f test/integration/docker-compose.yml down -v

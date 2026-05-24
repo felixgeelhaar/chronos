@@ -1,0 +1,64 @@
+# Joint smoke-test stack for chronos + mnemos (Refs #31 / mnemos #46).
+#
+# Brings up both halves of the cognitive stack so a CI run — or a
+# developer on a fresh checkout — can exercise the cross-talk flows
+# the smoke test under this directory covers:
+#
+#   1. POST observation → chronos
+#   2. POST claim     → mnemos
+#   3. GET signals   ← chronos (verifies ingest + detect path)
+#   4. GET claims    ← mnemos (verifies persistence + run_id filter)
+#
+# The two services run isolated against ephemeral sqlite files baked
+# into per-service named volumes so a `docker compose down -v` returns
+# the stack to a known-empty state.
+#
+# Image pull strategy: by default both services come from GHCR
+# (released images). Set CHRONOS_IMAGE / MNEMOS_IMAGE in the
+# environment to point at a local build when developing.
+
+version: "3.9"
+
+services:
+  chronos:
+    image: ${CHRONOS_IMAGE:-ghcr.io/felixgeelhaar/chronos:latest}
+    container_name: chronos-integration
+    ports:
+      - "7778:7778"
+    environment:
+      CHRONOS_DB_DSN: "sqlite:///data/chronos.db"
+      CHRONOS_HTTP_HOST: "0.0.0.0"
+      CHRONOS_HTTP_PORT: "7778"
+    command: ["serve"]
+    volumes:
+      - chronos-data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:7778/health"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+  mnemos:
+    image: ${MNEMOS_IMAGE:-ghcr.io/felixgeelhaar/mnemos:latest}
+    container_name: mnemos-integration
+    ports:
+      - "7777:7777"
+    environment:
+      MNEMOS_DB_URL: "sqlite:///data/mnemos.db"
+      MNEMOS_HTTP_HOST: "0.0.0.0"
+      MNEMOS_HTTP_PORT: "7777"
+    command: ["serve"]
+    volumes:
+      - mnemos-data:/data
+    depends_on:
+      chronos:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:7777/health"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+
+volumes:
+  chronos-data:
+  mnemos-data:
