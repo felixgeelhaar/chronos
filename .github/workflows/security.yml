@@ -33,7 +33,7 @@ jobs:
 
       - name: Install nox
         env:
-          NOX_VERSION: "0.7.0"
+          NOX_VERSION: "0.10.1"
         run: |
           set -euo pipefail
           curl -fsSL -o /tmp/nox.tar.gz \
@@ -53,6 +53,7 @@ jobs:
           nox scan . \
             -format all \
             -output ./.nox/out \
+            -baseline ./.nox/baseline.json \
             -vex ./.nox/vex.json
 
       - name: Upload SARIF to Code Scanning

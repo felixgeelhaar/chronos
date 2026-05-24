@@ -138,6 +138,33 @@ func TestExplanation_Validate(t *testing.T) {
 	})
 }
 
+// TestExplanation_IsZero pins the persistence-layer hook: an
+// Explanation with no populated fields reports zero, and any single
+// populated field flips it to non-zero. Persistence checks IsZero
+// to skip writing empty JSON blobs.
+func TestExplanation_IsZero(t *testing.T) {
+	if !(Explanation{}).IsZero() {
+		t.Error("default Explanation should be IsZero")
+	}
+	for _, c := range []struct {
+		name string
+		ex   Explanation
+	}{
+		{"has feature evolution", Explanation{FeatureEvolution: []FeatureSample{{At: time.Now()}}}},
+		{"has comparable peers", Explanation{ComparablePeers: 1}},
+		{"has baseline window", Explanation{BaselineWindowDays: 1}},
+		{"has threshold", Explanation{ThresholdUsed: 0.1}},
+		{"has detector version", Explanation{DetectorVersion: "v1"}},
+	} {
+		c := c
+		t.Run(c.name, func(t *testing.T) {
+			if c.ex.IsZero() {
+				t.Errorf("non-zero Explanation reported IsZero: %+v", c.ex)
+			}
+		})
+	}
+}
+
 func TestTimeWindow_Validate(t *testing.T) {
 	now := time.Now()
 	if err := (TimeWindow{Start: now, End: now}).Validate(); err != nil {
