@@ -4,7 +4,9 @@
 
 package sqlcgen
 
-import "context"
+import (
+	"context"
+)
 
 type Querier interface {
 	CountEntityStates(ctx context.Context, adapter string) (int64, error)

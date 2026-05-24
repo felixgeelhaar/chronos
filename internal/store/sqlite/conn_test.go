@@ -103,6 +103,83 @@ func TestSQLite_SignalRoundTripWithEvidence(t *testing.T) {
 	}
 }
 
+// TestSQLite_SignalExplanationRoundTrip pins the persistence contract
+// for the detector explainability payload: a Signal saved with an
+// Explanation is loaded back with the same FeatureEvolution,
+// ComparablePeers, BaselineWindowDays, ThresholdUsed and
+// DetectorVersion. A signal saved WITHOUT an explanation loads back
+// with the zero value (no panic, no spurious data).
+func TestSQLite_SignalExplanationRoundTrip(t *testing.T) {
+	c := openTestConn(t)
+	ctx := context.Background()
+	scope := uuid.New()
+	series := uuid.New()
+	now := time.Now().UTC().Truncate(time.Microsecond)
+
+	sig := mkSignal(scope, series, domain.PatternTypeTrend, 0.8, now)
+	sig.Explanation = domain.Explanation{
+		FeatureEvolution: []domain.FeatureSample{
+			{At: now.Add(-2 * time.Hour), Value: 18.0},
+			{At: now.Add(-time.Hour), Value: 22.0},
+			{At: now, Value: 26.0},
+		},
+		ComparablePeers:    12,
+		BaselineWindowDays: 90,
+		ThresholdUsed:      2.5,
+		DetectorVersion:    "trend-v2",
+	}
+	if err := c.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+
+	got, err := c.Signals.Get(ctx, sig.ID)
+	if err != nil {
+		t.Fatalf("Get: %v", err)
+	}
+	if got.Explanation.DetectorVersion != "trend-v2" {
+		t.Errorf("detector_version = %q, want trend-v2", got.Explanation.DetectorVersion)
+	}
+	if got.Explanation.ComparablePeers != 12 {
+		t.Errorf("comparable_peers = %d, want 12", got.Explanation.ComparablePeers)
+	}
+	if got.Explanation.BaselineWindowDays != 90 {
+		t.Errorf("baseline_window_days = %d, want 90", got.Explanation.BaselineWindowDays)
+	}
+	if got.Explanation.ThresholdUsed != 2.5 {
+		t.Errorf("threshold_used = %v, want 2.5", got.Explanation.ThresholdUsed)
+	}
+	if len(got.Explanation.FeatureEvolution) != 3 {
+		t.Fatalf("feature_evolution len = %d, want 3", len(got.Explanation.FeatureEvolution))
+	}
+	if got.Explanation.FeatureEvolution[2].Value != 26.0 {
+		t.Errorf("feature_evolution[2].value = %v, want 26.0", got.Explanation.FeatureEvolution[2].Value)
+	}
+}
+
+// TestSQLite_SignalNoExplanationLoadsZero confirms a signal saved
+// before the explanation column existed (or saved with the zero value)
+// loads back with an empty Explanation. Avoids regressions on the
+// optional-by-design contract.
+func TestSQLite_SignalNoExplanationLoadsZero(t *testing.T) {
+	c := openTestConn(t)
+	ctx := context.Background()
+	scope := uuid.New()
+	series := uuid.New()
+	now := time.Now().UTC()
+
+	sig := mkSignal(scope, series, domain.PatternTypeRecurrence, 0.7, now)
+	if err := c.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+	got, err := c.Signals.Get(ctx, sig.ID)
+	if err != nil {
+		t.Fatalf("Get: %v", err)
+	}
+	if !got.Explanation.IsZero() {
+		t.Errorf("expected zero Explanation, got %+v", got.Explanation)
+	}
+}
+
 func TestSQLite_SignalListFilters(t *testing.T) {
 	c := openTestConn(t)
 	ctx := context.Background()

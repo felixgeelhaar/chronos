@@ -20,13 +20,14 @@ import (
 
 // Sentinel errors returned by validation on domain types.
 var (
-	ErrMissingScopeID    = errors.New("domain: signal missing scope ID")
-	ErrMissingSeriesID   = errors.New("domain: signal missing series ID")
-	ErrMissingPattern    = errors.New("domain: signal missing pattern type")
-	ErrInvalidConfidence = errors.New("domain: confidence must be in [0,1]")
-	ErrInvalidStrength   = errors.New("domain: strength must be in [0,1]")
-	ErrInvalidWindow     = errors.New("domain: window end must not precede window start")
-	ErrSignalNotFound    = errors.New("domain: signal not found")
+	ErrMissingScopeID     = errors.New("domain: signal missing scope ID")
+	ErrMissingSeriesID    = errors.New("domain: signal missing series ID")
+	ErrMissingPattern     = errors.New("domain: signal missing pattern type")
+	ErrInvalidConfidence  = errors.New("domain: confidence must be in [0,1]")
+	ErrInvalidStrength    = errors.New("domain: strength must be in [0,1]")
+	ErrInvalidWindow      = errors.New("domain: window end must not precede window start")
+	ErrSignalNotFound     = errors.New("domain: signal not found")
+	ErrInvalidExplanation = errors.New("domain: explanation has invalid component (negative count or non-monotonic feature evolution)")
 )
 
 // PatternType is a typed enum for the kinds of patterns Chronos can
@@ -154,6 +155,76 @@ type Signal struct {
 	// "avg_similarity", "slope", "z_score"). Keys should be lowercase
 	// snake_case so downstream filters can reason about them.
 	Metrics map[string]float64
+
+	// Explanation carries detector-side context for narration: the
+	// feature evolution that fired the pattern, the comparable-peer
+	// count, the baseline window used, the threshold applied, and the
+	// detector's own version tag. Zero value (default) means the
+	// detector did not surface an explanation; consumers handle absent.
+	Explanation Explanation
+}
+
+// FeatureSample is one observation in an Explanation's feature
+// evolution series.
+type FeatureSample struct {
+	At    time.Time
+	Value float64
+}
+
+// Explanation is the value object that detectors attach to a Signal so
+// downstream consumers can narrate WHY the pattern fired without
+// re-deriving the supporting data. All fields are optional; the zero
+// value is the explicit "no explanation surfaced" state.
+type Explanation struct {
+	// FeatureEvolution is the time-ordered series the detector looked
+	// at (monotonic non-decreasing timestamps). Empty when the
+	// detector does not surface line-level evolution.
+	FeatureEvolution []FeatureSample
+
+	// ComparablePeers is the number of comparable entities the
+	// detector considered when ranking this signal. 0 means
+	// "not applicable" for detectors that don't operate over peers.
+	ComparablePeers int
+
+	// BaselineWindowDays is the rolling baseline window (in days) the
+	// detector applied. 0 means "not applicable".
+	BaselineWindowDays int
+
+	// ThresholdUsed is the threshold value the detector compared
+	// against (e.g. z-score cutoff, slope minimum). 0 means
+	// "not applicable".
+	ThresholdUsed float64
+
+	// DetectorVersion is the detector's own version tag. Useful for
+	// drift analysis when detector logic evolves.
+	DetectorVersion string
+}
+
+// IsZero reports whether the Explanation carries no information.
+// Persistence layers use this to decide whether to store the column.
+func (e Explanation) IsZero() bool {
+	return len(e.FeatureEvolution) == 0 &&
+		e.ComparablePeers == 0 &&
+		e.BaselineWindowDays == 0 &&
+		e.ThresholdUsed == 0 &&
+		e.DetectorVersion == ""
+}
+
+// Validate enforces invariants on the explanation value object.
+// Zero value is always valid (means "no explanation surfaced").
+func (e Explanation) Validate() error {
+	if e.ComparablePeers < 0 {
+		return ErrInvalidExplanation
+	}
+	if e.BaselineWindowDays < 0 {
+		return ErrInvalidExplanation
+	}
+	for i := 1; i < len(e.FeatureEvolution); i++ {
+		if e.FeatureEvolution[i].At.Before(e.FeatureEvolution[i-1].At) {
+			return ErrInvalidExplanation
+		}
+	}
+	return nil
 }
 
 // Validate enforces invariants on a Signal. Detectors call Validate before

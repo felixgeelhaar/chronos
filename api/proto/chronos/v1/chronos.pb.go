@@ -194,17 +194,21 @@ func (x *EntityState) GetMeta() map[string]string {
 
 // Signal is a structured description of a detected pattern.
 type Signal struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                          // UUID
-	ScopeId       string                 `protobuf:"bytes,2,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"` // UUID
-	Series        string                 `protobuf:"bytes,3,opt,name=series,proto3" json:"series,omitempty"`                  // UUID — the entity the pattern was detected in
-	Pattern       PatternType            `protobuf:"varint,4,opt,name=pattern,proto3,enum=chronos.v1.PatternType" json:"pattern,omitempty"`
-	DetectedAt    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=detected_at,json=detectedAt,proto3" json:"detected_at,omitempty"`
-	Window        *TimeWindow            `protobuf:"bytes,6,opt,name=window,proto3" json:"window,omitempty"`
-	Strength      float64                `protobuf:"fixed64,7,opt,name=strength,proto3" json:"strength,omitempty"`
-	Confidence    float64                `protobuf:"fixed64,8,opt,name=confidence,proto3" json:"confidence,omitempty"`
-	Metrics       map[string]float64     `protobuf:"bytes,9,rep,name=metrics,proto3" json:"metrics,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
-	Evidence      []*Evidence            `protobuf:"bytes,10,rep,name=evidence,proto3" json:"evidence,omitempty"`
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Id         string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                          // UUID
+	ScopeId    string                 `protobuf:"bytes,2,opt,name=scope_id,json=scopeId,proto3" json:"scope_id,omitempty"` // UUID
+	Series     string                 `protobuf:"bytes,3,opt,name=series,proto3" json:"series,omitempty"`                  // UUID — the entity the pattern was detected in
+	Pattern    PatternType            `protobuf:"varint,4,opt,name=pattern,proto3,enum=chronos.v1.PatternType" json:"pattern,omitempty"`
+	DetectedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=detected_at,json=detectedAt,proto3" json:"detected_at,omitempty"`
+	Window     *TimeWindow            `protobuf:"bytes,6,opt,name=window,proto3" json:"window,omitempty"`
+	Strength   float64                `protobuf:"fixed64,7,opt,name=strength,proto3" json:"strength,omitempty"`
+	Confidence float64                `protobuf:"fixed64,8,opt,name=confidence,proto3" json:"confidence,omitempty"`
+	Metrics    map[string]float64     `protobuf:"bytes,9,rep,name=metrics,proto3" json:"metrics,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
+	Evidence   []*Evidence            `protobuf:"bytes,10,rep,name=evidence,proto3" json:"evidence,omitempty"`
+	// Optional detector-side context that lets downstream consumers
+	// narrate WHY the signal fired without re-deriving the data. Empty
+	// when the detector did not surface one.
+	Explanation   *Explanation `protobuf:"bytes,11,opt,name=explanation,proto3" json:"explanation,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -309,6 +313,147 @@ func (x *Signal) GetEvidence() []*Evidence {
 	return nil
 }
 
+func (x *Signal) GetExplanation() *Explanation {
+	if x != nil {
+		return x.Explanation
+	}
+	return nil
+}
+
+// FeatureSample is one observation in the feature-evolution series the
+// detector inspected.
+type FeatureSample struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	At            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=at,proto3" json:"at,omitempty"`
+	Value         float64                `protobuf:"fixed64,2,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FeatureSample) Reset() {
+	*x = FeatureSample{}
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FeatureSample) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FeatureSample) ProtoMessage() {}
+
+func (x *FeatureSample) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FeatureSample.ProtoReflect.Descriptor instead.
+func (*FeatureSample) Descriptor() ([]byte, []int) {
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *FeatureSample) GetAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.At
+	}
+	return nil
+}
+
+func (x *FeatureSample) GetValue() float64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+// Explanation carries the detector-side context that produced a Signal:
+// the feature evolution it saw, the peer cohort it compared against,
+// the baseline window length, the threshold it crossed, and a stable
+// version string for the detector. All fields are optional.
+type Explanation struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	FeatureEvolution   []*FeatureSample       `protobuf:"bytes,1,rep,name=feature_evolution,json=featureEvolution,proto3" json:"feature_evolution,omitempty"`
+	ComparablePeers    int32                  `protobuf:"varint,2,opt,name=comparable_peers,json=comparablePeers,proto3" json:"comparable_peers,omitempty"`
+	BaselineWindowDays int32                  `protobuf:"varint,3,opt,name=baseline_window_days,json=baselineWindowDays,proto3" json:"baseline_window_days,omitempty"`
+	ThresholdUsed      float64                `protobuf:"fixed64,4,opt,name=threshold_used,json=thresholdUsed,proto3" json:"threshold_used,omitempty"`
+	DetectorVersion    string                 `protobuf:"bytes,5,opt,name=detector_version,json=detectorVersion,proto3" json:"detector_version,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *Explanation) Reset() {
+	*x = Explanation{}
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Explanation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Explanation) ProtoMessage() {}
+
+func (x *Explanation) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Explanation.ProtoReflect.Descriptor instead.
+func (*Explanation) Descriptor() ([]byte, []int) {
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Explanation) GetFeatureEvolution() []*FeatureSample {
+	if x != nil {
+		return x.FeatureEvolution
+	}
+	return nil
+}
+
+func (x *Explanation) GetComparablePeers() int32 {
+	if x != nil {
+		return x.ComparablePeers
+	}
+	return 0
+}
+
+func (x *Explanation) GetBaselineWindowDays() int32 {
+	if x != nil {
+		return x.BaselineWindowDays
+	}
+	return 0
+}
+
+func (x *Explanation) GetThresholdUsed() float64 {
+	if x != nil {
+		return x.ThresholdUsed
+	}
+	return 0
+}
+
+func (x *Explanation) GetDetectorVersion() string {
+	if x != nil {
+		return x.DetectorVersion
+	}
+	return ""
+}
+
 // TimeWindow describes the analysis window over which a signal was detected.
 type TimeWindow struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -320,7 +465,7 @@ type TimeWindow struct {
 
 func (x *TimeWindow) Reset() {
 	*x = TimeWindow{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[2]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -332,7 +477,7 @@ func (x *TimeWindow) String() string {
 func (*TimeWindow) ProtoMessage() {}
 
 func (x *TimeWindow) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[2]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -345,7 +490,7 @@ func (x *TimeWindow) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeWindow.ProtoReflect.Descriptor instead.
 func (*TimeWindow) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{2}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TimeWindow) GetStart() *timestamppb.Timestamp {
@@ -376,7 +521,7 @@ type Evidence struct {
 
 func (x *Evidence) Reset() {
 	*x = Evidence{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[3]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -388,7 +533,7 @@ func (x *Evidence) String() string {
 func (*Evidence) ProtoMessage() {}
 
 func (x *Evidence) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[3]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -401,7 +546,7 @@ func (x *Evidence) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Evidence.ProtoReflect.Descriptor instead.
 func (*Evidence) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{3}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Evidence) GetSeries() string {
@@ -456,7 +601,7 @@ type IngestRequest struct {
 
 func (x *IngestRequest) Reset() {
 	*x = IngestRequest{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[4]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -468,7 +613,7 @@ func (x *IngestRequest) String() string {
 func (*IngestRequest) ProtoMessage() {}
 
 func (x *IngestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[4]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -481,7 +626,7 @@ func (x *IngestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestRequest.ProtoReflect.Descriptor instead.
 func (*IngestRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{4}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *IngestRequest) GetId() string {
@@ -551,7 +696,7 @@ type IngestResponse struct {
 
 func (x *IngestResponse) Reset() {
 	*x = IngestResponse{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[5]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -563,7 +708,7 @@ func (x *IngestResponse) String() string {
 func (*IngestResponse) ProtoMessage() {}
 
 func (x *IngestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[5]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -576,7 +721,7 @@ func (x *IngestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IngestResponse.ProtoReflect.Descriptor instead.
 func (*IngestResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{5}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *IngestResponse) GetId() string {
@@ -614,7 +759,7 @@ type ListSignalsRequest struct {
 
 func (x *ListSignalsRequest) Reset() {
 	*x = ListSignalsRequest{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[6]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -626,7 +771,7 @@ func (x *ListSignalsRequest) String() string {
 func (*ListSignalsRequest) ProtoMessage() {}
 
 func (x *ListSignalsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[6]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -639,7 +784,7 @@ func (x *ListSignalsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSignalsRequest.ProtoReflect.Descriptor instead.
 func (*ListSignalsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{6}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListSignalsRequest) GetScopeId() string {
@@ -709,7 +854,7 @@ type ListSignalsResponse struct {
 
 func (x *ListSignalsResponse) Reset() {
 	*x = ListSignalsResponse{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[7]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -721,7 +866,7 @@ func (x *ListSignalsResponse) String() string {
 func (*ListSignalsResponse) ProtoMessage() {}
 
 func (x *ListSignalsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[7]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -734,7 +879,7 @@ func (x *ListSignalsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSignalsResponse.ProtoReflect.Descriptor instead.
 func (*ListSignalsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{7}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListSignalsResponse) GetSignals() []*Signal {
@@ -761,7 +906,7 @@ type GetSignalRequest struct {
 
 func (x *GetSignalRequest) Reset() {
 	*x = GetSignalRequest{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[8]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -773,7 +918,7 @@ func (x *GetSignalRequest) String() string {
 func (*GetSignalRequest) ProtoMessage() {}
 
 func (x *GetSignalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[8]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -786,7 +931,7 @@ func (x *GetSignalRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSignalRequest.ProtoReflect.Descriptor instead.
 func (*GetSignalRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{8}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetSignalRequest) GetId() string {
@@ -812,7 +957,7 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x04meta\x18\a \x03(\v2!.chronos.v1.EntityState.MetaEntryR\x04meta\x1a7\n" +
 	"\tMetaEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd0\x03\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8b\x04\n" +
 	"\x06Signal\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
 	"\bscope_id\x18\x02 \x01(\tR\ascopeId\x12\x16\n" +
@@ -827,10 +972,20 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"confidence\x129\n" +
 	"\ametrics\x18\t \x03(\v2\x1f.chronos.v1.Signal.MetricsEntryR\ametrics\x120\n" +
 	"\bevidence\x18\n" +
-	" \x03(\v2\x14.chronos.v1.EvidenceR\bevidence\x1a:\n" +
+	" \x03(\v2\x14.chronos.v1.EvidenceR\bevidence\x129\n" +
+	"\vexplanation\x18\v \x01(\v2\x17.chronos.v1.ExplanationR\vexplanation\x1a:\n" +
 	"\fMetricsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x01R\x05value:\x028\x01\"l\n" +
+	"\x05value\x18\x02 \x01(\x01R\x05value:\x028\x01\"Q\n" +
+	"\rFeatureSample\x12*\n" +
+	"\x02at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x02at\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x01R\x05value\"\x84\x02\n" +
+	"\vExplanation\x12F\n" +
+	"\x11feature_evolution\x18\x01 \x03(\v2\x19.chronos.v1.FeatureSampleR\x10featureEvolution\x12)\n" +
+	"\x10comparable_peers\x18\x02 \x01(\x05R\x0fcomparablePeers\x120\n" +
+	"\x14baseline_window_days\x18\x03 \x01(\x05R\x12baselineWindowDays\x12%\n" +
+	"\x0ethreshold_used\x18\x04 \x01(\x01R\rthresholdUsed\x12)\n" +
+	"\x10detector_version\x18\x05 \x01(\tR\x0fdetectorVersion\"l\n" +
 	"\n" +
 	"TimeWindow\x120\n" +
 	"\x05start\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x05start\x12,\n" +
@@ -905,53 +1060,58 @@ func file_api_proto_chronos_v1_chronos_proto_rawDescGZIP() []byte {
 }
 
 var file_api_proto_chronos_v1_chronos_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_proto_chronos_v1_chronos_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_api_proto_chronos_v1_chronos_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_api_proto_chronos_v1_chronos_proto_goTypes = []any{
 	(PatternType)(0),              // 0: chronos.v1.PatternType
 	(*EntityState)(nil),           // 1: chronos.v1.EntityState
 	(*Signal)(nil),                // 2: chronos.v1.Signal
-	(*TimeWindow)(nil),            // 3: chronos.v1.TimeWindow
-	(*Evidence)(nil),              // 4: chronos.v1.Evidence
-	(*IngestRequest)(nil),         // 5: chronos.v1.IngestRequest
-	(*IngestResponse)(nil),        // 6: chronos.v1.IngestResponse
-	(*ListSignalsRequest)(nil),    // 7: chronos.v1.ListSignalsRequest
-	(*ListSignalsResponse)(nil),   // 8: chronos.v1.ListSignalsResponse
-	(*GetSignalRequest)(nil),      // 9: chronos.v1.GetSignalRequest
-	nil,                           // 10: chronos.v1.EntityState.MetaEntry
-	nil,                           // 11: chronos.v1.Signal.MetricsEntry
-	nil,                           // 12: chronos.v1.Evidence.MetricsEntry
-	nil,                           // 13: chronos.v1.IngestRequest.MetaEntry
-	(*timestamppb.Timestamp)(nil), // 14: google.protobuf.Timestamp
+	(*FeatureSample)(nil),         // 3: chronos.v1.FeatureSample
+	(*Explanation)(nil),           // 4: chronos.v1.Explanation
+	(*TimeWindow)(nil),            // 5: chronos.v1.TimeWindow
+	(*Evidence)(nil),              // 6: chronos.v1.Evidence
+	(*IngestRequest)(nil),         // 7: chronos.v1.IngestRequest
+	(*IngestResponse)(nil),        // 8: chronos.v1.IngestResponse
+	(*ListSignalsRequest)(nil),    // 9: chronos.v1.ListSignalsRequest
+	(*ListSignalsResponse)(nil),   // 10: chronos.v1.ListSignalsResponse
+	(*GetSignalRequest)(nil),      // 11: chronos.v1.GetSignalRequest
+	nil,                           // 12: chronos.v1.EntityState.MetaEntry
+	nil,                           // 13: chronos.v1.Signal.MetricsEntry
+	nil,                           // 14: chronos.v1.Evidence.MetricsEntry
+	nil,                           // 15: chronos.v1.IngestRequest.MetaEntry
+	(*timestamppb.Timestamp)(nil), // 16: google.protobuf.Timestamp
 }
 var file_api_proto_chronos_v1_chronos_proto_depIdxs = []int32{
-	14, // 0: chronos.v1.EntityState.timestamp:type_name -> google.protobuf.Timestamp
-	10, // 1: chronos.v1.EntityState.meta:type_name -> chronos.v1.EntityState.MetaEntry
+	16, // 0: chronos.v1.EntityState.timestamp:type_name -> google.protobuf.Timestamp
+	12, // 1: chronos.v1.EntityState.meta:type_name -> chronos.v1.EntityState.MetaEntry
 	0,  // 2: chronos.v1.Signal.pattern:type_name -> chronos.v1.PatternType
-	14, // 3: chronos.v1.Signal.detected_at:type_name -> google.protobuf.Timestamp
-	3,  // 4: chronos.v1.Signal.window:type_name -> chronos.v1.TimeWindow
-	11, // 5: chronos.v1.Signal.metrics:type_name -> chronos.v1.Signal.MetricsEntry
-	4,  // 6: chronos.v1.Signal.evidence:type_name -> chronos.v1.Evidence
-	14, // 7: chronos.v1.TimeWindow.start:type_name -> google.protobuf.Timestamp
-	14, // 8: chronos.v1.TimeWindow.end:type_name -> google.protobuf.Timestamp
-	14, // 9: chronos.v1.Evidence.time:type_name -> google.protobuf.Timestamp
-	12, // 10: chronos.v1.Evidence.metrics:type_name -> chronos.v1.Evidence.MetricsEntry
-	14, // 11: chronos.v1.IngestRequest.timestamp:type_name -> google.protobuf.Timestamp
-	13, // 12: chronos.v1.IngestRequest.meta:type_name -> chronos.v1.IngestRequest.MetaEntry
-	0,  // 13: chronos.v1.ListSignalsRequest.pattern:type_name -> chronos.v1.PatternType
-	14, // 14: chronos.v1.ListSignalsRequest.since:type_name -> google.protobuf.Timestamp
-	14, // 15: chronos.v1.ListSignalsRequest.until:type_name -> google.protobuf.Timestamp
-	2,  // 16: chronos.v1.ListSignalsResponse.signals:type_name -> chronos.v1.Signal
-	5,  // 17: chronos.v1.ChronosService.Ingest:input_type -> chronos.v1.IngestRequest
-	7,  // 18: chronos.v1.ChronosService.ListSignals:input_type -> chronos.v1.ListSignalsRequest
-	9,  // 19: chronos.v1.ChronosService.GetSignal:input_type -> chronos.v1.GetSignalRequest
-	6,  // 20: chronos.v1.ChronosService.Ingest:output_type -> chronos.v1.IngestResponse
-	8,  // 21: chronos.v1.ChronosService.ListSignals:output_type -> chronos.v1.ListSignalsResponse
-	2,  // 22: chronos.v1.ChronosService.GetSignal:output_type -> chronos.v1.Signal
-	20, // [20:23] is the sub-list for method output_type
-	17, // [17:20] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	16, // 3: chronos.v1.Signal.detected_at:type_name -> google.protobuf.Timestamp
+	5,  // 4: chronos.v1.Signal.window:type_name -> chronos.v1.TimeWindow
+	13, // 5: chronos.v1.Signal.metrics:type_name -> chronos.v1.Signal.MetricsEntry
+	6,  // 6: chronos.v1.Signal.evidence:type_name -> chronos.v1.Evidence
+	4,  // 7: chronos.v1.Signal.explanation:type_name -> chronos.v1.Explanation
+	16, // 8: chronos.v1.FeatureSample.at:type_name -> google.protobuf.Timestamp
+	3,  // 9: chronos.v1.Explanation.feature_evolution:type_name -> chronos.v1.FeatureSample
+	16, // 10: chronos.v1.TimeWindow.start:type_name -> google.protobuf.Timestamp
+	16, // 11: chronos.v1.TimeWindow.end:type_name -> google.protobuf.Timestamp
+	16, // 12: chronos.v1.Evidence.time:type_name -> google.protobuf.Timestamp
+	14, // 13: chronos.v1.Evidence.metrics:type_name -> chronos.v1.Evidence.MetricsEntry
+	16, // 14: chronos.v1.IngestRequest.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 15: chronos.v1.IngestRequest.meta:type_name -> chronos.v1.IngestRequest.MetaEntry
+	0,  // 16: chronos.v1.ListSignalsRequest.pattern:type_name -> chronos.v1.PatternType
+	16, // 17: chronos.v1.ListSignalsRequest.since:type_name -> google.protobuf.Timestamp
+	16, // 18: chronos.v1.ListSignalsRequest.until:type_name -> google.protobuf.Timestamp
+	2,  // 19: chronos.v1.ListSignalsResponse.signals:type_name -> chronos.v1.Signal
+	7,  // 20: chronos.v1.ChronosService.Ingest:input_type -> chronos.v1.IngestRequest
+	9,  // 21: chronos.v1.ChronosService.ListSignals:input_type -> chronos.v1.ListSignalsRequest
+	11, // 22: chronos.v1.ChronosService.GetSignal:input_type -> chronos.v1.GetSignalRequest
+	8,  // 23: chronos.v1.ChronosService.Ingest:output_type -> chronos.v1.IngestResponse
+	10, // 24: chronos.v1.ChronosService.ListSignals:output_type -> chronos.v1.ListSignalsResponse
+	2,  // 25: chronos.v1.ChronosService.GetSignal:output_type -> chronos.v1.Signal
+	23, // [23:26] is the sub-list for method output_type
+	20, // [20:23] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_chronos_v1_chronos_proto_init() }
@@ -965,7 +1125,7 @@ func file_api_proto_chronos_v1_chronos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_chronos_v1_chronos_proto_rawDesc), len(file_api_proto_chronos_v1_chronos_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   13,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

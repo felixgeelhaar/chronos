@@ -91,10 +91,35 @@ func fromDomainSignal(s domain.Signal) *chronosv1.Signal {
 			Start: timestamppb.New(s.Window.Start),
 			End:   timestamppb.New(s.Window.End),
 		},
-		Strength:   s.Strength,
-		Confidence: s.Confidence,
-		Metrics:    s.Metrics,
-		Evidence:   evidence,
+		Strength:    s.Strength,
+		Confidence:  s.Confidence,
+		Metrics:     s.Metrics,
+		Evidence:    evidence,
+		Explanation: explanationToProto(s.Explanation),
+	}
+}
+
+// explanationToProto maps domain.Explanation to its proto wire shape.
+// Returns nil when the Explanation is zero-valued so consumers can
+// distinguish "no explanation surfaced" from "explanation with default
+// values".
+func explanationToProto(e domain.Explanation) *chronosv1.Explanation {
+	if e.IsZero() {
+		return nil
+	}
+	samples := make([]*chronosv1.FeatureSample, 0, len(e.FeatureEvolution))
+	for _, fs := range e.FeatureEvolution {
+		samples = append(samples, &chronosv1.FeatureSample{
+			At:    timestamppb.New(fs.At),
+			Value: fs.Value,
+		})
+	}
+	return &chronosv1.Explanation{
+		FeatureEvolution:   samples,
+		ComparablePeers:    int32(e.ComparablePeers),    //nolint:gosec // detector-bound
+		BaselineWindowDays: int32(e.BaselineWindowDays), //nolint:gosec // detector-bound
+		ThresholdUsed:      e.ThresholdUsed,
+		DetectorVersion:    e.DetectorVersion,
 	}
 }
 

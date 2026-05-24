@@ -210,6 +210,98 @@ func TestListSignals_InvalidScopeIDsEntry(t *testing.T) {
 	}
 }
 
+// TestGetSignal_ExplanationSurfaced pins gRPC parity with the HTTP DTO:
+// detector-side context (FeatureEvolution, ComparablePeers,
+// BaselineWindowDays, ThresholdUsed, DetectorVersion) survives the
+// round-trip so downstream narrators get the same WHY-payload over
+// either transport.
+func TestGetSignal_ExplanationSurfaced(t *testing.T) {
+	srv, mem := setupServer(t)
+	ctx := context.Background()
+
+	scope := uuid.New()
+	now := time.Now()
+	sig := domain.Signal{
+		ID:         uuid.New(),
+		ScopeID:    scope,
+		Series:     uuid.New(),
+		Pattern:    domain.PatternTypeTrend,
+		DetectedAt: now,
+		Window:     domain.TimeWindow{Start: now.Add(-time.Hour), End: now},
+		Strength:   0.8, Confidence: 0.8,
+		Explanation: domain.Explanation{
+			FeatureEvolution: []domain.FeatureSample{
+				{At: now.Add(-2 * time.Hour), Value: 18.0},
+				{At: now.Add(-time.Hour), Value: 22.0},
+				{At: now, Value: 26.0},
+			},
+			ComparablePeers:    12,
+			BaselineWindowDays: 90,
+			ThresholdUsed:      2.5,
+			DetectorVersion:    "trend-v2",
+		},
+	}
+	if err := mem.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+
+	resp, err := srv.GetSignal(ctx, &chronosv1.GetSignalRequest{Id: sig.ID.String()})
+	if err != nil {
+		t.Fatalf("GetSignal: %v", err)
+	}
+	if resp.Explanation == nil {
+		t.Fatal("Explanation missing — detector context must surface over gRPC")
+	}
+	if resp.Explanation.DetectorVersion != "trend-v2" {
+		t.Errorf("detector_version = %q, want trend-v2", resp.Explanation.DetectorVersion)
+	}
+	if resp.Explanation.ComparablePeers != 12 {
+		t.Errorf("comparable_peers = %d, want 12", resp.Explanation.ComparablePeers)
+	}
+	if resp.Explanation.BaselineWindowDays != 90 {
+		t.Errorf("baseline_window_days = %d, want 90", resp.Explanation.BaselineWindowDays)
+	}
+	if resp.Explanation.ThresholdUsed != 2.5 {
+		t.Errorf("threshold_used = %v, want 2.5", resp.Explanation.ThresholdUsed)
+	}
+	if len(resp.Explanation.FeatureEvolution) != 3 {
+		t.Errorf("feature_evolution len = %d, want 3", len(resp.Explanation.FeatureEvolution))
+	}
+	if resp.Explanation.FeatureEvolution[2].Value != 26.0 {
+		t.Errorf("last sample value = %v, want 26.0", resp.Explanation.FeatureEvolution[2].Value)
+	}
+}
+
+// TestGetSignal_NoExplanationOmitted: a zero-Explanation signal yields
+// no Explanation field on the wire, so callers distinguish absence from
+// the zero value.
+func TestGetSignal_NoExplanationOmitted(t *testing.T) {
+	srv, mem := setupServer(t)
+	ctx := context.Background()
+
+	scope := uuid.New()
+	now := time.Now()
+	sig := domain.Signal{
+		ID:         uuid.New(),
+		ScopeID:    scope,
+		Series:     uuid.New(),
+		Pattern:    domain.PatternTypeRecurrence,
+		DetectedAt: now,
+		Window:     domain.TimeWindow{Start: now.Add(-time.Hour), End: now},
+		Strength:   0.7, Confidence: 0.7,
+	}
+	if err := mem.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+	resp, err := srv.GetSignal(ctx, &chronosv1.GetSignalRequest{Id: sig.ID.String()})
+	if err != nil {
+		t.Fatalf("GetSignal: %v", err)
+	}
+	if resp.Explanation != nil {
+		t.Errorf("expected nil Explanation, got %+v", resp.Explanation)
+	}
+}
+
 func TestGetSignal_Found(t *testing.T) {
 	srv, mem := setupServer(t)
 	ctx := context.Background()

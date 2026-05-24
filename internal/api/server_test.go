@@ -236,6 +236,111 @@ func TestListSignals_ScopeIn_BadUUID(t *testing.T) {
 	}
 }
 
+// TestSignalDTO_ExplanationSurfaced pins detector-side context surfaces
+// on wire shape so downstream narrators (Thor AI) explain WHY pattern
+// fired without re-deriving the data.
+func TestSignalDTO_ExplanationSurfaced(t *testing.T) {
+	ts, mem := setupServer(t)
+	defer ts.Close()
+	scope := uuid.New()
+	now := time.Now()
+
+	sig := domain.Signal{
+		ID:         uuid.New(),
+		ScopeID:    scope,
+		Series:     uuid.New(),
+		Pattern:    domain.PatternTypeTrend,
+		DetectedAt: now,
+		Window:     domain.TimeWindow{Start: now.Add(-time.Hour), End: now},
+		Strength:   0.8,
+		Confidence: 0.8,
+		Explanation: domain.Explanation{
+			FeatureEvolution: []domain.FeatureSample{
+				{At: now.Add(-2 * time.Hour), Value: 18.0},
+				{At: now.Add(-time.Hour), Value: 22.0},
+				{At: now, Value: 26.0},
+			},
+			ComparablePeers:    12,
+			BaselineWindowDays: 90,
+			ThresholdUsed:      2.5,
+			DetectorVersion:    "trend-v2",
+		},
+	}
+	if err := mem.Signals.Save(context.Background(), sig); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+
+	resp, err := http.Get(ts.URL + "/v1/signals?scope_id=" + scope.String())
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	var body struct {
+		Signals []SignalDTO `json:"signals"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		t.Fatalf("decode: %v", err)
+	}
+	if len(body.Signals) != 1 {
+		t.Fatalf("expected 1 signal, got %d", len(body.Signals))
+	}
+	ex := body.Signals[0].Explanation
+	if ex == nil {
+		t.Fatal("Explanation missing on response — detector context must surface")
+	}
+	if ex.DetectorVersion != "trend-v2" {
+		t.Errorf("detector_version = %q, want trend-v2", ex.DetectorVersion)
+	}
+	if ex.ComparablePeers != 12 {
+		t.Errorf("comparable_peers = %d, want 12", ex.ComparablePeers)
+	}
+	if ex.BaselineWindowDays != 90 {
+		t.Errorf("baseline_window_days = %d, want 90", ex.BaselineWindowDays)
+	}
+	if ex.ThresholdUsed != 2.5 {
+		t.Errorf("threshold_used = %v, want 2.5", ex.ThresholdUsed)
+	}
+	if len(ex.FeatureEvolution) != 3 {
+		t.Errorf("feature_evolution len = %d, want 3", len(ex.FeatureEvolution))
+	}
+}
+
+// TestSignalDTO_NoExplanationOmitted pins the omitempty contract — a
+// detector that did not surface an Explanation must yield a response
+// without an explanation object, so consumers distinguish absence from
+// zero.
+func TestSignalDTO_NoExplanationOmitted(t *testing.T) {
+	ts, mem := setupServer(t)
+	defer ts.Close()
+	scope := uuid.New()
+	now := time.Now()
+
+	if err := mem.Signals.Save(context.Background(), domain.Signal{
+		ID: uuid.New(), ScopeID: scope, Series: uuid.New(),
+		Pattern:    domain.PatternTypeRecurrence,
+		DetectedAt: now,
+		Window:     domain.TimeWindow{Start: now.Add(-time.Hour), End: now},
+		Strength:   0.7, Confidence: 0.7,
+	}); err != nil {
+		t.Fatalf("Save: %v", err)
+	}
+
+	resp, err := http.Get(ts.URL + "/v1/signals?scope_id=" + scope.String())
+	if err != nil {
+		t.Fatalf("GET: %v", err)
+	}
+	defer func() { _ = resp.Body.Close() }()
+	var body struct {
+		Signals []SignalDTO `json:"signals"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		t.Fatalf("decode: %v", err)
+	}
+	if body.Signals[0].Explanation != nil {
+		t.Errorf("Explanation must be nil when detector did not surface one, got %+v", body.Signals[0].Explanation)
+	}
+}
+
 func TestSignalDetail_NotFound(t *testing.T) {
 	ts, _ := setupServer(t)
 	defer ts.Close()

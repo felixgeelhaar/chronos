@@ -34,6 +34,10 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 	q := r.conn.q.WithTx(tx)
 
 	metricsJSON, _ := json.Marshal(sig.Metrics)
+	explanationJSON, err := encodeExplanation(sig.Explanation)
+	if err != nil {
+		return fmt.Errorf("signal save: encode explanation: %w", err)
+	}
 	if err := q.InsertSignal(ctx, sqlcgen.InsertSignalParams{
 		ID:          sig.ID.String(),
 		ScopeID:     sig.ScopeID.String(),
@@ -45,6 +49,7 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 		Strength:    sig.Strength,
 		Confidence:  sig.Confidence,
 		Metrics:     string(metricsJSON),
+		Explanation: explanationJSON,
 	}); err != nil {
 		return fmt.Errorf("signal save: insert: %w", err)
 	}
@@ -259,15 +264,90 @@ func decodeSignal(row sqlcgen.Signal) (domain.Signal, error) {
 	if row.Metrics != "" {
 		_ = json.Unmarshal([]byte(row.Metrics), &metrics)
 	}
+	expl, err := decodeExplanation(row.Explanation)
+	if err != nil {
+		return domain.Signal{}, fmt.Errorf("decode signal explanation: %w", err)
+	}
 	return domain.Signal{
-		ID:         id,
-		ScopeID:    scope,
-		Series:     series,
-		Pattern:    domain.PatternType(row.Pattern),
-		DetectedAt: det,
-		Window:     domain.TimeWindow{Start: wStart, End: wEnd},
-		Strength:   row.Strength,
-		Confidence: row.Confidence,
-		Metrics:    metrics,
+		ID:          id,
+		ScopeID:     scope,
+		Series:      series,
+		Pattern:     domain.PatternType(row.Pattern),
+		DetectedAt:  det,
+		Window:      domain.TimeWindow{Start: wStart, End: wEnd},
+		Strength:    row.Strength,
+		Confidence:  row.Confidence,
+		Metrics:     metrics,
+		Explanation: expl,
 	}, nil
+}
+
+// explanationWire is the JSONB shape persisted in the explanation
+// column. Domain time.Time → RFC3339Nano string for stable storage.
+type explanationWire struct {
+	FeatureEvolution []featureSampleWire `json:"feature_evolution,omitempty"`
+	ComparablePeers    int     `json:"comparable_peers,omitempty"`
+	BaselineWindowDays int     `json:"baseline_window_days,omitempty"`
+	ThresholdUsed      float64 `json:"threshold_used,omitempty"`
+	DetectorVersion    string  `json:"detector_version,omitempty"`
+}
+
+type featureSampleWire struct {
+	At    string  `json:"at"`
+	Value float64 `json:"value"`
+}
+
+// encodeExplanation serialises an Explanation to its JSONB column
+// representation. Zero value becomes the literal "{}" string so the
+// column's NOT NULL constraint holds without forcing every signal to
+// carry an explanation.
+func encodeExplanation(e domain.Explanation) (string, error) {
+	if e.IsZero() {
+		return "{}", nil
+	}
+	w := explanationWire{
+		ComparablePeers:    e.ComparablePeers,
+		BaselineWindowDays: e.BaselineWindowDays,
+		ThresholdUsed:      e.ThresholdUsed,
+		DetectorVersion:    e.DetectorVersion,
+	}
+	for _, fs := range e.FeatureEvolution {
+		w.FeatureEvolution = append(w.FeatureEvolution, featureSampleWire{
+			At:    formatTime(fs.At),
+			Value: fs.Value,
+		})
+	}
+	b, err := json.Marshal(w)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
+
+// decodeExplanation parses the JSONB column back into a domain
+// Explanation. Empty / "{}" strings yield the zero value.
+func decodeExplanation(raw string) (domain.Explanation, error) {
+	if raw == "" || raw == "{}" {
+		return domain.Explanation{}, nil
+	}
+	var w explanationWire
+	if err := json.Unmarshal([]byte(raw), &w); err != nil {
+		return domain.Explanation{}, err
+	}
+	out := domain.Explanation{
+		ComparablePeers:    w.ComparablePeers,
+		BaselineWindowDays: w.BaselineWindowDays,
+		ThresholdUsed:      w.ThresholdUsed,
+		DetectorVersion:    w.DetectorVersion,
+	}
+	for _, fs := range w.FeatureEvolution {
+		t, err := parseTime(fs.At)
+		if err != nil {
+			return domain.Explanation{}, fmt.Errorf("decode feature_evolution time: %w", err)
+		}
+		out.FeatureEvolution = append(out.FeatureEvolution, domain.FeatureSample{
+			At: t, Value: fs.Value,
+		})
+	}
+	return out, nil
 }

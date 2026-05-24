@@ -5,7 +5,9 @@
 
 package sqlcgen
 
-import "context"
+import (
+	"context"
+)
 
 const countEntityStates = `-- name: CountEntityStates :one
 SELECT COUNT(*) FROM entity_states WHERE adapter = ?
@@ -49,12 +51,22 @@ func (q *Queries) GetEntityStatesByEntity(ctx context.Context, entityID string) 
 	for rows.Next() {
 		var i EntityState
 		if err := rows.Scan(
-			&i.ID, &i.EntityID, &i.ScopeID, &i.Timestamp,
-			&i.Features, &i.Labels, &i.Meta, &i.Adapter, &i.CreatedAt,
+			&i.ID,
+			&i.EntityID,
+			&i.ScopeID,
+			&i.Timestamp,
+			&i.Features,
+			&i.Labels,
+			&i.Meta,
+			&i.Adapter,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -78,12 +90,81 @@ func (q *Queries) GetEntityStatesByScope(ctx context.Context, scopeID string) ([
 	for rows.Next() {
 		var i EntityState
 		if err := rows.Scan(
-			&i.ID, &i.EntityID, &i.ScopeID, &i.Timestamp,
-			&i.Features, &i.Labels, &i.Meta, &i.Adapter, &i.CreatedAt,
+			&i.ID,
+			&i.EntityID,
+			&i.ScopeID,
+			&i.Timestamp,
+			&i.Features,
+			&i.Labels,
+			&i.Meta,
+			&i.Adapter,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getSignalByID = `-- name: GetSignalByID :one
+SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation FROM signals WHERE id = ?
+`
+
+func (q *Queries) GetSignalByID(ctx context.Context, id string) (Signal, error) {
+	row := q.db.QueryRowContext(ctx, getSignalByID, id)
+	var i Signal
+	err := row.Scan(
+		&i.ID,
+		&i.ScopeID,
+		&i.SeriesID,
+		&i.Pattern,
+		&i.DetectedAt,
+		&i.WindowStart,
+		&i.WindowEnd,
+		&i.Strength,
+		&i.Confidence,
+		&i.Metrics,
+		&i.Explanation,
+	)
+	return i, err
+}
+
+const getSignalEvidence = `-- name: GetSignalEvidence :many
+SELECT signal_id, series_id, time, kind, score, metrics FROM signal_evidence
+WHERE signal_id = ?
+ORDER BY score DESC
+`
+
+func (q *Queries) GetSignalEvidence(ctx context.Context, signalID string) ([]SignalEvidence, error) {
+	rows, err := q.db.QueryContext(ctx, getSignalEvidence, signalID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []SignalEvidence{}
+	for rows.Next() {
+		var i SignalEvidence
+		if err := rows.Scan(
+			&i.SignalID,
+			&i.SeriesID,
+			&i.Time,
+			&i.Kind,
+			&i.Score,
+			&i.Metrics,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
@@ -115,60 +196,27 @@ type InsertEntityStateParams struct {
 
 func (q *Queries) InsertEntityState(ctx context.Context, arg InsertEntityStateParams) error {
 	_, err := q.db.ExecContext(ctx, insertEntityState,
-		arg.ID, arg.EntityID, arg.ScopeID, arg.Timestamp,
-		arg.Features, arg.Labels, arg.Meta, arg.Adapter, arg.CreatedAt,
+		arg.ID,
+		arg.EntityID,
+		arg.ScopeID,
+		arg.Timestamp,
+		arg.Features,
+		arg.Labels,
+		arg.Meta,
+		arg.Adapter,
+		arg.CreatedAt,
 	)
 	return err
 }
 
-const getSignalByID = `-- name: GetSignalByID :one
-SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics
-FROM signals WHERE id = ?
-`
-
-func (q *Queries) GetSignalByID(ctx context.Context, id string) (Signal, error) {
-	row := q.db.QueryRowContext(ctx, getSignalByID, id)
-	var s Signal
-	err := row.Scan(
-		&s.ID, &s.ScopeID, &s.SeriesID, &s.Pattern, &s.DetectedAt,
-		&s.WindowStart, &s.WindowEnd, &s.Strength, &s.Confidence, &s.Metrics,
-	)
-	return s, err
-}
-
-const getSignalEvidence = `-- name: GetSignalEvidence :many
-SELECT signal_id, series_id, time, kind, score, metrics FROM signal_evidence
-WHERE signal_id = ?
-ORDER BY score DESC
-`
-
-func (q *Queries) GetSignalEvidence(ctx context.Context, signalID string) ([]SignalEvidence, error) {
-	rows, err := q.db.QueryContext(ctx, getSignalEvidence, signalID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []SignalEvidence{}
-	for rows.Next() {
-		var e SignalEvidence
-		if err := rows.Scan(&e.SignalID, &e.SeriesID, &e.Time, &e.Kind, &e.Score, &e.Metrics); err != nil {
-			return nil, err
-		}
-		items = append(items, e)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
 const insertSignal = `-- name: InsertSignal :exec
-INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     strength = excluded.strength,
     confidence = excluded.confidence,
-    metrics = excluded.metrics
+    metrics = excluded.metrics,
+    explanation = excluded.explanation
 `
 
 type InsertSignalParams struct {
@@ -182,12 +230,22 @@ type InsertSignalParams struct {
 	Strength    float64 `json:"strength"`
 	Confidence  float64 `json:"confidence"`
 	Metrics     string  `json:"metrics"`
+	Explanation string  `json:"explanation"`
 }
 
 func (q *Queries) InsertSignal(ctx context.Context, arg InsertSignalParams) error {
 	_, err := q.db.ExecContext(ctx, insertSignal,
-		arg.ID, arg.ScopeID, arg.SeriesID, arg.Pattern, arg.DetectedAt,
-		arg.WindowStart, arg.WindowEnd, arg.Strength, arg.Confidence, arg.Metrics,
+		arg.ID,
+		arg.ScopeID,
+		arg.SeriesID,
+		arg.Pattern,
+		arg.DetectedAt,
+		arg.WindowStart,
+		arg.WindowEnd,
+		arg.Strength,
+		arg.Confidence,
+		arg.Metrics,
+		arg.Explanation,
 	)
 	return err
 }
@@ -208,7 +266,12 @@ type InsertSignalEvidenceParams struct {
 
 func (q *Queries) InsertSignalEvidence(ctx context.Context, arg InsertSignalEvidenceParams) error {
 	_, err := q.db.ExecContext(ctx, insertSignalEvidence,
-		arg.SignalID, arg.SeriesID, arg.Time, arg.Kind, arg.Score, arg.Metrics,
+		arg.SignalID,
+		arg.SeriesID,
+		arg.Time,
+		arg.Kind,
+		arg.Score,
+		arg.Metrics,
 	)
 	return err
 }

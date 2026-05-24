@@ -25,6 +25,27 @@ type SignalDTO struct {
 	Confidence float64            `json:"confidence"`
 	Metrics    map[string]float64 `json:"metrics,omitempty"`
 	Evidence   []EvidenceDTO      `json:"evidence,omitempty"`
+	// Explanation carries detector-side context that lets downstream
+	// consumers narrate WHY the signal fired without re-deriving the
+	// data. Omitted when the detector did not surface one.
+	Explanation *ExplanationDTO `json:"explanation,omitempty"`
+}
+
+// ExplanationDTO is the wire shape of an Explanation value object.
+// All fields are optional; a Signal without an Explanation omits this
+// object entirely (pointer in SignalDTO).
+type ExplanationDTO struct {
+	FeatureEvolution   []FeatureSampleDTO `json:"feature_evolution,omitempty"`
+	ComparablePeers    int                `json:"comparable_peers,omitempty"`
+	BaselineWindowDays int                `json:"baseline_window_days,omitempty"`
+	ThresholdUsed      float64            `json:"threshold_used,omitempty"`
+	DetectorVersion    string             `json:"detector_version,omitempty"`
+}
+
+// FeatureSampleDTO is one observation in the feature evolution series.
+type FeatureSampleDTO struct {
+	At    time.Time `json:"at"`
+	Value float64   `json:"value"`
 }
 
 // TimeWindowDTO is the analysis window over which the signal was
@@ -65,6 +86,20 @@ func ToSignalDTO(s domain.Signal) SignalDTO {
 			Score:   e.Score,
 			Metrics: e.Metrics,
 		})
+	}
+	if !s.Explanation.IsZero() {
+		ex := &ExplanationDTO{
+			ComparablePeers:    s.Explanation.ComparablePeers,
+			BaselineWindowDays: s.Explanation.BaselineWindowDays,
+			ThresholdUsed:      s.Explanation.ThresholdUsed,
+			DetectorVersion:    s.Explanation.DetectorVersion,
+		}
+		for _, fs := range s.Explanation.FeatureEvolution {
+			ex.FeatureEvolution = append(ex.FeatureEvolution, FeatureSampleDTO{
+				At: fs.At, Value: fs.Value,
+			})
+		}
+		dto.Explanation = ex
 	}
 	return dto
 }

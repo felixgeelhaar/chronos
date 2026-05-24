@@ -24,8 +24,14 @@ CREATE TABLE IF NOT EXISTS signals (
     window_end TIMESTAMPTZ NOT NULL,
     strength DOUBLE PRECISION NOT NULL CHECK (strength >= 0 AND strength <= 1),
     confidence DOUBLE PRECISION NOT NULL CHECK (confidence >= 0 AND confidence <= 1),
-    metrics JSONB NOT NULL DEFAULT '{}'::jsonb
+    metrics JSONB NOT NULL DEFAULT '{}'::jsonb,
+    explanation JSONB NOT NULL DEFAULT '{}'::jsonb
 );
+
+-- Defensive ALTER for existing deployments where signals table was
+-- created before the explanation column existed. Safe to run on fresh
+-- installs (will no-op via IF NOT EXISTS).
+ALTER TABLE signals ADD COLUMN IF NOT EXISTS explanation JSONB NOT NULL DEFAULT '{}'::jsonb;
 CREATE INDEX IF NOT EXISTS idx_signals_scope_time    ON signals(scope_id, detected_at DESC);
 CREATE INDEX IF NOT EXISTS idx_signals_scope_pattern ON signals(scope_id, pattern, detected_at DESC);
 CREATE INDEX IF NOT EXISTS idx_signals_series        ON signals(series_id, detected_at DESC);

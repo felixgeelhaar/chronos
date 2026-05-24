@@ -80,6 +80,64 @@ func TestSignal_Validate(t *testing.T) {
 	}
 }
 
+// TestExplanation_Validate pins the value object contract for the
+// detector explainability payload. An empty Explanation is valid
+// (consumer absent → field absent). Populated values must be sane:
+// ComparablePeers ≥ 0, BaselineWindowDays ≥ 0, FeatureEvolution
+// timestamps monotonic non-decreasing.
+func TestExplanation_Validate(t *testing.T) {
+	now := time.Now()
+
+	t.Run("zero value is valid", func(t *testing.T) {
+		if err := (Explanation{}).Validate(); err != nil {
+			t.Errorf("zero Explanation rejected: %v", err)
+		}
+	})
+
+	t.Run("populated explanation is valid", func(t *testing.T) {
+		ex := Explanation{
+			FeatureEvolution: []FeatureSample{
+				{At: now.Add(-2 * time.Hour), Value: 18.0},
+				{At: now.Add(-time.Hour), Value: 22.0},
+				{At: now, Value: 26.0},
+			},
+			ComparablePeers:    12,
+			BaselineWindowDays: 90,
+			ThresholdUsed:      2.5,
+			DetectorVersion:    "trend-v2",
+		}
+		if err := ex.Validate(); err != nil {
+			t.Errorf("populated explanation rejected: %v", err)
+		}
+	})
+
+	t.Run("negative comparable peers rejected", func(t *testing.T) {
+		ex := Explanation{ComparablePeers: -1}
+		if err := ex.Validate(); !errors.Is(err, ErrInvalidExplanation) {
+			t.Errorf("got %v, want ErrInvalidExplanation", err)
+		}
+	})
+
+	t.Run("negative baseline window rejected", func(t *testing.T) {
+		ex := Explanation{BaselineWindowDays: -5}
+		if err := ex.Validate(); !errors.Is(err, ErrInvalidExplanation) {
+			t.Errorf("got %v, want ErrInvalidExplanation", err)
+		}
+	})
+
+	t.Run("non-monotonic feature evolution rejected", func(t *testing.T) {
+		ex := Explanation{
+			FeatureEvolution: []FeatureSample{
+				{At: now, Value: 1.0},
+				{At: now.Add(-time.Hour), Value: 2.0}, // out of order
+			},
+		}
+		if err := ex.Validate(); !errors.Is(err, ErrInvalidExplanation) {
+			t.Errorf("got %v, want ErrInvalidExplanation", err)
+		}
+	})
+}
+
 func TestTimeWindow_Validate(t *testing.T) {
 	now := time.Now()
 	if err := (TimeWindow{Start: now, End: now}).Validate(); err != nil {

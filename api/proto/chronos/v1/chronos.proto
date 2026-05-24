@@ -61,6 +61,29 @@ message Signal {
   double confidence = 8;
   map<string, double> metrics = 9;
   repeated Evidence evidence = 10;
+  // Optional detector-side context that lets downstream consumers
+  // narrate WHY the signal fired without re-deriving the data. Empty
+  // when the detector did not surface one.
+  Explanation explanation = 11;
+}
+
+// FeatureSample is one observation in the feature-evolution series the
+// detector inspected.
+message FeatureSample {
+  google.protobuf.Timestamp at = 1;
+  double value = 2;
+}
+
+// Explanation carries the detector-side context that produced a Signal:
+// the feature evolution it saw, the peer cohort it compared against,
+// the baseline window length, the threshold it crossed, and a stable
+// version string for the detector. All fields are optional.
+message Explanation {
+  repeated FeatureSample feature_evolution = 1;
+  int32 comparable_peers = 2;
+  int32 baseline_window_days = 3;
+  double threshold_used = 4;
+  string detector_version = 5;
 }
 
 // TimeWindow describes the analysis window over which a signal was detected.

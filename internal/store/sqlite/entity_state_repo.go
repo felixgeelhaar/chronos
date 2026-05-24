@@ -166,12 +166,12 @@ func decodeEntityState(row sqlcgen.EntityState) (chronos.EntityState, error) {
 		}
 	}
 	var labels []string
-	if row.Labels.Valid && row.Labels.String != "" {
-		_ = json.Unmarshal([]byte(row.Labels.String), &labels)
+	if row.Labels != "" {
+		_ = json.Unmarshal([]byte(row.Labels), &labels)
 	}
 	meta := map[string]string{}
-	if row.Meta.Valid && row.Meta.String != "" {
-		_ = json.Unmarshal([]byte(row.Meta.String), &meta)
+	if row.Meta != "" {
+		_ = json.Unmarshal([]byte(row.Meta), &meta)
 	}
 	return chronos.EntityState{
 		ID:        id,

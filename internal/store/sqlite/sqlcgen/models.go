@@ -4,20 +4,16 @@
 
 package sqlcgen
 
-import (
-	"database/sql"
-)
-
 type EntityState struct {
-	ID        string         `json:"id"`
-	EntityID  string         `json:"entity_id"`
-	ScopeID   string         `json:"scope_id"`
-	Timestamp string         `json:"timestamp"`
-	Features  string         `json:"features"`
-	Labels    sql.NullString `json:"labels"`
-	Meta      sql.NullString `json:"meta"`
-	Adapter   string         `json:"adapter"`
-	CreatedAt string         `json:"created_at"`
+	ID        string `json:"id"`
+	EntityID  string `json:"entity_id"`
+	ScopeID   string `json:"scope_id"`
+	Timestamp string `json:"timestamp"`
+	Features  string `json:"features"`
+	Labels    string `json:"labels"`
+	Meta      string `json:"meta"`
+	Adapter   string `json:"adapter"`
+	CreatedAt string `json:"created_at"`
 }
 
 type Signal struct {
@@ -31,6 +27,7 @@ type Signal struct {
 	Strength    float64 `json:"strength"`
 	Confidence  float64 `json:"confidence"`
 	Metrics     string  `json:"metrics"`
+	Explanation string  `json:"explanation"`
 }
 
 type SignalEvidence struct {

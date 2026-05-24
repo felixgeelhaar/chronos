@@ -25,12 +25,13 @@ WHERE timestamp < ? AND adapter = ?;
 SELECT COUNT(*) FROM entity_states WHERE adapter = ?;
 
 -- name: InsertSignal :exec
-INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     strength = excluded.strength,
     confidence = excluded.confidence,
-    metrics = excluded.metrics;
+    metrics = excluded.metrics,
+    explanation = excluded.explanation;
 
 -- name: InsertSignalEvidence :exec
 INSERT INTO signal_evidence (signal_id, series_id, time, kind, score, metrics)
