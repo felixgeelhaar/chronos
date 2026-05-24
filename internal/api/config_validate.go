@@ -85,6 +85,15 @@ func loadConfigWithOverrides(env map[string]string) *config.Config {
 	return config.Default()
 }
 
+// BuildConfigReportForExport is the exported entry point for callers
+// outside the HTTP layer (e.g. the MCP describe_detector tool) that
+// want the same per-detector verdict the /v1/config/validate endpoint
+// returns. Returns the list directly rather than the wrapping struct
+// so MCP/CLI surfaces can render it however they like.
+func BuildConfigReportForExport(cfg *config.Config) []DetectorReport {
+	return buildConfigReport(cfg).Detectors
+}
+
 // buildConfigReport classifies each detector under the candidate cfg.
 // "Enabled" means the detector's gating thresholds will let at least
 // some inputs through; "disabled" reports the specific gating value
