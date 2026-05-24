@@ -123,10 +123,23 @@ func (c *CrossScopeCorrelation) build(a, b scopedSeriesKey, r float64, n int, sa
 	}
 	earliest := earliestTime(sa[0].Timestamp, sb[0].Timestamp)
 	latest := latestTime(sa[len(sa)-1].Timestamp, sb[len(sb)-1].Timestamp)
+
+	// The lex-smaller (scope, series) tuple owns the signal; the
+	// other half rides in evidence. Anonymization replaces both
+	// halves with deterministic UUIDv5 hashes so the cross-tenant
+	// statistical insight stays useful without identifying which
+	// tenants paired up.
+	emittedScope, emittedSeries, emittedPartner := a.scope, a.series, b.series
+	if c.cfg.AnonymizeCrossScope {
+		emittedScope = anonymizeID(a.scope)
+		emittedSeries = anonymizeID(a.series)
+		emittedPartner = anonymizeID(b.series)
+		metrics["anonymized"] = 1
+	}
 	return domain.Signal{
 		ID:         uuid.New(),
-		ScopeID:    a.scope,
-		Series:     a.series,
+		ScopeID:    emittedScope,
+		Series:     emittedSeries,
 		Pattern:    domain.PatternTypeCrossScopeCorrelation,
 		DetectedAt: c.now(),
 		Window:     domain.TimeWindow{Start: earliest, End: latest},
@@ -134,7 +147,7 @@ func (c *CrossScopeCorrelation) build(a, b scopedSeriesKey, r float64, n int, sa
 		Confidence: clamp01(absR * sampleFactor(n, 2*c.cfg.CrossScopeMinPoints)),
 		Metrics:    metrics,
 		Evidence: []domain.Evidence{{
-			Series:  b.series,
+			Series:  emittedPartner,
 			Time:    latest,
 			Kind:    "cross_scope_pair",
 			Score:   absR,

@@ -71,6 +71,16 @@ type Config struct {
 	CrossScopeMin       float64 // Minimum |Pearson r| to emit (cross-scope tightness)
 	CrossScopeMinPoints int     // Minimum aligned observations between two series
 
+	// AnonymizeCrossScope strips identifying scope/series ids from
+	// CrossScopeCorrelation signals when true. The detector still
+	// runs and the statistical fields (r, n, direction) survive; the
+	// scope_id, series, and evidence.series fields are replaced with
+	// deterministic UUIDv5 hashes so a population-level signal stays
+	// useful without exposing which tenants paired up. Off by default
+	// — flip on for deployments where cross-tenant detectors are
+	// otherwise unsafe (set CHRONOS_ANONYMIZE_CROSS_SCOPE=true).
+	AnonymizeCrossScope bool
+
 	// DetectorParallelism enables parallel execution of per-scope
 	// detectors. Off by default; flip on for deployments with many
 	// detectors and many scopes where wall-clock matters more than
@@ -138,6 +148,7 @@ func Default() *Config {
 
 		CrossScopeMin:       defaultEnvFloat64("CHRONOS_CROSS_SCOPE_MIN", 0.8),
 		CrossScopeMinPoints: defaultEnvInt("CHRONOS_CROSS_SCOPE_MIN_POINTS", 5),
+		AnonymizeCrossScope: defaultEnvBool("CHRONOS_ANONYMIZE_CROSS_SCOPE", false),
 
 		DetectorParallelism: defaultEnvBool("CHRONOS_DETECTOR_PARALLELISM", false),
 
