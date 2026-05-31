@@ -67,11 +67,15 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # `nox annotate` exits non-zero when there are no new findings
+        # (gh api returns 422 on an empty annotation payload). That's
+        # the success state for a clean PR; swallow it so the job
+        # doesn't fail when there's nothing to comment about.
         run: |
           nox annotate \
             -input ./.nox/out/findings.json \
             -repo "${GITHUB_REPOSITORY}" \
-            -pr "${{ github.event.pull_request.number }}"
+            -pr "${{ github.event.pull_request.number }}" || true
 
       - name: Upload SBOM and findings as build artefact
         if: always()

@@ -1673,6 +1673,70 @@
       "file_path": ".nox/vex.json",
       "severity": "high",
       "created_at": "2026-05-24T16:20:42.165838Z"
+    },
+    {
+      "fingerprint": "5ffd27500dfc1fcf71f92d9abc3613abdd33ab156f4b4f1681a14618cce83f8e",
+      "rule_id": "AI-036",
+      "file_path": "CHANGELOG.md",
+      "severity": "medium",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "9625583908e8714ac99cce8800dd46c1c6e0b8f378c89f243d56dec02e026181",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/release.yml",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "3f320529507d429ce04040cfe0290a6b1f9de82143db7a4c08bc5eb27a37a38e",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/release.yml",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "14161c7040b373dd1d9faad179b3bf8cdace12ad8365a48489055265757ef506",
+      "rule_id": "SEC-364",
+      "file_path": "embed/engine.go",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "5425c0ca3901d480d67e072d50f28cbf57636033e55cba5af9ee78616d47631c",
+      "rule_id": "SEC-590",
+      "file_path": "CHANGELOG.md",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "a7d4ef27dc279bf3764b3986d4d5e5d7bab09ab540cc2137784e9444ec9dd4d2",
+      "rule_id": "SEC-659",
+      "file_path": "CHANGELOG.md",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "73709b966ff4cad2bfaa083ad861e4ca838c2b8e655dd3c4e1248e416ae6a9a5",
+      "rule_id": "SEC-679",
+      "file_path": "CHANGELOG.md",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "46e202d93c8aec98fc2a7ce5dbc5e71a92dfeee4d5b92433cea19b1c8c32e6e3",
+      "rule_id": "SEC-680",
+      "file_path": "CHANGELOG.md",
+      "severity": "high",
+      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
+      "created_at": "2026-05-31T14:25:40.838521Z"
     }
   ]
 }
