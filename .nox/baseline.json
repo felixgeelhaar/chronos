@@ -1737,6 +1737,22 @@
       "severity": "high",
       "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
       "created_at": "2026-05-31T14:25:40.838521Z"
+    },
+    {
+      "fingerprint": "2558087f3dd53a1e7c286a3f77a43e7015d24fec662230c47c04d278e317d85e",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/release.yml",
+      "severity": "high",
+      "reason": "Dependabot bump PR 33 (docker/login-action 3 to 4). Pre-bump fingerprint already in baseline + VEX. New line content per bump yields new fingerprint. Covered by IAC-013 VEX statement (publisher allowlist).",
+      "created_at": "2026-05-31T15:30:00Z"
+    },
+    {
+      "fingerprint": "67e6733458d18049941bb6e875c1642cc5e2c8f4fa703be8156a7c3ba9d0025e",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/release.yml",
+      "severity": "high",
+      "reason": "Dependabot bump PR 34 (goreleaser-action 6 to 7). Same IAC-013 pattern; tracked via VEX.",
+      "created_at": "2026-05-31T15:30:00Z"
     }
   ]
 }
