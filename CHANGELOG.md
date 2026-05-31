@@ -6,6 +6,35 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-05-31
+
+Embeddable engine release. Adds a public in-process Go API so consumers
+(notably Mnemos, which now bundles Chronos to power its temporal memory)
+can drive Chronos as a library instead of as a CLI / HTTP service. Adds
+ADR 0001 establishing the contract.
+
+### Added
+- **`chronos/embed` package** — embeddable in-process engine.
+  `embed.New(opts...)` returns an `Engine` with `Process`, `ProcessBatch`,
+  `Detect`, `Query`, and `Close`. Defaults to a memory storage backend
+  so zero-config usage works in tests and demos; SQL providers are
+  blank-imported by callers as before.
+- **`chronos/signal.go`** — public type aliases re-exported from
+  `internal/domain`: `Signal`, `PatternType`, `TimeWindow`, `Evidence`,
+  `FeatureSample`, `Explanation`, `ConfidenceClass`. Pattern and
+  confidence constants are also re-exported.
+- **ADR 0001 (`docs/adr/0001-embeddable-engine-api.md`)** — documents
+  the embeddable-engine decision, stability contract, and alternatives.
+- `embed.WithStorage`, `embed.WithLogger`, `embed.WithDetectionConfig`,
+  `embed.WithDetectors`, `embed.WithParallelDetectors` option builders.
+
+### Changed
+- `chronos.Register` now documents its last-write-wins semantics. The
+  behaviour itself is unchanged; the doc clarifies that re-registering
+  an adapter under the same name overwrites the previous entry, which
+  is intentional for processes that import both the library surface and
+  the `cmd/chronos` binary.
+
 ## [0.5.0] - 2026-05-24
 
 Cognitive-stack alignment release. Twelve issues land that turn
