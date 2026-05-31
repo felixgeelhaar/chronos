@@ -116,9 +116,14 @@ var (
 	registry   = make(map[string]Source)
 )
 
-// Register adds src to the global adapter registry, keyed on src.Name(). It
-// panics if src or src.Name() is empty so registration mistakes surface at
-// program start.
+// Register adds src to the global adapter registry, keyed on src.Name().
+// It panics if src or src.Name() is empty so registration mistakes
+// surface at program start.
+//
+// Re-registering an adapter under the same name overwrites the previous
+// entry (last-write-wins). This is intentional so a program that
+// imports both the library surface and the cmd/chronos binary doesn't
+// panic on duplicate init() registration; see ADR 0001.
 func Register(src Source) {
 	if src == nil {
 		panic("chronos: Register called with nil Source")
