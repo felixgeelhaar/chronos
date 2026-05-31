@@ -47,14 +47,18 @@ jobs:
           # SARIF for GitHub Code Scanning, JSON for the annotate step,
           # CycloneDX SBOM as a release artefact. The committed
           # .nox/vex.json provides explicit waivers with justification
-          # for known findings; any finding not covered by the VEX
-          # document fails the scan. Update the VEX document (not the
-          # baseline) when accepting new findings.
+          # for known findings; -fail-on-unwaived restricts the
+          # non-zero exit to findings NOT covered by an OpenVEX
+          # statement, so dependabot bumps that re-trigger a
+          # VEX'd rule (e.g. IAC-013 on trusted publishers) no
+          # longer block the PR. Update the VEX document (not the
+          # baseline) when accepting new finding categories.
           nox scan . \
             -format all \
             -output ./.nox/out \
             -baseline ./.nox/baseline.json \
-            -vex ./.nox/vex.json
+            -vex ./.nox/vex.json \
+            -fail-on-unwaived
 
       - name: Upload SARIF to Code Scanning
         if: always()

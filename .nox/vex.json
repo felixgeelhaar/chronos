@@ -500,6 +500,21 @@
       "status": "not_affected",
       "justification": "inline_not_present",
       "impact_statement": "Findings in docs/configuration.md and README.md are documented DSN syntax examples for operators. .github/workflows/ci.yml contains ephemeral test-only CI service-container configurations. No production credentials are present."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-013",
+        "name": "IAC-013",
+        "description": "GitHub Action pinned to mutable tag instead of commit SHA"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "All flagged actions are pinned via dependabot from trusted publishers (actions/, github/, docker/, goreleaser/, golangci/). Each version bump generates a new line-content fingerprint that re-triggers this rule for the same low-actual-risk pattern. Dependabot keeps these up-to-date; the publisher allowlist effectively covers the supply-chain risk this rule targets at the project level."
     }
   ]
 }
