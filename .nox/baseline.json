@@ -1753,6 +1753,14 @@
       "severity": "high",
       "reason": "Dependabot bump PR 34 (goreleaser-action 6 to 7). Same IAC-013 pattern; tracked via VEX.",
       "created_at": "2026-05-31T15:30:00Z"
+    },
+    {
+      "fingerprint": "b616729f6565fdc9138b04fc0504e466a68200f6fb2a15af0a6016909d012ecd",
+      "rule_id": "IAC-013",
+      "file_path": ".github/workflows/release.yml",
+      "severity": "high",
+      "reason": "Dependabot bump PR 34 (goreleaser-action 6 to 7), rebased revision. Different line number after rebase than the previous baselined fingerprint; same IAC-013 pattern covered by VEX.",
+      "created_at": "2026-05-31T15:35:00Z"
     }
   ]
 }
