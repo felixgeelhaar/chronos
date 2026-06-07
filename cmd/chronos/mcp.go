@@ -33,8 +33,8 @@ import (
 	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/felixgeelhaar/chronos/internal/ports"
 	"github.com/felixgeelhaar/chronos/internal/store"
-	mcp "github.com/felixgeelhaar/mcp-go"
 	"github.com/google/uuid"
+	mcp "go.klarlabs.de/mcp"
 )
 
 // mcpListSignalsInput mirrors the HTTP /v1/signals filter knobs.

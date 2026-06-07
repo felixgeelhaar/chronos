@@ -135,5 +135,5 @@ shape with a clean public API is simpler.
 
 ## Related Work
 
-- [Mnemos ADR 0003-0006 (cognitive-stack simplification)](https://github.com/felixgeelhaar/mnemos/blob/main/docs/adr/)
+- [Mnemos ADR 0003-0006 (cognitive-stack simplification)](https://github.com/klarlabs-studio/mnemos/blob/main/docs/adr/)
 - Mnemos plan: `~/.claude/plans/agent-ready-i-would-like-snazzy-kay.md`
