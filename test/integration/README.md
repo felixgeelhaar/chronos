@@ -27,7 +27,7 @@ when iterating on a local build:
 
 ```sh
 CHRONOS_IMAGE=ghcr.io/felixgeelhaar/chronos:dev \
-MNEMOS_IMAGE=ghcr.io/felixgeelhaar/mnemos:dev \
+MNEMOS_IMAGE=ghcr.io/klarlabs-studio/mnemos:dev \
   docker compose -f test/integration/docker-compose.yml up -d
 ```
 

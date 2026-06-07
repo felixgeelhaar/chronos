@@ -39,7 +39,7 @@ services:
       retries: 30
 
   mnemos:
-    image: ${MNEMOS_IMAGE:-ghcr.io/felixgeelhaar/mnemos:latest}
+    image: ${MNEMOS_IMAGE:-ghcr.io/klarlabs-studio/mnemos:latest}
     container_name: mnemos-integration
     ports:
       - "7777:7777"
