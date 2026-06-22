@@ -37,7 +37,7 @@ jobs:
   buf:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Fetch enough history that `buf breaking` can resolve the
           # main branch ref. Depth 1 would prevent the comparison.
