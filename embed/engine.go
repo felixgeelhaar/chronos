@@ -42,9 +42,13 @@ import (
 
 	// Register the in-memory provider by default so a zero-config
 	// embed.New() works without the caller having to blank-import
-	// anything. SQL providers must still be blank-imported by callers
-	// who want them (avoids pulling pgx / mysql drivers into
-	// memory-only consumers).
+	// anything. Durable SQL backends are opt-in: blank-import the public
+	// shim for the one you want (avoids pulling pgx / mysql drivers into
+	// memory-only consumers), e.g.
+	//   _ "github.com/felixgeelhaar/chronos/storage/postgres"
+	// or storage/all for every backend. (The providers themselves live
+	// under internal/store and cannot be imported from outside the module,
+	// which is why the public storage/* shims exist.)
 	_ "github.com/felixgeelhaar/chronos/internal/store/memory"
 )
 
