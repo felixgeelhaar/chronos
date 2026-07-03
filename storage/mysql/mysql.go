@@ -1,6 +1,6 @@
 // Package mysql registers Chronos's MySQL/MariaDB storage backend so an
 // external consumer can build a durable engine with
-// embed.New(embed.WithStorage("mysql://user:pass@host/db")).
+// embed.New(embed.WithStorage("mysql://HOST/DB")).
 //
 // Blank-import it, like a database/sql driver:
 //

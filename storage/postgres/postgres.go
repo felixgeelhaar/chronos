@@ -12,7 +12,7 @@
 //		_ "github.com/felixgeelhaar/chronos/storage/postgres"
 //	)
 //
-//	eng, err := embed.New(embed.WithStorage("postgres://user:pass@host/db?namespace=chronos"))
+//	eng, err := embed.New(embed.WithStorage("postgres://HOST/DB?namespace=chronos"))
 //
 // Registering also pulls in the pgx driver, so only consumers that want
 // Postgres pay for it — memory-only consumers stay dependency-light.
