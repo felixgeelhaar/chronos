@@ -244,19 +244,16 @@ func runMCP(_ []string) error {
 	srv.Tool("list_signals").
 		Description("Return detected patterns matching the filter. scope_id (or scope_ids) is required.").
 		OutputSchema(mcpListSignalsOutput{}).
-		ValidateInput().
 		Handler(mcpRunListSignals)
 
 	srv.Tool("ingest").
 		Description("Persist a single time-series observation (EntityState) for downstream detection.").
 		OutputSchema(mcpIngestOutput{}).
-		ValidateInput().
 		Handler(mcpRunIngest)
 
 	srv.Tool("describe_detector").
 		Description("Return a detector's tuning thresholds and whether it is enabled under the current config.").
 		OutputSchema(mcpDescribeDetectorOutput{}).
-		ValidateInput().
 		Handler(mcpRunDescribeDetector)
 
 	rootCtx, cancel := context.WithCancel(context.Background())
