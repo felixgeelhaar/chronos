@@ -2,1765 +2,1284 @@
   "schema_version": "1.0.0",
   "entries": [
     {
-      "fingerprint": "5fbcfb6997b8f700f939822a67a8fe058a9971b3e4a733b4b3a4c2d130e7a5b2",
+      "fingerprint": "4307590d1915176a0e00d2b4dffac11bebb7c6366fb321b16abec24cf221fb9d",
       "rule_id": "AI-036",
       "file_path": ".nox/vex.json",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f16578361c03d2e142f2c5732446e927c230b77cbeca20ca27962e440a31d6dd",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "5832fe60dc1a0d23f3701aae5ca1ec80dc54788041d47f5d63f350f0cfaba865",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "29b343b16026c5de80ba086a4cff865673fdd21c11c24d777b67770410c105e0",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "68f97c7b5b6ba5226b902146fb0a27939cc57d47efcfcb233041d80fae3c3146",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "6c145b533b1c8e3bf72ad8d98370646907abff13b48d33ec16e54f27982c69c5",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "0f333b0ebb1f2163c0aab6204b8d22cb1256d7d2dcc5fbfd241dccd4dc15ac3a",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "9cfb7fa8545b2e83eacd1a68b28838bb5844af72db7d8d98cc0f56e1e7178502",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "df1859601d0f8e45c63323d92cd03637576db43479bb609670c35ea06bf7ca68",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "3dec7476d3f71ff0743123fffaa530b7ba5d3805832ed47a44ac6c53bd581321",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "cc97b25c5de96ade51c77bcb162d2f9c0cbd8eb5f6b38994a864e7b4ab178e10",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "132d7f0449d8e112fbf28413050b6a3d218b76d21a5d0cdcae56d0ac0606f91c",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "b2dd102d480e26281a020a511db24748c550975a864bbd2075af6eb2613d88aa",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "5b63ec9ff14d206084e89266585bb01624d37e4b3e39947eb7fcf7abb1a954ab",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "1c2ced95a554da4b521eb2b5fa4c3c3590dc63f57312489dae36901567f72c8c",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d97d1301b2e1bf0b936d3e2fddeb3ba2a125361828e6b60809727ae18a1c65b2",
-      "rule_id": "AI-036",
-      "file_path": ".nox/vex.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "c66756f1dd4aaed122fb5881822b3cc0232f27d2fd9e48c5e970b2c6911e158c",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "ac8835efa33ee98358dcefe46f47c4083da5969998a474c16dcb664de807acf1",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "fa031b7cf4c3681bcfde5ed11e00e50aed56765cc52753378cb15d7671ec95a7",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "f3c014514372f709026a7a28fd54298ebac5177247dd1f193a1a92f24fe65020",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "32ce5225256c47b69a9bc4912a0bfdef760741e8ad07291d17bf229102d1a666",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "885da0c11cfb24a1ed25dd6fa2b49928bbdddd4cd0bf299c151a90e01c772ab5",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "67c15530cd17e1559733fadce90e1ea7371c16dbda913baea66584fe3915bc48",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "c7b6ddc571314b2e6cab2e1a0c87de595ec77d8c43b6e6386afb28adc0b61966",
-      "rule_id": "AI-036",
-      "file_path": ".roady/state.json",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "6e257b8ee06537b6f889f7c1733decaf91598d6176b410593e41d00546116bd0",
-      "rule_id": "AI-036",
-      "file_path": "CHANGELOG.md",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "00655f963cc587045e44cb5699b73e2297861e11885c0fdb6a823712b33c65c0",
+      "fingerprint": "df9aaf22efd1aeb1106353d5c8d88cf5cbf94813724ecfb8089f942d7aa2f781",
       "rule_id": "AI-050",
       "file_path": "internal/notify/webhook.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f294244227b7aa1a05063f36be87d85cc9dac77f90340a81e5ab246bc4644c12",
+      "fingerprint": "7b868204e55d15288ff84e280c228ec95a17d6886cb88a2127ace3e27c334a5a",
       "rule_id": "DATA-001",
       "file_path": ".goreleaser.yaml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "33f8023de38dd5c49844e51dcdd9f7862a083c10fbb99fa4e7db810f8f32770d",
+      "fingerprint": "f3286940e21ea504d3c71b6f63d36e4143cfd6b905e6861ddd933ee0dacf448a",
       "rule_id": "DATA-001",
       "file_path": "docs/index.html",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "400e50a5c2e8a6bac15e04986a99fa02f741f70ef0b2f04afe941ab2957d47ea",
+      "fingerprint": "b8af0d68423e18c134cb2274ab6a2846e0b4cc4f3ae080fa0d00d95008f1cf3a",
       "rule_id": "DATA-001",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "d2571d177497a87b38589b772df1d8de31d4954878542def736c0d2369f02029",
+      "fingerprint": "83e632be945a052cf38a1fbc5640b816f72b8beefdb5056e6adf5c3bbcbf7b56",
       "rule_id": "DATA-005",
       "file_path": ".nox/vex.json",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "ce5c8ed45479d474e09af34fa6dc49f3b98948ab6cf63cc09878331ad62a5d69",
+      "fingerprint": "2ff62a07ffb654f9303a0e13a03f4679f672f2b7ca7f9716d8151a8e412577b2",
       "rule_id": "DATA-005",
       "file_path": "Dockerfile",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f5a43b74b193795bd3c965160a09f794485873b25debb1ef3a3c4807c328b7a0",
+      "fingerprint": "b3560d0561a2bdaf4ab4cce1a06a6e591e3dae4440b36213cca10411bc557282",
       "rule_id": "DATA-005",
       "file_path": "docs/DEPLOYMENT.md",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "412aae82c38e6e82c487fa50688d443b47846f63d91a5dfbc7d1ab948e3b810e",
-      "rule_id": "DATA-005",
-      "file_path": "docs/DEPLOYMENT.md",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7fffdc72dd14434b0d6a5d624c769e063ac934e81d8ff64283d9ea6749d0a95d",
+      "fingerprint": "239d0c10d2669c67c453728217062766d368c307c7cb25d6b478dd8df17ee50d",
       "rule_id": "DATA-005",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "2e05d7447ac6d25d8f48e360c29876ac747b414cc3795991d42afae41744857f",
-      "rule_id": "DATA-005",
-      "file_path": "test/integration/docker-compose.yml",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "78b67d36f605991e6186c0b86e27431e30c28841115594cc19958fb4951dcfc9",
+      "fingerprint": "8533ee1ccd42d189724a3bc43cda84b9c188265c6f1fd8ac638345deaac580bc",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "e8efa806bcb6570fe31438f8a942502680dcf914a9b8456464123ad70a96740a",
+      "fingerprint": "32f602d2a2f0add2573c0a6d4a31f6ec972916e2766ea59771c918a1e2d42233",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "8d286de2b1db807a4735b6649054d111408c1cb9ebdb6f3e50e6cd4538b8888b",
+      "fingerprint": "d02050da301a654c3141b1663286379fca0b916b9276049088c804b62c394bae",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/proto.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "44505da1e8eca355f16b7c55269b8d4189bab272aad2b68f121753ad2073e61d",
+      "fingerprint": "c110234b85512349e75f9aab8b91700f2facacb9506571a810c2b255d83ec03e",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "c194a6b131fef9812aa0c0fe88a0bb5dd04ad56950d9e2b1740ea16da88d0584",
+      "fingerprint": "323508956e3d44083d94b4e303166c7206994741f9644bea909f8e1a7d78d6d4",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "ad5e943bd80e88f30ecb2bdf9cc74ba810332992c3a6b0013c3b7cfaa5be4906",
+      "fingerprint": "57bd84b4a235b6f3dffdfe61c066f79373d5deed0d1eca48bcca7ec08aae5172",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "263401fca7303b9dafaa01a99830b6af87143d6a5c1a0c7a121c853f35d8250c",
+      "fingerprint": "94861655f1255b94c2e1ecc4f85c1e36645120486cec087e654e9b9f3a3ff385",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "93889a6d4d1b4394974229690bfb046fa5cc9856cd7fecfbe796032b90e92784",
+      "fingerprint": "49706b5b10c8b2ec4aa05abdf659017ee681fee7aa04adf070f6f8bbb9f677e2",
       "rule_id": "IAC-157",
       "file_path": ".github/workflows/proto.yml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "50d4f8a18b37732bcc8b6a6d1d94ef21e73388525055d2bea6a7cbef44fb6286",
+      "fingerprint": "7ef485203e7eafd08549ac444947726610bc794b080468e20f7ecbab803ba2ca",
+      "rule_id": "IAC-231",
+      "file_path": "test/integration/docker-compose.yml",
+      "severity": "low",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "8c7ffe65f7ed47a6b08376867043f8433d315337207fa3d237fbaa0fc4b34d54",
       "rule_id": "IAC-231",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "3e18fc90ffd547a7016afb119da89e6a46e3dbe12643f5c043b5abb77ec1da3b",
-      "rule_id": "IAC-231",
-      "file_path": "test/integration/docker-compose.yml",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "0d9e39faab9e2bb0fff40628b73217a507ebce81bc1c7b47c983ea74aae7ccb0",
+      "fingerprint": "30b9e9d3c8d8fc0c4b56f3b1d6a38c4dab0854121887c4a4cecf1696f1acc2e4",
       "rule_id": "IAC-254",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "eabee936f4540fa4f63d3c47ee6273382abb6f71305f407b90d78619ab15120d",
-      "rule_id": "IAC-254",
-      "file_path": ".github/workflows/ci.yml",
-      "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "0f25adffe3ae38c88b3ade7e8e4e75a0f6ab1e6ad8f4ad46cfb6e33ffeeaf373",
+      "fingerprint": "ba6d4862014f6ce0c10df45f4e79d1dc1eeb5f1774879cd7020d19b0577c9061",
       "rule_id": "IAC-306",
       "file_path": ".github/workflows/pages.yml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "0342dd49f41fca91d9d735b63562af1a45e3efaceb2553f7939784c5e3284b84",
+      "fingerprint": "e6fec3e421b21da9c509f784998a32b2619306877472ec923c21a60be60e1850",
       "rule_id": "IAC-308",
       "file_path": ".github/workflows/integration.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "cb25016f3d510c37fb0361a74eff4958c51620df1fe6dedaad22bae52d0f8d91",
+      "fingerprint": "1bf5ffaf4038a450a301180174f387e03abc28da49ffe4c9f9980cc06e41b413",
       "rule_id": "IAC-308",
       "file_path": ".github/workflows/pages.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "59b421ebaee94455fbcbd9bd0a4de49f1d7d071446d9a045b2f26f7a2f105929",
+      "fingerprint": "cc3fd855f1a5badf59b08227135b4d796c3509913767ccdb34f1d3cebf0c8984",
       "rule_id": "IAC-308",
       "file_path": ".github/workflows/release.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "0acd7febb661c46fedffb45e79f3eeb9f9cbeca64d548c1bb8ef5c050f919374",
+      "fingerprint": "8c9a05e7d0c8a05b61d4c18aefce8e2dc91a85c3456246a1c92bea30dbb416d8",
       "rule_id": "IAC-309",
       "file_path": ".github/workflows/ci.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "3189be89cf2e12285c7bcf7b27813e704ec0c5583177da64e35248892d21faa5",
+      "fingerprint": "5fdd90f6f5241ddcf6b787ba876a46fe47464b66c92deb2f02a8faa206c70afd",
       "rule_id": "IAC-309",
       "file_path": ".github/workflows/integration.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "6c73061913ea742049b4c05b4ba13f43b7dfb436d06a0c6b87b71086a29c9785",
+      "fingerprint": "b3f6e2c0c4b5404ed903160e6bada08b9087c35fa70a05fc2815065cc0e33b60",
       "rule_id": "IAC-309",
       "file_path": ".github/workflows/proto.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f539da44d5c6c3ad64e63424e1b25a2297383fb3c49fd3ff50eafb0f08cd060f",
+      "fingerprint": "e37e2faa5f7d812400d1323a31d22e93b710b881ea06f3b656d724454d47a8f4",
       "rule_id": "IAC-314",
       "file_path": ".github/workflows/release.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "10e5f335b658d108226156d5724d383202948939bf929f3688c0bea801239231",
-      "rule_id": "IAC-314",
-      "file_path": ".github/workflows/release.yml",
-      "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "f3b3aeebf30ac4059dcd28a3a325c1acb65ecab4797a20cdb39fbc01fcc1e486",
+      "fingerprint": "3cbf8abe3b4d6367ca9e585ace8d42e6b0cb2e0eca99db6b6775964d8e170f54",
       "rule_id": "IAC-314",
       "file_path": ".goreleaser.yaml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "34cf6d941f741af9d30fcd62b290ab25ea38576353fdedd8a87a955cb74b7b06",
+      "fingerprint": "67d1566bc98dd13ba7ce93f32980089dd18f1516c29d70443f17566e2ea4dea6",
       "rule_id": "IAC-315",
       "file_path": ".github/workflows/release.yml",
       "severity": "low",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "1ba5df12186df87a5703971adf6cca5825c20b35866164c18b097314102df08d",
+      "fingerprint": "537e7c74684ae8d3e7eb1672bcafd9a540495005d0cd8b2f743927506bfca0dd",
       "rule_id": "IAC-351",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "db45d358d4fb75cc8bc245db352bcbaaf115e361e4273715b7c500d2a890185f",
-      "rule_id": "IAC-351",
-      "file_path": ".github/workflows/ci.yml",
-      "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "4c6602445867dd6351081507dc72055be1c8dff657a91aefb41cce2aca3b96aa",
+      "fingerprint": "22df83a7b52ce4b665c7463555bd49f17ae2cfdf0320c6447e4ccf97c8aa3773",
       "rule_id": "IAC-351",
       "file_path": ".github/workflows/pages.yml",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "5c4ba538bc7bef5891b4e93606de3a975b40189d544bac0170ba48f2807998d2",
+      "fingerprint": "0675842156f46a4f994993088bb259d549ffb4c6c46af729a5fdeadfdc95d046",
       "rule_id": "SEC-073",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f210bff78e5496e7ca1dab7617ee48b1d52c5532d074879160f8140649bc1917",
+      "fingerprint": "6ce1693796d0305fad58358ca9f06bfb45066d289332e488da2867bb5e19ca5c",
       "rule_id": "SEC-073",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "dc98e62818a33d9ddafb1ec0c1283f9de72355b9ab2acdbdb164cccdb490fc4b",
-      "rule_id": "SEC-073",
-      "file_path": ".nox/vex.json",
-      "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "0cc1e3fc30f0d026cda531559dab826d2be4d0a1857652dc4b60cb89108e6145",
-      "rule_id": "SEC-073",
-      "file_path": ".roady/plan.json",
-      "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "41abb0ae92afdcc8ad9ddd9caffbc1f89949f5af4c866d9fce1bc6c66def9bf2",
-      "rule_id": "SEC-073",
-      "file_path": ".roady/plan.json",
-      "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "8047bdf21a47ebf06df159e63882404056c51eb9dd944c525940ee0d06df6914",
+      "fingerprint": "0894ae74574725519dc0c5a1d6b4b550581943639513494a77a484a9cea10578",
       "rule_id": "SEC-073",
       "file_path": "docs/DEPLOYMENT.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "16092c7dcade1148c811ed4b5c008996a9525be4ce031aa50867018697a9da83",
+      "fingerprint": "81eb220bcd2ba6c59f35d47dbe581ae1af61c7650b3546add86ce6e1a60eca48",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "70c6cc40c076bd92233ee263bdfc59c33e6e6bc415de79aa1c3a04d5847d218d",
+      "fingerprint": "b9ddcf8c7603d4441e452673302cbcfc747b4e3f7af3156030cae95a042d8448",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "d01aace660339b0d85c1f6055e9a9a40bf9d1c15fa243c6262f536644e46779d",
+      "fingerprint": "e4f72a0893fcd1d2e51693187c66f22d8d321be72d5697a992a06ee0eee461fc",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "ffb811fafe0982fcefc837b2c783a7c121a41f22f811ee91ab8b5c64f414b0a7",
+      "fingerprint": "4b034dde687fc1142893265dd870f9b428ab6dd3e0bd7c319c0b2c57057cd5f1",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "06a6aaef98b0245b3d6500b33da67300bf6732bb8d290837327ec9e402419c2d",
+      "fingerprint": "09d90479c3abce0eecf19856216bea088de9cc36a0c7233b824febfa561939d7",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "237033b42a91dc5ac9aad138509c2a78f53aba87b68af904f46d2e7fd957f2a4",
+      "fingerprint": "242c9cd843ab4a3d77018ab83fbdc2626f8e3e97c7694ef545e01374df9791ae",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "7d3e07fbaee6745f369ab43e9199be0557405701b9f0e348cb417caa09e394b0",
+      "fingerprint": "d8db4d63d700abd61bd52ebfc70686deaad49062f9a708f6248992a9dea58120",
       "rule_id": "SEC-073",
       "file_path": "docs/index.html",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "ac0ff29fd4b8689eff3d14a999ab9bca748a1eaa9a42cf729f8e9f96b6daf67d",
+      "fingerprint": "73b1553f0c1d7b2b42a82f70938095fdf429d5999f5e5c28e667fb413118561a",
       "rule_id": "SEC-073",
       "file_path": "internal/config/config.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "af648bf311144b7467ed7ae8efe068f4964b6ffc470691df9984711489dc07fd",
+      "fingerprint": "eb98b679941d722ec58469a1abf6d434f152729f31d8211f9ad62e1908b771a2",
       "rule_id": "SEC-073",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "244c19f392899663c328bdbb18ef0f387474d85febfb790334646b63a73692e9",
+      "fingerprint": "ad05790e1a250363a67306349429062428575b2663560097bd73a03a59f45d9b",
       "rule_id": "SEC-073",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "92e8bc04fd95934cafb47b01364575f402154e06923da4e625a5d53e89a7ef44",
+      "fingerprint": "2a4f227151c11dca7b868bb8176cefbc9b2989fb9cac35feb534ba898c1aaf4a",
       "rule_id": "SEC-073",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "bbf6edc282cc650b7644f20c8547c08a79331988e2fd04b52730ad980189edce",
+      "fingerprint": "7ee59c80299b98a2033b27eb1aee62f0799f2be125b3ef5d771571873115a056",
       "rule_id": "SEC-073",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "8f95ef81f2621e760ee5a2e85fbffca4b891b0bdafc83d7d987028dab2d81a61",
+      "fingerprint": "7539bd49b4e2e7c2c7a2e3587b7666fca591fcff4668b36fa5da0603b9f85447",
       "rule_id": "SEC-073",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "c1cf24fb13af26f4027f0e385b7c8773d861ea514557343eb05f4a7f394aa6d9",
+      "fingerprint": "0edf49334c7d2892641017dac3c17ab60c717598ba77fdd7f6be61ff5cf257ab",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "d3983bc77cb025a89a7c52cfda307acc23a10bf83ecde47e67fe656759ba7863",
+      "fingerprint": "d4335b9fa0cd326c3c2b22b423a97f0f40896b8bf35aae3a69dc9b3ec5cfffab",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "1f07f376ee9f5d8502f0a21f435332059c65880df71233a9f214f907c37a9138",
+      "fingerprint": "986a7eb181cb2b7185784b87240e5cdf8de94c039012d4846a0f00649b1eddec",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "0053199da1d09cc50be02c5aa71ddacbf769fe3ec41f09e9f87e5004690325c1",
+      "fingerprint": "2633b68e65e69ab482b9096908f4a99f6861994af323bda39e33d6ecef01de42",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store_test.go",
       "severity": "critical",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "36b9dd34c5304301ece461e0522114a418c760f1eddb438f2327274fddc37d42",
+      "fingerprint": "d6e75cdeb84ee14452e5772abe606eb9fc8c76809662e84433c77a40b21dce3e",
       "rule_id": "SEC-082",
       "file_path": "internal/api/middleware.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "7f374feae17de44abb9dea15d6a247e6b8dbda2f647615b003819db58d6b2c22",
+      "fingerprint": "47fcc7f58aff34ed9521f06f2fb957bd3753c6a0984e59c99ea92d1ab74561f8",
       "rule_id": "SEC-161",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "fc2f1a47edb16cbdacd0984ef2e1567d97b07dfafb37ebdcf84cda893af9c2ff",
+      "fingerprint": "94da55bed9f7408c7672dfcce5dce7c4a8b2271d774c88af9bd84dc6b1ff29f7",
       "rule_id": "SEC-163",
       "file_path": ".github/workflows/release.yml",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "efd709cf6555f46f8115857389f6c5168970e81c8a3cbb5218fbacdbb4116ad5",
-      "rule_id": "SEC-163",
-      "file_path": ".github/workflows/release.yml",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "b54a5cb6d7518d4a88e9624f25a21eab2bb308b566fd0a9e5d89d26f4962993c",
-      "rule_id": "SEC-163",
-      "file_path": "api/proto/chronos/v1/chronos.pb.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "f095fa0cc6484eee46f048d075811a8595bc913ba87c6d9db7a6e6cb669a206a",
-      "rule_id": "SEC-163",
-      "file_path": "api/proto/chronos/v1/chronos.pb.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7b6f03b6dc8f18524439badb48bd14d383fe5b1d2fa7811a2022bafb9f3626c2",
-      "rule_id": "SEC-163",
-      "file_path": "cmd/chronos/compute.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "636433e12b991c88e3f9b98ea07db3133b91160f3018e5655eb87248f6cb5ce0",
-      "rule_id": "SEC-163",
-      "file_path": "internal/notify/webhook_test.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "51cf54ff5c00054c56a803464d633b8d6cd6476a922dd60306aa1e206a20e004",
-      "rule_id": "SEC-163",
-      "file_path": "internal/observability/metrics.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "026665e4928e59ab3c1f137ec92d0bc603f162bcff8457af852414a5a6521ddf",
+      "fingerprint": "e24b63be804379e9259dd2c6a9343ee559bd857c2ddb28c14daba4a5158bcb52",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "59b20e076d2d1ae1e6ef466c63627256dfc149e3a30ec174b5253d5fecd420dd",
+      "fingerprint": "15c662c28fd28a416e7f0a9f81020b39199a150dcc067e160063d5cb9edc1bff",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "7622eb81dea6f335a0ea3640271cb3f8af26a73ef8e2ccf7f419f2ebca04298d",
+      "fingerprint": "8521347f66e43920bcb7437c2b94edc9374979f9743664cbf1502f98da490018",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "93fdd0c83bce65ba26b3d75ba91c1613248599dcc9600922a9c55505815cced2",
+      "fingerprint": "984e45c4c54f1d94aa200f8b573674082c850c0144effef47615b4af2d6ca482",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "5f2289a19a72335e4454b39517c70fb60cd0eb3d35c5a2e742c12138ad8c2f50",
-      "rule_id": "SEC-163",
-      "file_path": "internal/store/libsql/libsql_test.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "edab53f77f54e2fd3448d6817e1fb21fb25e6363dfa6bee6d9463f7e9d01dd61",
-      "rule_id": "SEC-163",
-      "file_path": "internal/store/libsql/libsql_test.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "79c71a8eccc14670f4f2e3008e446284af65c5d6dd98a9e05b73f0f60079bfd9",
-      "rule_id": "SEC-163",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "dcd97b0da4fe07215ed1085db8209bd3c7dddf6ebb3dd9a3d4e5c9ecc3a80857",
-      "rule_id": "SEC-163",
-      "file_path": "internal/store/store.go",
-      "severity": "medium",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "bddaa28057e53bc68a8f4a66a131587f9a939a967e43de081409a92dd9327e48",
+      "fingerprint": "77797744a4d1bfe1b9d009279c1e6007e69714cf683c82cd18a0d0ea02629a27",
       "rule_id": "SEC-356",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "c78b01dc3cbfeb41ae2de88c56b8b912b900fe10b419a7f0facb9eeff5df1d17",
+      "fingerprint": "2cd51f752cc31c50535b81b3ba535622c1a5db6998e005a0447c2ac54b88d6ee",
       "rule_id": "SEC-356",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f9c47f7b000f622dbb1b5a690ba17f831908710b3516f0ea489fe371777cea66",
+      "fingerprint": "febd618ea349868c8f424f2e535c0e9b8e19bd5ec2ee0f2e63233a0b491c077c",
       "rule_id": "SEC-356",
       "file_path": "internal/store/postgres/db.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "54f5f82d67c1d53fac81412ea632d282b447809ae21b7d1793642ee94667d26d",
+      "fingerprint": "a8075fcdd4e5c1eea0cd78945ccd320e27e25fc6ecfd45f254421528a3788cc0",
       "rule_id": "SEC-356",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "2d9beebd06d35ddbf91df9d30f45e80d9d9e6b310c32f38359c3f215d1c8e2fb",
+      "fingerprint": "de3401538f9f28a9ff6a5dd7c819e07b6ffce0b83b823bc0994d651e38569bcb",
       "rule_id": "SEC-356",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "45ab3f17e3a69eb202f9b8ecb47b661133c4e3aedea18daa136039d969008edb",
+      "fingerprint": "0a69a5f2e6cfc8ba9e53ba3324a2adc4d982135a1047a1a3194b2eeac8f01ba7",
       "rule_id": "SEC-356",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "b1d2778f3b083dba9692e7a9cc9b0ed2c7e66b0b22486216189c1a3b061e97f6",
+      "fingerprint": "cb749ea922d1fb8d60ead863fc4f78345cd7f2d2cdfc90aced4705c64b38b525",
       "rule_id": "SEC-356",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f62b7677f5a08692c26c2ab763b7c9c7c140688aa8a0e51af75e7ec5f6748efb",
+      "fingerprint": "0a21a13a74388decf321a8273c972fc28faf8583e8b57b17ebe7df5bdff4cfb8",
       "rule_id": "SEC-357",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "6336e271105de5cd48890672dd15e3a562d8271d6b4f0daee678e0aad83c0238",
-      "rule_id": "SEC-357",
-      "file_path": ".roady/plan.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "4db304a320151f413a01dd1b7959389b19e56a7a3d8f9c1732b7176d19d2dd5c",
+      "fingerprint": "80500c2689593043cf6ab0fa3d97c1db754f0a4896bd1451c17785b581eb032b",
       "rule_id": "SEC-357",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "43e012f71c5ad0f98dd3a9f328375a0940e6803803db4bd47285b71ff8bfdfa9",
+      "fingerprint": "8afe539871d47446e19186b586e7f07a5f39c0de2ddc67dc781d2372ff5d9541",
       "rule_id": "SEC-357",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "bc73d9597cd73ffb9f9e5678bd1f1d0dda12567284108e11d4dd910f3af0a1ab",
+      "fingerprint": "ebeaf54304651b226c642578f1fc986731d6f5d664d1608cd799b129744255e6",
       "rule_id": "SEC-357",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "17fc74c0d3e3e3687b614a5a7f5092fb70420117fea4142361dc1cad1cf51c91",
+      "fingerprint": "7e1b0e97663dada1bb4f699a1b96030ee2d1410c10d60e28de4e25ab9c107fdf",
       "rule_id": "SEC-357",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "59f6d2127e18122902aea8af403d885cbc5733f3768696fe3a32fe9d0e829c95",
+      "fingerprint": "f112aa3adc0c79d89dfd20d84f69cc800e1d17b78d6766bbc297f930bf6478de",
       "rule_id": "SEC-357",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f9f901f7848626fc2c5fb958aafb646c4f8ddce705bd1e77237bff28aabab271",
+      "fingerprint": "d9b36acecf58fa713cd2dfb49d2f2570200c8e4cfd00ccbdeb27f27a51235abf",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "66ff562277f783a7cb57f8f1245a1811947f481f049f48e29263c58ecefcce59",
+      "fingerprint": "96db67bbae199d0ff963a16a79f9aa8b3660bb3e177235627dfa9a51b9de15d4",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "c52f6a3eff23188c19c3994d31025679fdbe5a14db0ca70f2e79fdba2796a624",
-      "rule_id": "SEC-357",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "51d0fee8cc37b7446699f1eacf06474a89e7052c1735ce95af7c4c64f08696ae",
+      "fingerprint": "5c76e9a23864c785ae64a92390cda4189b49a73d209af9581f3ed367ec6543bc",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "10f819338c2bc41c04c9c974f05b09b3868782ba0dfd490ddf91b5e879586c17",
+      "fingerprint": "0f95032c04b0d5f87eb26cfefb72c37c3341cb52ebde45ee39e7ada2fb8a382d",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "16d5349026f88304de5695646b43f09c54c8da96797e334fff627f65a2dc8672",
+      "fingerprint": "ce8382ad041410307e5a04431f913312466e3ac23c3faf26ad17f387fbe542fc",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "b8160ac6381cd64ae0d0726dd0d5434d081b026ab73465f27b48bdb8cde24460",
+      "fingerprint": "5e59d47665fa0605d4653b76fae124a08865dcaf616919d7032687e066a97536",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "c1977747ed024a988ae2774bd363973b145d363c174c6a51e5713ffa35e4a716",
+      "fingerprint": "d0ce52fbdf9987b4f5f8a1e9bcb5b2f0697261b0c9d41f14f7848d8e4ff5f09d",
       "rule_id": "SEC-357",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "6cfc721f473cc2dbf4ba595d0eefedd96c08a7e30a49837e69940c18bd8264c0",
+      "fingerprint": "2f81fe09c73affc2d81472a5351cc4b72da20e4d4f90864676a6873fa9db8c91",
       "rule_id": "SEC-357",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "776174f6b31bbd974378830480189657bfa87f084b3ac01386dfbb1ebcff5ae0",
+      "fingerprint": "8a9f9c9b67fab86b0bc113c0284a1d5e91614f64bc02e80ba03983f03804ace6",
+      "rule_id": "SEC-357",
+      "file_path": "storage/mysql/mysql.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "8ca774c2dbab3efef365b4cd718afc3386e3d71ad4327ae236d28b6bd4db66ab",
       "rule_id": "SEC-358",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "090bf33e29f664ca26e6857c39601e25bcf3263e86cbcb89d1b211baff719035",
+      "fingerprint": "80ea022a41a6b47b223b3814ea707375310fc42b54859c1c87ddd2491bb55d93",
       "rule_id": "SEC-358",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "fcf7873d3f512179ccaa43ff8a3018943f4b06ef720fe058424a2cc353c41ce4",
+      "fingerprint": "f8351bb8ab4590dca3211f875a6212d2eb730da6443736f1e98a206904ffb2eb",
       "rule_id": "SEC-358",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "7f7a5c050a8ccb590af3243775591e7739ffeef939db852fc425cf700380b341",
+      "fingerprint": "38f36cf675111f3f308ac82a17c2a246e5178bb0c8982a2368e5739495398c75",
       "rule_id": "SEC-358",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "490e2a66e5ad78758c02c3b7feeea12929804116aa67242896bca7824570a9c0",
+      "fingerprint": "075a9ac9697e2500de76df375cfb7614b21e8d1d6f3b4848f5716c8eea52dbaa",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "ae19c7ecbaa65f23d5741184f9e7dd84b42c5eabd18a1f26d6c4a22cc0d0d8ab",
+      "fingerprint": "a9341026b82f7c19fed775d1e1acde8314a7adb027d9fe8e4fd319414c2a89b7",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "b411b2fdf2c054f366b63f4fa599f74116d755b411a1fb2b421e8fc0b3875988",
-      "rule_id": "SEC-358",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "8619993b10de468ac75d1c4e42c7df5675c576bb82da5e2e2f7892ddc4159787",
+      "fingerprint": "f6712eb9099d31b514dca5f7d0499273502c9bfb0d38481a8e5ee0194dcf3fd7",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "72db62c9714c41ce5effe08b164de05ca2a7510930aae22b8bd55c3788d9eebe",
-      "rule_id": "SEC-364",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "fcade6dd64e8733033b39cc07b197e6bc145fc4a3f7a5435099d8747429a2fa5",
-      "rule_id": "SEC-364",
-      "file_path": ".roady/plan.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "64c8874a5fe23262ec0790c76a4e2ce5acda83323269a53739635d47e2568215",
+      "fingerprint": "87382405aab08c0ae0e908ab44fb425cec8e76efc0a5bb1b72672937e354f4a2",
       "rule_id": "SEC-364",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "abdb86bc8fd1f01d6949409543f347febd8104c21c630c47486cc3a816fa50f0",
+      "fingerprint": "08f1ac1400970faf36fe3764d4eee38ddc0b1cb37c2d5cf6ea5e4ef251f99c7d",
       "rule_id": "SEC-364",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "3d5da4c8da7a92c6f9feb0dc3db2b0a26f5d5bc4f980e9d6bb1765d0a9967a82",
+      "fingerprint": "4402870565941c96f215507e72f4ce53201c38a825409238283459dab456a3b0",
       "rule_id": "SEC-364",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "67fd18f63886a45d705595ab3425fa3f7ac1e7ce8865fc971e3a26424a7db261",
+      "fingerprint": "212a1274fcbbed338b9895cbba7628945cf49fd3c9c5ae1e0d2276e9ad33dcd6",
       "rule_id": "SEC-364",
       "file_path": "cmd/chronos/mcp_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "14c15c6d4f65c8351502db4d45b824aca4fe272a41e20c22e0d4933a05cc4a3a",
+      "fingerprint": "87e3bda5bfc27c1968308641e0bfc4f44b9a2a664ef621f83b259d8791353772",
       "rule_id": "SEC-364",
       "file_path": "cmd/chronos/migrate_test.go",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "daf3d7742530b65adfc394b7653988be7c98525adf8f8bd07e59d96692d16dba",
-      "rule_id": "SEC-364",
-      "file_path": "cmd/chronos/migrate_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "00607705c68970c75b7541117259fbb5773659eafe00866da0d793b9edfc21a2",
+      "fingerprint": "5951649e8d6cad6a981d1b363b05cae648d196923f593f7e1dee2813df453159",
       "rule_id": "SEC-364",
       "file_path": "docs/cognitive-stack-example.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "f1b18647d7f35006a5edf132c5cadb5513403b0dbf3df33f7758877eb08913bd",
+      "fingerprint": "c764e765dad61a4da87d0b145ce8426527ac6b9ceab66baa5a807db6823dac0b",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "bd821f11718053b52874415793d28b1b7fb578235871b64b2890a7f5a5805343",
+      "fingerprint": "e88eec6ecddae3601f0a44f7558be227d879debe22c3819de9de720cdc2244a4",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "19c2bb3ef1a19184b099dd7c58f0918a51d0aadc1432de4c4aeb18fa948638cc",
+      "fingerprint": "fa3699275e7e2f40f3e7d055791ed900a922a018bd30e941444c574b7866d1fa",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "881e8c0b1b07ebd744f446c13c6143df5a78245693c9e9860c8d896f2b2cf8b9",
+      "fingerprint": "74f48f2852a44850c19582b27eb73de537957358be3f2704109c7b2c3fd2c874",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "45895751f4a8c23de1df862aa45cc2826beeb1b906697e63d164a5058428c6dd",
-      "rule_id": "SEC-364",
-      "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "80d0c7388ff147c58bf216f0df832b6a4ae9dfe338fceb136c755fdcd892bb2f",
+      "fingerprint": "917c6459bd4922e7c9b6f8f81af0b13251155a0ccdce2849caf3c40295f711dc",
       "rule_id": "SEC-364",
       "file_path": "docs/index.html",
       "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "de8a5127a67c30133c0e8f2e3f27ad0f8ef9985ed3f99b11062c175b801872a5",
-      "rule_id": "SEC-364",
-      "file_path": "docs/index.html",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "53e6102e12016049eb78b794762f6b3303db6c88eaa4eb3c9b89ac732da01266",
-      "rule_id": "SEC-364",
-      "file_path": "internal/config/config.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "3aa09fc6e3c4c2676b55e8deb791ccff6f3da75f94e37a42bcddd8751b8396ef",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/libsql/libsql_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7db7ec574cd890c312309ed8076984d05b9d8a64b408802e81cc2bb670f618ed",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d50aec194570a54d897d068921197440a4ed52e9b901c68f6ebc206d14d0a12d",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "cf115b4e9773239df225823bf72dd34277ecd63bcfa9cda724ce42c80789fa87",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "305d46b208c6669d1c1830d9d2e576abefe18e92f0bf9f7bdd63d1ab47e7fd14",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "8c67a557360ea093a78f04a3282a0c07db4bf50d92d27460686560fd47e12432",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "5b2253a76a625fe5631994c45cbe031314a319b8f50bb1bac917c3232a2e746f",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/sqlite/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "c1800aea803a1eaba1912fa4b4d987945e1f596d23b472c4ae17a9d37cc7f61f",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "a80f67bbe4214a3d46ba3c8db28efa20934be2f46ba99c951808ac6bd84ffe36",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "53a22a7d37e754f7a932f728b54d2b7ee186a5243b4ce3415cfa1931de12537b",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "96c104d92e35fae8b41a9a3b968c5a78e8c21e3740875bdfe4fb38bc2027eab3",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d68a0d22a8d180b580a206811ac52c914482b339920673effa8da6b805f102da",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "9647d17a57f40f0902d46e3c363cf9544a15d8224313612f88ec9f3af76442ca",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "8ce30e2c8d56e1fc63a81a085e75843818a79af6f1f3810c08bb35a3e0daace5",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "4862e7209655c7ddbe35f7e044a99c679979638d803f4a95f33a1ed18a1816b4",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "1ab6759ddcfebb3aeeccae2200d6818d5a0f99a58f49ed67f750745a85fcfdfb",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "f99f8bedef54b524beca70d0e31dfceb9641e0906e9b94023d99ea5b6be16b59",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "92e70e92921ce249bdfb67cc60c0809c6864e1e59a78047bd9ffb78c5adf8162",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "539befe9957ad9e02708c74d6c73d9454ec81899b0c9d60b35eab8a891e85b4e",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d530f1fc3d8b63b8f829dbaa4559a3635f9088124b96cfc7b203c23789b9de02",
-      "rule_id": "SEC-364",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "126b3432bc0992b9bd570b2411f56167d292dd992eed4214a8513bc2d62c16b5",
-      "rule_id": "SEC-364",
-      "file_path": "test/integration/docker-compose.yml",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "dce96b820aa5e46e41092f46bd6aa9adfd1ea0684283bebe85598e5bf33b9465",
-      "rule_id": "SEC-364",
-      "file_path": "test/integration/docker-compose.yml",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "55ca65dcc818bbb9e046062d12be5ab7b42aed2e83a5223975802df461006c4d",
-      "rule_id": "SEC-430",
-      "file_path": ".github/workflows/ci.yml",
-      "severity": "info",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "9b380d44aa73e67571b0646305abe2d9730685dd6738db89026378af7e85a864",
-      "rule_id": "SEC-430",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "50444d27b41fa7d4c0cc505cb8a246285f89da43fb2ef4f9e2539bc3a6bfe2e8",
-      "rule_id": "SEC-430",
-      "file_path": ".roady/plan.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "a4113c76cb268027e0094d2e3c87f68d2d0931ea5331b3681d0411dda1b3c3d6",
-      "rule_id": "SEC-430",
-      "file_path": "README.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "0c4e82df8781ef5a1a9e347ff60c80bf89a70d9cd1936b30bf32dee482ab1f31",
-      "rule_id": "SEC-430",
-      "file_path": "README.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "b2d2ea870edc637adbd8a98ec419fa29b3bbecc807f6fc23f16ca35dfd4f7763",
-      "rule_id": "SEC-430",
-      "file_path": "ROADMAP.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "fae46129f20753ebec6e6bdd5e7bc5842d2bbedfab4fd26c100ed8991aef01c9",
-      "rule_id": "SEC-430",
-      "file_path": "docs/DEPLOYMENT.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "204e40b0ce63f67754f38a18a7708bdad8b85421bb8eac8151f48be882e64ddd",
-      "rule_id": "SEC-430",
-      "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "12f0da17b2c458b936cef56267435626846e4f09231f5adf3d6697c1f931d56e",
-      "rule_id": "SEC-430",
-      "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "5610ba0797ba216f9900457d224b4e9145373d73890c3e5c2e278b027733e808",
-      "rule_id": "SEC-430",
-      "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "c0fc7db75bfdbe5e1b206a39d7ff4bd288926eb7a1c14f734bf172174a2faabf",
-      "rule_id": "SEC-430",
-      "file_path": "docs/index.html",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d772b13139bcf8c198afed3f2dcfbef25baf86b7ae0d64a95513a198550f0404",
-      "rule_id": "SEC-430",
-      "file_path": "internal/config/config.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7914b32842ffe97cd14f3c31328fe0958775782cb577f7a6ee89b8ae37a68ef8",
-      "rule_id": "SEC-430",
-      "file_path": "internal/config/config_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "afe53053aa1c0942ce26095f9cad1cf9d105d570a9a46f59c3c116613071db42",
-      "rule_id": "SEC-430",
-      "file_path": "internal/config/config_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d0927a680349d701e9cf8975935149dce51f7265d86c6c247e4f7c4c9efe65bb",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/mysql/mysql_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "56b245e9c4701c0f6fc0aec45dde068e9d685ddc371769a9fb25517e41ddc735",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7c893e87a142a43c04aada0aab85c53c19c759073f73c5f1233f11b24516e587",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "9910b4a4fd6773ba5c39854413e8e88af6d995a2b725bb2eadba39abe0bce41a",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "368bc873ccca4e6d8e833a8a534fca5f3804eaebbf6af3775bd3698f6b43f430",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "dd0b4daa490e4a9ee4466641a45128dbb73a0f70a37d376f63d32a587e0592a7",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "5bc6c7d5b3c9cec7e97682d6733f5e090c5fc69376e43ad84cb47779b0cf9b8f",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d11cbeb14a4157de20f2ee7be313d5ddecc942926bcd5d2381608d6626b0a8bf",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "fa1c9c4071b411048784b64152ec03c426d99d29546ebf5b18c646a33b987252",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "ab983d4d9fe093ab454b8d763d0e9325e0ff7cd5876ee1730c5606c54d5798f2",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d6456bea970cef81d9dda4de0f2e9323a148800f3dd8637252a212ebb911b642",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d8d9cf198902fa5c501d5d4fa452f9e2fe367d13dfe4b050a1335097d3f55760",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "c43b5b8c6f38853f913bcee7ba4a71c72d61f49de043a32660b0aab07d49c3fc",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "855d82db5d157b7d91b40529e80893cdf3ba9e0fab822eaa57763026c2cd743c",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "daa7568c3ee7e4f49381bffcc180b1003bc40b2d95ad72b2baf757d1e034e358",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "a3e877242d2467e976347cc61ed5ee9579edae9ca2ec02c58a3d5f08c2989273",
-      "rule_id": "SEC-430",
-      "file_path": "internal/store/store_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "00c98afb0fb54c36af9ea483f0b3482483851fd0808889c36a158c397a968f0c",
-      "rule_id": "SEC-431",
-      "file_path": ".github/workflows/ci.yml",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "d11f28547d69ce2651144d30406b9f5a9243db52ade2aaf673f83c9868ad1092",
-      "rule_id": "SEC-431",
-      "file_path": ".roady/plan.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "736135b3ba942e5a513ead6305134681af26ac3e211197781acc60a9e0f69c31",
-      "rule_id": "SEC-431",
-      "file_path": "README.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "59c6eb5293ae314d57a137fa7e6ece2e0883faff33505bdf07ff138fe19d1d5c",
-      "rule_id": "SEC-431",
-      "file_path": "README.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7b88ce107df5d3d4f9884f3463a5cee5d5565b80ef8557e526ec3e0d64525976",
-      "rule_id": "SEC-431",
-      "file_path": "ROADMAP.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "e657f9dd12f1088bfff09822a9eb261b7970798bc5e0003b105bbfd355521ea7",
-      "rule_id": "SEC-431",
-      "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "c999f138c81b252a1ed876e9a857cf53ef8c8ab1e7226c97f8d90d11bf043097",
-      "rule_id": "SEC-431",
-      "file_path": "docs/configuration.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "790a59ba833de2e95fd0597f50a6520dd44cdadcb175db15b45dfe9ce93890a4",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "90f29700f25a67ad3e65f289511191f630557765c75b47df468af22b5f4db6ff",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "43f49c0e8ded6e5bf07b791b43def9a9fa724ab9175c299687d3ea5e66363993",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "98405bcfb2fab8ea1a0dc522fda9a603552bd687fe295f46b9706c89b98941b8",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/db.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "11c5d062333485d431f1d660366172478ccd87d1fe7c8eb592a80b3c55a53833",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/mysql_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "e81608fddb00ee5b898d960a272396f4067d3d2e747519ef2d2461a59f7ff33c",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/mysql_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "487948eb0b8b1b8c9a920af974b68ba8c96e0050326f5550e4def35815f7a16d",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/mysql_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "6f63d426089268e5859ec43be947b2821acfc8f04a06c1a8270cbd36d5ec30f1",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/mysql/mysql_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "ba7f7029d8243142b6611065a347ba2882d9457ef969bc138f63b75614b7a8bb",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/postgres/postgres_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7616601f91d6853fe01b1be707f66019053386e520fbfde366a6fdc4c68e142b",
-      "rule_id": "SEC-431",
-      "file_path": "internal/store/store.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "b686c28f2170f7d57a20f93ecd5c9f51442e698f3330e5f61d10b7e536a90590",
-      "rule_id": "SEC-533",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "97aa8e61050fcda46b002e77de545e19270c5b795427a9f91a0cddffdc8d13af",
-      "rule_id": "SEC-533",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "6b427e0beeaf099f5d5f5f4ec4305f036afd2254d2853080c8ddcbd60cfbe93d",
-      "rule_id": "SEC-533",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "910fa1220c4e66ea0475840ac197644137928c15886c1530139c21888df4a582",
-      "rule_id": "SEC-533",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "091d03ccf8cc894056f92e0d711c8a431a716bd2d13674798cf47c74dd4a70cb",
-      "rule_id": "SEC-533",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "fe6366ba4c75ce2f3b47257146853c569f666c8e3be7530d9500cecfd6af4b37",
-      "rule_id": "SEC-590",
-      "file_path": "CHANGELOG.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "33b5cc8c66025341751cf98576346726a2985d28d45399931f61608ef29dc811",
-      "rule_id": "SEC-659",
-      "file_path": "CHANGELOG.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "7fee37caeb170e9a3191d50a8b955f5be19a1c2eee617e375e2f83eee451320f",
-      "rule_id": "SEC-659",
-      "file_path": "ROADMAP.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "6da300f72a345eac52e6c2ac88f67b247e569363bca29633ac15c2d54ca0a46d",
-      "rule_id": "SEC-659",
-      "file_path": "client/sse_test.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "389bd72f2a76382cac774010e52cb164936902dbcd94591b20007bab7cc82945",
-      "rule_id": "SEC-659",
-      "file_path": "docs/wire-contract.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "2f00fcfdea5b9380e7a00e14d57e885cdfa8fee0b6b9f9d70390fc1b344cce6b",
-      "rule_id": "SEC-659",
-      "file_path": "internal/domain/types.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "bfb49163055ea27b9c4d0e9a8b4294bdcae04f881df20b52aa5f27e5d046de8b",
-      "rule_id": "SEC-659",
-      "file_path": "internal/domain/types.go",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "336548c68299e1de071aa9dc788448e9b54ae6045922048f78ef5eff337d36fd",
-      "rule_id": "SEC-679",
-      "file_path": "CHANGELOG.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "a0fe9b2352859b11aa5546c73f3b226023b60e28f2981e383e74d55767c49935",
-      "rule_id": "SEC-679",
-      "file_path": "ROADMAP.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "ad234f20dd7490f734f414f79cff8b53b818392be06af76a827481b9baaf3da5",
-      "rule_id": "SEC-680",
-      "file_path": "CHANGELOG.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "2c81271964ba0ab0a2038fc2213669839e1751a2712ba7f5b09ef5152723b949",
-      "rule_id": "SEC-680",
-      "file_path": "ROADMAP.md",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "a6da6bf1308c7a0e4eb2ddf0492544a7a7d7cb83e57a1c78159f1d9166aeb974",
-      "rule_id": "SEC-697",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "0efc1205b7c283965a2a40e6af90af970da55cfe2059832e8732d713d5466978",
-      "rule_id": "SEC-697",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "417f5450a9a265224032511b9cc8353a66064f59d1d57ee03257d65f8efd7c4b",
-      "rule_id": "SEC-697",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "312e98410ec00e61f378bbae3a2c0100d204fc2935ffda9abead1f19c41a7622",
-      "rule_id": "SEC-697",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "68ce0b50b42549e6ed2abfff24feea06dc4c8ee468ad8474aa50c7c928ff867d",
-      "rule_id": "SEC-697",
-      "file_path": ".nox/vex.json",
-      "severity": "high",
-      "created_at": "2026-05-24T16:20:42.165838Z"
-    },
-    {
-      "fingerprint": "5ffd27500dfc1fcf71f92d9abc3613abdd33ab156f4b4f1681a14618cce83f8e",
-      "rule_id": "AI-036",
-      "file_path": "CHANGELOG.md",
-      "severity": "medium",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
-    },
-    {
-      "fingerprint": "9625583908e8714ac99cce8800dd46c1c6e0b8f378c89f243d56dec02e026181",
-      "rule_id": "IAC-013",
-      "file_path": ".github/workflows/release.yml",
-      "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
-    },
-    {
-      "fingerprint": "3f320529507d429ce04040cfe0290a6b1f9de82143db7a4c08bc5eb27a37a38e",
-      "rule_id": "IAC-013",
-      "file_path": ".github/workflows/release.yml",
-      "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
-    },
-    {
-      "fingerprint": "14161c7040b373dd1d9faad179b3bf8cdace12ad8365a48489055265757ef506",
+      "fingerprint": "7270f6e38409b3d1a6408341e496d83c3018bbb9a9dcdf670f226ee00636ed23",
       "rule_id": "SEC-364",
       "file_path": "embed/engine.go",
       "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "5425c0ca3901d480d67e072d50f28cbf57636033e55cba5af9ee78616d47631c",
-      "rule_id": "SEC-590",
-      "file_path": "CHANGELOG.md",
+      "fingerprint": "591c497e2fafbdba4f4d9f24f3933e0432a889ba7b7090777621b2cb90d7209b",
+      "rule_id": "SEC-364",
+      "file_path": "internal/config/config.go",
       "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "a7d4ef27dc279bf3764b3986d4d5e5d7bab09ab540cc2137784e9444ec9dd4d2",
-      "rule_id": "SEC-659",
-      "file_path": "CHANGELOG.md",
+      "fingerprint": "4b2278ce1158bd674a1d605839b7664870c3e84b5aa3dbae696242cd1f0eee8c",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "73709b966ff4cad2bfaa083ad861e4ca838c2b8e655dd3c4e1248e416ae6a9a5",
+      "fingerprint": "aa97a2a1dc91b84a9de98ab306f542242742633b6804ceb84ac37560fbe5cc24",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "eac877cd1e41c5546c05af5f96ef3b58662121b0a08806dca9a1db1a71e3c0b4",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "43d58edf35c8f0961370ae302a9085ffabe79451c79cd794f86f1dea2d419609",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "fffff2843640ae22b645841675bda0966d91567d7112abe0252c2c729a81947c",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "4a516d339895fa74d6c8f197591c1985aa0785b66509391c7c8bdb4183e96046",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "f99caa1999c7b160961ad07ebdae370821c94e06291638a3b9aa4627d2118ea2",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/sqlite/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "39499857143bd4eb8260db2d4a73615a0ecedc66e40c59a6b707887d48454782",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "87d3e4c53b2eee685e83f68d2d2759afa74c787881286c5a3af3418e450409f7",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "683383fb062e89f55484dadc9175565ea20e78f8137af76854188f00937ecd8b",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "0116a3be87b73a8a961c6f02f330fcf89a8201071d0bde351820cc6bce902b3f",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "64d672067e57c51bfbe7e4f000e50b56d23e91c3d32f3c94d49d86b52ba7ed33",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "6fdbdb29ca906c46e22b1121ef17197358eaa6f76c357c6d11960bad19c40aa3",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "bc93aa204b82bcc7f2ec1f9b37f3893c1fa693867bacb0cc2d8cdaa870118f8e",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "3f102c50941537f9d338cc4ac5c9a6af47af194ae7370488fde75c2ff6ec2020",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "b461b5359a24a3ee266d69e7259ac30d0d7325e8a9e94b7f5ed38efe3c2d550c",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "7be63d0c823785421b028f64d8e50fdb0dcdf3a1507d12d16842fb6ac2070c46",
+      "rule_id": "SEC-364",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "6178a80ca05b3890915e37bd10ffbc391658faeceac709f5dcbddcb632c9251e",
+      "rule_id": "SEC-364",
+      "file_path": "storage/sqlite/sqlite.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "ca12d3812d2f7b3f13c0aa422b46d5d56394a36708e7d8f1d5a613f48527bf70",
+      "rule_id": "SEC-364",
+      "file_path": "test/integration/docker-compose.yml",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "302ece01ffd1167836350ce47dde2ca351af811ece3b0b6e28acdb623076930d",
+      "rule_id": "SEC-364",
+      "file_path": "test/integration/docker-compose.yml",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "394e5b3fedcd2b42fb6c80ed9af7a0641800dedf502cb75c1586b303bf0bba70",
+      "rule_id": "SEC-430",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "info",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "040e94ee5897992f9fc4c3965643dea75a3076d27ee19c9d561f9cd2814acff9",
+      "rule_id": "SEC-430",
+      "file_path": "README.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "c191354d23624fe56e13be2f976f8058c08f9a7cbcedd3102f823757adefd897",
+      "rule_id": "SEC-430",
+      "file_path": "ROADMAP.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "667b3ae1af601e8964506af4c2095c9eb3a8d099666e9077a0cebe8700e33064",
+      "rule_id": "SEC-430",
+      "file_path": "docs/DEPLOYMENT.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "2562252d1cd6f01119fbd177c7814fd6982240751dcd980695ad57cdcba7e33c",
+      "rule_id": "SEC-430",
+      "file_path": "docs/configuration.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "212544ce25d20927f2bf097a65db9b5cbd4c29c1b43293e2e5639e2c13e3671b",
+      "rule_id": "SEC-430",
+      "file_path": "docs/index.html",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "603edd45df4360516c2e299e2cc16e28ae678d81f0e86d4aa8a9f9a3b72d3470",
+      "rule_id": "SEC-430",
+      "file_path": "internal/config/config.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "b4ed3bd8676e100a55d1b9ab8b3d1bea001428ba5d3f0934caf6e71841bd20da",
+      "rule_id": "SEC-430",
+      "file_path": "internal/config/config_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "70c4b7d8779ec4204e7d97a8a12176942095a953431acfb770d525338a634e3b",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/mysql/mysql_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "f2e478f2a4860c276a4da0bae6aed0771c73cbbb0bc0ff7191aa31ac02ff89b3",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/postgres/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "6c35f77dbabfe17ff6268e430478099bb7cd9833d0dc09c0d124bcc1c5ece9f0",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/postgres/postgres_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "060c737dfaec5521c3dd484fa757c2dc48fea59db242252b4a5e5de7d28c76f4",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "14c5f9b1e68f24beb8d7d24ec61de57cb7b003a1edd076e7e484aaa44ef3f2c6",
+      "rule_id": "SEC-430",
+      "file_path": "internal/store/store_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "54bc28cd0116b45fb1f03b2b4f78dc178aede376cda3b45e13a2e3f0a040f4c3",
+      "rule_id": "SEC-430",
+      "file_path": "storage/postgres/postgres.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "a846c86d78f6d6120d4345c4f467467e660183581a55d8ba80164882783154dd",
+      "rule_id": "SEC-430",
+      "file_path": "storage/postgres/postgres_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "2e2eff0601d03ea710991ee2b6b3a7afa01ff3232aa9f86a6d9d83a52f1d6e06",
+      "rule_id": "SEC-431",
+      "file_path": ".github/workflows/ci.yml",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "29cfa445aca44fb0b8a3e32bc71d8c76f4a80bd0639996fa4e16751a0f87a432",
+      "rule_id": "SEC-431",
+      "file_path": "README.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "092609392ac34f368ca40bb8926a1b681f06b6dda1807c9def259346bd2d1904",
+      "rule_id": "SEC-431",
+      "file_path": "ROADMAP.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "b49bf21140fd3137cd38f701eeafcd0fe63df8f83a0a9e0b6b76010fd49bddd7",
+      "rule_id": "SEC-431",
+      "file_path": "docs/configuration.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "f1754d7548a8e309d90352405c1fd4607cfa514a17c9619e298593b9e9fd3501",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/mysql/db.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "e694328d8ba3f215ceab34e51a01198b2f1d29c9eb3fc88bddc06e97a34f6c6e",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/mysql/mysql_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "d4f4f141c7b9e9027a069f4327444c1811e8173ffc96d6ca6e4c9535739040c6",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/postgres/postgres_test.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "708ccd0e162b6a14f79c8b017a0463ebb917a75199af060798b8acadd2bd3404",
+      "rule_id": "SEC-431",
+      "file_path": "internal/store/store.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "57b385aa0d21a10b00dfbbb067b05fd06473d6c85d777775f2fa1755f4a4ebd9",
+      "rule_id": "SEC-431",
+      "file_path": "storage/mysql/mysql.go",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "be5f77345c6a5cf608ed0ff4304889b4b5e5a14e48e4563618b5193d606019f2",
       "rule_id": "SEC-679",
       "file_path": "CHANGELOG.md",
       "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "46e202d93c8aec98fc2a7ce5dbc5e71a92dfeee4d5b92433cea19b1c8c32e6e3",
+      "fingerprint": "bafa9a2867bceeed9b3b7f4cd04ec4478f77b3c680379b667e43731d289b3646",
+      "rule_id": "SEC-679",
+      "file_path": "ROADMAP.md",
+      "severity": "high",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "16d1d476f3327d08859d704c02e1a3c95d522b75b5fceab57d6fd0a8180029a4",
       "rule_id": "SEC-680",
       "file_path": "CHANGELOG.md",
       "severity": "high",
-      "reason": "False positives + pre-existing allowlisted patterns: SEC-3xx/5xx/6xx matches on CHANGELOG camelCase identifiers (e.g. PatternTypeCrossScopeCorrelation) and on the in-memory default DSN \"memory://?namespace=chronos\" in embed/engine.go (default value, not credentials). IAC-013 hits on the official actions/* + github/* publisher allowlist. AI-036 false positive on a CHANGELOG mention.",
-      "created_at": "2026-05-31T14:25:40.838521Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "2558087f3dd53a1e7c286a3f77a43e7015d24fec662230c47c04d278e317d85e",
-      "rule_id": "IAC-013",
-      "file_path": ".github/workflows/release.yml",
+      "fingerprint": "fa2814aebe78987d9ce9ce85a1dd232b1fff554d87b5de161b8e3d5ba062a59a",
+      "rule_id": "SEC-680",
+      "file_path": "ROADMAP.md",
       "severity": "high",
-      "reason": "Dependabot bump PR 33 (docker/login-action 3 to 4). Pre-bump fingerprint already in baseline + VEX. New line content per bump yields new fingerprint. Covered by IAC-013 VEX statement (publisher allowlist).",
-      "created_at": "2026-05-31T15:30:00Z"
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "67e6733458d18049941bb6e875c1642cc5e2c8f4fa703be8156a7c3ba9d0025e",
-      "rule_id": "IAC-013",
-      "file_path": ".github/workflows/release.yml",
-      "severity": "high",
-      "reason": "Dependabot bump PR 34 (goreleaser-action 6 to 7). Same IAC-013 pattern; tracked via VEX.",
-      "created_at": "2026-05-31T15:30:00Z"
+      "fingerprint": "67383fe79b0b106ac042c6baa20533035d62a524ff01fe5beea21a67a3935e61",
+      "rule_id": "TAINT-003",
+      "file_path": "cmd/chronos/main.go",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     },
     {
-      "fingerprint": "b616729f6565fdc9138b04fc0504e466a68200f6fb2a15af0a6016909d012ecd",
-      "rule_id": "IAC-013",
-      "file_path": ".github/workflows/release.yml",
-      "severity": "high",
-      "reason": "Dependabot bump PR 34 (goreleaser-action 6 to 7), rebased revision. Different line number after rebase than the previous baselined fingerprint; same IAC-013 pattern covered by VEX.",
-      "created_at": "2026-05-31T15:35:00Z"
+      "fingerprint": "fb301add02b967c3dfc64e202b831204951bc06f216a3850b0addf998dcd2b96",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "b1328b194a9382cd8cea68f41799fa198a148a3fbc4f00e29ca76d5aafa8f43a",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "7a2ef2e791078b994b1e91e9e130c3bfb02fdfd935543a04b127679e741ed642",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "2e4c4b127d9be4465d3df5769aba6db76460cb7730dd4222cb384a9c7fc10b9f",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "f8b3789c384ee4d6a2e1ba5102ff96d7dc864fbf3adda1ddbfa2db86ed1d8224",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "c39edd32c2e0b59138190959ec15e2a3b1f29a66c9c9627531990956b5896016",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "58de1cbad7877d76079a948dc2b2a1e080466f5aca3750a4079594d9f2b6af04",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "5cd374c990736a0404e8132cf96494c071a575f0fa8bc190e31dd122f49f84fe",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "d2d96450f2832541a85b45adabb4ab50e94712c7bf00bf960a19d187f1276896",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+    },
+    {
+      "fingerprint": "f9c040de4e615d525e147ee4a14f3ef88da503875fe1f1ba42968fcd1755dfd2",
+      "rule_id": "VULN-001",
+      "file_path": "go.sum",
+      "severity": "medium",
+      "created_at": "2026-07-06T09:09:35.07215Z",
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
     }
   ]
 }
