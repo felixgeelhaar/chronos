@@ -1,0 +1,37 @@
+# warden — local git gate for chronos (Go). Sole hook manager; the persistent
+# artifact is this file. pre-commit stays fast (format + vet); pre-push runs the
+# same checks CI enforces (golangci-lint, race tests, build) so nothing leaves
+# the machine that CI would reject. warden's native hooks live in .git/hooks and
+# auto-fetch the binary if missing, so a fresh clone is gated with no toolchain
+# beyond the Go SDK the repo already requires.
+extends: ''
+agent: auto
+hooks:
+  pre_commit: true
+  pre_push: true
+commands:
+  # gofmt -l lists mis-formatted files; warden treats non-empty output as a
+  # failure, so this CHECKS formatting (run `gofmt -w .` / `go fmt ./...` to fix).
+  gofmt: gofmt -l .
+  govet: go vet ./...
+  # Repo ships .golangci.yml; run the same linter CI runs.
+  golangcilint: golangci-lint run ./...
+  gotest: go test -race ./...
+  gobuild: go build ./...
+steps:
+  pre_commit:
+    - gofmt
+    - govet
+  pre_push:
+    - rebase
+    - gofmt
+    - govet
+    - golangcilint
+    - gotest
+    - gobuild
+risk:
+  diff_lines_high: 400
+  files_touched_high: 15
+pr:
+  enabled: false
+rules: []

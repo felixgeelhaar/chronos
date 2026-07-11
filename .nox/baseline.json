@@ -6,1280 +6,1304 @@
       "rule_id": "AI-036",
       "file_path": ".nox/vex.json",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "df9aaf22efd1aeb1106353d5c8d88cf5cbf94813724ecfb8089f942d7aa2f781",
       "rule_id": "AI-050",
       "file_path": "internal/notify/webhook.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7b868204e55d15288ff84e280c228ec95a17d6886cb88a2127ace3e27c334a5a",
       "rule_id": "DATA-001",
       "file_path": ".goreleaser.yaml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f3286940e21ea504d3c71b6f63d36e4143cfd6b905e6861ddd933ee0dacf448a",
       "rule_id": "DATA-001",
       "file_path": "docs/index.html",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b8af0d68423e18c134cb2274ab6a2846e0b4cc4f3ae080fa0d00d95008f1cf3a",
       "rule_id": "DATA-001",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "83e632be945a052cf38a1fbc5640b816f72b8beefdb5056e6adf5c3bbcbf7b56",
       "rule_id": "DATA-005",
       "file_path": ".nox/vex.json",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2ff62a07ffb654f9303a0e13a03f4679f672f2b7ca7f9716d8151a8e412577b2",
       "rule_id": "DATA-005",
       "file_path": "Dockerfile",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b3560d0561a2bdaf4ab4cce1a06a6e591e3dae4440b36213cca10411bc557282",
       "rule_id": "DATA-005",
       "file_path": "docs/DEPLOYMENT.md",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "239d0c10d2669c67c453728217062766d368c307c7cb25d6b478dd8df17ee50d",
       "rule_id": "DATA-005",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8533ee1ccd42d189724a3bc43cda84b9c188265c6f1fd8ac638345deaac580bc",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "32f602d2a2f0add2573c0a6d4a31f6ec972916e2766ea59771c918a1e2d42233",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d02050da301a654c3141b1663286379fca0b916b9276049088c804b62c394bae",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/proto.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "c110234b85512349e75f9aab8b91700f2facacb9506571a810c2b255d83ec03e",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "323508956e3d44083d94b4e303166c7206994741f9644bea909f8e1a7d78d6d4",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "57bd84b4a235b6f3dffdfe61c066f79373d5deed0d1eca48bcca7ec08aae5172",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "94861655f1255b94c2e1ecc4f85c1e36645120486cec087e654e9b9f3a3ff385",
       "rule_id": "IAC-013",
       "file_path": ".github/workflows/release.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "49706b5b10c8b2ec4aa05abdf659017ee681fee7aa04adf070f6f8bbb9f677e2",
       "rule_id": "IAC-157",
       "file_path": ".github/workflows/proto.yml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7ef485203e7eafd08549ac444947726610bc794b080468e20f7ecbab803ba2ca",
       "rule_id": "IAC-231",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8c7ffe65f7ed47a6b08376867043f8433d315337207fa3d237fbaa0fc4b34d54",
       "rule_id": "IAC-231",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "30b9e9d3c8d8fc0c4b56f3b1d6a38c4dab0854121887c4a4cecf1696f1acc2e4",
       "rule_id": "IAC-254",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "ba6d4862014f6ce0c10df45f4e79d1dc1eeb5f1774879cd7020d19b0577c9061",
       "rule_id": "IAC-306",
       "file_path": ".github/workflows/pages.yml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "e6fec3e421b21da9c509f784998a32b2619306877472ec923c21a60be60e1850",
       "rule_id": "IAC-308",
       "file_path": ".github/workflows/integration.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "1bf5ffaf4038a450a301180174f387e03abc28da49ffe4c9f9980cc06e41b413",
       "rule_id": "IAC-308",
       "file_path": ".github/workflows/pages.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "cc3fd855f1a5badf59b08227135b4d796c3509913767ccdb34f1d3cebf0c8984",
       "rule_id": "IAC-308",
       "file_path": ".github/workflows/release.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8c9a05e7d0c8a05b61d4c18aefce8e2dc91a85c3456246a1c92bea30dbb416d8",
       "rule_id": "IAC-309",
       "file_path": ".github/workflows/ci.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "5fdd90f6f5241ddcf6b787ba876a46fe47464b66c92deb2f02a8faa206c70afd",
       "rule_id": "IAC-309",
       "file_path": ".github/workflows/integration.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b3f6e2c0c4b5404ed903160e6bada08b9087c35fa70a05fc2815065cc0e33b60",
       "rule_id": "IAC-309",
       "file_path": ".github/workflows/proto.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "e37e2faa5f7d812400d1323a31d22e93b710b881ea06f3b656d724454d47a8f4",
       "rule_id": "IAC-314",
       "file_path": ".github/workflows/release.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "3cbf8abe3b4d6367ca9e585ace8d42e6b0cb2e0eca99db6b6775964d8e170f54",
       "rule_id": "IAC-314",
       "file_path": ".goreleaser.yaml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "67d1566bc98dd13ba7ce93f32980089dd18f1516c29d70443f17566e2ea4dea6",
       "rule_id": "IAC-315",
       "file_path": ".github/workflows/release.yml",
       "severity": "low",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "537e7c74684ae8d3e7eb1672bcafd9a540495005d0cd8b2f743927506bfca0dd",
       "rule_id": "IAC-351",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "22df83a7b52ce4b665c7463555bd49f17ae2cfdf0320c6447e4ccf97c8aa3773",
       "rule_id": "IAC-351",
       "file_path": ".github/workflows/pages.yml",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0675842156f46a4f994993088bb259d549ffb4c6c46af729a5fdeadfdc95d046",
       "rule_id": "SEC-073",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "6ce1693796d0305fad58358ca9f06bfb45066d289332e488da2867bb5e19ca5c",
       "rule_id": "SEC-073",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0894ae74574725519dc0c5a1d6b4b550581943639513494a77a484a9cea10578",
       "rule_id": "SEC-073",
       "file_path": "docs/DEPLOYMENT.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "81eb220bcd2ba6c59f35d47dbe581ae1af61c7650b3546add86ce6e1a60eca48",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b9ddcf8c7603d4441e452673302cbcfc747b4e3f7af3156030cae95a042d8448",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "e4f72a0893fcd1d2e51693187c66f22d8d321be72d5697a992a06ee0eee461fc",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "4b034dde687fc1142893265dd870f9b428ab6dd3e0bd7c319c0b2c57057cd5f1",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "09d90479c3abce0eecf19856216bea088de9cc36a0c7233b824febfa561939d7",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "242c9cd843ab4a3d77018ab83fbdc2626f8e3e97c7694ef545e01374df9791ae",
       "rule_id": "SEC-073",
       "file_path": "docs/configuration.md",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d8db4d63d700abd61bd52ebfc70686deaad49062f9a708f6248992a9dea58120",
       "rule_id": "SEC-073",
       "file_path": "docs/index.html",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "73b1553f0c1d7b2b42a82f70938095fdf429d5999f5e5c28e667fb413118561a",
       "rule_id": "SEC-073",
       "file_path": "internal/config/config.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "eb98b679941d722ec58469a1abf6d434f152729f31d8211f9ad62e1908b771a2",
       "rule_id": "SEC-073",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "ad05790e1a250363a67306349429062428575b2663560097bd73a03a59f45d9b",
       "rule_id": "SEC-073",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2a4f227151c11dca7b868bb8176cefbc9b2989fb9cac35feb534ba898c1aaf4a",
       "rule_id": "SEC-073",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7ee59c80299b98a2033b27eb1aee62f0799f2be125b3ef5d771571873115a056",
       "rule_id": "SEC-073",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7539bd49b4e2e7c2c7a2e3587b7666fca591fcff4668b36fa5da0603b9f85447",
       "rule_id": "SEC-073",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0edf49334c7d2892641017dac3c17ab60c717598ba77fdd7f6be61ff5cf257ab",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d4335b9fa0cd326c3c2b22b423a97f0f40896b8bf35aae3a69dc9b3ec5cfffab",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "986a7eb181cb2b7185784b87240e5cdf8de94c039012d4846a0f00649b1eddec",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2633b68e65e69ab482b9096908f4a99f6861994af323bda39e33d6ecef01de42",
       "rule_id": "SEC-073",
       "file_path": "internal/store/store_test.go",
       "severity": "critical",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d6e75cdeb84ee14452e5772abe606eb9fc8c76809662e84433c77a40b21dce3e",
       "rule_id": "SEC-082",
       "file_path": "internal/api/middleware.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "47fcc7f58aff34ed9521f06f2fb957bd3753c6a0984e59c99ea92d1ab74561f8",
       "rule_id": "SEC-161",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "94da55bed9f7408c7672dfcce5dce7c4a8b2271d774c88af9bd84dc6b1ff29f7",
       "rule_id": "SEC-163",
       "file_path": ".github/workflows/release.yml",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "e24b63be804379e9259dd2c6a9343ee559bd857c2ddb28c14daba4a5158bcb52",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "15c662c28fd28a416e7f0a9f81020b39199a150dcc067e160063d5cb9edc1bff",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8521347f66e43920bcb7437c2b94edc9374979f9743664cbf1502f98da490018",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "984e45c4c54f1d94aa200f8b573674082c850c0144effef47615b4af2d6ca482",
       "rule_id": "SEC-163",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "77797744a4d1bfe1b9d009279c1e6007e69714cf683c82cd18a0d0ea02629a27",
       "rule_id": "SEC-356",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2cd51f752cc31c50535b81b3ba535622c1a5db6998e005a0447c2ac54b88d6ee",
       "rule_id": "SEC-356",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "febd618ea349868c8f424f2e535c0e9b8e19bd5ec2ee0f2e63233a0b491c077c",
       "rule_id": "SEC-356",
       "file_path": "internal/store/postgres/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "a8075fcdd4e5c1eea0cd78945ccd320e27e25fc6ecfd45f254421528a3788cc0",
       "rule_id": "SEC-356",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "de3401538f9f28a9ff6a5dd7c819e07b6ffce0b83b823bc0994d651e38569bcb",
       "rule_id": "SEC-356",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0a69a5f2e6cfc8ba9e53ba3324a2adc4d982135a1047a1a3194b2eeac8f01ba7",
       "rule_id": "SEC-356",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "cb749ea922d1fb8d60ead863fc4f78345cd7f2d2cdfc90aced4705c64b38b525",
       "rule_id": "SEC-356",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0a21a13a74388decf321a8273c972fc28faf8583e8b57b17ebe7df5bdff4cfb8",
       "rule_id": "SEC-357",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "80500c2689593043cf6ab0fa3d97c1db754f0a4896bd1451c17785b581eb032b",
       "rule_id": "SEC-357",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8afe539871d47446e19186b586e7f07a5f39c0de2ddc67dc781d2372ff5d9541",
       "rule_id": "SEC-357",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "ebeaf54304651b226c642578f1fc986731d6f5d664d1608cd799b129744255e6",
       "rule_id": "SEC-357",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7e1b0e97663dada1bb4f699a1b96030ee2d1410c10d60e28de4e25ab9c107fdf",
       "rule_id": "SEC-357",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f112aa3adc0c79d89dfd20d84f69cc800e1d17b78d6766bbc297f930bf6478de",
       "rule_id": "SEC-357",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d9b36acecf58fa713cd2dfb49d2f2570200c8e4cfd00ccbdeb27f27a51235abf",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "96db67bbae199d0ff963a16a79f9aa8b3660bb3e177235627dfa9a51b9de15d4",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "5c76e9a23864c785ae64a92390cda4189b49a73d209af9581f3ed367ec6543bc",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0f95032c04b0d5f87eb26cfefb72c37c3341cb52ebde45ee39e7ada2fb8a382d",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "ce8382ad041410307e5a04431f913312466e3ac23c3faf26ad17f387fbe542fc",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "5e59d47665fa0605d4653b76fae124a08865dcaf616919d7032687e066a97536",
       "rule_id": "SEC-357",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d0ce52fbdf9987b4f5f8a1e9bcb5b2f0697261b0c9d41f14f7848d8e4ff5f09d",
       "rule_id": "SEC-357",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2f81fe09c73affc2d81472a5351cc4b72da20e4d4f90864676a6873fa9db8c91",
       "rule_id": "SEC-357",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8a9f9c9b67fab86b0bc113c0284a1d5e91614f64bc02e80ba03983f03804ace6",
       "rule_id": "SEC-357",
       "file_path": "storage/mysql/mysql.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "8ca774c2dbab3efef365b4cd718afc3386e3d71ad4327ae236d28b6bd4db66ab",
       "rule_id": "SEC-358",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "80ea022a41a6b47b223b3814ea707375310fc42b54859c1c87ddd2491bb55d93",
       "rule_id": "SEC-358",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f8351bb8ab4590dca3211f875a6212d2eb730da6443736f1e98a206904ffb2eb",
       "rule_id": "SEC-358",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "38f36cf675111f3f308ac82a17c2a246e5178bb0c8982a2368e5739495398c75",
       "rule_id": "SEC-358",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "075a9ac9697e2500de76df375cfb7614b21e8d1d6f3b4848f5716c8eea52dbaa",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "a9341026b82f7c19fed775d1e1acde8314a7adb027d9fe8e4fd319414c2a89b7",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f6712eb9099d31b514dca5f7d0499273502c9bfb0d38481a8e5ee0194dcf3fd7",
       "rule_id": "SEC-358",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "87382405aab08c0ae0e908ab44fb425cec8e76efc0a5bb1b72672937e354f4a2",
       "rule_id": "SEC-364",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "08f1ac1400970faf36fe3764d4eee38ddc0b1cb37c2d5cf6ea5e4ef251f99c7d",
       "rule_id": "SEC-364",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "4402870565941c96f215507e72f4ce53201c38a825409238283459dab456a3b0",
       "rule_id": "SEC-364",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "212a1274fcbbed338b9895cbba7628945cf49fd3c9c5ae1e0d2276e9ad33dcd6",
       "rule_id": "SEC-364",
       "file_path": "cmd/chronos/mcp_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "87e3bda5bfc27c1968308641e0bfc4f44b9a2a664ef621f83b259d8791353772",
       "rule_id": "SEC-364",
       "file_path": "cmd/chronos/migrate_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "5951649e8d6cad6a981d1b363b05cae648d196923f593f7e1dee2813df453159",
       "rule_id": "SEC-364",
       "file_path": "docs/cognitive-stack-example.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "c764e765dad61a4da87d0b145ce8426527ac6b9ceab66baa5a807db6823dac0b",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "e88eec6ecddae3601f0a44f7558be227d879debe22c3819de9de720cdc2244a4",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "fa3699275e7e2f40f3e7d055791ed900a922a018bd30e941444c574b7866d1fa",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "74f48f2852a44850c19582b27eb73de537957358be3f2704109c7b2c3fd2c874",
       "rule_id": "SEC-364",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "917c6459bd4922e7c9b6f8f81af0b13251155a0ccdce2849caf3c40295f711dc",
       "rule_id": "SEC-364",
       "file_path": "docs/index.html",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7270f6e38409b3d1a6408341e496d83c3018bbb9a9dcdf670f226ee00636ed23",
       "rule_id": "SEC-364",
       "file_path": "embed/engine.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "591c497e2fafbdba4f4d9f24f3933e0432a889ba7b7090777621b2cb90d7209b",
       "rule_id": "SEC-364",
       "file_path": "internal/config/config.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "4b2278ce1158bd674a1d605839b7664870c3e84b5aa3dbae696242cd1f0eee8c",
       "rule_id": "SEC-364",
       "file_path": "internal/store/libsql/libsql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "aa97a2a1dc91b84a9de98ab306f542242742633b6804ceb84ac37560fbe5cc24",
       "rule_id": "SEC-364",
       "file_path": "internal/store/sqlite/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "eac877cd1e41c5546c05af5f96ef3b58662121b0a08806dca9a1db1a71e3c0b4",
       "rule_id": "SEC-364",
       "file_path": "internal/store/sqlite/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "43d58edf35c8f0961370ae302a9085ffabe79451c79cd794f86f1dea2d419609",
       "rule_id": "SEC-364",
       "file_path": "internal/store/sqlite/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "fffff2843640ae22b645841675bda0966d91567d7112abe0252c2c729a81947c",
       "rule_id": "SEC-364",
       "file_path": "internal/store/sqlite/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "4a516d339895fa74d6c8f197591c1985aa0785b66509391c7c8bdb4183e96046",
       "rule_id": "SEC-364",
       "file_path": "internal/store/sqlite/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f99caa1999c7b160961ad07ebdae370821c94e06291638a3b9aa4627d2118ea2",
       "rule_id": "SEC-364",
       "file_path": "internal/store/sqlite/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "39499857143bd4eb8260db2d4a73615a0ecedc66e40c59a6b707887d48454782",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "87d3e4c53b2eee685e83f68d2d2759afa74c787881286c5a3af3418e450409f7",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "683383fb062e89f55484dadc9175565ea20e78f8137af76854188f00937ecd8b",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "0116a3be87b73a8a961c6f02f330fcf89a8201071d0bde351820cc6bce902b3f",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "64d672067e57c51bfbe7e4f000e50b56d23e91c3d32f3c94d49d86b52ba7ed33",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "6fdbdb29ca906c46e22b1121ef17197358eaa6f76c357c6d11960bad19c40aa3",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "bc93aa204b82bcc7f2ec1f9b37f3893c1fa693867bacb0cc2d8cdaa870118f8e",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "3f102c50941537f9d338cc4ac5c9a6af47af194ae7370488fde75c2ff6ec2020",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b461b5359a24a3ee266d69e7259ac30d0d7325e8a9e94b7f5ed38efe3c2d550c",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7be63d0c823785421b028f64d8e50fdb0dcdf3a1507d12d16842fb6ac2070c46",
       "rule_id": "SEC-364",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "6178a80ca05b3890915e37bd10ffbc391658faeceac709f5dcbddcb632c9251e",
       "rule_id": "SEC-364",
       "file_path": "storage/sqlite/sqlite.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "ca12d3812d2f7b3f13c0aa422b46d5d56394a36708e7d8f1d5a613f48527bf70",
       "rule_id": "SEC-364",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "302ece01ffd1167836350ce47dde2ca351af811ece3b0b6e28acdb623076930d",
       "rule_id": "SEC-364",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "394e5b3fedcd2b42fb6c80ed9af7a0641800dedf502cb75c1586b303bf0bba70",
       "rule_id": "SEC-430",
       "file_path": ".github/workflows/ci.yml",
       "severity": "info",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "040e94ee5897992f9fc4c3965643dea75a3076d27ee19c9d561f9cd2814acff9",
       "rule_id": "SEC-430",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "c191354d23624fe56e13be2f976f8058c08f9a7cbcedd3102f823757adefd897",
       "rule_id": "SEC-430",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "667b3ae1af601e8964506af4c2095c9eb3a8d099666e9077a0cebe8700e33064",
       "rule_id": "SEC-430",
       "file_path": "docs/DEPLOYMENT.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2562252d1cd6f01119fbd177c7814fd6982240751dcd980695ad57cdcba7e33c",
       "rule_id": "SEC-430",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "212544ce25d20927f2bf097a65db9b5cbd4c29c1b43293e2e5639e2c13e3671b",
       "rule_id": "SEC-430",
       "file_path": "docs/index.html",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "603edd45df4360516c2e299e2cc16e28ae678d81f0e86d4aa8a9f9a3b72d3470",
       "rule_id": "SEC-430",
       "file_path": "internal/config/config.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b4ed3bd8676e100a55d1b9ab8b3d1bea001428ba5d3f0934caf6e71841bd20da",
       "rule_id": "SEC-430",
       "file_path": "internal/config/config_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "70c4b7d8779ec4204e7d97a8a12176942095a953431acfb770d525338a634e3b",
       "rule_id": "SEC-430",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f2e478f2a4860c276a4da0bae6aed0771c73cbbb0bc0ff7191aa31ac02ff89b3",
       "rule_id": "SEC-430",
       "file_path": "internal/store/postgres/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "6c35f77dbabfe17ff6268e430478099bb7cd9833d0dc09c0d124bcc1c5ece9f0",
       "rule_id": "SEC-430",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "060c737dfaec5521c3dd484fa757c2dc48fea59db242252b4a5e5de7d28c76f4",
       "rule_id": "SEC-430",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "14c5f9b1e68f24beb8d7d24ec61de57cb7b003a1edd076e7e484aaa44ef3f2c6",
       "rule_id": "SEC-430",
       "file_path": "internal/store/store_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "54bc28cd0116b45fb1f03b2b4f78dc178aede376cda3b45e13a2e3f0a040f4c3",
       "rule_id": "SEC-430",
       "file_path": "storage/postgres/postgres.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "a846c86d78f6d6120d4345c4f467467e660183581a55d8ba80164882783154dd",
       "rule_id": "SEC-430",
       "file_path": "storage/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2e2eff0601d03ea710991ee2b6b3a7afa01ff3232aa9f86a6d9d83a52f1d6e06",
       "rule_id": "SEC-431",
       "file_path": ".github/workflows/ci.yml",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "29cfa445aca44fb0b8a3e32bc71d8c76f4a80bd0639996fa4e16751a0f87a432",
       "rule_id": "SEC-431",
       "file_path": "README.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "092609392ac34f368ca40bb8926a1b681f06b6dda1807c9def259346bd2d1904",
       "rule_id": "SEC-431",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b49bf21140fd3137cd38f701eeafcd0fe63df8f83a0a9e0b6b76010fd49bddd7",
       "rule_id": "SEC-431",
       "file_path": "docs/configuration.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f1754d7548a8e309d90352405c1fd4607cfa514a17c9619e298593b9e9fd3501",
       "rule_id": "SEC-431",
       "file_path": "internal/store/mysql/db.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "e694328d8ba3f215ceab34e51a01198b2f1d29c9eb3fc88bddc06e97a34f6c6e",
       "rule_id": "SEC-431",
       "file_path": "internal/store/mysql/mysql_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d4f4f141c7b9e9027a069f4327444c1811e8173ffc96d6ca6e4c9535739040c6",
       "rule_id": "SEC-431",
       "file_path": "internal/store/postgres/postgres_test.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "708ccd0e162b6a14f79c8b017a0463ebb917a75199af060798b8acadd2bd3404",
       "rule_id": "SEC-431",
       "file_path": "internal/store/store.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "57b385aa0d21a10b00dfbbb067b05fd06473d6c85d777775f2fa1755f4a4ebd9",
       "rule_id": "SEC-431",
       "file_path": "storage/mysql/mysql.go",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "be5f77345c6a5cf608ed0ff4304889b4b5e5a14e48e4563618b5193d606019f2",
       "rule_id": "SEC-679",
       "file_path": "CHANGELOG.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "bafa9a2867bceeed9b3b7f4cd04ec4478f77b3c680379b667e43731d289b3646",
       "rule_id": "SEC-679",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "16d1d476f3327d08859d704c02e1a3c95d522b75b5fceab57d6fd0a8180029a4",
       "rule_id": "SEC-680",
       "file_path": "CHANGELOG.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "fa2814aebe78987d9ce9ce85a1dd232b1fff554d87b5de161b8e3d5ba062a59a",
       "rule_id": "SEC-680",
       "file_path": "ROADMAP.md",
       "severity": "high",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "67383fe79b0b106ac042c6baa20533035d62a524ff01fe5beea21a67a3935e61",
       "rule_id": "TAINT-003",
       "file_path": "cmd/chronos/main.go",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "fb301add02b967c3dfc64e202b831204951bc06f216a3850b0addf998dcd2b96",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "b1328b194a9382cd8cea68f41799fa198a148a3fbc4f00e29ca76d5aafa8f43a",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "7a2ef2e791078b994b1e91e9e130c3bfb02fdfd935543a04b127679e741ed642",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "2e4c4b127d9be4465d3df5769aba6db76460cb7730dd4222cb384a9c7fc10b9f",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f8b3789c384ee4d6a2e1ba5102ff96d7dc864fbf3adda1ddbfa2db86ed1d8224",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "c39edd32c2e0b59138190959ec15e2a3b1f29a66c9c9627531990956b5896016",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "58de1cbad7877d76079a948dc2b2a1e080466f5aca3750a4079594d9f2b6af04",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "5cd374c990736a0404e8132cf96494c071a575f0fa8bc190e31dd122f49f84fe",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "d2d96450f2832541a85b45adabb4ab50e94712c7bf00bf960a19d187f1276896",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
       "fingerprint": "f9c040de4e615d525e147ee4a14f3ef88da503875fe1f1ba42968fcd1755dfd2",
       "rule_id": "VULN-001",
       "file_path": "go.sum",
       "severity": "medium",
-      "created_at": "2026-07-06T09:09:35.07215Z",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately."
+      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "created_at": "2026-07-06T09:09:35.07215Z"
+    },
+    {
+      "fingerprint": "52922952e40b8c5ebd4fef0969dd782d57266e9ecccc4e9bddc9be74f0f6daa2",
+      "rule_id": "",
+      "file_path": "",
+      "severity": "",
+      "reason": "Intentional pattern in nox migration workflows: workflow_dispatch (IAC-308) and contents:write (IAC-314) required by nox-remediate reusable; cancel-in-progress (IAC-309) matches central go-ci concurrency. Mirrors felixgeelhaar/preflight #128.",
+      "created_at": "2026-07-11T11:18:54.766846Z"
+    },
+    {
+      "fingerprint": "530e8464b73bb94d797aa233bcd4b2ea933dd8644a2b0a15d0bb6b7ba128980d",
+      "rule_id": "",
+      "file_path": "",
+      "severity": "",
+      "reason": "Intentional pattern in nox migration workflows: workflow_dispatch (IAC-308) and contents:write (IAC-314) required by nox-remediate reusable; cancel-in-progress (IAC-309) matches central go-ci concurrency. Mirrors felixgeelhaar/preflight #128.",
+      "created_at": "2026-07-11T11:18:54.766846Z"
+    },
+    {
+      "fingerprint": "8378df7a1d4adb5806616a668bc89e456b48fe9b7212ca5799b5b8eddbe0ae9c",
+      "rule_id": "",
+      "file_path": "",
+      "severity": "",
+      "reason": "Intentional pattern in nox migration workflows: workflow_dispatch (IAC-308) and contents:write (IAC-314) required by nox-remediate reusable; cancel-in-progress (IAC-309) matches central go-ci concurrency. Mirrors felixgeelhaar/preflight #128.",
+      "created_at": "2026-07-11T11:18:54.766846Z"
     }
   ]
 }
