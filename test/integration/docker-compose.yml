@@ -23,6 +23,13 @@ services:
   chronos:
     image: ${CHRONOS_IMAGE:-ghcr.io/felixgeelhaar/chronos:latest}
     container_name: chronos-integration
+    # The runtime image is distroless:nonroot (uid 65532), but Docker
+    # creates the named volume mount point (/data) owned by root:root.
+    # The nonroot process therefore cannot create /data/chronos.db and
+    # `serve` dies with "sqlite: ping: unable to open database file (14)"
+    # (SQLITE_CANTOPEN). Run this ephemeral smoke container as root so it
+    # can write the SQLite file into the root-owned volume.
+    user: "0:0"
     ports:
       - "7778:7778"
     environment:
@@ -41,6 +48,9 @@ services:
   mnemos:
     image: ${MNEMOS_IMAGE:-ghcr.io/klarlabs-studio/mnemos:latest}
     container_name: mnemos-integration
+    # Same root-owned-named-volume constraint as chronos above: run the
+    # ephemeral smoke container as root so it can write /data/mnemos.db.
+    user: "0:0"
     ports:
       - "7777:7777"
     environment:
