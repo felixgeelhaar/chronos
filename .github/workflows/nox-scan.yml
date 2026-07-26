@@ -4,7 +4,7 @@
 # integration-postgres / integration-mysql / release-check) or the pre-existing
 # security.yml nox job (Security / nox-scan), which stays as-is.
 #
-# Pinned + sha256-verified nox 1.7.1, cosign for signed-plugin trust,
+# Pinned + sha256-verified nox 1.22.1, cosign for signed-plugin trust,
 # source-to-sink taint SAST, SARIF -> GitHub code scanning, and a
 # self-adjusting gate: report-only until a nox baseline exists (a baseline is
 # committed at .nox/baseline.json, so this gate enforces net-new critical/high
@@ -42,17 +42,26 @@ jobs:
       security-events: write
       pull-requests: write   # nox annotate
     env:
-      NOX_VERSION: "1.7.1"
-      NOX_SHA256: "3106ab3ce7197f43a45fc1128ea27112686421e8ec3eac9be356d4ca42ab4c89"
+      NOX_VERSION: "1.22.1"
+      NOX_SHA256: "43b799c5bb7d2353d8592a705ccbbf4034feb32a7ae7cc5a256c5a6166cf28dc"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Install nox (pinned + sha256-verified binary)
+        # Unpack in a temp dir, NOT the checkout. The release tarball ships
+        # LICENSE, README.md and nox, so extracting here overwrote chronos's own
+        # README.md and LICENSE -- and the very next step scanned the result.
+        # The scan was corrupting the tree it was scanning.
         run: |
-          curl -sL -o nox.tar.gz \
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          curl -fsSL -o "$tmp/nox.tar.gz" \
             "https://github.com/nox-hq/nox/releases/download/v${NOX_VERSION}/nox_${NOX_VERSION}_linux_amd64.tar.gz"
-          echo "${NOX_SHA256}  nox.tar.gz" | sha256sum -c -
-          tar xzf nox.tar.gz && sudo mv nox /usr/local/bin/ && nox version
+          echo "${NOX_SHA256}  $tmp/nox.tar.gz" | sha256sum -c -
+          tar xzf "$tmp/nox.tar.gz" -C "$tmp"
+          sudo install -m 0755 "$tmp/nox" /usr/local/bin/nox
+          rm -rf "$tmp"
+          nox version
 
       - name: Install cosign
         # nox verifies plugin signatures by shelling out to cosign. Without it,
@@ -72,6 +81,12 @@ jobs:
 
       - name: Upload SARIF to code scanning
         if: always() && hashFiles('nox-results/results.sarif') != ''
+        # Never fail the security job on a reporting step. Code scanning needs
+        # Code Security enabled, which private repos without GHAS do not have --
+        # there the upload returns "Resource not accessible by integration" even
+        # with security-events: write. The gate below is what decides; this step
+        # only publishes what the gate already decided.
+        continue-on-error: true
         uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4
         with:
           sarif_file: nox-results/results.sarif
@@ -86,9 +101,19 @@ jobs:
         # Self-adjusting: report-only until the repo commits a nox baseline,
         # then gates net-new critical/high. Adopting the workflow never breaks a
         # red build on day one.
-        if: always() && hashFiles('nox-results/findings.json') != ''
+        #
+        # Deliberately NOT guarded by hashFiles(findings.json). A missing file
+        # used to skip this step, and a skipped step is GREEN -- so the gate
+        # quietly ceased to exist whenever nox wrote no JSON (e.g. a .nox.yaml
+        # output.format key overriding the -format above). Absence is handled
+        # in-script below and is fatal, since chronos commits a baseline.
+        if: always()
         run: |
           f=nox-results/findings.json
+          if [ ! -f "$f" ]; then
+            echo "::error::nox wrote no findings.json, so the security gate evaluated nothing. Most likely .nox.yaml sets output.format, which overrides this workflow's '-format json,sarif' -- drop that key, or include json in it."
+            exit 1
+          fi
           baselined=$(jq '[.findings[]? | select(.Status=="baselined")] | length' "$f" 2>/dev/null || echo 0)
           new=$(jq '[.findings[]? | select((.Severity=="critical" or .Severity=="high") and (.Status!="baselined"))] | length' "$f" 2>/dev/null || echo 0)
           echo "net-new critical/high: $new (baselined findings: $baselined)"

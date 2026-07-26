@@ -515,6 +515,36 @@
       "status": "not_affected",
       "justification": "vulnerable_code_not_in_execute_path",
       "impact_statement": "All flagged actions are pinned via dependabot from trusted publishers (actions/, github/, docker/, goreleaser/, golangci/). Each version bump generates a new line-content fingerprint that re-triggers this rule for the same low-actual-risk pattern. Dependabot keeps these up-to-date; the publisher allowlist effectively covers the supply-chain risk this rule targets at the project level."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-018",
+        "name": "IAC-018",
+        "description": "Workflow step suppresses failures with continue-on-error"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Both continue-on-error uses in .github/workflows/nox-scan.yml are deliberate and scoped to steps that REPORT, never to the gate that decides. The taint-analysis plugin install tolerates a registry 404 because the plugin is an enrichment -- core rules ship in nox itself -- so an outage should cost the taint rules, not the whole scan. The SARIF upload tolerates failure because GitHub code scanning requires Code Security, which private repos without GHAS lack, and returns \"Resource not accessible by integration\" there even with security-events: write. The gating step (\"Gate on net-new critical/high findings\") deliberately carries no continue-on-error and no hashFiles guard, so it cannot be skipped into a green result."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-310",
+        "name": "IAC-310",
+        "description": "GHA step continues on error"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Both continue-on-error uses in .github/workflows/nox-scan.yml are deliberate and scoped to steps that REPORT, never to the gate that decides. The taint-analysis plugin install tolerates a registry 404 because the plugin is an enrichment -- core rules ship in nox itself -- so an outage should cost the taint rules, not the whole scan. The SARIF upload tolerates failure because GitHub code scanning requires Code Security, which private repos without GHAS lack, and returns \"Resource not accessible by integration\" there even with security-events: write. The gating step (\"Gate on net-new critical/high findings\") deliberately carries no continue-on-error and no hashFiles guard, so it cannot be skipped into a green result."
     }
   ]
 }
