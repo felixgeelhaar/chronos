@@ -49,6 +49,8 @@ func main() {
 		err = runMCP(os.Args[2:])
 	case "migrate":
 		err = runMigrate(os.Args[2:])
+	case "health":
+		err = runHealth(os.Args[2:])
 	case "version", "-v", "--version":
 		runVersion()
 		return
@@ -75,6 +77,7 @@ Commands:
   serve      Start HTTP API server
   mcp        Start the MCP stdio server (list_signals / ingest / describe_detector)
   migrate    Inspect or apply schema migrations (status / up)
+  health     Probe a running server's /health endpoint (container HEALTHCHECK)
   version    Print version
   help       Show this help
 

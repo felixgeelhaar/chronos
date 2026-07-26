@@ -31,6 +31,14 @@ make docker-build
 
 CGO is disabled in the build (`modernc.org/sqlite`). Refresh the digest with `docker buildx imagetools inspect gcr.io/distroless/static:nonroot` and update the Dockerfile in the same PR as the image bump.
 
+The image declares a `HEALTHCHECK` that runs `chronos health`, which probes
+`GET /health` on `http://127.0.0.1:$CHRONOS_HTTP_PORT` and exits non-zero when
+the server does not report `healthy`. The probe is the binary itself because
+distroless ships no shell and no `curl`. `/health` is exempt from bearer auth,
+so the check works with `CHRONOS_API_TOKEN` set. Override the target with
+`chronos health -addr <url> -timeout <duration>`. On Kubernetes, prefer the
+native HTTP probes below — Kubernetes ignores the image's `HEALTHCHECK`.
+
 ## Kubernetes outline
 
 A reference manifest is intentionally not committed. Minimum requirements:
