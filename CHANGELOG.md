@@ -6,6 +6,25 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 ## [Unreleased]
 
+### Added
+- **`chronos health` subcommand** — probes `GET /health` on
+  `http://127.0.0.1:$CHRONOS_HTTP_PORT` and exits non-zero when the server does
+  not report `healthy`. Override with `-addr` / `-timeout`. Exists so the
+  runtime image can declare a `HEALTHCHECK`: the distroless base ships no shell
+  and no `curl`, so the binary has to probe itself.
+- **Container `HEALTHCHECK`** in the Dockerfile, wired to `chronos health`.
+
+### Changed
+- **Dockerfile hardening** — explicit `USER 65532:65532` (the distroless
+  `nonroot` default, now stated rather than inherited, so it survives a base
+  image retag), `COPY --chown=root:root --chmod=0555` so a compromised process
+  cannot rewrite its own entrypoint, and a `maintainer` label.
+
+### Security
+- **`golang.org/x/text` 0.38.0 → 0.39.0** — GO-2026-5970 / CVE-2026-56852,
+  infinite loop on invalid input in `golang.org/x/text/unicode/norm`. Reachable
+  transitively; no API change.
+
 ## [0.6.0] - 2026-05-31
 
 Embeddable engine release. Adds a public in-process Go API so consumers

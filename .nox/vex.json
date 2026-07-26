@@ -533,6 +533,36 @@
     },
     {
       "vulnerability": {
+        "@id": "IAC-153",
+        "name": "IAC-153",
+        "description": "GitHub Actions artifact upload without attestation"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The two flagged uploads (.github/workflows/security.yml and .github/workflows/nox-scan.yml) publish scan output -- SARIF, findings.json and the CycloneDX SBOM -- as short-retention CI artefacts (30 and 7 days). They are diagnostic reports read by maintainers in the Actions UI; nothing installs, executes or redistributes them, so there is no downstream consumer for a provenance statement to protect. Adding actions/attest-build-provenance would require granting id-token:write and attestations:write to the two workflows that run on pull_request -- widening the token scope of exactly the jobs that must stay least-privileged -- and the attestation step cannot succeed on fork PRs, where GitHub withholds the OIDC token. Artefacts that ARE distributed (release binaries, the ghcr.io images, the Homebrew cask) are produced by .github/workflows/release.yml via goreleaser, which is the correct place to attach provenance; that is tracked separately from this scan-report gate."
+    },
+    {
+      "vulnerability": {
+        "@id": "DATA-005",
+        "name": "DATA-005",
+        "description": "Hardcoded public IP address in configuration"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The address in cmd/chronos/health.go is 127.0.0.1, an IPv4 loopback literal, which is by definition not a public IP. `chronos health` is the container HEALTHCHECK probe: the runtime image is gcr.io/distroless/static, which ships no shell and no curl, so the binary probes its own /health endpoint. Loopback is the only correct dial target -- containerised deployments set CHRONOS_HTTP_HOST=0.0.0.0, a bind wildcard that cannot be dialled -- and a literal avoids depending on name resolution inside a distroless image that ships no resolver configuration. The port is not hardcoded; it is read from CHRONOS_HTTP_PORT via config.Default(), and -addr overrides the whole base URL."
+    },
+    {
+      "vulnerability": {
         "@id": "IAC-310",
         "name": "IAC-310",
         "description": "GHA step continues on error"
