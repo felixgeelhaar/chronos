@@ -33,12 +33,12 @@ jobs:
 
       - name: Install nox
         env:
-          NOX_VERSION: "1.20.0"
+          NOX_VERSION: "1.7.0"
           # SHA-256 of nox_1.7.0_linux_amd64.tar.gz. Pinning the checksum
           # makes the download tamper-evident: if the release asset ever
           # changes under us, the verification fails closed and the gate
           # never runs an unexpected binary.
-          NOX_SHA256: "e8b1ece2967ba670ff6d9dced0a67e5c0b7449e61d852e151a9e4c7d853915f3"
+          NOX_SHA256: "d4ddb89b07c68e767453518ba7358a5c9786ca93f0995143277426de208d4645"
         run: |
           set -euo pipefail
           curl -fsSL -o /tmp/nox.tar.gz \
