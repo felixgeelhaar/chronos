@@ -111,7 +111,7 @@ nfpms:
 brews:
   - name: chronos
     repository:
-      owner: felixgeelhaar
+      owner: klarlabs-studio
       name: homebrew-tap
       branch: main
       # PAT with `contents: write` on felixgeelhaar/homebrew-tap.
