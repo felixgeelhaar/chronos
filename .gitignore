@@ -96,3 +96,10 @@ chronos.db
 # Relicta release tooling
 .relicta/
 ai.inventory.json
+
+# The `chronos` binary at the repo root is a build artefact: `make docker-build`
+# stages it with `cp $(BUILD_DIR)/$(BINARY_NAME) chronos` and removes it again
+# with `rm -f chronos`. Committing it between those two steps put a 30 MB
+# unattested Mach-O executable in every clone, on a repo whose shipped image is
+# Linux. Ignore the path so it cannot come back.
+/chronos
