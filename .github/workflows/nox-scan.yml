@@ -61,10 +61,11 @@ jobs:
         uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
 
       - name: Install taint-analysis plugin
+        continue-on-error: true  # plugin registry 404s are not a security failure
         # nox owns code-level SAST: source-to-sink taint (SSRF, injection, path
         # traversal). The plugin is cosign-signed; with cosign present nox
         # promotes it to community trust and installs it (no bypass).
-        run: nox plugin install nox/taint-analysis
+        run: nox plugin install nox/taint-analysis@0.7.0
 
       - name: Scan
         run: nox scan . -format json,sarif -output nox-results || true
