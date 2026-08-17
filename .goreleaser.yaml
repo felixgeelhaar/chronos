@@ -72,9 +72,6 @@ changelog:
       - Merge branch
 
 release:
-  # Was `draft: true`, the only repo in the fleet that drafted. Combined with
-  # the brew push below it published a formula pointing at assets that were
-  # never made public: `brew install chronos` 404'd on every URL.
   draft: false
   prerelease: auto
   name_template: "v{{ .Version }}"
@@ -110,28 +107,6 @@ nfpms:
         dst: /usr/share/doc/chronos/README.md
         file_info:
           mode: 0644
-
-homebrew_casks:
-  - name: chronos
-    repository:
-      owner: klarlabs-studio
-      name: homebrew-tap
-      branch: main
-      # The workflow's GITHUB_TOKEN cannot push to another repo; the org
-      # secret HOMEBREW_TAP_TOKEN holds a klarlabs-owned PAT that can.
-      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-    homepage: "https://github.com/klarlabs-studio/chronos"
-    description: "Time / Pattern Perception in the cognitive stack"
-    license: "MIT"
-    # Skip prereleases so `brew install` always points at a stable build.
-    # Note this guards PRERELEASE only, not draft — which is exactly why
-    # `draft: true` above used to publish a cask for a release nobody could
-    # download.
-    skip_upload: auto
-    commit_author:
-      name: goreleaserbot
-      email: bot@goreleaser.com
-    commit_msg_template: "chore(cask): bump chronos to {{ .Tag }}"
 
 dockers:
   - image_templates:

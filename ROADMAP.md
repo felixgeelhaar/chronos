@@ -27,7 +27,7 @@ Chronos is the **time / pattern perception** layer of the cognitive stack (Mnemo
 **Infra.**
 - Bearer-token auth on HTTP and gRPC (shares `CHRONOS_API_TOKEN`).
 - Conventional Commits, golangci-lint clean, race-tests green on Go 1.25 and 1.26.
-- GoReleaser — Homebrew formula updates, Docker images.
+- GoReleaser — Docker images and GitHub Release archives.
 - coverctl per-domain coverage gating; nox security baseline.
 
 **Adapters.**

@@ -195,8 +195,7 @@ $ curl -s "localhost:7778/v1/signals?scope_id=$SCOPE&amp;pattern=stall" | jq
 <section id="run" aria-labelledby="run-heading">
   <p class="kicker">Run it</p>
   <h2 id="run-heading">30 seconds from install to first signal.</h2>
-  <pre><code>brew install felixgeelhaar/tap/chronos
-# or: go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
+  <pre><code>go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
 
 CHRONOS_DB_DSN="sqlite:///tmp/chronos.db" \
 CHRONOS_DETECTION_INTERVAL=5s \

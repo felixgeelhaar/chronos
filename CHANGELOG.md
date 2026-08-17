@@ -6,6 +6,12 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 ## [Unreleased]
 
+### Changed
+- **No Homebrew cask.** Chronos is a Go library (optional `cmd/chronos` for
+  demos and ops), not a brew-installable product. GoReleaser no longer
+  publishes to the Homebrew tap; the release workflow no longer requires
+  `HOMEBREW_TAP_TOKEN`.
+
 ### Added
 - **`chronos health` subcommand** — probes `GET /health` on
   `http://127.0.0.1:$CHRONOS_HTTP_PORT` and exits non-zero when the server does
