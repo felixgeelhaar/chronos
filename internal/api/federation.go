@@ -64,6 +64,10 @@ func federationEnabled() bool {
 	return enabled
 }
 
+// FederationEnabled reports whether GET /v1/federation/export (and the
+// matching gRPC RPC) is allowed to serve.
+func FederationEnabled() bool { return federationEnabled() }
+
 // handleFederationExport returns the aggregated pattern stats.
 // Streams every signal in the store, buckets by pattern, computes
 // the summary. For deployments with very large signal counts this
@@ -88,7 +92,7 @@ func (s *Server) handleFederationExport(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	stats := aggregateFederationStats(signals)
+	stats := AggregateFederationStats(signals)
 	respondJSON(w, http.StatusOK, FederationExportResponse{
 		GeneratedAt:  time.Now().UTC(),
 		Source:       "chronos",
@@ -98,11 +102,10 @@ func (s *Server) handleFederationExport(w http.ResponseWriter, r *http.Request) 
 	})
 }
 
-// aggregateFederationStats buckets signals by pattern type and
-// computes per-bucket summary statistics. Exported in a separate
-// function so tests can assert against the math without standing up
-// the HTTP server.
-func aggregateFederationStats(signals []domain.Signal) []FederationPatternStats {
+// AggregateFederationStats buckets signals by pattern type and
+// computes per-bucket summary statistics. Exported so tests and the
+// gRPC transport can assert against the same math as HTTP.
+func AggregateFederationStats(signals []domain.Signal) []FederationPatternStats {
 	type bucket struct {
 		count                          int
 		strSum, strMin, strMax         float64

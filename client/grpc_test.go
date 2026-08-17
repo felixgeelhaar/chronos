@@ -199,6 +199,39 @@ func TestGRPCClient_WithToken(t *testing.T) {
 	}
 }
 
+func TestGRPCClient_IngestBatchAndValidateConfig(t *testing.T) {
+	addr, mem := setupGRPCServer(t)
+	c, err := NewGRPC(addr)
+	if err != nil {
+		t.Fatalf("NewGRPC: %v", err)
+	}
+	defer c.Close()
+
+	scope := uuid.New()
+	batch, err := c.IngestBatch(context.Background(), []IngestRequest{
+		{EntityID: uuid.New(), ScopeID: scope, Features: []float64{1, 2}},
+		{EntityID: uuid.New(), ScopeID: scope, Features: []float64{3, 4}},
+	})
+	if err != nil {
+		t.Fatalf("IngestBatch: %v", err)
+	}
+	if batch.Accepted != 2 {
+		t.Errorf("accepted = %d", batch.Accepted)
+	}
+	got, _ := mem.EntityStates.ListByScope(context.Background(), scope)
+	if len(got) != 2 {
+		t.Fatalf("persisted %d", len(got))
+	}
+
+	reports, err := c.ValidateConfig(context.Background(), map[string]string{})
+	if err != nil {
+		t.Fatalf("ValidateConfig: %v", err)
+	}
+	if len(reports) == 0 {
+		t.Fatal("expected detector reports")
+	}
+}
+
 // Ensure the grpc package is imported so the compiler checks the generated
 // client code against the server implementation.
 var _ = insecure.NewCredentials

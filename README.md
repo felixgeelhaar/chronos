@@ -334,13 +334,15 @@ The gRPC service is defined in [`api/proto/chronos/v1/chronos.proto`](api/proto/
 
 | Method | Description |
 |---|---|
-| `Ingest` | Push a single observation (`EntityState` fields on `IngestRequest`). Unary — not client-streaming. |
-| `ListSignals` | Filter by scope/pattern/series/since/until/min_confidence/limit. No `since_cursor` (HTTP-only). |
+| `Ingest` | Push a single observation. Unary — batch ingest is `IngestBatch`. |
+| `IngestBatch` | Persist many observations (all-or-nothing, same cap as HTTP). |
+| `ListSignals` | Filter by scope/pattern/series/since/until/min_confidence/limit/`since_cursor`. Returns `next_cursor`. |
 | `GetSignal` | Fetch a single signal by ID |
+| `StreamSignals` | Server-streaming live feed (requires scheduler; Unimplemented otherwise) |
+| `ValidateConfig` | Dry-run a candidate `CHRONOS_*` env map |
+| `ExportFederation` | Anonymized pattern stats (`CHRONOS_FEDERATION_ENABLED=true`) |
 
-Batch ingest, federation export, SSE, and cursor pagination stay on HTTP. See [`docs/backlog.md`](docs/backlog.md).
-
-Bearer-token auth via the `authorization` metadata header reuses `CHRONOS_API_TOKEN`. HTTP and gRPC return the same domain shape — see [`docs/wire-contract.md`](docs/wire-contract.md) for the canonical contract.
+Bearer-token auth via the `authorization` metadata header reuses `CHRONOS_API_TOKEN` (unary and streaming). HTTP and gRPC return the same domain shape — see [`docs/wire-contract.md`](docs/wire-contract.md) for the canonical contract.
 
 Wire shape and stability policy: [`docs/wire-contract.md`](docs/wire-contract.md). Roadmap: [`ROADMAP.md`](ROADMAP.md).
 

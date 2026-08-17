@@ -104,7 +104,7 @@ type Detector interface {
 }
 ```
 
-The Engine groups input states by scope, sorts each group ascending by timestamp, and calls every registered detector. Output is sorted by `detected-at` descending, then `confidence` descending, and capped at `cfg.MaxSignalsPerRun`. `internal/ports.SignalRepository.List` returns results in the same order.
+The Engine groups input states by scope, sorts each group ascending by timestamp, and calls every registered detector. Each emission is stamped with a content-addressed `PerceptionID` (UUID v5 of scope, series, pattern, window, and pairwise partner) so a second detect over the same window upserts. Output is sorted by `detected-at` descending, then `confidence` descending, and capped at `cfg.MaxSignalsPerRun`. Truncation and per-detector latency/skip/emit counts are recorded on the optional metrics registry. `internal/ports.SignalRepository.List` returns results in the same order.
 
 ### Recurrence (available)
 

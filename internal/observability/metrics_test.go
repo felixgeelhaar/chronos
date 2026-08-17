@@ -18,6 +18,9 @@ func TestMetrics_RenderShape(t *testing.T) {
 	m.ObserveHTTP("GET", 200, "/v1/signals", 12*time.Millisecond)
 	m.ObserveHTTP("GET", 200, "/v1/signals", 8*time.Millisecond)
 	m.ObserveHTTP("GET", 404, "/v1/signals/abc-123", 3*time.Millisecond)
+	m.ObserveDetector("trend", 5*time.Millisecond, 2)
+	m.ObserveDetector("trend", time.Millisecond, 0)
+	m.ObserveDetectorTruncated("correlation")
 
 	var buf bytes.Buffer
 	if err := m.Render(&buf); err != nil {
@@ -36,6 +39,9 @@ func TestMetrics_RenderShape(t *testing.T) {
 		`chronos_http_requests_total{method="GET",status="404"} 1`,
 		// Per-id paths must be folded to :id so cardinality is bounded.
 		`path="/v1/signals/:id"`,
+		`chronos_detector_signals_total{pattern="trend"} 2`,
+		`chronos_detector_skips_total{pattern="trend"} 1`,
+		`chronos_signals_truncated_total{pattern="correlation"} 1`,
 	}
 	for _, w := range wants {
 		if !strings.Contains(out, w) {
@@ -102,4 +108,6 @@ func TestNilMetrics_NoOps(t *testing.T) {
 	m.ObserveSignal("x")
 	m.ObserveObservations("y", 1)
 	m.ObserveHTTP("GET", 200, "/", time.Millisecond)
+	m.ObserveDetector("trend", time.Millisecond, 1)
+	m.ObserveDetectorTruncated("correlation")
 }

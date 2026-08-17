@@ -12,14 +12,34 @@ import "google/protobuf/timestamp.proto";
 service ChronosService {
   // Ingest persists a single EntityState observation. Detection is not
   // triggered automatically; the scheduler or compute pipeline handles
-  // detection separately.
+  // detection separately. Unary — batch ingest is IngestBatch.
   rpc Ingest(IngestRequest) returns (IngestResponse);
+
+  // IngestBatch persists many observations in one RPC. Validation is
+  // all-or-nothing, matching POST /v1/ingest/batch.
+  rpc IngestBatch(IngestBatchRequest) returns (IngestBatchResponse);
 
   // ListSignals returns signals matching the provided filter.
   rpc ListSignals(ListSignalsRequest) returns (ListSignalsResponse);
 
   // GetSignal returns a single signal by ID.
   rpc GetSignal(GetSignalRequest) returns (Signal);
+
+  // StreamSignals is the gRPC equivalent of GET /v1/signals/stream.
+  // Requires the in-process detection scheduler. Returns Unimplemented
+  // when streaming is not attached. Each frame is a StreamSignalsResponse
+  // so the stream type is unique from GetSignal's Signal return
+  // (RPC_REQUEST_RESPONSE_UNIQUE).
+  rpc StreamSignals(StreamSignalsRequest) returns (stream StreamSignalsResponse);
+
+  // ValidateConfig dry-runs a candidate env-var map, matching
+  // POST /v1/config/validate. Does not mutate the running server.
+  rpc ValidateConfig(ValidateConfigRequest) returns (ValidateConfigResponse);
+
+  // ExportFederation returns anonymized pattern statistics, matching
+  // GET /v1/federation/export. Returns Unimplemented unless
+  // CHRONOS_FEDERATION_ENABLED=true.
+  rpc ExportFederation(ExportFederationRequest) returns (FederationExport);
 }
 
 // PatternType is the enum mirror of domain.PatternType.
@@ -138,12 +158,89 @@ message ListSignalsRequest {
   // round-trip pattern. At least one of scope_id or scope_ids must be
   // set.
   repeated string scope_ids = 8;
+  // Opaque pagination token from a previous ListSignalsResponse.next_cursor.
+  // Same encoding as HTTP ?since_cursor=.
+  string since_cursor = 9;
 }
 
 // ListSignalsResponse carries the matched signals.
 message ListSignalsResponse {
   repeated Signal signals = 1;
   int32 count = 2;
+  // Opaque token for the next poll. Empty when the page is empty.
+  string next_cursor = 3;
+}
+
+// IngestBatchRequest is the wire shape for IngestBatch.
+message IngestBatchRequest {
+  repeated IngestRequest observations = 1;
+  bool defer_detection = 2;
+}
+
+// IngestBatchResponse confirms how many observations were persisted.
+message IngestBatchResponse {
+  int32 accepted = 1;
+  bool defer_detection = 2;
+}
+
+// StreamSignalsRequest filters the live signal stream. At least one of
+// scope_id or scope_ids is required, matching HTTP /v1/signals/stream.
+message StreamSignalsRequest {
+  string scope_id = 1;
+  repeated string scope_ids = 2;
+  PatternType pattern = 3;
+}
+
+// StreamSignalsResponse is one frame on the live signal stream.
+message StreamSignalsResponse {
+  Signal signal = 1;
+}
+
+// ValidateConfigRequest carries candidate CHRONOS_* env vars.
+message ValidateConfigRequest {
+  map<string, string> env = 1;
+}
+
+// DetectorReport is the dry-run verdict for one detector.
+message DetectorReport {
+  string name = 1;
+  bool enabled = 2;
+  string reason = 3;
+  map<string, string> thresholds = 4;
+  repeated string warnings = 5;
+}
+
+// ValidateConfigResponse lists one report per detector.
+message ValidateConfigResponse {
+  repeated DetectorReport detectors = 1;
+}
+
+// ExportFederationRequest is empty; the export is unscoped by design.
+message ExportFederationRequest {}
+
+// FederationPatternStats summarises one pattern type's signal population.
+message FederationPatternStats {
+  string pattern = 1;
+  int32 count = 2;
+  double avg_strength = 3;
+  double min_strength = 4;
+  double max_strength = 5;
+  double avg_confidence = 6;
+  double min_confidence = 7;
+  double max_confidence = 8;
+  double avg_sample_size = 9;
+  int32 tentative_count = 10;
+  int32 established_count = 11;
+  int32 strong_count = 12;
+}
+
+// FederationExport is the anonymized pattern-statistics payload.
+message FederationExport {
+  google.protobuf.Timestamp generated_at = 1;
+  string source = 2;
+  string version = 3;
+  repeated FederationPatternStats patterns = 4;
+  int32 total_signals = 5;
 }
 
 // GetSignalRequest looks up a single signal.
