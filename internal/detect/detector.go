@@ -21,8 +21,8 @@ import (
 //
 // Detect operates on the states for a single scope. The engine groups
 // the input by scope before calling Detect. Detectors must not mutate
-// the input slice. Returned signals must already be Validated by the
-// detector — the engine asserts but does not fix invalid output.
+// the input slice. Returned signals must already satisfy domain.Signal.Validate
+// — persistence rejects invalid output; the engine does not rewrite it.
 type Detector interface {
 	// Pattern returns the PatternType this detector emits.
 	Pattern() domain.PatternType

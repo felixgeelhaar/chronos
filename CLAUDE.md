@@ -17,11 +17,11 @@ go test -race -run TestRecurrence ./internal/detect
 go test -race -run '^TestSQLite_' ./internal/store/sqlite
 ```
 
-CI (`.github/workflows/ci.yml`) runs the same `go test -race -count=1` plus `golangci-lint` and `make build` on Go 1.22 and 1.23. The codebase targets Go 1.23 (`go.mod`); match locally before pushing.
+CI (`.github/workflows/ci.yml`) runs `go test -race -count=1`, `golangci-lint`, and `make build` on Go 1.25. The codebase targets Go 1.25 (`go.mod`); match locally before pushing.
 
 ## Project intent
 
-Chronos is the **Time / Pattern Perception** layer of the cognitive stack (Mnemos → Chronos → Nous → Praxis). It ingests time-series observations and emits structured **signals** — `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, … Each signal carries Pattern, Strength (intensity), Confidence (sureness), Window, Evidence, and Metrics.
+Chronos is the **Time / Pattern Perception** layer of the cognitive stack (Mnemos → Chronos → Nous → Praxis). It ingests time-series observations and emits structured **signals** — `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, `Anomaly`, `Seasonality`, `Correlation`, `ChangePoint`, `OutlierCluster`, `CrossScopeCorrelation`. Each signal carries Pattern, Strength (intensity), Confidence (sureness), Window, Evidence, and Metrics.
 
 Two non-negotiable rules:
 
@@ -54,11 +54,11 @@ Layering, in dependency order (inner → outer):
 1. `internal/domain` — pure types: `Signal`, `Evidence`, `TimeWindow`, `PatternType`, plus `Validate` / `Normalise`. No I/O. No prose.
 2. `internal/ports` — outbound interfaces in one file: `EntityStateRepository` (with both `Ingest` and batch `Save`), `SignalRepository` (`Save`/`List(filter)`/`Get`/`Count`). No `Dismiss`, no `Active`, no `Feedback`.
 3. `internal/similarity` — pure math (cosine, weighted, Euclidean).
-4. `internal/detect` — detectors + Engine. One file per pattern: `recurrence.go` (and Tier-B `trend.go`, `spike.go`, `drop.go`, `stall.go`).
-5. `internal/store/{memory,sqlite,postgres}` — port implementations, one `Conn` per backend wiring two repositories sharing a `*sql.DB`.
-6. `internal/store` (top of subtree) — `Open(ctx, dbType, connStr)` factory returns a uniform port-typed `*Conn`.
-7. `internal/pipeline` — orchestration: `Compute(ctx, ComputeInput)` runs fetch → save observations → detect → save signals.
-8. `internal/api` — HTTP transport + `SignalDTO` / `IngestRequest`. Strictly transport — no rendering of human-readable copy.
+4. `internal/detect` — detectors + Engine. One file per pattern (`recurrence.go`, `trend.go`, `spike.go`, `drop.go`, `stall.go`, `anomaly.go`, `seasonality.go`, `correlation.go`, `changepoint.go`, `outlier_cluster.go`, `cross_scope_correlation.go`).
+5. `internal/store/{memory,sqlite,postgres,mysql,libsql}` — port implementations. SQLite uses sqlc; Postgres/MySQL are hand-written; libSQL reuses the SQLite repositories.
+6. `internal/store` (top of subtree) — `Open(ctx, dsn)` factory returns a uniform port-typed `*Conn`.
+7. `internal/pipeline` — orchestration: `Compute(ctx, ComputeInput)` runs fetch → save observations → detect → save signals. `Scheduler` ticks detection for the HTTP ingest path.
+8. `internal/api` — HTTP transport + `SignalDTO` / `IngestRequest`. gRPC lives in `internal/api/grpc`. Strictly transport — no rendering of human-readable copy.
 9. `cmd/chronos` — flat CLI: `main.go` + one file per subcommand + `errors.go` (`ChronosError{Code,Message,Cause,Hint}`).
 
 ### Invariants worth knowing
@@ -71,7 +71,9 @@ Layering, in dependency order (inner → outer):
 ### Persistence layout
 
 - **SQLite**: pure-Go `modernc.org/sqlite` driver. PRAGMAs (`foreign_keys`, `journal_mode=wal`, `busy_timeout`) encoded in the DSN. Migrations are embedded via `go:embed migrations/001_initial.sql`. sqlc-generated code lives in `internal/store/sqlite/sqlcgen/`. Two aggregates: `entity_states` and `signals` + `signal_evidence`.
-- **Postgres**: hand-written queries (Postgres is a secondary backend). Schema embedded via `go:embed` from `internal/store/postgres/migrations/001_initial.sql`. Same two-aggregate shape.
+- **Postgres**: hand-written queries. Schema embedded via `go:embed` from `internal/store/postgres/migrations/001_initial.sql`. Same two-aggregate shape.
+- **MySQL / MariaDB**: hand-written queries; namespace is a database, not a schema.
+- **libSQL**: Turso remote or local files; reuses the SQLite repositories.
 - **Memory**: thread-safe in-memory backend used for tests.
 
 To change SQL: edit `sql/sqlite/queries.sql` and/or the relevant migration file, then `make sqlc`.
@@ -82,9 +84,10 @@ All env-var driven. Defaults in `config.Default()` (`internal/config/config.go`)
 
 | Variable | Default | Notes |
 |---|---|---|
-| `CHRONOS_DB_TYPE` | `sqlite` | `sqlite` / `postgres` / `memory` |
+| `CHRONOS_DB_DSN` | unset | Primary DSN (`sqlite:///…`, `postgres://…`, `mysql://…`, `libsql://…`) |
+| `CHRONOS_DB_TYPE` | `sqlite` | Legacy: `sqlite` / `postgres` / `memory` |
 | `CHRONOS_DB_CONN` | `chronos.db` | Path or DSN |
-| `CHRONOS_MAX_SIGNALS` | `10` | Cap per detect run |
+| `CHRONOS_MAX_SIGNALS` | `100` | Cap per detect run (`0` = unlimited) |
 | `CHRONOS_JOB_TIMEOUT` | `10m` | Compute timeout |
 | `CHRONOS_SIM_THRESHOLD` | `0.85` | Recurrence: min cosine similarity |
 | `CHRONOS_MIN_SAMPLE` | `2` | Recurrence: min peer cases |
@@ -102,8 +105,22 @@ All env-var driven. Defaults in `config.Default()` (`internal/config/config.go`)
 | `CHRONOS_SEASONALITY_MIN_PERIOD` | `2` | Seasonality: minimum lag (period) considered |
 | `CHRONOS_CORRELATION_MIN` | `0.7` | Correlation: minimum |Pearson r| to emit |
 | `CHRONOS_CORRELATION_MIN_POINTS` | `5` | Correlation: minimum aligned observations |
+| `CHRONOS_CHANGEPOINT_MIN_SHIFT` | `1.5` | ChangePoint: minimum standardised mean shift |
+| `CHRONOS_CHANGEPOINT_MIN_POINTS` | `8` | ChangePoint: minimum observations |
+| `CHRONOS_OUTLIER_CLUSTER_MIN_SERIES` | `3` | OutlierCluster: minimum distinct series in a bucket |
+| `CHRONOS_OUTLIER_CLUSTER_Z` | `2.5` | OutlierCluster: per-series \|z\| threshold |
+| `CHRONOS_OUTLIER_CLUSTER_WINDOW` | `5m` | OutlierCluster: time-bucket width |
+| `CHRONOS_CROSS_SCOPE_MIN` | `0.8` | CrossScopeCorrelation: minimum \|r\| |
+| `CHRONOS_CROSS_SCOPE_MIN_POINTS` | `5` | CrossScopeCorrelation: minimum aligned observations |
+| `CHRONOS_ANONYMIZE_CROSS_SCOPE` | `false` | Hash scope/series ids on cross-scope signals |
+| `CHRONOS_CONFIDENCE_ESTABLISHED` | `2.0` | MIN_POINTS multiplier for `established` |
+| `CHRONOS_CONFIDENCE_STRONG` | `5.0` | MIN_POINTS multiplier for `strong` |
+| `CHRONOS_DETECTOR_PARALLELISM` | `false` | Parallel per-scope detectors |
 | `CHRONOS_HTTP_PORT` | `7778` | Serve port |
 | `CHRONOS_HTTP_HOST` | `127.0.0.1` | Serve host |
+| `CHRONOS_API_TOKEN` | unset | Bearer token; empty disables auth |
+| `CHRONOS_GRPC_PORT` | `0` | gRPC port; `0` disables |
+| `CHRONOS_DETECTION_INTERVAL` | `0` | In-process scheduler cadence; `0` disables |
 | `CHRONOS_VERBOSE` | unset | When set, the CLI prints error causes |
 
 `serve` flags `--port` / `--host` override env. `compute` accepts `--scope-id` (preferred) or `--coach-id` (alias retained for the original Ascend wiring).
@@ -114,12 +131,12 @@ All env-var driven. Defaults in `config.Default()` (`internal/config/config.go`)
 2. Add the `PatternType` constant if not already reserved in `internal/domain/types.go`.
 3. Register in `detect.DefaultDetectors`.
 4. Add config knobs to `internal/config/config.go`.
-5. Document evidence `Kind` and `Metrics` keys in [`docs/cognitive-stack.md`](docs/cognitive-stack.md).
+5. Document evidence `Kind` and `Metrics` keys in [`docs/wire-contract.md`](docs/wire-contract.md).
 6. Tests in `internal/detect/<pattern>_test.go` covering trigger + no-trigger.
 
 ## Conventions
 
-- Go 1.23+. Deps: `google/uuid`, `lib/pq`, `modernc.org/sqlite`.
+- Go 1.25+. Deps: `google/uuid`, `jackc/pgx/v5`, `go-sql-driver/mysql`, `modernc.org/sqlite`.
 - Conventional Commits.
 - Tests are stdlib-only and table-driven where useful.
 - Wrap errors with `%w`. The CLI uses `*ChronosError` for exit-code routing.

@@ -68,10 +68,12 @@ func DefaultCrossScopeDetectors(cfg *config.Config) []CrossScopeDetector {
 	}
 }
 
-// DefaultDetectors returns the standard detector set wired with cfg.
-// The full vision vocabulary is implemented: Recurrence, Trend, Spike,
-// Drop, Stall, Anomaly, Seasonality, Correlation. Callers wanting a
-// custom subset construct an Engine directly with explicit detectors.
+// DefaultDetectors returns the standard per-scope detector set wired
+// with cfg: Recurrence, Trend, Spike, Drop, Stall, Anomaly,
+// Seasonality, Correlation, ChangePoint, OutlierCluster. Cross-scope
+// detectors are registered separately via DefaultCrossScopeDetectors.
+// Callers wanting a custom subset construct an Engine directly with
+// explicit detectors.
 func DefaultDetectors(cfg *config.Config) []Detector {
 	return []Detector{
 		NewRecurrence(cfg),

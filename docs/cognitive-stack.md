@@ -40,6 +40,9 @@ Chronos perceives change. It accepts time-series observations from any source an
 - `Anomaly` — the subject is unlike its peers' *current* states (cross-entity dual of Recurrence).
 - `Seasonality` — periodic structure in the series (autocorrelation peak).
 - `Correlation` — two series move together (pairwise Pearson).
+- `ChangePoint` — a sustained mean shift between two regimes (best-split test).
+- `OutlierCluster` — several series in a scope go anomalous around the same time (cohort-level).
+- `CrossScopeCorrelation` — two series in *different* scopes move together.
 
 Each signal carries:
 
@@ -48,8 +51,10 @@ Each signal carries:
 - **Window** (the time interval analysed; Anomaly is a snapshot, so its window is degenerate — `Start == End == subject.Timestamp`)
 - **Strength** (intensity of the pattern, 0..1)
 - **Confidence** (how sure the detector is, 0..1)
+- **ConfidenceClass** (qualitative grade: tentative / established / strong)
 - **Evidence** (per-detector supporting observations)
 - **Metrics** (free-form numeric measurements: `avg_similarity`, `slope`, `z`, …)
+- **Explanation** (numeric/structured only: feature evolution, peer count, threshold, detector version — never Title/Summary/Suggestion)
 
 The full list of stable string keys consumers may rely on — `Pattern` values, `Evidence.Kind`s, and `Metrics` keys per detector — is in [`wire-contract.md`](wire-contract.md).
 

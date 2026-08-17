@@ -68,17 +68,19 @@ func Compute(ctx context.Context, in ComputeInput) (ComputeResult, error) {
 	signals := in.Engine.Detect(ctx, states)
 	logger.Info("signals detected", "count", len(signals))
 
+	created := 0
 	for _, sig := range signals {
 		if err := in.Signals.Save(ctx, sig); err != nil {
 			logger.Error("signal save failed", "id", sig.ID, "err", err)
 			continue
 		}
 		in.Metrics.ObserveSignal(string(sig.Pattern))
+		created++
 	}
 
 	return ComputeResult{
 		StatesFetched:  len(states),
-		SignalsCreated: len(signals),
+		SignalsCreated: created,
 	}, nil
 }
 

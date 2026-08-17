@@ -117,6 +117,26 @@ func (c *Client) Ingest(ctx context.Context, req IngestRequest) (uuid.UUID, erro
 	return body.ID, nil
 }
 
+// IngestBatch sends observations to POST /v1/ingest/batch. Validation
+// is all-or-nothing on the server.
+func (c *Client) IngestBatch(ctx context.Context, observations []IngestRequest) (IngestBatchResponse, error) {
+	var body IngestBatchResponse
+	if err := c.do(ctx, http.MethodPost, "/v1/ingest/batch", IngestBatchRequest{Observations: observations}, &body); err != nil {
+		return IngestBatchResponse{}, err
+	}
+	return body, nil
+}
+
+// FederationExport pulls GET /v1/federation/export. The server returns
+// 501 unless CHRONOS_FEDERATION_ENABLED=true.
+func (c *Client) FederationExport(ctx context.Context) (FederationExport, error) {
+	var body FederationExport
+	if err := c.do(ctx, http.MethodGet, "/v1/federation/export", nil, &body); err != nil {
+		return FederationExport{}, err
+	}
+	return body, nil
+}
+
 // Signals returns a fluent builder for the /v1/signals endpoint.
 func (c *Client) Signals() *SignalQuery { return &SignalQuery{c: c} }
 

@@ -63,11 +63,11 @@ const (
 	PatternTypeAnomaly PatternType = "anomaly"
 
 	// PatternTypeSeasonality — a periodic structure detected over a
-	// long-enough window. Reserved for future implementation.
+	// long-enough window via autocorrelation peaks.
 	PatternTypeSeasonality PatternType = "seasonality"
 
-	// PatternTypeCorrelation — two or more series move together. Reserved
-	// for future implementation.
+	// PatternTypeCorrelation — two or more series in the same scope
+	// move together (pairwise Pearson).
 	PatternTypeCorrelation PatternType = "correlation"
 
 	// PatternTypeChangePoint — the series exhibits a step change: a
@@ -260,7 +260,10 @@ func (s Signal) Validate() error {
 	if s.ScopeID == uuid.Nil {
 		return ErrMissingScopeID
 	}
-	if s.Series == uuid.Nil {
+	// OutlierCluster is a cohort-level signal: Series is uuid.Nil by
+	// contract (see docs/wire-contract.md). Every other pattern is
+	// entity-level and must name a series.
+	if s.Series == uuid.Nil && s.Pattern != PatternTypeOutlierCluster {
 		return ErrMissingSeriesID
 	}
 	if s.Pattern == "" {
@@ -275,5 +278,5 @@ func (s Signal) Validate() error {
 	if err := s.Window.Validate(); err != nil {
 		return err
 	}
-	return nil
+	return s.Explanation.Validate()
 }

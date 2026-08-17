@@ -9,7 +9,7 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 | `CHRONOS_DB_DSN` | unset | both | Persistence DSN. Primary entry point. Examples: `sqlite:///chronos.db`, `postgres://user:pw@host/db?namespace=chronos`, `mysql://user:pw@host:3306/?namespace=chronos`, `libsql://my-db.turso.io?authToken=...`. When set, takes precedence over the legacy pair below. |
 | `CHRONOS_DB_TYPE` | `sqlite` | both | **Legacy**: `sqlite`, `postgres`, or `memory`. Translated internally to a DSN; new deployments should set `CHRONOS_DB_DSN`. |
 | `CHRONOS_DB_CONN` | `chronos.db` | both | **Legacy**: SQLite path (or `:memory:`) or full Postgres URL. Used together with `CHRONOS_DB_TYPE`. |
-| `CHRONOS_MAX_SIGNALS` | `10` | `compute` | Cap on signals produced per detect run. |
+| `CHRONOS_MAX_SIGNALS` | `100` | `compute` | Cap on signals produced per detect run. `0` = unlimited. |
 | `CHRONOS_JOB_TIMEOUT` | `10m` | `compute` | Overall compute timeout (Go duration syntax). |
 | `CHRONOS_SIM_THRESHOLD` | `0.85` | Recurrence | Minimum cosine similarity for a peer to count. |
 | `CHRONOS_MIN_SAMPLE` | `2` | Recurrence | Minimum peer cases required to emit. |
@@ -34,11 +34,16 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 | `CHRONOS_OUTLIER_CLUSTER_WINDOW` | `5m` | OutlierCluster | Sliding-window width for "around the same time". |
 | `CHRONOS_CROSS_SCOPE_MIN` | `0.8` | CrossScopeCorrelation | Minimum \|Pearson r\| across scopes. |
 | `CHRONOS_CROSS_SCOPE_MIN_POINTS` | `5` | CrossScopeCorrelation | Minimum aligned observations between two series. |
+| `CHRONOS_ANONYMIZE_CROSS_SCOPE` | `false` | CrossScopeCorrelation | Replace scope/series ids with UUIDv5 hashes on cross-scope signals. |
+| `CHRONOS_CONFIDENCE_ESTABLISHED` | `2.0` | all detectors | MIN_POINTS multiplier for `confidence_class=established`. |
+| `CHRONOS_CONFIDENCE_STRONG` | `5.0` | all detectors | MIN_POINTS multiplier for `confidence_class=strong`. |
 | `CHRONOS_DETECTOR_PARALLELISM` | `false` | Engine | Run per-scope detectors in parallel goroutines. Off by default (deterministic ordering); flip on for many-scope deployments. |
 | `CHRONOS_HTTP_PORT` | `7778` | `serve` | HTTP listen port. |
 | `CHRONOS_HTTP_HOST` | `127.0.0.1` | `serve` | HTTP listen host. Use `0.0.0.0` to bind all interfaces. |
+| `CHRONOS_API_TOKEN` | unset | `serve` | Bearer token for HTTP and gRPC. Empty disables auth. |
 | `CHRONOS_GRPC_PORT` | `0` | `serve` | gRPC listen port. `0` disables gRPC; HTTP and gRPC servers run concurrently when both are set. |
 | `CHRONOS_GRPC_HOST` | unset | `serve` | gRPC listen host. Empty binds all interfaces. |
+| `CHRONOS_FEDERATION_ENABLED` | `false` | `serve` | Opt-in `GET /v1/federation/export`. |
 | `CHRONOS_WEBHOOK_URLS` | unset | both | Comma-separated POST endpoints; empty disables webhooks. |
 | `CHRONOS_WEBHOOK_SECRET` | unset | both | HMAC-SHA256 key for `X-Chronos-Signature`. Empty omits the header. |
 | `CHRONOS_WEBHOOK_TIMEOUT` | `5s` | both | Per-request HTTP client timeout (Go duration). |
@@ -54,7 +59,7 @@ CLI flags > environment variables > defaults baked into `internal/config/config.
 
 ## Tuning detectors
 
-Each detector has its own knob namespace (`CHRONOS_<DETECTOR>_*`) so you can tune one without affecting others. Recurrence is the only detector enabled in Tier A; the rest become live as Tier B detectors land in `internal/detect/`.
+Each detector has its own knob namespace (`CHRONOS_<DETECTOR>_*`) so you can tune one without affecting others. All eleven detectors in `DefaultDetectors` / `DefaultCrossScopeDetectors` are live; set a detector's min-points / threshold knobs out of range to effectively disable it (the detector returns no signals).
 
 - **Recurrence** (`SIM_THRESHOLD`, `MIN_SAMPLE`) — raise threshold for fewer, more specific peers; lower it for more candidates. Below ~0.7 admits noise. `MIN_SAMPLE` of 2 is the smallest defensible value; five is the saturation point of the confidence sample-factor.
 - **Trend / Spike / Drop / Stall** thresholds influence trigger sensitivity; smaller windows react faster but produce more noise.
@@ -168,6 +173,6 @@ Both transports are at-most-once. The persistence record (`SignalRepository`) is
 
 ## Authentication
 
-The HTTP server does not authenticate today. Deployments that need auth wrap `internal/api.Server` in their own middleware (token check, mTLS, JWT) before mounting the routes. The `client.WithToken(...)` option is wire-ready for the standard `Authorization: Bearer <token>` header.
+When `CHRONOS_API_TOKEN` is set, both HTTP (`Authorization: Bearer <token>` via `api.BearerAuth`) and gRPC (`authorization` metadata) reject unauthenticated calls. Leave it empty to skip auth in development. The `client.WithToken(...)` option sends the standard bearer header.
 
-The gRPC server, when enabled (`CHRONOS_GRPC_PORT > 0`), checks the `authorization` metadata header against `CHRONOS_API_TOKEN`. Calls without a matching bearer token are rejected with `Unauthenticated`. Set `CHRONOS_API_TOKEN` empty to skip auth in development.
+The gRPC server, when enabled (`CHRONOS_GRPC_PORT > 0`), checks the `authorization` metadata header against `CHRONOS_API_TOKEN`. Calls without a matching bearer token are rejected with `Unauthenticated`.

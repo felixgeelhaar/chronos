@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -16,16 +17,26 @@ import (
 type SignalQuery struct {
 	c             *Client
 	scope         uuid.UUID
+	scopes        []uuid.UUID
 	series        *uuid.UUID
 	pattern       *string
 	since, until  *time.Time
 	minConfidence *float64
 	limit         int
+	sinceCursor   string
 }
 
-// Scope filters by scope ID. Required for List.
+// Scope filters by a single scope ID. Required for List unless Scopes
+// is set.
 func (q *SignalQuery) Scope(id uuid.UUID) *SignalQuery {
 	q.scope = id
+	return q
+}
+
+// Scopes sets a multi-scope allowlist (HTTP scope_in). Cannot be
+// combined with Scope.
+func (q *SignalQuery) Scopes(ids ...uuid.UUID) *SignalQuery {
+	q.scopes = ids
 	return q
 }
 
@@ -66,13 +77,31 @@ func (q *SignalQuery) Limit(n int) *SignalQuery {
 	return q
 }
 
-// List runs the query.
-func (q *SignalQuery) List(ctx context.Context) ([]Signal, error) {
-	if q.scope == uuid.Nil {
-		return nil, errors.New("chronos client: Scope is required")
+// SinceCursor resumes a List after the opaque next_cursor token from
+// a previous page.
+func (q *SignalQuery) SinceCursor(token string) *SignalQuery {
+	q.sinceCursor = token
+	return q
+}
+
+func (q *SignalQuery) queryValues() (url.Values, error) {
+	if q.scope == uuid.Nil && len(q.scopes) == 0 {
+		return nil, errors.New("chronos client: Scope or Scopes is required")
+	}
+	if q.scope != uuid.Nil && len(q.scopes) > 0 {
+		return nil, errors.New("chronos client: set Scope or Scopes, not both")
 	}
 	v := url.Values{}
-	v.Set("scope_id", q.scope.String())
+	if q.scope != uuid.Nil {
+		v.Set("scope_id", q.scope.String())
+	}
+	if len(q.scopes) > 0 {
+		parts := make([]string, len(q.scopes))
+		for i, id := range q.scopes {
+			parts[i] = id.String()
+		}
+		v.Set("scope_in", strings.Join(parts, ","))
+	}
 	if q.series != nil {
 		v.Set("series", q.series.String())
 	}
@@ -91,21 +120,40 @@ func (q *SignalQuery) List(ctx context.Context) ([]Signal, error) {
 	if q.limit > 0 {
 		v.Set("limit", strconv.Itoa(q.limit))
 	}
-
-	var body struct {
-		Signals []Signal `json:"signals"`
-		Count   int      `json:"count"`
+	if q.sinceCursor != "" {
+		v.Set("since_cursor", q.sinceCursor)
 	}
-	if err := q.c.do(ctx, "GET", "/v1/signals?"+v.Encode(), nil, &body); err != nil {
+	return v, nil
+}
+
+// List runs the query and returns the matching signals.
+func (q *SignalQuery) List(ctx context.Context) ([]Signal, error) {
+	page, err := q.ListPage(ctx)
+	if err != nil {
 		return nil, err
 	}
-	return body.Signals, nil
+	return page.Signals, nil
+}
+
+// ListPage runs the query and returns signals plus the opaque
+// next_cursor for polling.
+func (q *SignalQuery) ListPage(ctx context.Context) (SignalPage, error) {
+	v, err := q.queryValues()
+	if err != nil {
+		return SignalPage{}, err
+	}
+	var body SignalPage
+	if err := q.c.do(ctx, "GET", "/v1/signals?"+v.Encode(), nil, &body); err != nil {
+		return SignalPage{}, err
+	}
+	return body, nil
 }
 
 // Stream subscribes to /v1/signals/stream and returns a channel that
 // emits each newly-detected signal until ctx is cancelled or the
-// server closes the stream. Scope is required (the SSE endpoint
-// rejects unscoped streams). Pattern is honoured server-side when set.
+// server closes the stream. Scope or Scopes is required (the SSE
+// endpoint rejects unscoped streams). Pattern is honoured server-side
+// when set.
 //
 // The returned channel is closed by the SDK on ctx cancellation,
 // connection drop, or fatal protocol error — `for sig := range ch`
@@ -118,11 +166,22 @@ func (q *SignalQuery) List(ctx context.Context) ([]Signal, error) {
 // List call: the persisted /v1/signals query is the source of truth,
 // the stream is a courtesy. De-duplicate by Signal.ID.
 func (q *SignalQuery) Stream(ctx context.Context) (<-chan Signal, error) {
-	if q.scope == uuid.Nil {
-		return nil, errors.New("chronos client: Scope is required for Stream")
+	if q.scope == uuid.Nil && len(q.scopes) == 0 {
+		return nil, errors.New("chronos client: Scope or Scopes is required for Stream")
+	}
+	if q.scope != uuid.Nil && len(q.scopes) > 0 {
+		return nil, errors.New("chronos client: set Scope or Scopes, not both")
 	}
 	v := url.Values{}
-	v.Set("scope_id", q.scope.String())
+	if q.scope != uuid.Nil {
+		v.Set("scope_id", q.scope.String())
+	} else {
+		parts := make([]string, len(q.scopes))
+		for i, id := range q.scopes {
+			parts[i] = id.String()
+		}
+		v.Set("scope_in", strings.Join(parts, ","))
+	}
 	if q.pattern != nil {
 		v.Set("pattern", *q.pattern)
 	}

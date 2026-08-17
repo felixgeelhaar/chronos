@@ -266,6 +266,33 @@ func TestSQLite_SignalListFilters(t *testing.T) {
 	}
 }
 
+func TestSQLite_SignalCohortLevelOutlierClusterPersists(t *testing.T) {
+	c := openTestConn(t)
+	ctx := context.Background()
+	now := time.Now().UTC()
+	sig := domain.Signal{
+		ID:         uuid.New(),
+		ScopeID:    uuid.New(),
+		Series:     uuid.Nil,
+		Pattern:    domain.PatternTypeOutlierCluster,
+		DetectedAt: now,
+		Window:     domain.TimeWindow{Start: now.Add(-time.Minute), End: now},
+		Strength:   0.4,
+		Confidence: 0.7,
+		Metrics:    map[string]float64{"member_count": 3},
+	}
+	if err := c.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save cohort-level signal: %v", err)
+	}
+	got, err := c.Signals.Get(ctx, sig.ID)
+	if err != nil {
+		t.Fatalf("Get: %v", err)
+	}
+	if got.Series != uuid.Nil {
+		t.Errorf("Series = %v, want nil", got.Series)
+	}
+}
+
 func TestSQLite_SignalGetMissing(t *testing.T) {
 	c := openTestConn(t)
 	if _, err := c.Signals.Get(context.Background(), uuid.New()); !errors.Is(err, domain.ErrSignalNotFound) {

@@ -60,6 +60,16 @@ func TestScheduler_TickProducesAndPersistsSignals(t *testing.T) {
 	if len(got) == 0 {
 		t.Fatal("scheduler tick produced no signals despite a clear trend")
 	}
+
+	first := len(got)
+	s.tick(ctx)
+	got, err = mem.Signals.List(ctx, ports.SignalFilter{ScopeID: scope})
+	if err != nil {
+		t.Fatalf("list after second tick: %v", err)
+	}
+	if len(got) != first {
+		t.Fatalf("second tick over unchanged data appended signals: first=%d second=%d", first, len(got))
+	}
 }
 
 func TestScheduler_RunTicksUntilContextCancelled(t *testing.T) {

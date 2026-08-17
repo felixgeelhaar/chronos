@@ -98,6 +98,7 @@ func (s *Seasonality) build(scopeID, series uuid.UUID, observations []chronos.En
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(n, s.cfg.SeasonalityMinPoints, s.cfg),
 		Metrics:         metrics,
+		Explanation:     explainSeries(observations, 0, s.cfg.SeasonalityMinAutocorr, detectorVersionSeasonality),
 		Evidence: []domain.Evidence{{
 			Series:  series,
 			Time:    observations[n-1].Timestamp,

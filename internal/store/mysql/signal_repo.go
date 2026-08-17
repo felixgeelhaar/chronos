@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/felixgeelhaar/chronos/internal/ports"
@@ -31,16 +32,23 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 	if metricsJSON == nil {
 		metricsJSON = []byte(`{}`)
 	}
+	explanationJSON, err := encodeExplanation(sig.Explanation)
+	if err != nil {
+		return fmt.Errorf("signal save: encode explanation: %w", err)
+	}
 	_, err = tx.ExecContext(ctx, `
-		INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO signals (id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
 			strength = VALUES(strength),
 			confidence = VALUES(confidence),
-			metrics = VALUES(metrics)
+			metrics = VALUES(metrics),
+			explanation = VALUES(explanation),
+			confidence_class = VALUES(confidence_class)
 	`, sig.ID.String(), sig.ScopeID.String(), sig.Series.String(), string(sig.Pattern),
 		sig.DetectedAt.UTC(), sig.Window.Start.UTC(), sig.Window.End.UTC(),
-		sig.Strength, sig.Confidence, string(metricsJSON),
+		sig.Strength, sig.Confidence, string(metricsJSON), explanationJSON,
+		string(sig.ConfidenceClass),
 	)
 	if err != nil {
 		return fmt.Errorf("signal save: insert: %w", err)
@@ -94,7 +102,7 @@ func (r *SignalRepository) List(ctx context.Context, filter ports.SignalFilter) 
 // Get returns a single signal by ID, including its evidence.
 func (r *SignalRepository) Get(ctx context.Context, id uuid.UUID) (domain.Signal, error) {
 	row := r.conn.DB.QueryRowContext(ctx, `
-		SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics
+		SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class
 		FROM signals WHERE id = ?
 	`, id.String())
 	sig, err := scanOneSignal(row)
@@ -155,7 +163,7 @@ func (r *SignalRepository) loadEvidence(ctx context.Context, id uuid.UUID) ([]do
 }
 
 func buildListQuery(f ports.SignalFilter) (string, []any) {
-	const base = `SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics FROM signals`
+	const base = `SELECT id, scope_id, series_id, pattern, detected_at, window_start, window_end, strength, confidence, metrics, explanation, confidence_class FROM signals`
 	where, args := buildWhere(f)
 	q := base + where + " ORDER BY detected_at DESC, confidence DESC"
 	if f.Limit > 0 {
@@ -181,6 +189,14 @@ func buildWhere(f ports.SignalFilter) (string, []any) {
 	}
 	if f.ScopeID != uuid.Nil {
 		add("scope_id =", f.ScopeID.String())
+	}
+	if len(f.ScopeIDs) > 0 {
+		placeholders := make([]string, len(f.ScopeIDs))
+		for i, id := range f.ScopeIDs {
+			args = append(args, id.String())
+			placeholders[i] = "?"
+		}
+		clauses = append(clauses, "scope_id IN ("+strings.Join(placeholders, ",")+")")
 	}
 	if f.Series != nil {
 		add("series_id =", f.Series.String())
@@ -226,11 +242,14 @@ func scanSignalRow(scan func(...any) error) (domain.Signal, error) {
 		idStr, scopeStr, seriesStr string
 		patternStr                 string
 		metricsJSON                []byte
+		explanationJSON            []byte
+		confidenceClassStr         string
 	)
 	if err := scan(
 		&idStr, &scopeStr, &seriesStr, &patternStr,
 		&sig.DetectedAt, &sig.Window.Start, &sig.Window.End,
 		&sig.Strength, &sig.Confidence, &metricsJSON,
+		&explanationJSON, &confidenceClassStr,
 	); err != nil {
 		return domain.Signal{}, err
 	}
@@ -245,8 +264,78 @@ func scanSignalRow(scan func(...any) error) (domain.Signal, error) {
 		return domain.Signal{}, fmt.Errorf("parse signal series_id: %w", err)
 	}
 	sig.Pattern = domain.PatternType(patternStr)
+	sig.ConfidenceClass = domain.ConfidenceClass(confidenceClassStr)
 	if len(metricsJSON) > 0 {
 		_ = json.Unmarshal(metricsJSON, &sig.Metrics)
 	}
+	expl, err := decodeExplanation(string(explanationJSON))
+	if err != nil {
+		return domain.Signal{}, fmt.Errorf("decode signal explanation: %w", err)
+	}
+	sig.Explanation = expl
 	return sig, nil
+}
+
+// explanationWire matches the sqlite/postgres JSON shape so a signal
+// saved on one backend can be loaded on another without re-encoding.
+type explanationWire struct {
+	FeatureEvolution   []featureSampleWire `json:"feature_evolution,omitempty"`
+	ComparablePeers    int                 `json:"comparable_peers,omitempty"`
+	BaselineWindowDays int                 `json:"baseline_window_days,omitempty"`
+	ThresholdUsed      float64             `json:"threshold_used,omitempty"`
+	DetectorVersion    string              `json:"detector_version,omitempty"`
+}
+
+type featureSampleWire struct {
+	At    string  `json:"at"`
+	Value float64 `json:"value"`
+}
+
+func encodeExplanation(e domain.Explanation) (string, error) {
+	if e.IsZero() {
+		return "{}", nil
+	}
+	w := explanationWire{
+		ComparablePeers:    e.ComparablePeers,
+		BaselineWindowDays: e.BaselineWindowDays,
+		ThresholdUsed:      e.ThresholdUsed,
+		DetectorVersion:    e.DetectorVersion,
+	}
+	for _, fs := range e.FeatureEvolution {
+		w.FeatureEvolution = append(w.FeatureEvolution, featureSampleWire{
+			At:    fs.At.UTC().Format("2006-01-02T15:04:05.999999999Z07:00"),
+			Value: fs.Value,
+		})
+	}
+	b, err := json.Marshal(w)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
+
+func decodeExplanation(raw string) (domain.Explanation, error) {
+	if raw == "" || raw == "{}" {
+		return domain.Explanation{}, nil
+	}
+	var w explanationWire
+	if err := json.Unmarshal([]byte(raw), &w); err != nil {
+		return domain.Explanation{}, err
+	}
+	out := domain.Explanation{
+		ComparablePeers:    w.ComparablePeers,
+		BaselineWindowDays: w.BaselineWindowDays,
+		ThresholdUsed:      w.ThresholdUsed,
+		DetectorVersion:    w.DetectorVersion,
+	}
+	for _, fs := range w.FeatureEvolution {
+		t, err := time.Parse("2006-01-02T15:04:05.999999999Z07:00", fs.At)
+		if err != nil {
+			return domain.Explanation{}, fmt.Errorf("decode feature_evolution time: %w", err)
+		}
+		out.FeatureEvolution = append(out.FeatureEvolution, domain.FeatureSample{
+			At: t, Value: fs.Value,
+		})
+	}
+	return out, nil
 }

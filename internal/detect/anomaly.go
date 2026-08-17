@@ -98,6 +98,7 @@ func (a *Anomaly) build(scopeID, subjectID uuid.UUID, subject chronos.EntityStat
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(len(evidence), a.cfg.AnomalyMinPeers, a.cfg),
 		Evidence:        evidence,
+		Explanation:     explainSeries([]chronos.EntityState{subject}, len(evidence), a.cfg.AnomalyMaxSimilarity, detectorVersionAnomaly),
 		Metrics: map[string]float64{
 			"max_peer_similarity": maxSim,
 			"peer_count":          float64(len(evidence)),

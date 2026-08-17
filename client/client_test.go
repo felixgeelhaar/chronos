@@ -65,6 +65,55 @@ func TestClient_ListSignals_Filters(t *testing.T) {
 	}
 }
 
+func TestClient_ListSignals_UnmarshalsExplanationAndConfidenceClass(t *testing.T) {
+	scope := uuid.New()
+	at := time.Date(2026, 5, 1, 12, 0, 0, 0, time.UTC)
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"count": 1,
+			"signals": []map[string]any{{
+				"id":               uuid.New(),
+				"scope_id":         scope,
+				"pattern":          client.PatternTypeTrend,
+				"confidence":       0.9,
+				"detected_at":      at,
+				"confidence_class": "established",
+				"explanation": map[string]any{
+					"detector_version":     "trend-v2",
+					"comparable_peers":     12,
+					"baseline_window_days": 90,
+					"threshold_used":       2.5,
+					"feature_evolution": []map[string]any{
+						{"at": at, "value": 26.0},
+					},
+				},
+			}},
+		})
+	}))
+	defer srv.Close()
+
+	c, _ := client.New(srv.URL)
+	got, err := c.Signals().Scope(scope).List(context.Background())
+	if err != nil {
+		t.Fatalf("List: %v", err)
+	}
+	if len(got) != 1 {
+		t.Fatalf("len = %d", len(got))
+	}
+	if got[0].ConfidenceClass != "established" {
+		t.Errorf("confidence_class = %q, want established", got[0].ConfidenceClass)
+	}
+	if got[0].Explanation == nil {
+		t.Fatal("explanation missing")
+	}
+	if got[0].Explanation.DetectorVersion != "trend-v2" {
+		t.Errorf("detector_version = %q", got[0].Explanation.DetectorVersion)
+	}
+	if got[0].Explanation.ComparablePeers != 12 {
+		t.Errorf("comparable_peers = %d", got[0].Explanation.ComparablePeers)
+	}
+}
+
 func TestClient_Ingest(t *testing.T) {
 	id := uuid.New()
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -89,6 +138,84 @@ func TestClient_Ingest(t *testing.T) {
 	}
 	if gotID != id {
 		t.Errorf("id = %s, want %s", gotID, id)
+	}
+}
+
+func TestClient_IngestBatchAndListPage(t *testing.T) {
+	scope := uuid.New()
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodPost && r.URL.Path == "/v1/ingest/batch":
+			w.WriteHeader(http.StatusAccepted)
+			_ = json.NewEncoder(w).Encode(client.IngestBatchResponse{Accepted: 2})
+		case r.Method == http.MethodGet && r.URL.Path == "/v1/signals":
+			if r.URL.Query().Get("since_cursor") != "tok" {
+				t.Errorf("since_cursor = %q", r.URL.Query().Get("since_cursor"))
+			}
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"count":       1,
+				"next_cursor": "next",
+				"signals":     []client.Signal{{ID: uuid.New(), ScopeID: scope, Pattern: client.PatternTypeStall}},
+			})
+		default:
+			t.Errorf("unexpected %s %s", r.Method, r.URL.Path)
+			http.NotFound(w, r)
+		}
+	}))
+	defer srv.Close()
+
+	c, _ := client.New(srv.URL)
+	batch, err := c.IngestBatch(context.Background(), []client.IngestRequest{
+		{EntityID: uuid.New(), ScopeID: scope, Features: []float64{1, 2}},
+		{EntityID: uuid.New(), ScopeID: scope, Features: []float64{1, 3}},
+	})
+	if err != nil {
+		t.Fatalf("IngestBatch: %v", err)
+	}
+	if batch.Accepted != 2 {
+		t.Errorf("accepted = %d", batch.Accepted)
+	}
+	page, err := c.Signals().Scope(scope).SinceCursor("tok").ListPage(context.Background())
+	if err != nil {
+		t.Fatalf("ListPage: %v", err)
+	}
+	if page.NextCursor != "next" || page.Count != 1 {
+		t.Errorf("page = %+v", page)
+	}
+}
+
+func TestClient_ScopesQuery(t *testing.T) {
+	a, b := uuid.New(), uuid.New()
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		got := r.URL.Query().Get("scope_in")
+		want := a.String() + "," + b.String()
+		if got != want {
+			t.Errorf("scope_in = %q, want %q", got, want)
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"count": 0, "signals": []client.Signal{}})
+	}))
+	defer srv.Close()
+	c, _ := client.New(srv.URL)
+	if _, err := c.Signals().Scopes(a, b).List(context.Background()); err != nil {
+		t.Fatalf("List: %v", err)
+	}
+}
+
+func TestClient_FederationExport(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/v1/federation/export" {
+			t.Errorf("path = %s", r.URL.Path)
+		}
+		_ = json.NewEncoder(w).Encode(client.FederationExport{Source: "chronos", Version: "v1", TotalSignals: 3})
+	}))
+	defer srv.Close()
+	c, _ := client.New(srv.URL)
+	got, err := c.FederationExport(context.Background())
+	if err != nil {
+		t.Fatalf("FederationExport: %v", err)
+	}
+	if got.Source != "chronos" || got.TotalSignals != 3 {
+		t.Errorf("export = %+v", got)
 	}
 }
 

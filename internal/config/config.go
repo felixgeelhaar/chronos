@@ -126,7 +126,7 @@ func Default() *Config {
 		DBType:    defaultEnv("CHRONOS_DB_TYPE", "sqlite"),
 		DBConnStr: defaultEnv("CHRONOS_DB_CONN", "chronos.db"),
 
-		MaxSignalsPerRun:   defaultEnvInt("CHRONOS_MAX_SIGNALS", 10),
+		MaxSignalsPerRun:   defaultEnvInt("CHRONOS_MAX_SIGNALS", 100),
 		ComputationTimeout: defaultEnvDuration("CHRONOS_JOB_TIMEOUT", 10*time.Minute),
 
 		SimilarityThreshold: defaultEnvFloat64("CHRONOS_SIM_THRESHOLD", 0.85),
@@ -222,6 +222,21 @@ func (c *Config) Validate() error {
 	}
 	if c.CorrelationMin < 0 || c.CorrelationMin > 1 {
 		return fmt.Errorf("correlation min must be in [0, 1], got %f", c.CorrelationMin)
+	}
+	if c.ChangePointMinShift < 0 {
+		return fmt.Errorf("changepoint min shift must be >= 0, got %f", c.ChangePointMinShift)
+	}
+	if c.OutlierClusterZ < 0 {
+		return fmt.Errorf("outlier cluster z must be >= 0, got %f", c.OutlierClusterZ)
+	}
+	if c.CrossScopeMin < 0 || c.CrossScopeMin > 1 {
+		return fmt.Errorf("cross-scope min must be in [0, 1], got %f", c.CrossScopeMin)
+	}
+	if c.ConfidenceClassEstablished < 0 {
+		return fmt.Errorf("confidence established multiplier must be >= 0, got %f", c.ConfidenceClassEstablished)
+	}
+	if c.ConfidenceClassStrong < 0 {
+		return fmt.Errorf("confidence strong multiplier must be >= 0, got %f", c.ConfidenceClassStrong)
 	}
 	return nil
 }

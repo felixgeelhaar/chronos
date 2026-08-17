@@ -79,6 +79,7 @@ func (s *Stall) build(scopeID, series uuid.UUID, observations []chronos.EntitySt
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(n, s.cfg.StallMinPoints, s.cfg),
 		Metrics:         metrics,
+		Explanation:     explainSeries(observations, 0, s.cfg.StallMaxStdDev, detectorVersionStall),
 		Evidence: []domain.Evidence{{
 			Series:  series,
 			Time:    observations[n-1].Timestamp,

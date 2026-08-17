@@ -118,6 +118,7 @@ func (r *Recurrence) buildSignal(scopeID uuid.UUID, subject chronos.EntityState,
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(len(evidence), r.cfg.MinSampleSize, r.cfg),
 		Evidence:        evidence,
+		Explanation:     explainSeries([]chronos.EntityState{subject}, len(evidence), r.cfg.SimilarityThreshold, detectorVersionRecurrence),
 		Metrics: map[string]float64{
 			"avg_similarity":   strength,
 			"sample_size":      float64(len(evidence)),
