@@ -15,7 +15,7 @@ The same domain shape ships over both transports. Evidence.Kind strings and metr
 
 Adding a new transport without updating this document is a contract bug.
 
-gRPC is a **subset** of HTTP: unary `Ingest`, `ListSignals`, and `GetSignal`. Batch ingest, config validate, federation export, SSE, and `since_cursor` pagination are HTTP-only until a versioned RPC addition lands.
+gRPC RPCs match the HTTP surface additively: unary `Ingest` + `IngestBatch`, `ListSignals` (including `since_cursor` / `next_cursor`), `GetSignal`, server-streaming `StreamSignals`, `ValidateConfig`, and `ExportFederation`. Unary `Ingest` was not changed to client-streaming.
 
 ## Explanation
 

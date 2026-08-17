@@ -12,6 +12,7 @@ import (
 
 	"github.com/felixgeelhaar/chronos"
 	chronosv1 "github.com/felixgeelhaar/chronos/api/proto/chronos/v1"
+	httapi "github.com/felixgeelhaar/chronos/internal/api"
 	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/felixgeelhaar/chronos/internal/observability"
 	"github.com/felixgeelhaar/chronos/internal/ports"
@@ -24,10 +25,18 @@ import (
 type Server struct {
 	chronosv1.UnimplementedChronosServiceServer
 
-	states  ports.EntityStateRepository
-	signals ports.SignalRepository
-	metrics *observability.Metrics
-	logger  *slog.Logger
+	states   ports.EntityStateRepository
+	signals  ports.SignalRepository
+	metrics  *observability.Metrics
+	logger   *slog.Logger
+	streamer SignalStreamer
+}
+
+// SignalStreamer is the gRPC equivalent of api.SSEBroadcaster.
+// notify.SSE satisfies it.
+type SignalStreamer interface {
+	Subscribe(scopes []uuid.UUID, pattern string) (uuid.UUID, <-chan domain.Signal)
+	Unsubscribe(uuid.UUID)
 }
 
 // NewServer wires a gRPC server. Pass slog.Default() for the logger if the
@@ -37,6 +46,13 @@ func NewServer(states ports.EntityStateRepository, signals ports.SignalRepositor
 		logger = slog.Default()
 	}
 	return &Server{states: states, signals: signals, metrics: metrics, logger: logger}
+}
+
+// WithStreamer attaches a live signal broadcaster so StreamSignals
+// can subscribe. Without it the RPC returns Unimplemented.
+func (s *Server) WithStreamer(st SignalStreamer) *Server {
+	s.streamer = st
+	return s
 }
 
 // Ingest persists a single EntityState observation.
@@ -77,10 +93,33 @@ func (s *Server) ListSignals(ctx context.Context, req *chronosv1.ListSignalsRequ
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	if req.SinceCursor != "" {
+		cursorAt, _, err := httapi.DecodeListCursor(req.SinceCursor)
+		if err != nil {
+			return nil, status.Error(codes.InvalidArgument, "invalid since_cursor: "+err.Error())
+		}
+		filter.Since = &cursorAt
+	}
+
 	sigs, err := s.signals.List(ctx, filter)
 	if err != nil {
 		s.logger.Error("grpc list signals failed", "err", err)
 		return nil, status.Error(codes.Internal, "list signals failed")
+	}
+
+	if req.SinceCursor != "" {
+		cursorAt, cursorID, err := httapi.DecodeListCursor(req.SinceCursor)
+		if err != nil {
+			return nil, status.Error(codes.InvalidArgument, "invalid since_cursor: "+err.Error())
+		}
+		kept := sigs[:0]
+		for _, sig := range sigs {
+			if sig.DetectedAt.Equal(cursorAt) && sig.ID.String() <= cursorID.String() {
+				continue
+			}
+			kept = append(kept, sig)
+		}
+		sigs = kept
 	}
 
 	out := make([]*chronosv1.Signal, 0, len(sigs))
@@ -88,10 +127,14 @@ func (s *Server) ListSignals(ctx context.Context, req *chronosv1.ListSignalsRequ
 		out = append(out, fromDomainSignal(sig))
 	}
 
-	return &chronosv1.ListSignalsResponse{
+	resp := &chronosv1.ListSignalsResponse{
 		Signals: out,
 		Count:   int32(len(out)), //nolint:gosec // bounded by query limit; no overflow risk
-	}, nil
+	}
+	if len(sigs) > 0 {
+		resp.NextCursor = httapi.EncodeListCursor(sigs[0].DetectedAt, sigs[0].ID)
+	}
+	return resp, nil
 }
 
 // GetSignal returns a single signal by ID.

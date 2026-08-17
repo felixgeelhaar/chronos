@@ -139,6 +139,36 @@
         "defaults": { "unit": "ops" }
       },
       "gridPos": { "h": 8, "w": 24, "x": 0, "y": 23 }
+    },
+    {
+      "title": "Detector latency (mean by pattern)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        {
+          "expr": "sum by (pattern) (rate(chronos_detector_duration_seconds_sum[5m])) / sum by (pattern) (rate(chronos_detector_duration_seconds_count[5m]))",
+          "legendFormat": "{{pattern}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "s" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 31 }
+    },
+    {
+      "title": "Signals truncated by cap",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "targets": [
+        {
+          "expr": "sum by (pattern) (rate(chronos_signals_truncated_total[5m]))",
+          "legendFormat": "{{pattern}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "ops" }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 31 }
     }
   ],
   "refresh": "30s",

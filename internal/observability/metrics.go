@@ -38,6 +38,12 @@ type Metrics struct {
 	httpDurationSum   map[labelKey]float64
 	httpDurationCount map[labelKey]uint64
 	webhookDeliveries map[labelKey]uint64
+
+	detectorDurationSum   map[labelKey]float64
+	detectorDurationCount map[labelKey]uint64
+	detectorSignals       map[labelKey]uint64
+	detectorSkips         map[labelKey]uint64
+	signalsTruncated      map[labelKey]uint64
 }
 
 // labelKey is a string in the form "k1=v1,k2=v2" with keys sorted
@@ -48,12 +54,17 @@ type labelKey string
 // New creates an empty registry.
 func New() *Metrics {
 	return &Metrics{
-		signalsEmitted:    make(map[labelKey]uint64),
-		observationsTotal: make(map[labelKey]uint64),
-		httpRequestsTotal: make(map[labelKey]uint64),
-		httpDurationSum:   make(map[labelKey]float64),
-		httpDurationCount: make(map[labelKey]uint64),
-		webhookDeliveries: make(map[labelKey]uint64),
+		signalsEmitted:        make(map[labelKey]uint64),
+		observationsTotal:     make(map[labelKey]uint64),
+		httpRequestsTotal:     make(map[labelKey]uint64),
+		httpDurationSum:       make(map[labelKey]float64),
+		httpDurationCount:     make(map[labelKey]uint64),
+		webhookDeliveries:     make(map[labelKey]uint64),
+		detectorDurationSum:   make(map[labelKey]float64),
+		detectorDurationCount: make(map[labelKey]uint64),
+		detectorSignals:       make(map[labelKey]uint64),
+		detectorSkips:         make(map[labelKey]uint64),
+		signalsTruncated:      make(map[labelKey]uint64),
 	}
 }
 
@@ -92,6 +103,35 @@ func (m *Metrics) ObserveWebhook(outcome string, status int) {
 	k := makeLabelKey("outcome", outcome, "status", fmt.Sprintf("%d", status))
 	m.mu.Lock()
 	m.webhookDeliveries[k]++
+	m.mu.Unlock()
+}
+
+// ObserveDetector records one detector invocation: wall time, how
+// many signals it emitted, and whether it was a skip (zero signals).
+func (m *Metrics) ObserveDetector(pattern string, dur time.Duration, emitted int) {
+	if m == nil {
+		return
+	}
+	k := makeLabelKey("pattern", pattern)
+	m.mu.Lock()
+	m.detectorDurationSum[k] += dur.Seconds()
+	m.detectorDurationCount[k]++
+	if emitted > 0 {
+		m.detectorSignals[k] += uint64(emitted)
+	} else {
+		m.detectorSkips[k]++
+	}
+	m.mu.Unlock()
+}
+
+// ObserveDetectorTruncated records signals dropped by MaxSignalsPerRun.
+func (m *Metrics) ObserveDetectorTruncated(pattern string) {
+	if m == nil {
+		return
+	}
+	k := makeLabelKey("pattern", pattern)
+	m.mu.Lock()
+	m.signalsTruncated[k]++
 	m.mu.Unlock()
 }
 
@@ -144,9 +184,34 @@ func (m *Metrics) Render(w io.Writer) error {
 		mapToSorted(m.httpDurationCount)); err != nil {
 		return err
 	}
-	return writeFamily(w, "chronos_webhook_deliveries_total", "counter",
+	if err := writeFamily(w, "chronos_webhook_deliveries_total", "counter",
 		"Total webhook delivery attempts, labelled by outcome (success|client_error|failure) and final status code.",
-		mapToSorted(m.webhookDeliveries))
+		mapToSorted(m.webhookDeliveries)); err != nil {
+		return err
+	}
+	if err := writeFamily(w, "chronos_detector_duration_seconds_sum", "counter",
+		"Cumulative detector wall time in seconds, labelled by pattern.",
+		mapToSortedFloats(m.detectorDurationSum)); err != nil {
+		return err
+	}
+	if err := writeFamily(w, "chronos_detector_duration_seconds_count", "counter",
+		"Number of detector invocations, labelled by pattern. Divide _sum by _count for mean latency.",
+		mapToSorted(m.detectorDurationCount)); err != nil {
+		return err
+	}
+	if err := writeFamily(w, "chronos_detector_signals_total", "counter",
+		"Signals produced by detectors before the MaxSignalsPerRun cap, labelled by pattern.",
+		mapToSorted(m.detectorSignals)); err != nil {
+		return err
+	}
+	if err := writeFamily(w, "chronos_detector_skips_total", "counter",
+		"Detector invocations that emitted zero signals, labelled by pattern.",
+		mapToSorted(m.detectorSkips)); err != nil {
+		return err
+	}
+	return writeFamily(w, "chronos_signals_truncated_total", "counter",
+		"Signals dropped by MaxSignalsPerRun after sort, labelled by pattern.",
+		mapToSorted(m.signalsTruncated))
 }
 
 // kvSample pairs a labelKey with a numeric value for rendering.

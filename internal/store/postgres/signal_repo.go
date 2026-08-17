@@ -50,6 +50,9 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 	if err != nil {
 		return fmt.Errorf("signal save: insert: %w", err)
 	}
+	if _, err := tx.ExecContext(ctx, `DELETE FROM signal_evidence WHERE signal_id = $1`, sig.ID); err != nil {
+		return fmt.Errorf("signal save: clear evidence: %w", err)
+	}
 	for _, e := range sig.Evidence {
 		evMetrics, _ := json.Marshal(e.Metrics)
 		_, err := tx.ExecContext(ctx, `

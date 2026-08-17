@@ -88,6 +88,13 @@ func loadConfigWithOverrides(env map[string]string) *config.Config {
 	return config.Default()
 }
 
+// LoadConfigWithOverrides is the exported form of the env-swap used
+// by POST /v1/config/validate, so gRPC ValidateConfig runs the same
+// Default() loader path.
+func LoadConfigWithOverrides(env map[string]string) *config.Config {
+	return loadConfigWithOverrides(env)
+}
+
 // BuildConfigReportForExport is the exported entry point for callers
 // outside the HTTP layer (e.g. the MCP describe_detector tool) that
 // want the same per-detector verdict the /v1/config/validate endpoint

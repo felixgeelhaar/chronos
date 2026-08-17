@@ -1,13 +1,16 @@
 package detect
 
 import (
+	"bytes"
 	"context"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/felixgeelhaar/chronos"
 	"github.com/felixgeelhaar/chronos/internal/config"
 	"github.com/felixgeelhaar/chronos/internal/domain"
+	"github.com/felixgeelhaar/chronos/internal/observability"
 	"github.com/google/uuid"
 )
 
@@ -174,5 +177,56 @@ func TestEngine_RespectsMaxSignalsCap(t *testing.T) {
 	got := e.Detect(context.Background(), states)
 	if len(got) != 1 {
 		t.Errorf("MaxSignalsPerRun=1 returned %d signals", len(got))
+	}
+}
+
+func TestEngine_PerceptionIDStableAcrossRuns(t *testing.T) {
+	cfg := trendCfg()
+	e := NewEngine(cfg, NewTrend(cfg)).WithCrossScopeDetectors(nil)
+	scope := uuid.New()
+	entity := uuid.New()
+	now := time.Date(2026, 5, 1, 12, 0, 0, 0, time.UTC)
+	states := mkSeries(scope, entity, now, []float64{1, 2, 3, 4, 5, 6})
+
+	a := e.Detect(context.Background(), states)
+	b := e.Detect(context.Background(), states)
+	if len(a) == 0 || len(b) == 0 {
+		t.Fatal("expected trend signals")
+	}
+	byID := map[uuid.UUID]struct{}{}
+	for _, s := range a {
+		byID[s.ID] = struct{}{}
+	}
+	for _, s := range b {
+		if _, ok := byID[s.ID]; !ok {
+			t.Errorf("second detect minted a new id %s for pattern %s", s.ID, s.Pattern)
+		}
+	}
+}
+
+func TestEngine_RecordsDetectorMetrics(t *testing.T) {
+	cfg := &config.Config{MaxSignalsPerRun: 1, TrendMinSlope: 0.05, TrendMinPoints: 4}
+	m := observability.New()
+	e := NewEngine(cfg, NewTrend(cfg)).WithCrossScopeDetectors(nil).WithMetrics(m)
+	scope := uuid.New()
+	now := time.Now()
+	var states []chronos.EntityState
+	for _, ent := range []uuid.UUID{uuid.New(), uuid.New()} {
+		states = append(states, mkSeries(scope, ent, now, []float64{1, 2, 3, 4, 5, 6})...)
+	}
+	got := e.Detect(context.Background(), states)
+	if len(got) != 1 {
+		t.Fatalf("capped len = %d, want 1", len(got))
+	}
+	var buf bytes.Buffer
+	if err := m.Render(&buf); err != nil {
+		t.Fatal(err)
+	}
+	out := buf.String()
+	if !strings.Contains(out, `chronos_detector_signals_total{pattern="trend"}`) {
+		t.Errorf("missing detector signals metric:\n%s", out)
+	}
+	if !strings.Contains(out, `chronos_signals_truncated_total{pattern="trend"}`) {
+		t.Errorf("missing truncation metric:\n%s", out)
 	}
 }

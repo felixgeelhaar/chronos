@@ -75,7 +75,7 @@ func runCompute(args []string) error {
 		AdapterCfg:   map[string]string{"coach_id": scope, "scope_id": scope},
 		EntityStates: conn.EntityStates,
 		Signals:      signals,
-		Engine:       pipeline.NewEngine(cfg),
+		Engine:       pipeline.NewEngine(cfg).WithMetrics(metrics),
 		Logger:       logger,
 		Metrics:      metrics,
 	})

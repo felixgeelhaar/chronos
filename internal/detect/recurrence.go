@@ -45,7 +45,7 @@ func (r *Recurrence) Detect(_ context.Context, scopeID uuid.UUID, states []chron
 	var signals []domain.Signal
 	for entityID, subject := range subjects {
 		evidence := r.gatherEvidence(entityID, subject, states)
-		if len(evidence) < r.cfg.MinSampleSize {
+		if len(evidence) == 0 || len(evidence) < r.cfg.MinSampleSize {
 			continue
 		}
 		signals = append(signals, r.buildSignal(scopeID, subject, evidence))
