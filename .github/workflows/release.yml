@@ -41,20 +41,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Verify Homebrew tap secret is present
-        # Without this PAT, goreleaser would silently skip pushing the
-        # formula update to felixgeelhaar/homebrew-tap. Fail loud
-        # instead so a misconfigured release is caught before the
-        # release artefacts are published.
-        env:
-          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-        run: |
-          if [ -z "${HOMEBREW_TAP_TOKEN:-}" ]; then
-            echo "::error::HOMEBREW_TAP_TOKEN secret is not set."
-            echo "Create a PAT with 'contents: write' on felixgeelhaar/homebrew-tap and store it as HOMEBREW_TAP_TOKEN in this repo's Actions secrets."
-            exit 1
-          fi
-
       - name: Run goreleaser
         uses: goreleaser/goreleaser-action@v7
         with:
@@ -62,7 +48,3 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # goreleaser's brews block reads {{ .Env.TAP_GITHUB_TOKEN }}
-          # for cross-repo formula pushes; GITHUB_TOKEN cannot reach
-          # the tap repo.
-          TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}

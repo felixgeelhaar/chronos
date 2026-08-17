@@ -21,7 +21,7 @@ version: "3.9"
 
 services:
   chronos:
-    image: ${CHRONOS_IMAGE:-ghcr.io/felixgeelhaar/chronos:latest}
+    image: ${CHRONOS_IMAGE:-ghcr.io/klarlabs-studio/chronos:latest}
     container_name: chronos-integration
     # The runtime image is distroless:nonroot (uid 65532), but Docker
     # creates the named volume mount point (/data) owned by root:root.

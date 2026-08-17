@@ -164,19 +164,27 @@ Every DSN accepts a `?namespace=` query parameter so multiple cognitive-stack to
 
 ## Install
 
-The 5-minute demo above uses `go install` because it's the fastest path. For production, pick a channel that fits your environment.
+Chronos is a Go library. Import the module (adapters) or the HTTP/gRPC client. The `cmd/chronos` binary is optional — demos, `serve`, and ops probes.
 
-**Homebrew (macOS, Linux)**
-
-```bash
-brew tap felixgeelhaar/tap
-brew install chronos
+```go
+import "github.com/felixgeelhaar/chronos"          // adapter SDK
+import "github.com/felixgeelhaar/chronos/client"   // HTTP / gRPC consumer SDK
 ```
 
-**Docker (any OCI runtime)**
+```bash
+go get github.com/felixgeelhaar/chronos@latest     # requires Go 1.25+
+```
+
+**Optional CLI** (`go install` or a release archive) if you want to run `chronos serve` locally:
 
 ```bash
-docker run --rm -p 7778:7778 ghcr.io/felixgeelhaar/chronos:latest
+go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
+```
+
+**Docker (any OCI runtime)** — for operators running the HTTP/gRPC server:
+
+```bash
+docker run --rm -p 7778:7778 ghcr.io/klarlabs-studio/chronos:latest
 # Multi-arch image: linux/amd64 + linux/arm64. Distroless, ~2 MB.
 ```
 
@@ -202,12 +210,6 @@ shasum -a 256 -c checksums.txt --ignore-missing
 tar -xzf chronos.tar.gz && sudo install -m 0755 chronos /usr/local/bin/chronos
 ```
 
-**Go install (HEAD)**
-
-```bash
-go install github.com/felixgeelhaar/chronos/cmd/chronos@latest   # requires Go 1.25+
-```
-
 **Source build**
 
 ```bash
@@ -216,13 +218,13 @@ cd chronos
 make build   # binary lands in ./bin/chronos with version/commit/buildDate ldflags
 ```
 
-**Supported targets**
+**Supported targets** (optional CLI / container, not a Homebrew product)
 
-| OS      | amd64 | arm64 | Distribution channels                              |
-|---------|:-----:|:-----:|----------------------------------------------------|
-| linux   |  ✓    |  ✓    | Homebrew, Docker, .deb, .rpm, .apk, tar.gz, source |
-| darwin  |  ✓    |  ✓    | Homebrew, tar.gz, source                           |
-| windows |  ✓    |  —    | zip archive, source                                |
+| OS      | amd64 | arm64 | Distribution channels                     |
+|---------|:-----:|:-----:|-------------------------------------------|
+| linux   |  ✓    |  ✓    | Docker, .deb, .rpm, .apk, tar.gz, source  |
+| darwin  |  ✓    |  ✓    | tar.gz, source                            |
+| windows |  ✓    |  —    | zip archive, source                       |
 
 ## Writing an adapter
 

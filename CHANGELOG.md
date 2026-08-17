@@ -10,6 +10,8 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 Perception-engine release. Detectors explain themselves, signals get
 stable IDs, gRPC matches HTTP, and living docs treat Nous as archived.
+Optional `cmd/chronos` ships via GitHub Release, Linux packages, and
+`ghcr.io/klarlabs-studio/chronos` — not Homebrew.
 
 ### Added
 - **`chronos health` subcommand** — probes `GET /health` on
@@ -37,6 +39,15 @@ stable IDs, gRPC matches HTTP, and living docs treat Nous as archived.
   `chronos_signals_truncated_total{pattern}`.
 
 ### Changed
+- **No Homebrew cask.** Chronos is a Go library (optional `cmd/chronos` for
+  demos and ops), not a brew-installable product. GoReleaser no longer
+  publishes to the Homebrew tap; the release workflow no longer requires
+  `HOMEBREW_TAP_TOKEN`.
+- **GHCR images publish to `ghcr.io/klarlabs-studio/chronos`.** The first
+  `v0.9.0` tag built artefacts then failed pushing
+  `ghcr.io/felixgeelhaar/chronos` (`permission_denied: The requested
+  installation does not exist`) because the workflow token belongs to
+  `klarlabs-studio`. The Go module path is unchanged.
 - **Nous is archived.** Living docs, agent files, issue/PR templates, and
   package comments no longer treat Nous as a live decision layer.
   Interpretation belongs to agent runtimes; risk + intervention scoring
