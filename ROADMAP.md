@@ -46,7 +46,7 @@ Shipped items from earlier roadmap slices stay checked in git history; they are 
 The point of the no-adapters-in-Chronos rule is that adapters live close to their domain. Anticipated near-term integrations from neighbouring projects:
 
 - **Mnemos action+outcome stream** — feed Mnemos's recorded outcomes into Chronos as a metric series; pattern detection on the outcome.
-- **Nous risk score over time** — feed Nous's risk-score time series; detect "risk piling up" patterns.
+- **decisionkit risk score over time** — feed [decisionkit](https://github.com/felixgeelhaar/decisionkit) risk-score time series; detect "risk piling up" patterns.
 
 Both are out-of-tree adapters. This roadmap tracks them only as expected use cases — implementation belongs to the consuming repo.
 

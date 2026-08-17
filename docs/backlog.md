@@ -20,4 +20,4 @@ Open items not yet scoped into a release. Closed items move out of this file onc
 
 ### Adapter ecosystem (out of tree)
 
-Mnemos action+outcome stream and Nous risk-score series are expected consumers. Implementation belongs to those repos.
+Mnemos action+outcome stream and decisionkit risk-score series are expected consumers. Implementation belongs to those repos.
