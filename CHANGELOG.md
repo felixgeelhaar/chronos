@@ -20,6 +20,16 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 - **Public client HTTP parity** — `Explanation` / `ConfidenceClass` on
   `client.Signal`; `ListPage` (`next_cursor` / `since_cursor`); `Scopes`
   (`scope_in`); `IngestBatch`; `FederationExport`.
+- **gRPC HTTP parity (additive RPCs)** — `IngestBatch`, `StreamSignals`
+  (server-streaming), `ValidateConfig`, `ExportFederation`, plus
+  `since_cursor` / `next_cursor` on `ListSignals`. Unary `Ingest` is
+  unchanged. The public `client.GRPCClient` mirrors the new RPCs.
+- **Content-addressed signal IDs** — `domain.PerceptionID` (UUID v5 of
+  scope, series, pattern, window, pairwise partner). The engine stamps
+  every emission so a second detect over the same window upserts.
+- **Per-detector metrics** — `chronos_detector_duration_seconds_*`,
+  `chronos_detector_signals_total`, `chronos_detector_skips_total`,
+  `chronos_signals_truncated_total{pattern}`.
 
 ### Changed
 - **Dockerfile hardening** — explicit `USER 65532:65532` (the distroless
@@ -35,8 +45,9 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
   not detections that failed validation.
 - **Detection scheduler** skips a candidate when a signal with the same
   `(scope, series, pattern, window)` already exists, so a second tick over
-  unchanged observations does not append duplicate rows. A later tick that
-  grows `window.End` (new points) still emits.
+  unchanged observations does not append duplicate rows (and does not
+  re-notify). A later tick that grows `window.End` (new points) still emits.
+  SQLite and Postgres now replace evidence on ID upsert (MySQL already did).
 - **Default `CHRONOS_MAX_SIGNALS`** is `100` (was `10`). `0` remains unlimited.
 - Agent and user docs (README, architecture, configuration, CLAUDE, AGENTS)
   list all eleven detectors, the MySQL/libSQL backends, and the HTTP auth /

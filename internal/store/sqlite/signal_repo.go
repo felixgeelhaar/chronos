@@ -54,6 +54,9 @@ func (r *SignalRepository) Save(ctx context.Context, sig domain.Signal) error {
 	}); err != nil {
 		return fmt.Errorf("signal save: insert: %w", err)
 	}
+	if _, err := tx.ExecContext(ctx, `DELETE FROM signal_evidence WHERE signal_id = ?`, sig.ID.String()); err != nil {
+		return fmt.Errorf("signal save: clear evidence: %w", err)
+	}
 	for _, e := range sig.Evidence {
 		evMetrics, _ := json.Marshal(e.Metrics)
 		if err := q.InsertSignalEvidence(ctx, sqlcgen.InsertSignalEvidenceParams{

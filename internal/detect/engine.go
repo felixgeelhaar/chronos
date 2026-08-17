@@ -4,10 +4,12 @@ import (
 	"context"
 	"sort"
 	"sync"
+	"time"
 
 	"github.com/felixgeelhaar/chronos"
 	"github.com/felixgeelhaar/chronos/internal/config"
 	"github.com/felixgeelhaar/chronos/internal/domain"
+	"github.com/felixgeelhaar/chronos/internal/observability"
 	"github.com/google/uuid"
 )
 
@@ -22,6 +24,7 @@ type Engine struct {
 	detectors      []Detector
 	crossDetectors []CrossScopeDetector
 	parallel       bool
+	metrics        *observability.Metrics
 }
 
 // NewEngine builds an Engine. If detectors is empty, DefaultDetectors
@@ -55,6 +58,14 @@ func (e *Engine) WithCrossScopeDetectors(ds []CrossScopeDetector) *Engine {
 // many detectors and many scopes flip this on.
 func (e *Engine) WithParallelDetectors(on bool) *Engine {
 	e.parallel = on
+	return e
+}
+
+// WithMetrics attaches a metrics registry so Detect records per-pattern
+// latency, emit counts, skips (zero-signal runs), and cap truncation.
+// Optional — tests and embedders omit it.
+func (e *Engine) WithMetrics(m *observability.Metrics) *Engine {
+	e.metrics = m
 	return e
 }
 
@@ -108,12 +119,16 @@ func (e *Engine) Detect(ctx context.Context, states []chronos.EntityState) []dom
 		for scopeID, scoped := range byScope {
 			sortByTimestampAsc(scoped)
 			for _, d := range e.detectors {
-				all = append(all, d.Detect(ctx, scopeID, scoped)...)
+				all = append(all, e.runDetector(ctx, d, scopeID, scoped)...)
 			}
 		}
 	}
 	for _, d := range e.crossDetectors {
-		all = append(all, d.CrossDetect(ctx, states)...)
+		all = append(all, e.runCross(ctx, d, states)...)
+	}
+
+	for i := range all {
+		all[i].ID = domain.PerceptionID(all[i])
 	}
 
 	sort.SliceStable(all, func(i, j int) bool {
@@ -124,9 +139,35 @@ func (e *Engine) Detect(ctx context.Context, states []chronos.EntityState) []dom
 	})
 
 	if e.cfg.MaxSignalsPerRun > 0 && len(all) > e.cfg.MaxSignalsPerRun {
+		if e.metrics != nil {
+			for _, s := range all[e.cfg.MaxSignalsPerRun:] {
+				e.metrics.ObserveDetectorTruncated(string(s.Pattern))
+			}
+		}
 		all = all[:e.cfg.MaxSignalsPerRun]
 	}
 	return all
+}
+
+func (e *Engine) runDetector(ctx context.Context, d Detector, scopeID uuid.UUID, states []chronos.EntityState) []domain.Signal {
+	start := time.Now()
+	sigs := d.Detect(ctx, scopeID, states)
+	e.observeRun(d.Pattern(), time.Since(start), len(sigs))
+	return sigs
+}
+
+func (e *Engine) runCross(ctx context.Context, d CrossScopeDetector, states []chronos.EntityState) []domain.Signal {
+	start := time.Now()
+	sigs := d.CrossDetect(ctx, states)
+	e.observeRun(d.Pattern(), time.Since(start), len(sigs))
+	return sigs
+}
+
+func (e *Engine) observeRun(pattern domain.PatternType, dur time.Duration, n int) {
+	if e.metrics == nil {
+		return
+	}
+	e.metrics.ObserveDetector(string(pattern), dur, n)
 }
 
 // detectParallel runs every (scope, detector) pair in its own
@@ -152,7 +193,7 @@ func (e *Engine) detectParallel(ctx context.Context, byScope map[uuid.UUID][]chr
 		i, j := i, j
 		go func() {
 			defer wg.Done()
-			results[i] = j.det.Detect(ctx, j.scopeID, j.states)
+			results[i] = e.runDetector(ctx, j.det, j.scopeID, j.states)
 		}()
 	}
 	wg.Wait()

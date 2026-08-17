@@ -128,10 +128,17 @@ func runServe(args []string) error {
 		}
 		grpcOpts := []grpc.ServerOption{}
 		if cfg.APIToken != "" {
-			grpcOpts = append(grpcOpts, grpc.UnaryInterceptor(bearerAuthInterceptor(cfg.APIToken)))
+			grpcOpts = append(grpcOpts,
+				grpc.UnaryInterceptor(bearerAuthInterceptor(cfg.APIToken)),
+				grpc.StreamInterceptor(bearerAuthStreamInterceptor(cfg.APIToken)),
+			)
 		}
 		grpcSrv = grpc.NewServer(grpcOpts...)
-		chronosv1.RegisterChronosServiceServer(grpcSrv, grpctransport.NewServer(conn.EntityStates, signals, metrics, logger))
+		grpcImpl := grpctransport.NewServer(conn.EntityStates, signals, metrics, logger)
+		if sse != nil {
+			grpcImpl = grpcImpl.WithStreamer(sse)
+		}
+		chronosv1.RegisterChronosServiceServer(grpcSrv, grpcImpl)
 		go func() {
 			logger.Info("grpc listening", "addr", grpcAddr)
 			if err := grpcSrv.Serve(grpcListener); err != nil {
@@ -152,7 +159,7 @@ func runServe(args []string) error {
 	// observations and writes signals via the notifier-wrapped repo —
 	// which is what makes SSE see anything.
 	if cfg.DetectionInterval > 0 {
-		sched := pipeline.NewScheduler(conn.EntityStates, signals, pipeline.NewEngine(cfg), cfg.DetectionInterval, logger)
+		sched := pipeline.NewScheduler(conn.EntityStates, signals, pipeline.NewEngine(cfg).WithMetrics(metrics), cfg.DetectionInterval, logger)
 		go func() {
 			if err := sched.Run(rootCtx); err != nil {
 				logger.Error("scheduler exited with error", "err", err)
@@ -190,14 +197,30 @@ func runServe(args []string) error {
 // When token is empty the interceptor is a no-op.
 func bearerAuthInterceptor(token string) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-		md, ok := grpcmetadata.FromIncomingContext(ctx)
-		if !ok {
-			return nil, status.Error(codes.Unauthenticated, "missing metadata")
-		}
-		auth := md.Get("authorization")
-		if len(auth) == 0 || auth[0] != "Bearer "+token {
-			return nil, status.Error(codes.Unauthenticated, "invalid token")
+		if err := checkBearer(ctx, token); err != nil {
+			return nil, err
 		}
 		return handler(ctx, req)
 	}
+}
+
+func bearerAuthStreamInterceptor(token string) grpc.StreamServerInterceptor {
+	return func(srv any, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+		if err := checkBearer(ss.Context(), token); err != nil {
+			return err
+		}
+		return handler(srv, ss)
+	}
+}
+
+func checkBearer(ctx context.Context, token string) error {
+	md, ok := grpcmetadata.FromIncomingContext(ctx)
+	if !ok {
+		return status.Error(codes.Unauthenticated, "missing metadata")
+	}
+	auth := md.Get("authorization")
+	if len(auth) == 0 || auth[0] != "Bearer "+token {
+		return status.Error(codes.Unauthenticated, "invalid token")
+	}
+	return nil
 }

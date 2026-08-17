@@ -361,3 +361,94 @@ func TestGetSignal_InvalidID(t *testing.T) {
 		t.Fatalf("code = %v, want InvalidArgument", st.Code())
 	}
 }
+
+func TestIngestBatch_PersistsAll(t *testing.T) {
+	srv, mem := setupServer(t)
+	ctx := context.Background()
+	scope := uuid.New().String()
+	resp, err := srv.IngestBatch(ctx, &chronosv1.IngestBatchRequest{
+		Observations: []*chronosv1.IngestRequest{
+			{EntityId: uuid.New().String(), ScopeId: scope, Features: []float64{1, 2}},
+			{EntityId: uuid.New().String(), ScopeId: scope, Features: []float64{3, 4}},
+		},
+	})
+	if err != nil {
+		t.Fatalf("IngestBatch: %v", err)
+	}
+	if resp.Accepted != 2 {
+		t.Errorf("accepted = %d", resp.Accepted)
+	}
+	got, _ := mem.EntityStates.ListByScope(ctx, uuid.MustParse(scope))
+	if len(got) != 2 {
+		t.Fatalf("persisted %d, want 2", len(got))
+	}
+}
+
+func TestValidateConfig_ReportsDetectors(t *testing.T) {
+	srv, _ := setupServer(t)
+	resp, err := srv.ValidateConfig(context.Background(), &chronosv1.ValidateConfigRequest{
+		Env: map[string]string{"CHRONOS_TREND_MIN_POINTS": "1"},
+	})
+	if err != nil {
+		t.Fatalf("ValidateConfig: %v", err)
+	}
+	if len(resp.Detectors) == 0 {
+		t.Fatal("expected detector reports")
+	}
+}
+
+func TestStreamSignals_UnimplementedWithoutStreamer(t *testing.T) {
+	srv, _ := setupServer(t)
+	err := srv.StreamSignals(&chronosv1.StreamSignalsRequest{ScopeId: uuid.New().String()}, nil)
+	st, ok := status.FromError(err)
+	if !ok || st.Code() != codes.Unimplemented {
+		t.Fatalf("code = %v, want Unimplemented", err)
+	}
+}
+
+func TestExportFederation_DisabledByDefault(t *testing.T) {
+	t.Setenv("CHRONOS_FEDERATION_ENABLED", "")
+	srv, _ := setupServer(t)
+	_, err := srv.ExportFederation(context.Background(), &chronosv1.ExportFederationRequest{})
+	st, ok := status.FromError(err)
+	if !ok || st.Code() != codes.Unimplemented {
+		t.Fatalf("code = %v, want Unimplemented", err)
+	}
+}
+
+func TestListSignals_SinceCursor(t *testing.T) {
+	srv, mem := setupServer(t)
+	ctx := context.Background()
+	scope := uuid.New()
+	t0 := time.Date(2026, 5, 1, 0, 0, 0, 0, time.UTC)
+	old := domain.Signal{
+		ID: uuid.New(), ScopeID: scope, Series: uuid.New(),
+		Pattern: domain.PatternTypeStall, DetectedAt: t0,
+		Window: domain.TimeWindow{Start: t0, End: t0}, Strength: 0.5, Confidence: 0.5,
+	}
+	newer := domain.Signal{
+		ID: uuid.New(), ScopeID: scope, Series: uuid.New(),
+		Pattern: domain.PatternTypeStall, DetectedAt: t0.Add(time.Hour),
+		Window: domain.TimeWindow{Start: t0, End: t0}, Strength: 0.9, Confidence: 0.9,
+	}
+	_ = mem.Signals.Save(ctx, old)
+	_ = mem.Signals.Save(ctx, newer)
+
+	first, err := srv.ListSignals(ctx, &chronosv1.ListSignalsRequest{ScopeId: scope.String()})
+	if err != nil {
+		t.Fatalf("ListSignals: %v", err)
+	}
+	if first.NextCursor == "" {
+		t.Fatal("expected next_cursor")
+	}
+	page, err := srv.ListSignals(ctx, &chronosv1.ListSignalsRequest{
+		ScopeId:     scope.String(),
+		SinceCursor: first.NextCursor,
+	})
+	if err != nil {
+		t.Fatalf("ListSignals cursor: %v", err)
+	}
+	if page.Count != 0 {
+		t.Errorf("page after newest cursor count = %d, want 0", page.Count)
+	}
+}

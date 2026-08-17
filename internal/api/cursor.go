@@ -55,3 +55,17 @@ func decodeSignalCursor(token string) (signalCursor, error) {
 	}
 	return signalCursor{DetectedAt: t, ID: id}, nil
 }
+
+// EncodeListCursor is the exported form of the HTTP/gRPC list cursor.
+func EncodeListCursor(detectedAt time.Time, id uuid.UUID) string {
+	return encodeSignalCursor(signalCursor{DetectedAt: detectedAt, ID: id})
+}
+
+// DecodeListCursor parses a token produced by EncodeListCursor.
+func DecodeListCursor(token string) (time.Time, uuid.UUID, error) {
+	c, err := decodeSignalCursor(token)
+	if err != nil {
+		return time.Time{}, uuid.Nil, err
+	}
+	return c.DetectedAt, c.ID, nil
+}
