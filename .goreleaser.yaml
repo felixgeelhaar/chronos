@@ -84,7 +84,7 @@ nfpms:
   - id: chronos
     package_name: chronos
     vendor: Felix Geelhaar
-    homepage: "https://github.com/felixgeelhaar/chronos"
+    homepage: "https://github.com/klarlabs-studio/chronos"
     maintainer: "Felix Geelhaar <felix.geelhaar@gmail.com>"
     description: |-
       Chronos — Time / Pattern Perception in the cognitive stack.
@@ -110,8 +110,8 @@ nfpms:
 
 dockers:
   - image_templates:
-      - "ghcr.io/felixgeelhaar/chronos:{{ .Version }}-amd64"
-      - "ghcr.io/felixgeelhaar/chronos:latest-amd64"
+      - "ghcr.io/klarlabs-studio/chronos:{{ .Version }}-amd64"
+      - "ghcr.io/klarlabs-studio/chronos:latest-amd64"
     use: buildx
     goarch: amd64
     build_flag_templates:
@@ -126,8 +126,8 @@ dockers:
       - go.mod
       - go.sum
   - image_templates:
-      - "ghcr.io/felixgeelhaar/chronos:{{ .Version }}-arm64"
-      - "ghcr.io/felixgeelhaar/chronos:latest-arm64"
+      - "ghcr.io/klarlabs-studio/chronos:{{ .Version }}-arm64"
+      - "ghcr.io/klarlabs-studio/chronos:latest-arm64"
     use: buildx
     goarch: arm64
     build_flag_templates:
@@ -143,11 +143,11 @@ dockers:
       - go.sum
 
 docker_manifests:
-  - name_template: "ghcr.io/felixgeelhaar/chronos:{{ .Version }}"
+  - name_template: "ghcr.io/klarlabs-studio/chronos:{{ .Version }}"
     image_templates:
-      - "ghcr.io/felixgeelhaar/chronos:{{ .Version }}-amd64"
-      - "ghcr.io/felixgeelhaar/chronos:{{ .Version }}-arm64"
-  - name_template: "ghcr.io/felixgeelhaar/chronos:latest"
+      - "ghcr.io/klarlabs-studio/chronos:{{ .Version }}-amd64"
+      - "ghcr.io/klarlabs-studio/chronos:{{ .Version }}-arm64"
+  - name_template: "ghcr.io/klarlabs-studio/chronos:latest"
     image_templates:
-      - "ghcr.io/felixgeelhaar/chronos:latest-amd64"
-      - "ghcr.io/felixgeelhaar/chronos:latest-arm64"
+      - "ghcr.io/klarlabs-studio/chronos:latest-amd64"
+      - "ghcr.io/klarlabs-studio/chronos:latest-arm64"

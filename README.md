@@ -184,7 +184,7 @@ go install github.com/felixgeelhaar/chronos/cmd/chronos@latest
 **Docker (any OCI runtime)** — for operators running the HTTP/gRPC server:
 
 ```bash
-docker run --rm -p 7778:7778 ghcr.io/felixgeelhaar/chronos:latest
+docker run --rm -p 7778:7778 ghcr.io/klarlabs-studio/chronos:latest
 # Multi-arch image: linux/amd64 + linux/arm64. Distroless, ~2 MB.
 ```
 
