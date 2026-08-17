@@ -289,7 +289,7 @@
       ],
       "status": "affected_with_mitigation",
       "justification": "vulnerable_code_cannot_be_controlled_by_adversary",
-      "impact_statement": "contents:write in .github/workflows/release.yml is required for goreleaser to create GitHub Releases and upload artefacts. The .goreleaser.yaml brews block also needs contents:write to push formula updates to the Homebrew tap repository. The workflow triggers only on tag push (v*) or manual dispatch by maintainers, limiting blast radius."
+      "impact_statement": "contents:write in .github/workflows/release.yml is required for goreleaser to create GitHub Releases and upload artefacts. The workflow triggers only on tag push (v*) or manual dispatch by maintainers, limiting blast radius."
     },
     {
       "vulnerability": {
@@ -544,7 +544,7 @@
       ],
       "status": "not_affected",
       "justification": "vulnerable_code_not_present",
-      "impact_statement": "The two flagged uploads (.github/workflows/security.yml and .github/workflows/nox-scan.yml) publish scan output -- SARIF, findings.json and the CycloneDX SBOM -- as short-retention CI artefacts (30 and 7 days). They are diagnostic reports read by maintainers in the Actions UI; nothing installs, executes or redistributes them, so there is no downstream consumer for a provenance statement to protect. Adding actions/attest-build-provenance would require granting id-token:write and attestations:write to the two workflows that run on pull_request -- widening the token scope of exactly the jobs that must stay least-privileged -- and the attestation step cannot succeed on fork PRs, where GitHub withholds the OIDC token. Artefacts that ARE distributed (release binaries, the ghcr.io images, the Homebrew cask) are produced by .github/workflows/release.yml via goreleaser, which is the correct place to attach provenance; that is tracked separately from this scan-report gate."
+      "impact_statement": "The two flagged uploads (.github/workflows/security.yml and .github/workflows/nox-scan.yml) publish scan output -- SARIF, findings.json and the CycloneDX SBOM -- as short-retention CI artefacts (30 and 7 days). They are diagnostic reports read by maintainers in the Actions UI; nothing installs, executes or redistributes them, so there is no downstream consumer for a provenance statement to protect. Adding actions/attest-build-provenance would require granting id-token:write and attestations:write to the two workflows that run on pull_request -- widening the token scope of exactly the jobs that must stay least-privileged -- and the attestation step cannot succeed on fork PRs, where GitHub withholds the OIDC token. Artefacts that ARE distributed (release binaries and the ghcr.io images) are produced by .github/workflows/release.yml via goreleaser, which is the correct place to attach provenance; that is tracked separately from this scan-report gate."
     },
     {
       "vulnerability": {
@@ -575,6 +575,21 @@
       "status": "not_affected",
       "justification": "vulnerable_code_not_present",
       "impact_statement": "Both continue-on-error uses in .github/workflows/nox-scan.yml are deliberate and scoped to steps that REPORT, never to the gate that decides. The taint-analysis plugin install tolerates a registry 404 because the plugin is an enrichment -- core rules ship in nox itself -- so an outage should cost the taint rules, not the whole scan. The SARIF upload tolerates failure because GitHub code scanning requires Code Security, which private repos without GHAS lack, and returns \"Resource not accessible by integration\" there even with security-events: write. The gating step (\"Gate on net-new critical/high findings\") deliberately carries no continue-on-error and no hashFiles guard, so it cannot be skipped into a green result."
+    },
+    {
+      "vulnerability": {
+        "@id": "IAC-231",
+        "name": "IAC-231",
+        "description": "Kustomize uses latest image tag"
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/felixgeelhaar/chronos"
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_in_execute_path",
+      "impact_statement": "test/integration/docker-compose.yml is a local/CI smoke-test harness, not production kustomize. Both services default to :latest so a developer compose-up pulls the current GHCR release; CHRONOS_IMAGE / MNEMOS_IMAGE override the tag for a local build. Changing the registry (felixgeelhaar → klarlabs-studio) re-fingerprints the same :latest line and would otherwise re-fail the unwaived gate on every image-name edit."
     }
   ]
 }

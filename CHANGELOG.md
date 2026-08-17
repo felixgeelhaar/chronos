@@ -6,6 +6,17 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 ## [Unreleased]
 
+### Changed
+- **No Homebrew cask.** Chronos is a Go library (optional `cmd/chronos` for
+  demos and ops), not a brew-installable product. GoReleaser no longer
+  publishes to the Homebrew tap; the release workflow no longer requires
+  `HOMEBREW_TAP_TOKEN`.
+- **GHCR images publish to `ghcr.io/klarlabs-studio/chronos`.** The v0.9.0
+  tag built artefacts then failed pushing `ghcr.io/felixgeelhaar/chronos`
+  (`permission_denied: The requested installation does not exist`) because
+  the workflow token belongs to `klarlabs-studio`. The Go module path is
+  unchanged.
+
 ### Added
 - **`chronos health` subcommand** — probes `GET /health` on
   `http://127.0.0.1:$CHRONOS_HTTP_PORT` and exits non-zero when the server does
