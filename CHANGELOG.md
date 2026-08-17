@@ -13,9 +13,13 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
   runtime image can declare a `HEALTHCHECK`: the distroless base ships no shell
   and no `curl`, so the binary has to probe itself.
 - **Container `HEALTHCHECK`** in the Dockerfile, wired to `chronos health`.
-- **Public client `Explanation` and `ConfidenceClass`** — the HTTP SDK now
-  unmarshals the explainability payload and qualitative grade that the server
-  has emitted since 0.5.0.
+- **Detector `Explanation` payloads** — every detector now fills
+  `Signal.Explanation` with numeric feature evolution (where a series exists),
+  comparable-peer count, threshold used, and a stable `detector_version` tag
+  (`trend-v1`, `spike-v1`, …). Still no Title/Summary/Suggestion.
+- **Public client HTTP parity** — `Explanation` / `ConfidenceClass` on
+  `client.Signal`; `ListPage` (`next_cursor` / `since_cursor`); `Scopes`
+  (`scope_in`); `IngestBatch`; `FederationExport`.
 
 ### Changed
 - **Dockerfile hardening** — explicit `USER 65532:65532` (the distroless
@@ -29,12 +33,20 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
   `SignalFilter.ScopeIDs`, matching sqlite/postgres/memory.
 - **`pipeline.Compute` `SignalsCreated`** counts signals that actually saved,
   not detections that failed validation.
+- **Detection scheduler** skips a candidate when a signal with the same
+  `(scope, series, pattern, window)` already exists, so a second tick over
+  unchanged observations does not append duplicate rows. A later tick that
+  grows `window.End` (new points) still emits.
+- **Default `CHRONOS_MAX_SIGNALS`** is `100` (was `10`). `0` remains unlimited.
 - Agent and user docs (README, architecture, configuration, CLAUDE, AGENTS)
   list all eleven detectors, the MySQL/libSQL backends, and the HTTP auth /
   extra `/v1` routes that were already in the binary.
 
 ### Security
-- **`golang.org/x/text` 0.38.0 → 0.39.0** — GO-2026-5970 / CVE-2026-56852,
+- **`golang.org/x/mod` 0.37.0 → 0.40.0** — GO-2026-6179 / CVE-2026-56865
+  (sumdb/tlog) and GO-2026-6180 / CVE-2026-56864 (module zip hashes). Indirect;
+  not reachable from Chronos's own code.
+- **`golang.org/x/text` 0.38.0 → 0.41.0** — GO-2026-5970 / CVE-2026-56852,
   infinite loop on invalid input in `golang.org/x/text/unicode/norm`. Reachable
   transitively; no API change.
 

@@ -84,6 +84,7 @@ func (t *Trend) build(scopeID, series uuid.UUID, observations []chronos.EntitySt
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(n, t.cfg.TrendMinPoints, t.cfg),
 		Metrics:         metrics,
+		Explanation:     explainSeries(observations, 0, t.cfg.TrendMinSlope, detectorVersionTrend),
 		Evidence: []domain.Evidence{{
 			Series:  series,
 			Time:    observations[n-1].Timestamp,

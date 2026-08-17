@@ -154,6 +154,11 @@ func (o *OutlierCluster) Detect(_ context.Context, scopeID uuid.UUID, states []c
 			Strength:        strength,
 			Confidence:      confidence,
 			ConfidenceClass: ClassifyConfidence(len(seen), o.cfg.OutlierClusterMinSeries, o.cfg),
+			Explanation: domain.Explanation{
+				ComparablePeers: len(seen),
+				ThresholdUsed:   o.cfg.OutlierClusterZ,
+				DetectorVersion: detectorVersionOutlierCluster,
+			},
 			Metrics: map[string]float64{
 				"member_count":   seriesCount,
 				"window_seconds": window.Seconds(),

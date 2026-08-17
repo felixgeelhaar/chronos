@@ -87,7 +87,7 @@ All env-var driven. Defaults in `config.Default()` (`internal/config/config.go`)
 | `CHRONOS_DB_DSN` | unset | Primary DSN (`sqlite:///…`, `postgres://…`, `mysql://…`, `libsql://…`) |
 | `CHRONOS_DB_TYPE` | `sqlite` | Legacy: `sqlite` / `postgres` / `memory` |
 | `CHRONOS_DB_CONN` | `chronos.db` | Path or DSN |
-| `CHRONOS_MAX_SIGNALS` | `10` | Cap per detect run |
+| `CHRONOS_MAX_SIGNALS` | `100` | Cap per detect run (`0` = unlimited) |
 | `CHRONOS_JOB_TIMEOUT` | `10m` | Compute timeout |
 | `CHRONOS_SIM_THRESHOLD` | `0.85` | Recurrence: min cosine similarity |
 | `CHRONOS_MIN_SAMPLE` | `2` | Recurrence: min peer cases |

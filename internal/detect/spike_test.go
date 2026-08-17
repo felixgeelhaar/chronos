@@ -45,6 +45,12 @@ func TestSpike_PositiveDeviationEmits(t *testing.T) {
 	if err := sig.Validate(); err != nil {
 		t.Errorf("invalid signal: %v", err)
 	}
+	if sig.Explanation.DetectorVersion != detectorVersionSpike {
+		t.Errorf("explanation version = %q, want %s", sig.Explanation.DetectorVersion, detectorVersionSpike)
+	}
+	if len(sig.Explanation.FeatureEvolution) == 0 {
+		t.Error("explanation feature_evolution is empty")
+	}
 }
 
 func TestSpike_NoBaselineNoSignal(t *testing.T) {

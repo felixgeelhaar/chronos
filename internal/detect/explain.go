@@ -1,0 +1,40 @@
+package detect
+
+import (
+	"github.com/felixgeelhaar/chronos"
+	"github.com/felixgeelhaar/chronos/internal/domain"
+)
+
+// Detector version tags are stable strings consumers can use to detect
+// logic drift. Bump the suffix when the detector's math or evidence
+// shape changes in a way that would invalidate prior explanations.
+const (
+	detectorVersionRecurrence            = "recurrence-v1"
+	detectorVersionTrend                 = "trend-v1"
+	detectorVersionSpike                 = "spike-v1"
+	detectorVersionDrop                  = "drop-v1"
+	detectorVersionStall                 = "stall-v1"
+	detectorVersionAnomaly               = "anomaly-v1"
+	detectorVersionSeasonality           = "seasonality-v1"
+	detectorVersionCorrelation           = "correlation-v1"
+	detectorVersionChangePoint           = "changepoint-v1"
+	detectorVersionOutlierCluster        = "outlier_cluster-v1"
+	detectorVersionCrossScopeCorrelation = "cross_scope_correlation-v1"
+)
+
+// explainSeries builds the explainability payload for a detector that
+// inspected a chronological observation window. peers is 0 when the
+// detector is not peer-based. BaselineWindowDays is left zero — Chronos
+// windows are counted in observations, not calendar days.
+func explainSeries(observations []chronos.EntityState, peers int, threshold float64, version string) domain.Explanation {
+	samples := make([]domain.FeatureSample, 0, len(observations))
+	for _, o := range observations {
+		samples = append(samples, domain.FeatureSample{At: o.Timestamp, Value: o.Outcome()})
+	}
+	return domain.Explanation{
+		FeatureEvolution: samples,
+		ComparablePeers:  peers,
+		ThresholdUsed:    threshold,
+		DetectorVersion:  version,
+	}
+}

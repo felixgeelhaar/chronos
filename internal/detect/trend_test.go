@@ -59,6 +59,12 @@ func TestTrend_RisingSeriesEmits(t *testing.T) {
 	if err := sig.Validate(); err != nil {
 		t.Errorf("emitted signal invalid: %v", err)
 	}
+	if sig.Explanation.DetectorVersion != detectorVersionTrend {
+		t.Errorf("explanation version = %q, want %s", sig.Explanation.DetectorVersion, detectorVersionTrend)
+	}
+	if len(sig.Explanation.FeatureEvolution) != 6 {
+		t.Errorf("feature_evolution len = %d, want 6", len(sig.Explanation.FeatureEvolution))
+	}
 }
 
 func TestTrend_NoisySeriesNoSignal(t *testing.T) {

@@ -36,7 +36,7 @@ func (s *Spike) Pattern() domain.PatternType { return domain.PatternTypeSpike }
 // Detect scans each series and emits at most one spike per series
 // (the most recent point, if it crosses the threshold).
 func (s *Spike) Detect(_ context.Context, scopeID uuid.UUID, states []chronos.EntityState) []domain.Signal {
-	return zScoreSignal(scopeID, states, s.cfg.SpikeWindow, s.cfg.SpikeZScore, +1, domain.PatternTypeSpike, "baseline_deviation", s.now)
+	return zScoreSignal(scopeID, states, s.cfg.SpikeWindow, s.cfg.SpikeZScore, +1, domain.PatternTypeSpike, "baseline_deviation", detectorVersionSpike, s.now, s.cfg)
 }
 
 // Drop detects PatternTypeDrop: a sharp negative deviation of the most
@@ -54,12 +54,12 @@ func (d *Drop) Pattern() domain.PatternType { return domain.PatternTypeDrop }
 
 // Detect scans each series for negative-direction deviations.
 func (d *Drop) Detect(_ context.Context, scopeID uuid.UUID, states []chronos.EntityState) []domain.Signal {
-	return zScoreSignal(scopeID, states, d.cfg.SpikeWindow, d.cfg.DropZScore, -1, domain.PatternTypeDrop, "baseline_deviation", d.now)
+	return zScoreSignal(scopeID, states, d.cfg.SpikeWindow, d.cfg.DropZScore, -1, domain.PatternTypeDrop, "baseline_deviation", detectorVersionDrop, d.now, d.cfg)
 }
 
 // zScoreSignal is the shared body for Spike and Drop. direction is +1
 // to look for positive deviations, -1 for negative.
-func zScoreSignal(scopeID uuid.UUID, states []chronos.EntityState, window int, threshold float64, direction int, pattern domain.PatternType, kind string, now func() time.Time) []domain.Signal {
+func zScoreSignal(scopeID uuid.UUID, states []chronos.EntityState, window int, threshold float64, direction int, pattern domain.PatternType, kind, version string, now func() time.Time, cfg *config.Config) []domain.Signal {
 	if window < 2 {
 		return nil
 	}
@@ -81,15 +81,18 @@ func zScoreSignal(scopeID uuid.UUID, states []chronos.EntityState, window int, t
 			continue
 		}
 		strength := clamp01(math.Abs(z) / 5.0)
+		windowStates := append(append([]chronos.EntityState{}, baselineStates...), last)
 		signals = append(signals, domain.Signal{
-			ID:         uuid.New(),
-			ScopeID:    scopeID,
-			Series:     series,
-			Pattern:    pattern,
-			DetectedAt: now(),
-			Window:     domain.TimeWindow{Start: baselineStates[0].Timestamp, End: last.Timestamp},
-			Strength:   strength,
-			Confidence: strength,
+			ID:              uuid.New(),
+			ScopeID:         scopeID,
+			Series:          series,
+			Pattern:         pattern,
+			DetectedAt:      now(),
+			Window:          domain.TimeWindow{Start: baselineStates[0].Timestamp, End: last.Timestamp},
+			Strength:        strength,
+			Confidence:      strength,
+			ConfidenceClass: ClassifyConfidence(len(observations), window+1, cfg),
+			Explanation:     explainSeries(windowStates, 0, threshold, version),
 			Metrics: map[string]float64{
 				"z":                z,
 				"baseline_mean":    m,

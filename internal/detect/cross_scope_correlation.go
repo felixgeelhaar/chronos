@@ -147,6 +147,7 @@ func (c *CrossScopeCorrelation) build(a, b scopedSeriesKey, r float64, n int, sa
 		Confidence:      clamp01(absR * sampleFactor(n, 2*c.cfg.CrossScopeMinPoints)),
 		ConfidenceClass: ClassifyConfidence(n, c.cfg.CrossScopeMinPoints, c.cfg),
 		Metrics:         metrics,
+		Explanation:     explainSeries(sa[max(0, len(sa)-n):], 1, c.cfg.CrossScopeMin, detectorVersionCrossScopeCorrelation),
 		Evidence: []domain.Evidence{{
 			Series:  emittedPartner,
 			Time:    latest,

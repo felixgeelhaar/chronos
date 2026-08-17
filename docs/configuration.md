@@ -9,7 +9,7 @@ Chronos is configured exclusively through `CHRONOS_*` environment variables. The
 | `CHRONOS_DB_DSN` | unset | both | Persistence DSN. Primary entry point. Examples: `sqlite:///chronos.db`, `postgres://user:pw@host/db?namespace=chronos`, `mysql://user:pw@host:3306/?namespace=chronos`, `libsql://my-db.turso.io?authToken=...`. When set, takes precedence over the legacy pair below. |
 | `CHRONOS_DB_TYPE` | `sqlite` | both | **Legacy**: `sqlite`, `postgres`, or `memory`. Translated internally to a DSN; new deployments should set `CHRONOS_DB_DSN`. |
 | `CHRONOS_DB_CONN` | `chronos.db` | both | **Legacy**: SQLite path (or `:memory:`) or full Postgres URL. Used together with `CHRONOS_DB_TYPE`. |
-| `CHRONOS_MAX_SIGNALS` | `10` | `compute` | Cap on signals produced per detect run. |
+| `CHRONOS_MAX_SIGNALS` | `100` | `compute` | Cap on signals produced per detect run. `0` = unlimited. |
 | `CHRONOS_JOB_TIMEOUT` | `10m` | `compute` | Overall compute timeout (Go duration syntax). |
 | `CHRONOS_SIM_THRESHOLD` | `0.85` | Recurrence | Minimum cosine similarity for a peer to count. |
 | `CHRONOS_MIN_SAMPLE` | `2` | Recurrence | Minimum peer cases required to emit. |

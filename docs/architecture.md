@@ -89,7 +89,7 @@ There is **no `FeedbackRepository`** in Chronos. Reviewer feedback lives in Mnem
 
 ### Why the API does not render prose
 
-The cognitive-stack vision is explicit: Chronos emits signals, Nous interprets them, presentation surfaces vary. Putting prose at the API boundary would couple Chronos to a single language, audience, and surface. Instead, the wire shape carries structured fields (`Pattern`, `Strength`, `Confidence`, `Metrics`); consumers compose copy as they see fit.
+The cognitive-stack vision is explicit: Chronos emits signals, Nous interprets them, presentation surfaces vary. Putting prose at the API boundary would couple Chronos to a single language, audience, and surface. Instead, the wire shape carries structured fields (`Pattern`, `Strength`, `Confidence`, `Metrics`, numeric `Explanation`); consumers compose copy as they see fit.
 
 ## Engine semantics
 

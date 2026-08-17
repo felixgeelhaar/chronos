@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/felixgeelhaar/chronos/internal/detect"
+	"github.com/felixgeelhaar/chronos/internal/domain"
 	"github.com/felixgeelhaar/chronos/internal/ports"
 )
 
@@ -19,11 +20,10 @@ import (
 // Each tick the scheduler enumerates scopes that have observations,
 // loads each scope's history, runs every detector over it, and
 // persists the resulting signals through the configured (typically
-// notifier-wrapped) SignalRepository. Detection is idempotent at the
-// signal-id level via uuid.NewV4 inside detectors, so re-runs over
-// the same data simply produce additional signals — operators choose
-// retention via DeleteOlderThan and the cadence via
-// CHRONOS_DETECTION_INTERVAL.
+// notifier-wrapped) SignalRepository. A second tick over the same
+// observations is a no-op: the scheduler skips a candidate when a
+// signal with the same (scope, series, pattern, window) already
+// exists, so unchanged data does not append duplicate rows.
 type Scheduler struct {
 	states   ports.EntityStateRepository
 	signals  ports.SignalRepository
@@ -92,9 +92,39 @@ func (s *Scheduler) tick(ctx context.Context) {
 		}
 		signals := s.engine.Detect(ctx, states)
 		for _, sig := range signals {
+			if s.alreadyPersisted(ctx, sig) {
+				continue
+			}
 			if err := s.signals.Save(ctx, sig); err != nil {
 				s.logger.Error("scheduler: signal save failed", "scope_id", scopeID, "signal_id", sig.ID, "err", err)
 			}
 		}
 	}
+}
+
+// alreadyPersisted reports whether a signal with the same perception
+// identity — (scope, series, pattern, window) — is already in the
+// store. Detectors mint a fresh UUID every Detect call, so without
+// this check the scheduler would append a duplicate row on every tick
+// over unchanged observations. Lookup failures fail open (return
+// false) so a transient List error cannot suppress a real emission.
+func (s *Scheduler) alreadyPersisted(ctx context.Context, sig domain.Signal) bool {
+	pat := sig.Pattern
+	series := sig.Series
+	existing, err := s.signals.List(ctx, ports.SignalFilter{
+		ScopeID: sig.ScopeID,
+		Pattern: &pat,
+		Series:  &series,
+		// Limit 0 = unlimited. Correlation is O(N²) in series count;
+		// a capped lookup can miss a matching window and re-append.
+	})
+	if err != nil {
+		return false
+	}
+	for _, e := range existing {
+		if e.Window.Start.Equal(sig.Window.Start) && e.Window.End.Equal(sig.Window.End) {
+			return true
+		}
+	}
+	return false
 }

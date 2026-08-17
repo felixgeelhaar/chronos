@@ -35,31 +35,26 @@ Chronos is the **time / pattern perception** layer of the cognitive stack (Mnemo
 
 ## Next
 
-### 1. Stream-replay safety
+Shipped items from earlier roadmap slices (SSE replay, outbox, ChangePoint / OutlierCluster / CrossScopeCorrelation, write-coalescing, postgres bulk-load, detector parallelism, ops docs) stay checked in git history; they are no longer open work. Remaining scope:
 
-- [x] **SSE `Last-Event-ID` replay** — server consults the persistence layer on reconnect and replays signals detected at or after the cursor (excluding the cursor itself). `?last_event_id=<uuid>` query fallback for environments that strip the header.
-- [x] **At-least-once delivery (durable outbox)** — `internal/notify.Outbox` wraps an `AckingNotifier` with exponential-backoff retry. Optional `PersistencePath` snapshots pending deliveries to JSON-on-disk; restart re-loads pending rows. SSE replay covers the SSE side via `Last-Event-ID`.
+### 1. Transport parity (gRPC stays a subset)
 
-### 2. New detectors
+HTTP is the full surface: batch ingest, config validate, federation export, SSE, cursor pagination. gRPC is unary `Ingest` + `ListSignals` + `GetSignal`. That subset is **intentional until someone needs the rest on proto** — adding client-streaming ingest or SSE-equivalent RPCs is a versioned schema change, not a drive-by. Document the subset in README / wire-contract; do not silently claim streaming ingest.
 
-- [x] **Change-point detection** — best-split mean-shift test (`PatternTypeChangePoint`). Distinct from Spike/Drop; emits `regime_before` / `regime_after` evidence.
-- [x] **Outlier-cluster detection** (`PatternTypeOutlierCluster`) — cohort-level anomaly clusters. Uses each series's own rolling baseline; groups outlier events into time buckets; emits a single signal per qualifying bucket with `member_count` ≥ `CHRONOS_OUTLIER_CLUSTER_MIN_SERIES`.
-- [x] **Cross-scope correlation** (`PatternTypeCrossScopeCorrelation`) — pairwise Pearson correlation across (scope, series) pairs in different scopes. New `CrossScopeDetector` interface; engine runs cross-scope detectors after per-scope detectors.
+### 2. Signal identity over time
 
-Open question: how much per-detector observability do we expose? Current design is "fire and forget"; operators may want detector latency / drop counters per type.
+The scheduler now skips re-saves when `(scope, series, pattern, window)` already exists. It does **not** collapse successive windows as new points arrive (trend/spike `window.End` grows → new row). Optional later work:
 
-### 3. Performance
+- Content-addressed signal IDs (hash of perception identity) as an alternative to the List-then-skip check.
+- An upsert / "current window" mode for operators who want one live row per series+pattern.
 
-- [x] **Write-coalescing decorator** (`internal/store/batching/Repo`) — opt-in, wraps any `EntityStateRepository` with buffered Ingest. Trades small per-write latency for one fsync per batch; passes through Save / List / Count / DeleteOlderThan unchanged.
-- [x] **Postgres bulk-load path** — chunked multi-row `INSERT…ON CONFLICT` for batches above `BulkSaveThreshold` (200 rows). Round-trips drop ~1000× on backfills.
-- [x] **Detector parallelism** — `Engine.WithParallelDetectors(true)` runs every (scope, detector) pair in its own goroutine. Wired through `pipeline.NewEngine` via `CHRONOS_DETECTOR_PARALLELISM`.
+### 3. Detector observability
 
-### 4. Operations
+Per-pattern latency, skip, and drop counters (including truncation by `CHRONOS_MAX_SIGNALS`). Process-level Prometheus metrics exist; they are not broken out per detector.
 
-- [x] Deployment runbook — `docs/DEPLOYMENT.md` (k8s shape, Prometheus scrape config, ops procedures, known limitations).
-- [x] `CHANGELOG.md` (Keep-a-Changelog format alongside GoReleaser-driven GitHub Releases).
-- [x] Reference Grafana dashboard JSON (`deploy/grafana/dashboards/chronos-overview.json`).
-- [x] SLO doc with error-budget burn-rate alert tiers (`docs/SLOs.md`).
+### 4. Capability ports
+
+`ports.TextSearcher` and `ports.VectorSearcher` remain unused. Implement them only when a detector actually needs FTS or embeddings.
 
 ### 5. Adapter ecosystem (community-driven)
 

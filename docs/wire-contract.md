@@ -15,6 +15,22 @@ The same domain shape ships over both transports. Evidence.Kind strings and metr
 
 Adding a new transport without updating this document is a contract bug.
 
+gRPC is a **subset** of HTTP: unary `Ingest`, `ListSignals`, and `GetSignal`. Batch ingest, config validate, federation export, SSE, and `since_cursor` pagination are HTTP-only until a versioned RPC addition lands.
+
+## Explanation
+
+`Signal.Explanation` is numeric/structured context so downstream narrators can say *why* a detector fired without Chronos emitting prose. Detectors populate it; empty/`omit` means the detector did not surface one (legacy rows). Fields:
+
+| JSON key | Meaning |
+|---|---|
+| `feature_evolution` | Time-ordered `{at, value}` samples of the outcome the detector inspected. Omitted for cohort-level `outlier_cluster`. |
+| `comparable_peers` | Peer count considered. `0` / omitted = not a peer detector. |
+| `baseline_window_days` | Reserved; Chronos windows are observation counts, so this stays `0`. |
+| `threshold_used` | The configured cutoff the detector compared against. |
+| `detector_version` | Stable tag. Bump the suffix when math or evidence shape changes. |
+
+Current `detector_version` values: `recurrence-v1`, `trend-v1`, `spike-v1`, `drop-v1`, `stall-v1`, `anomaly-v1`, `seasonality-v1`, `correlation-v1`, `changepoint-v1`, `outlier_cluster-v1`, `cross_scope_correlation-v1`.
+
 ## Pattern enum
 
 `Signal.Pattern` is one of:

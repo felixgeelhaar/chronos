@@ -121,6 +121,7 @@ func (c *Correlation) pair(scopeID, idA, idB uuid.UUID, a, b []chronos.EntitySta
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(n, c.cfg.CorrelationMinPoints, c.cfg),
 		Metrics:         metrics,
+		Explanation:     explainSeries(a[len(a)-n:], 1, c.cfg.CorrelationMin, detectorVersionCorrelation),
 		Evidence: []domain.Evidence{{
 			Series:  idB,
 			Time:    end,

@@ -126,7 +126,7 @@ func Default() *Config {
 		DBType:    defaultEnv("CHRONOS_DB_TYPE", "sqlite"),
 		DBConnStr: defaultEnv("CHRONOS_DB_CONN", "chronos.db"),
 
-		MaxSignalsPerRun:   defaultEnvInt("CHRONOS_MAX_SIGNALS", 10),
+		MaxSignalsPerRun:   defaultEnvInt("CHRONOS_MAX_SIGNALS", 100),
 		ComputationTimeout: defaultEnvDuration("CHRONOS_JOB_TIMEOUT", 10*time.Minute),
 
 		SimilarityThreshold: defaultEnvFloat64("CHRONOS_SIM_THRESHOLD", 0.85),

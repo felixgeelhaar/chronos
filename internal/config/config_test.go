@@ -18,8 +18,8 @@ func TestDefault_FallsBackToDefaultsWhenEnvUnset(t *testing.T) {
 	if c.DBConnStr != "chronos.db" {
 		t.Errorf("DBConnStr default = %q, want chronos.db", c.DBConnStr)
 	}
-	if c.MaxSignalsPerRun != 10 {
-		t.Errorf("MaxSignalsPerRun = %d, want 10", c.MaxSignalsPerRun)
+	if c.MaxSignalsPerRun != 100 {
+		t.Errorf("MaxSignalsPerRun = %d, want 100", c.MaxSignalsPerRun)
 	}
 	if c.ComputationTimeout != 10*time.Minute {
 		t.Errorf("ComputationTimeout = %v, want 10m", c.ComputationTimeout)
@@ -100,7 +100,7 @@ func TestDefault_BadEnvFallsBackSilently(t *testing.T) {
 	t.Setenv("CHRONOS_WEBHOOK_URLS", "  ,  ,  ") // all-whitespace entries
 
 	c := Default()
-	if c.MaxSignalsPerRun != 10 {
+	if c.MaxSignalsPerRun != 100 {
 		t.Errorf("MaxSignalsPerRun = %d (expected default fallback)", c.MaxSignalsPerRun)
 	}
 	if c.SimilarityThreshold != 0.85 {

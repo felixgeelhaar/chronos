@@ -105,6 +105,7 @@ func (c *ChangePoint) build(scopeID, series uuid.UUID, observations []chronos.En
 		Confidence:      confidence,
 		ConfidenceClass: ClassifyConfidence(len(ys), c.cfg.ChangePointMinPoints, c.cfg),
 		Metrics:         metrics,
+		Explanation:     explainSeries(observations, 0, c.cfg.ChangePointMinShift, detectorVersionChangePoint),
 		Evidence: []domain.Evidence{
 			{
 				Series:  series,

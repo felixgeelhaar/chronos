@@ -265,13 +265,17 @@ c, _ := client.New("http://chronos.local:7778",
     client.WithTimeout(10*time.Second),
 )
 
-// Pull: recent recurrence signals for a scope.
-signals, err := c.Signals().
+// Pull: recent recurrence signals for a scope (page includes next_cursor).
+page, err := c.Signals().
     Scope(scopeID).
     Pattern(client.PatternTypeRecurrence).
     MinConfidence(0.7).
     Limit(20).
-    List(ctx)
+    ListPage(ctx)
+signals := page.Signals
+
+// Resume after the opaque cursor from the previous page.
+page, err = c.Signals().Scope(scopeID).SinceCursor(page.NextCursor).ListPage(ctx)
 ```
 
 For low-latency consumers, subscribe to live signals via SSE instead of polling:
@@ -294,7 +298,7 @@ for sig := range events {
 
 Streaming requires the server to run an in-process detection scheduler (`CHRONOS_DETECTION_INTERVAL > 0`); otherwise the endpoint returns 501. Delivery is at-most-once — pair with a `Since`-keyed `List` call for gap recovery and de-duplicate by `Signal.ID`.
 
-For streaming sources you can ingest single observations:
+For streaming sources you can ingest single observations, or a batch:
 
 ```go
 _, err := c.Ingest(ctx, client.IngestRequest{
@@ -304,6 +308,8 @@ _, err := c.Ingest(ctx, client.IngestRequest{
     Features:  []float64{f1, f2, f3, outcome},
     Adapter:   "my-source",
 })
+
+_, err = c.IngestBatch(ctx, []client.IngestRequest{ /* ... */ })
 ```
 
 ## API
@@ -328,9 +334,11 @@ The gRPC service is defined in [`api/proto/chronos/v1/chronos.proto`](api/proto/
 
 | Method | Description |
 |---|---|
-| `Ingest` | Push a single observation (`EntityState` fields on `IngestRequest`) |
-| `ListSignals` | Filter by scope/pattern/series/since/until/min_confidence/limit (mirrors HTTP `/v1/signals`) |
+| `Ingest` | Push a single observation (`EntityState` fields on `IngestRequest`). Unary — not client-streaming. |
+| `ListSignals` | Filter by scope/pattern/series/since/until/min_confidence/limit. No `since_cursor` (HTTP-only). |
 | `GetSignal` | Fetch a single signal by ID |
+
+Batch ingest, federation export, SSE, and cursor pagination stay on HTTP. See [`docs/backlog.md`](docs/backlog.md).
 
 Bearer-token auth via the `authorization` metadata header reuses `CHRONOS_API_TOKEN`. HTTP and gRPC return the same domain shape — see [`docs/wire-contract.md`](docs/wire-contract.md) for the canonical contract.
 

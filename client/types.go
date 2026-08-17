@@ -75,6 +75,52 @@ type IngestRequest struct {
 	Adapter   string            `json:"adapter,omitempty"`
 }
 
+// IngestBatchRequest is the wire shape for POST /v1/ingest/batch.
+type IngestBatchRequest struct {
+	Observations   []IngestRequest `json:"observations"`
+	DeferDetection bool            `json:"defer_detection,omitempty"`
+}
+
+// IngestBatchResponse confirms how many observations were persisted.
+type IngestBatchResponse struct {
+	Accepted       int  `json:"accepted"`
+	DeferDetection bool `json:"defer_detection"`
+}
+
+// SignalPage is one page of /v1/signals, including the opaque cursor
+// for the next poll. NextCursor is empty when the page is empty.
+type SignalPage struct {
+	Signals    []Signal `json:"signals"`
+	Count      int      `json:"count"`
+	NextCursor string   `json:"next_cursor,omitempty"`
+}
+
+// FederationExport is the anonymized pattern-statistics payload from
+// GET /v1/federation/export.
+type FederationExport struct {
+	GeneratedAt  time.Time                `json:"generated_at"`
+	Source       string                   `json:"source"`
+	Version      string                   `json:"version"`
+	Patterns     []FederationPatternStats `json:"patterns"`
+	TotalSignals int                      `json:"total_signals"`
+}
+
+// FederationPatternStats summarises one pattern type's signal population.
+type FederationPatternStats struct {
+	Pattern          string  `json:"pattern"`
+	Count            int     `json:"count"`
+	AvgStrength      float64 `json:"avg_strength"`
+	MinStrength      float64 `json:"min_strength"`
+	MaxStrength      float64 `json:"max_strength"`
+	AvgConfidence    float64 `json:"avg_confidence"`
+	MinConfidence    float64 `json:"min_confidence"`
+	MaxConfidence    float64 `json:"max_confidence"`
+	AvgSampleSize    float64 `json:"avg_sample_size,omitempty"`
+	TentativeCount   int     `json:"tentative_count,omitempty"`
+	EstablishedCount int     `json:"established_count,omitempty"`
+	StrongCount      int     `json:"strong_count,omitempty"`
+}
+
 // PatternType constants mirror the engine's domain.PatternType enum so
 // callers can switch on stable string values without importing
 // internal packages.
