@@ -6,6 +6,11 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-08-17
+
+Perception-engine release. Detectors explain themselves, signals get
+stable IDs, gRPC matches HTTP, and living docs treat Nous as archived.
+
 ### Added
 - **`chronos health` subcommand** — probes `GET /health` on
   `http://127.0.0.1:$CHRONOS_HTTP_PORT` and exits non-zero when the server does
