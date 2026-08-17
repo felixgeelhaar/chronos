@@ -147,6 +147,11 @@ func TestValidate_RejectsEachInvariant(t *testing.T) {
 		{"seasonality autocorr out of range", func(c *Config) { c.SeasonalityMinAutocorr = -2 }, "seasonality min autocorrelation"},
 		{"correlation min > 1", func(c *Config) { c.CorrelationMin = 2 }, "correlation min"},
 		{"correlation min < 0", func(c *Config) { c.CorrelationMin = -1 }, "correlation min"},
+		{"changepoint shift < 0", func(c *Config) { c.ChangePointMinShift = -1 }, "changepoint min shift"},
+		{"outlier cluster z < 0", func(c *Config) { c.OutlierClusterZ = -1 }, "outlier cluster z"},
+		{"cross-scope min > 1", func(c *Config) { c.CrossScopeMin = 1.5 }, "cross-scope min"},
+		{"confidence established < 0", func(c *Config) { c.ConfidenceClassEstablished = -1 }, "confidence established"},
+		{"confidence strong < 0", func(c *Config) { c.ConfidenceClassStrong = -1 }, "confidence strong"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {

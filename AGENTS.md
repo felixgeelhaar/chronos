@@ -2,7 +2,7 @@
 
 ## Project intent
 
-Chronos is the **Time / Pattern Perception** layer of the cognitive stack ([Mnemos / **Chronos** / Praxis / Nous](docs/cognitive-stack.md)). It ingests time-series observations from any source and emits **signals** — structured records describing patterns: `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, …
+Chronos is the **Time / Pattern Perception** layer of the cognitive stack ([Mnemos / **Chronos** / Praxis / Nous](docs/cognitive-stack.md)). It ingests time-series observations from any source and emits **signals** — structured records describing patterns: `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, `Anomaly`, `Seasonality`, `Correlation`, `ChangePoint`, `OutlierCluster`, `CrossScopeCorrelation`.
 
 The single hardest rule: **signals, not opinions.** Chronos perceives; it does not interpret. There is no Title, no Summary, no Suggestion, no dismissal workflow, no feedback. Those concerns belong to Nous (decisions) and Mnemos (knowledge), respectively.
 
@@ -13,6 +13,7 @@ The second hardest rule: **the core engine knows nothing about the domain.** Ath
 ```
 chronos/                       Public adapter SDK: EntityState, Source, registry
 client/                        Public HTTP-API SDK for consumers (Nous integrators, dashboards)
+embed/                         In-process engine API (Process / Detect / Query)
 cmd/chronos/                   CLI: main.go + one file per subcommand + errors.go
 internal/
   domain/                      Private domain model: Signal, Evidence, TimeWindow,
@@ -24,11 +25,14 @@ internal/
   similarity/                  Cosine, weighted cosine, Euclidean (pure math)
   detect/                      Detectors + Engine that fans observations out
   pipeline/                    Orchestration: fetch → save observations → detect → save signals
-  api/                         HTTP REST layer (transport + DTO conversion)
+  api/                         HTTP REST + gRPC transport + DTO conversion
+  notify/                      Webhooks, SSE, durable outbox
   store/                       Persistence factory (Open dispatches on dbType)
     memory/                    In-memory backend (test default)
     sqlite/                    modernc.org/sqlite-backed; sqlcgen subpkg holds generated code
     postgres/                  PostgreSQL backend (hand-written queries)
+    mysql/                     MySQL / MariaDB backend
+    libsql/                    Turso / local libSQL (reuses sqlite repos)
 sql/sqlite/                    sqlc query file
 docs/                          Architecture, cognitive-stack, adapter authoring, configuration
 ```
@@ -42,7 +46,7 @@ Anything under `internal/` is private and may change without notice.
 
 ## Conventions
 
-- **Go 1.23+**, minimal external deps: `google/uuid`, `lib/pq`, `modernc.org/sqlite` (pure Go — no CGO).
+- **Go 1.25+**, minimal external deps: `google/uuid`, `jackc/pgx/v5`, `go-sql-driver/mysql`, `modernc.org/sqlite` (pure Go — no CGO).
 - Numeric features are always `[]float64`. Timestamps are `time.Time` (RFC3339Nano on disk). IDs are `uuid.UUID`.
 - **Last feature is the outcome metric**, higher is better. Adapters that violate this convention will produce signals whose evidence metrics (`outcome_diff`, `slope`) are inverted.
 - `internal/store/sqlite/sqlcgen/` is sqlc-generated; **do not hand-edit** under normal circumstances. To change SQL: edit `sql/sqlite/queries.sql` and/or `internal/store/sqlite/migrations/001_initial.sql`, then `make sqlc`.
@@ -65,7 +69,7 @@ make sqlc       # regenerate internal/store/sqlite/sqlcgen
 2. Add the corresponding `PatternType` constant in `internal/domain/types.go` (most are reserved already).
 3. Wire the detector into `detect.DefaultDetectors`.
 4. Add per-detector config knobs in `internal/config/config.go` (`CHRONOS_<DETECTOR>_*`).
-5. Document the detector's evidence shape (the `Kind` value and `Metrics` keys).
+5. Document the detector's evidence shape (the `Kind` value and `Metrics` keys) in [`docs/wire-contract.md`](docs/wire-contract.md).
 6. Add unit tests covering the trigger and the no-trigger paths.
 
 ## Adding an adapter

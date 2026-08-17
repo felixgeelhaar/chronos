@@ -37,10 +37,18 @@ CREATE TABLE IF NOT EXISTS signals (
     strength      DOUBLE       NOT NULL,
     confidence    DOUBLE       NOT NULL,
     metrics       JSON         NOT NULL,
+    explanation   JSON         NOT NULL DEFAULT ('{}'),
+    confidence_class VARCHAR(32) NOT NULL DEFAULT '',
     INDEX idx_signals_scope_time     (scope_id, detected_at),
     INDEX idx_signals_scope_pattern  (scope_id, pattern, detected_at),
     INDEX idx_signals_series         (series_id, detected_at)
 );
+
+-- Existing deployments created the table before explanation /
+-- confidence_class landed. ADD COLUMN IF NOT EXISTS is a no-op when
+-- CREATE TABLE already included them (fresh Open).
+ALTER TABLE signals ADD COLUMN IF NOT EXISTS explanation JSON NOT NULL DEFAULT ('{}');
+ALTER TABLE signals ADD COLUMN IF NOT EXISTS confidence_class VARCHAR(32) NOT NULL DEFAULT '';
 
 CREATE TABLE IF NOT EXISTS signal_evidence (
     signal_id  CHAR(36)     NOT NULL,

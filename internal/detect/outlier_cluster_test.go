@@ -60,6 +60,9 @@ func TestOutlierCluster_DetectsCohortAnomaly(t *testing.T) {
 	if s.Series != uuid.Nil {
 		t.Errorf("Series = %v, want nil (cohort-level)", s.Series)
 	}
+	if err := s.Validate(); err != nil {
+		t.Errorf("Validate: %v (cohort-level series must be persistable)", err)
+	}
 	if got := s.Metrics["member_count"]; got != 3 {
 		t.Errorf("member_count = %v, want 3", got)
 	}

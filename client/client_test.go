@@ -65,6 +65,55 @@ func TestClient_ListSignals_Filters(t *testing.T) {
 	}
 }
 
+func TestClient_ListSignals_UnmarshalsExplanationAndConfidenceClass(t *testing.T) {
+	scope := uuid.New()
+	at := time.Date(2026, 5, 1, 12, 0, 0, 0, time.UTC)
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"count": 1,
+			"signals": []map[string]any{{
+				"id":               uuid.New(),
+				"scope_id":         scope,
+				"pattern":          client.PatternTypeTrend,
+				"confidence":       0.9,
+				"detected_at":      at,
+				"confidence_class": "established",
+				"explanation": map[string]any{
+					"detector_version":     "trend-v2",
+					"comparable_peers":     12,
+					"baseline_window_days": 90,
+					"threshold_used":       2.5,
+					"feature_evolution": []map[string]any{
+						{"at": at, "value": 26.0},
+					},
+				},
+			}},
+		})
+	}))
+	defer srv.Close()
+
+	c, _ := client.New(srv.URL)
+	got, err := c.Signals().Scope(scope).List(context.Background())
+	if err != nil {
+		t.Fatalf("List: %v", err)
+	}
+	if len(got) != 1 {
+		t.Fatalf("len = %d", len(got))
+	}
+	if got[0].ConfidenceClass != "established" {
+		t.Errorf("confidence_class = %q, want established", got[0].ConfidenceClass)
+	}
+	if got[0].Explanation == nil {
+		t.Fatal("explanation missing")
+	}
+	if got[0].Explanation.DetectorVersion != "trend-v2" {
+		t.Errorf("detector_version = %q", got[0].Explanation.DetectorVersion)
+	}
+	if got[0].Explanation.ComparablePeers != 12 {
+		t.Errorf("comparable_peers = %d", got[0].Explanation.ComparablePeers)
+	}
+}
+
 func TestClient_Ingest(t *testing.T) {
 	id := uuid.New()
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

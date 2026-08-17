@@ -23,6 +23,28 @@ type Signal struct {
 	Confidence float64            `json:"confidence"`
 	Metrics    map[string]float64 `json:"metrics,omitempty"`
 	Evidence   []Evidence         `json:"evidence,omitempty"`
+	// Explanation carries detector-side context that lets downstream
+	// consumers narrate WHY the signal fired. Omitted when the
+	// detector did not surface one.
+	Explanation *Explanation `json:"explanation,omitempty"`
+	// ConfidenceClass is the qualitative grade (tentative /
+	// established / strong). Empty when the detector did not classify.
+	ConfidenceClass string `json:"confidence_class,omitempty"`
+}
+
+// Explanation is the wire shape of a detector explainability payload.
+type Explanation struct {
+	FeatureEvolution   []FeatureSample `json:"feature_evolution,omitempty"`
+	ComparablePeers    int             `json:"comparable_peers,omitempty"`
+	BaselineWindowDays int             `json:"baseline_window_days,omitempty"`
+	ThresholdUsed      float64         `json:"threshold_used,omitempty"`
+	DetectorVersion    string          `json:"detector_version,omitempty"`
+}
+
+// FeatureSample is one observation in an Explanation's feature evolution.
+type FeatureSample struct {
+	At    time.Time `json:"at"`
+	Value float64   `json:"value"`
 }
 
 // TimeWindow is the analysis window over which a signal was detected.

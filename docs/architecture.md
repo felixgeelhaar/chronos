@@ -39,8 +39,8 @@ Layers run from inside (pure) to outside (I/O):
               ▼                       ▼                           ▼
    ┌─────────────────────┐  ┌─────────────────────┐   ┌────────────────────────┐
    │ internal/detect     │  │ internal/similarity │   │ internal/store         │
-   │ Engine + Detector   │  │ Cosine, weighted,   │   │ Open(dbType, conn)     │
-   │ (recurrence, ...)   │  │ Euclidean (math)    │   │ memory / sqlite / pg   │
+   │ Engine + Detector   │  │ Cosine, weighted,   │   │ Open(dsn)              │
+   │ (recurrence, ...)   │  │ Euclidean (math)    │   │ memory/sqlite/pg/mysql │
    └─────────────────────┘  └─────────────────────┘   └────────────────────────┘
                                        │                           │
                                        └─────────────┬─────────────┘
@@ -123,6 +123,9 @@ The Engine groups input states by scope, sorts each group ascending by timestamp
 - `Anomaly` — the cross-entity dual of Recurrence. For each entity's most recent state, cosine-compare to peers' most recent states; emit when the *highest* peer similarity is below `AnomalyMaxSimilarity` (subject is isolated). Strength = `1 - max_similarity`. Evidence kind `peer_distance`, one per peer. Window is degenerate: `Start == End == subject.Timestamp`, since Anomaly is a snapshot in time across peers rather than an interval. Consumers computing window duration must special-case this pattern.
 - `Seasonality` — autocorrelation peaks. Computes Pearson autocorrelation at lags `[MinPeriod, n/2]` and emits when the largest peak exceeds `SeasonalityMinAutocorr`. Strength = the peak value; metrics carry the period (lag). Evidence kind `autocorrelation_peak`.
 - `Correlation` — pairwise Pearson on aligned outcome series within a scope. One signal per pair, deterministically owned by the lex-smaller series ID; the other appears as evidence. Strength = `|r|`; metrics carry r, direction (+1/0/-1). Evidence kind `pair_correlation`. Cost is O(N²) in series count per scope.
+- `ChangePoint` — best-split mean-shift. Distinct from Spike/Drop (short-lived deviations). Emits `regime_before` / `regime_after` evidence and `shift` / `delta_mean` metrics.
+- `OutlierCluster` — cohort-level: several series in the same scope go anomalous in the same time bucket. `Series` is `uuid.Nil` by contract; members live in evidence (`outlier_member`).
+- `CrossScopeCorrelation` — pairwise Pearson across (scope, series) pairs in *different* scopes. Implements `CrossScopeDetector`; the engine runs it once after per-scope detectors. Optional anonymize mode replaces scope/series ids with UUIDv5 hashes.
 
 Each detector defines its own `Evidence.Kind` and `Metrics` keys; the schema is uniform but the semantics are detector-specific. The full list of stable string keys consumers may rely on is in [`wire-contract.md`](wire-contract.md).
 
@@ -132,7 +135,9 @@ Each detector defines its own `Evidence.Kind` and `Metrics` keys; the schema is 
 |---|---|---|
 | `memory` | none | Tests, ephemeral exploration |
 | `sqlite` | `modernc.org/sqlite` (pure Go) | Single-binary, embedded, local dev |
-| `postgres` | `lib/pq` | Multi-process production deployments |
+| `postgres` | `jackc/pgx/v5` | Multi-process production deployments |
+| `mysql` / `mariadb` | `go-sql-driver/mysql` | Environments where MySQL is the data plane |
+| `libsql` | `tursodatabase/libsql-client-go` | Turso remote or local libSQL files |
 
 ### Schema (single migration)
 

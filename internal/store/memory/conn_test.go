@@ -130,6 +130,36 @@ func TestSignalRepository_FiltersAndOrdering(t *testing.T) {
 	}
 }
 
+func TestSignalRepository_CohortLevelOutlierClusterPersists(t *testing.T) {
+	c := New()
+	ctx := context.Background()
+	now := time.Now()
+	sig := domain.Signal{
+		ID:         uuid.New(),
+		ScopeID:    uuid.New(),
+		Series:     uuid.Nil,
+		Pattern:    domain.PatternTypeOutlierCluster,
+		DetectedAt: now,
+		Window:     domain.TimeWindow{Start: now.Add(-time.Minute), End: now},
+		Strength:   0.4,
+		Confidence: 0.7,
+		Metrics:    map[string]float64{"member_count": 3},
+	}
+	if err := c.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save cohort-level signal: %v", err)
+	}
+	got, err := c.Signals.Get(ctx, sig.ID)
+	if err != nil {
+		t.Fatalf("Get: %v", err)
+	}
+	if got.Series != uuid.Nil {
+		t.Errorf("Series = %v, want nil", got.Series)
+	}
+	if got.Pattern != domain.PatternTypeOutlierCluster {
+		t.Errorf("Pattern = %q", got.Pattern)
+	}
+}
+
 func TestSignalRepository_GetMissing(t *testing.T) {
 	c := New()
 	if _, err := c.Signals.Get(context.Background(), uuid.New()); !errors.Is(err, domain.ErrSignalNotFound) {

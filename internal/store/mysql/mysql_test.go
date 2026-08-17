@@ -3,11 +3,26 @@ package mysql
 import (
 	"strings"
 	"testing"
+
+	"github.com/felixgeelhaar/chronos/internal/ports"
+	"github.com/google/uuid"
 )
 
 // Unit tests for MySQL DSN translation. The integration test that
 // exercises a real server lives in integration_test.go and is gated
 // on TEST_MYSQL_DSN.
+
+func TestBuildWhere_ScopeIDs(t *testing.T) {
+	a := uuid.MustParse("11111111-1111-1111-1111-111111111111")
+	b := uuid.MustParse("22222222-2222-2222-2222-222222222222")
+	where, args := buildWhere(ports.SignalFilter{ScopeIDs: []uuid.UUID{a, b}})
+	if !strings.Contains(where, "scope_id IN (?,?)") && !strings.Contains(where, "scope_id IN (?, ?)") {
+		t.Errorf("where = %q, want IN clause", where)
+	}
+	if len(args) != 2 || args[0] != a.String() || args[1] != b.String() {
+		t.Errorf("args = %v", args)
+	}
+}
 
 func TestParseDSN(t *testing.T) {
 	cases := []struct {

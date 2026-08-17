@@ -61,6 +61,7 @@ func TestSignal_Validate(t *testing.T) {
 	}{
 		{"missing scope", func(s *Signal) { s.ScopeID = uuid.Nil }, ErrMissingScopeID},
 		{"missing series", func(s *Signal) { s.Series = uuid.Nil }, ErrMissingSeriesID},
+		{"invalid explanation", func(s *Signal) { s.Explanation.ComparablePeers = -1 }, ErrInvalidExplanation},
 		{"missing pattern", func(s *Signal) { s.Pattern = "" }, ErrMissingPattern},
 		{"strength > 1", func(s *Signal) { s.Strength = 1.2 }, ErrInvalidStrength},
 		{"strength < 0", func(s *Signal) { s.Strength = -0.1 }, ErrInvalidStrength},
@@ -162,6 +163,23 @@ func TestExplanation_IsZero(t *testing.T) {
 				t.Errorf("non-zero Explanation reported IsZero: %+v", c.ex)
 			}
 		})
+	}
+}
+
+func TestSignal_Validate_OutlierClusterAllowsNilSeries(t *testing.T) {
+	now := time.Now()
+	sig := Signal{
+		ID:         uuid.New(),
+		ScopeID:    uuid.MustParse("11111111-1111-1111-1111-111111111111"),
+		Series:     uuid.Nil,
+		Pattern:    PatternTypeOutlierCluster,
+		DetectedAt: now,
+		Window:     TimeWindow{Start: now.Add(-time.Minute), End: now},
+		Strength:   0.4,
+		Confidence: 0.7,
+	}
+	if err := sig.Validate(); err != nil {
+		t.Fatalf("cohort-level outlier_cluster rejected: %v", err)
 	}
 }
 

@@ -40,6 +40,9 @@ Chronos perceives change. It accepts time-series observations from any source an
 - `Anomaly` — the subject is unlike its peers' *current* states (cross-entity dual of Recurrence).
 - `Seasonality` — periodic structure in the series (autocorrelation peak).
 - `Correlation` — two series move together (pairwise Pearson).
+- `ChangePoint` — a sustained mean shift between two regimes (best-split test).
+- `OutlierCluster` — several series in a scope go anomalous around the same time (cohort-level).
+- `CrossScopeCorrelation` — two series in *different* scopes move together.
 
 Each signal carries:
 

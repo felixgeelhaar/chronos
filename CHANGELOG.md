@@ -13,12 +13,25 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
   runtime image can declare a `HEALTHCHECK`: the distroless base ships no shell
   and no `curl`, so the binary has to probe itself.
 - **Container `HEALTHCHECK`** in the Dockerfile, wired to `chronos health`.
+- **Public client `Explanation` and `ConfidenceClass`** — the HTTP SDK now
+  unmarshals the explainability payload and qualitative grade that the server
+  has emitted since 0.5.0.
 
 ### Changed
 - **Dockerfile hardening** — explicit `USER 65532:65532` (the distroless
   `nonroot` default, now stated rather than inherited, so it survives a base
   image retag), `COPY --chown=root:root --chmod=0555` so a compromised process
   cannot rewrite its own entrypoint, and a `maintainer` label.
+- **`Signal.Validate`** allows `Series == uuid.Nil` for `outlier_cluster`
+  (cohort-level by contract). Those signals can now persist instead of being
+  silently dropped on save.
+- **MySQL backend** stores `explanation` and `confidence_class` and honours
+  `SignalFilter.ScopeIDs`, matching sqlite/postgres/memory.
+- **`pipeline.Compute` `SignalsCreated`** counts signals that actually saved,
+  not detections that failed validation.
+- Agent and user docs (README, architecture, configuration, CLAUDE, AGENTS)
+  list all eleven detectors, the MySQL/libSQL backends, and the HTTP auth /
+  extra `/v1` routes that were already in the binary.
 
 ### Security
 - **`golang.org/x/text` 0.38.0 → 0.39.0** — GO-2026-5970 / CVE-2026-56852,

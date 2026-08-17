@@ -13,7 +13,7 @@
 
 ---
 
-Chronos ingests time-series observations from any source and emits structured **signals** describing the patterns it sees — recurrences, trends, spikes, drops, stalls, anomalies, seasonality, correlations. It does not decide, act, or render prose. Signals are perception, not opinion.
+Chronos ingests time-series observations from any source and emits structured **signals** describing the patterns it sees — recurrences, trends, spikes, drops, stalls, anomalies, seasonality, correlations, change-points, outlier clusters, cross-scope correlations. It does not decide, act, or render prose. Signals are perception, not opinion.
 
 Chronos sits between **Mnemos** (memory) and **Nous** (decisions) in the cognitive stack, alongside **Praxis** (execution). See [`docs/cognitive-stack.md`](docs/cognitive-stack.md) for how the four systems compose.
 
@@ -84,7 +84,7 @@ Most observability tools answer *"is this metric outside its range?"* Chronos an
 |---|---|---|---|---|
 | **Output** | Typed signal (`Pattern` enum + structured `Metrics`) | Threshold alert (string) | Visual chart | Whatever you write |
 | **Audience** | Systems (Nous, agents, schedulers) | Humans (oncall) | Humans (looking) | You |
-| **Detection** | 8 detectors out of the box (recurrence, trend, spike, drop, stall, anomaly, seasonality, correlation) | Threshold + rate + absent | n/a (visualisation) | What you implement |
+| **Detection** | 11 detectors out of the box (recurrence, trend, spike, drop, stall, anomaly, seasonality, correlation, change_point, outlier_cluster, cross_scope_correlation) | Threshold + rate + absent | n/a (visualisation) | What you implement |
 | **Storage** | memory / sqlite / postgres / mysql / libsql; namespace-isolated | TSDB | Reads other stores | Yours |
 | **Footprint** | Single static binary, no CGO, ~2 MB Docker image | TSDB cluster | Java/JS app | Depends |
 | **Stable wire** | Yes — `Pattern`, `Evidence.Kind`, `Metrics` keys; SDK in Go | Yes (Prometheus exposition) | n/a | You decide |
@@ -142,6 +142,9 @@ Detailed layering and invariants: [`docs/architecture.md`](docs/architecture.md)
 | `anomaly`       | Subject is unlike its peers' current states (cross-entity dual of `recurrence`) | `peer_distance`   |
 | `seasonality`   | Periodic structure in the outcome series (autocorrelation peak)            | `autocorrelation_peak` |
 | `correlation`   | Two series in the same scope move together (pairwise Pearson)              | `pair_correlation`     |
+| `change_point`  | Sustained mean shift between two regimes (best-split test)                 | `regime_before` / `regime_after` |
+| `outlier_cluster` | Several series in a scope go anomalous around the same time (cohort-level; `series` is the nil UUID) | `outlier_member` |
+| `cross_scope_correlation` | Two series in *different* scopes move together                         | `cross_scope_pair`     |
 
 Tunable via `CHRONOS_*` env vars per detector (see [`docs/configuration.md`](docs/configuration.md)).
 
@@ -311,7 +314,10 @@ _, err := c.Ingest(ctx, client.IngestRequest{
 GET  /health                              Liveness/readiness
 GET  /metrics                             Prometheus exposition
 POST /v1/ingest                           Stream a single observation
-GET  /v1/signals                          List signals (filter by scope/pattern/series/since/until/min_confidence/limit)
+POST /v1/ingest/batch                     Batch observations (up to 1000)
+POST /v1/config/validate                  Dry-run a candidate env-var map
+GET  /v1/federation/export                Opt-in anonymized pattern statistics
+GET  /v1/signals                          List signals (filter by scope/pattern/series/since/until/min_confidence/limit/since_cursor)
 GET  /v1/signals/<id>                     Fetch a single signal with evidence
 GET  /v1/signals/stream                   Server-Sent Events feed (requires scheduler enabled)
 ```
@@ -322,8 +328,9 @@ The gRPC service is defined in [`api/proto/chronos/v1/chronos.proto`](api/proto/
 
 | Method | Description |
 |---|---|
-| `Ingest` (client-streaming) | Push observations as a stream of `EntityStateProto` messages |
+| `Ingest` | Push a single observation (`EntityState` fields on `IngestRequest`) |
 | `ListSignals` | Filter by scope/pattern/series/since/until/min_confidence/limit (mirrors HTTP `/v1/signals`) |
+| `GetSignal` | Fetch a single signal by ID |
 
 Bearer-token auth via the `authorization` metadata header reuses `CHRONOS_API_TOKEN`. HTTP and gRPC return the same domain shape — see [`docs/wire-contract.md`](docs/wire-contract.md) for the canonical contract.
 

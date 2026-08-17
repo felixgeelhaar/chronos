@@ -8,7 +8,7 @@ Chronos is the **time / pattern perception** layer of the cognitive stack (Mnemo
 
 **Core engine.**
 - `internal/domain` — `Signal`, `Evidence`, `TimeWindow`, `PatternType`, validation, normalization.
-- `internal/detect` Engine + eight detectors: Recurrence, Trend, Spike, Drop, Stall, Anomaly, Seasonality, Correlation.
+- `internal/detect` Engine + eleven detectors: Recurrence, Trend, Spike, Drop, Stall, Anomaly, Seasonality, Correlation, ChangePoint, OutlierCluster, plus CrossScopeCorrelation.
 - `internal/pipeline.Compute` — orchestration: fetch → save → detect → save signals.
 - `internal/similarity` — cosine, weighted, Euclidean.
 
@@ -21,7 +21,7 @@ Chronos is the **time / pattern perception** layer of the cognitive stack (Mnemo
 
 **Transports.**
 - HTTP REST (`internal/api`) — `/v1/ingest`, `/v1/signals`, `/v1/signals/{id}`, `/v1/signals/stream` (SSE), `/health`, `/metrics`.
-- gRPC (`internal/api/grpc`) — `Ingest` (client-streaming) + `ListSignals`. Schema in `api/proto/chronos/v1/chronos.proto`. Runs alongside HTTP on a separate port.
+- gRPC (`internal/api/grpc`) — `Ingest` (unary) + `ListSignals` + `GetSignal`. Schema in `api/proto/chronos/v1/chronos.proto`. Runs alongside HTTP on a separate port.
 - Webhook push (`CHRONOS_WEBHOOK_URLS`) with HMAC-SHA256 signing.
 
 **Infra.**

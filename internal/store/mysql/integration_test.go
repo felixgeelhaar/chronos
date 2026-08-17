@@ -142,6 +142,9 @@ func TestMySQL_SignalRoundTripWithEvidence(t *testing.T) {
 	if got.Evidence[0].Metrics["outcome_diff"] != 1.5 {
 		t.Errorf("evidence metrics lost: %+v", got.Evidence[0].Metrics)
 	}
+	if !got.Explanation.IsZero() {
+		t.Errorf("zero Explanation should round-trip empty, got %+v", got.Explanation)
+	}
 
 	listed, err := conn.Signals.List(ctx, ports.SignalFilter{ScopeID: scope})
 	if err != nil {
