@@ -101,6 +101,23 @@ func TestSQLite_SignalRoundTripWithEvidence(t *testing.T) {
 	if got.Evidence[0].Metrics["outcome_diff"] != 1.5 {
 		t.Errorf("evidence metric lost: %v", got.Evidence[0].Metrics)
 	}
+
+	sig.Evidence = []domain.Evidence{
+		{Series: uuid.New(), Time: now, Kind: "similar_state", Score: 0.5, Metrics: map[string]float64{"outcome_diff": 0.1}},
+	}
+	if err := c.Signals.Save(ctx, sig); err != nil {
+		t.Fatalf("Save upsert: %v", err)
+	}
+	got, err = c.Signals.Get(ctx, sig.ID)
+	if err != nil {
+		t.Fatalf("Get after upsert: %v", err)
+	}
+	if len(got.Evidence) != 1 {
+		t.Fatalf("upsert duplicated evidence: %d rows", len(got.Evidence))
+	}
+	if got.Evidence[0].Score != 0.5 {
+		t.Errorf("upsert evidence score = %v, want 0.5", got.Evidence[0].Score)
+	}
 }
 
 // TestSQLite_SignalExplanationRoundTrip pins the persistence contract

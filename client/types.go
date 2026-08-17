@@ -121,6 +121,15 @@ type FederationPatternStats struct {
 	StrongCount      int     `json:"strong_count,omitempty"`
 }
 
+// DetectorReport is the dry-run verdict from ValidateConfig / POST /v1/config/validate.
+type DetectorReport struct {
+	Name       string            `json:"name"`
+	Enabled    bool              `json:"enabled"`
+	Reason     string            `json:"reason,omitempty"`
+	Thresholds map[string]string `json:"thresholds,omitempty"`
+	Warnings   []string          `json:"warnings,omitempty"`
+}
+
 // PatternType constants mirror the engine's domain.PatternType enum so
 // callers can switch on stable string values without importing
 // internal packages.

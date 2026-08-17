@@ -77,7 +77,7 @@ func TestAggregateFederationStats_GroupsByPattern(t *testing.T) {
 		mkFedSig(domain.PatternTypeTrend, 0.6, 0.7, now),
 		mkFedSig(domain.PatternTypeRecurrence, 0.9, 0.95, now),
 	}
-	stats := aggregateFederationStats(sigs)
+	stats := AggregateFederationStats(sigs)
 	if len(stats) != 2 {
 		t.Fatalf("buckets = %d, want 2", len(stats))
 	}
@@ -111,7 +111,7 @@ func TestAggregateFederationStats_CountsConfidenceClasses(t *testing.T) {
 		mkFedSigClass(domain.PatternTypeTrend, domain.ConfidenceClassEstablished, now),
 		mkFedSigClass(domain.PatternTypeTrend, domain.ConfidenceClassTentative, now),
 	}
-	stats := aggregateFederationStats(sigs)
+	stats := AggregateFederationStats(sigs)
 	if len(stats) != 1 {
 		t.Fatalf("buckets = %d", len(stats))
 	}
