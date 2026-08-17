@@ -27,8 +27,10 @@ service ChronosService {
 
   // StreamSignals is the gRPC equivalent of GET /v1/signals/stream.
   // Requires the in-process detection scheduler. Returns Unimplemented
-  // when streaming is not attached.
-  rpc StreamSignals(StreamSignalsRequest) returns (stream Signal);
+  // when streaming is not attached. Each frame is a StreamSignalsResponse
+  // so the stream type is unique from GetSignal's Signal return
+  // (RPC_REQUEST_RESPONSE_UNIQUE).
+  rpc StreamSignals(StreamSignalsRequest) returns (stream StreamSignalsResponse);
 
   // ValidateConfig dry-runs a candidate env-var map, matching
   // POST /v1/config/validate. Does not mutate the running server.
@@ -187,6 +189,11 @@ message StreamSignalsRequest {
   string scope_id = 1;
   repeated string scope_ids = 2;
   PatternType pattern = 3;
+}
+
+// StreamSignalsResponse is one frame on the live signal stream.
+message StreamSignalsResponse {
+  Signal signal = 1;
 }
 
 // ValidateConfigRequest carries candidate CHRONOS_* env vars.

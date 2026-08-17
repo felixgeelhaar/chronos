@@ -106,7 +106,7 @@ func (s *Server) StreamSignals(req *chronosv1.StreamSignalsRequest, stream chron
 			if !ok {
 				return nil
 			}
-			if err := stream.Send(fromDomainSignal(sig)); err != nil {
+			if err := stream.Send(&chronosv1.StreamSignalsResponse{Signal: fromDomainSignal(sig)}); err != nil {
 				return err
 			}
 		}

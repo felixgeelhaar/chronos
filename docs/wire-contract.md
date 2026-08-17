@@ -15,7 +15,7 @@ The same domain shape ships over both transports. Evidence.Kind strings and metr
 
 Adding a new transport without updating this document is a contract bug.
 
-gRPC RPCs match the HTTP surface additively: unary `Ingest` + `IngestBatch`, `ListSignals` (including `since_cursor` / `next_cursor`), `GetSignal`, server-streaming `StreamSignals`, `ValidateConfig`, and `ExportFederation`. Unary `Ingest` was not changed to client-streaming.
+gRPC RPCs match the HTTP surface additively: unary `Ingest` + `IngestBatch`, `ListSignals` (including `since_cursor` / `next_cursor`), `GetSignal`, server-streaming `StreamSignals` (frames are `StreamSignalsResponse`, not bare `Signal`, so the type stays unique from `GetSignal`), `ValidateConfig`, and `ExportFederation`. Unary `Ingest` was not changed to client-streaming.
 
 ## Explanation
 

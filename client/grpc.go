@@ -329,14 +329,14 @@ func (q *GRPCSignalQuery) Stream(ctx context.Context) (<-chan Signal, error) {
 	go func() {
 		defer close(ch)
 		for {
-			ps, err := stream.Recv()
+			msg, err := stream.Recv()
 			if err != nil {
 				return
 			}
 			select {
 			case <-ctx.Done():
 				return
-			case ch <- protoToSignal(ps):
+			case ch <- protoToSignal(msg.GetSignal()):
 			}
 		}
 	}()

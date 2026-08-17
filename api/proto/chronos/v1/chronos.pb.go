@@ -1095,6 +1095,51 @@ func (x *StreamSignalsRequest) GetPattern() PatternType {
 	return PatternType_PATTERN_TYPE_UNSPECIFIED
 }
 
+// StreamSignalsResponse is one frame on the live signal stream.
+type StreamSignalsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Signal        *Signal                `protobuf:"bytes,1,opt,name=signal,proto3" json:"signal,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StreamSignalsResponse) Reset() {
+	*x = StreamSignalsResponse{}
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StreamSignalsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StreamSignalsResponse) ProtoMessage() {}
+
+func (x *StreamSignalsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StreamSignalsResponse.ProtoReflect.Descriptor instead.
+func (*StreamSignalsResponse) Descriptor() ([]byte, []int) {
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *StreamSignalsResponse) GetSignal() *Signal {
+	if x != nil {
+		return x.Signal
+	}
+	return nil
+}
+
 // ValidateConfigRequest carries candidate CHRONOS_* env vars.
 type ValidateConfigRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1105,7 +1150,7 @@ type ValidateConfigRequest struct {
 
 func (x *ValidateConfigRequest) Reset() {
 	*x = ValidateConfigRequest{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[13]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1117,7 +1162,7 @@ func (x *ValidateConfigRequest) String() string {
 func (*ValidateConfigRequest) ProtoMessage() {}
 
 func (x *ValidateConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[13]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1130,7 +1175,7 @@ func (x *ValidateConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateConfigRequest.ProtoReflect.Descriptor instead.
 func (*ValidateConfigRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{13}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ValidateConfigRequest) GetEnv() map[string]string {
@@ -1154,7 +1199,7 @@ type DetectorReport struct {
 
 func (x *DetectorReport) Reset() {
 	*x = DetectorReport{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[14]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1166,7 +1211,7 @@ func (x *DetectorReport) String() string {
 func (*DetectorReport) ProtoMessage() {}
 
 func (x *DetectorReport) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[14]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1179,7 +1224,7 @@ func (x *DetectorReport) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DetectorReport.ProtoReflect.Descriptor instead.
 func (*DetectorReport) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{14}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DetectorReport) GetName() string {
@@ -1227,7 +1272,7 @@ type ValidateConfigResponse struct {
 
 func (x *ValidateConfigResponse) Reset() {
 	*x = ValidateConfigResponse{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[15]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1239,7 +1284,7 @@ func (x *ValidateConfigResponse) String() string {
 func (*ValidateConfigResponse) ProtoMessage() {}
 
 func (x *ValidateConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[15]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1252,7 +1297,7 @@ func (x *ValidateConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateConfigResponse.ProtoReflect.Descriptor instead.
 func (*ValidateConfigResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{15}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ValidateConfigResponse) GetDetectors() []*DetectorReport {
@@ -1271,7 +1316,7 @@ type ExportFederationRequest struct {
 
 func (x *ExportFederationRequest) Reset() {
 	*x = ExportFederationRequest{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[16]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1283,7 +1328,7 @@ func (x *ExportFederationRequest) String() string {
 func (*ExportFederationRequest) ProtoMessage() {}
 
 func (x *ExportFederationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[16]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1296,7 +1341,7 @@ func (x *ExportFederationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportFederationRequest.ProtoReflect.Descriptor instead.
 func (*ExportFederationRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{16}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{17}
 }
 
 // FederationPatternStats summarises one pattern type's signal population.
@@ -1320,7 +1365,7 @@ type FederationPatternStats struct {
 
 func (x *FederationPatternStats) Reset() {
 	*x = FederationPatternStats{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[17]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1332,7 +1377,7 @@ func (x *FederationPatternStats) String() string {
 func (*FederationPatternStats) ProtoMessage() {}
 
 func (x *FederationPatternStats) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[17]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1345,7 +1390,7 @@ func (x *FederationPatternStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationPatternStats.ProtoReflect.Descriptor instead.
 func (*FederationPatternStats) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{17}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *FederationPatternStats) GetPattern() string {
@@ -1446,7 +1491,7 @@ type FederationExport struct {
 
 func (x *FederationExport) Reset() {
 	*x = FederationExport{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[18]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1458,7 +1503,7 @@ func (x *FederationExport) String() string {
 func (*FederationExport) ProtoMessage() {}
 
 func (x *FederationExport) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[18]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1471,7 +1516,7 @@ func (x *FederationExport) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FederationExport.ProtoReflect.Descriptor instead.
 func (*FederationExport) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{18}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *FederationExport) GetGeneratedAt() *timestamppb.Timestamp {
@@ -1519,7 +1564,7 @@ type GetSignalRequest struct {
 
 func (x *GetSignalRequest) Reset() {
 	*x = GetSignalRequest{}
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[19]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1531,7 +1576,7 @@ func (x *GetSignalRequest) String() string {
 func (*GetSignalRequest) ProtoMessage() {}
 
 func (x *GetSignalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[19]
+	mi := &file_api_proto_chronos_v1_chronos_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1544,7 +1589,7 @@ func (x *GetSignalRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSignalRequest.ProtoReflect.Descriptor instead.
 func (*GetSignalRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{19}
+	return file_api_proto_chronos_v1_chronos_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetSignalRequest) GetId() string {
@@ -1652,7 +1697,9 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x14StreamSignalsRequest\x12\x19\n" +
 	"\bscope_id\x18\x01 \x01(\tR\ascopeId\x12\x1b\n" +
 	"\tscope_ids\x18\x02 \x03(\tR\bscopeIds\x121\n" +
-	"\apattern\x18\x03 \x01(\x0e2\x17.chronos.v1.PatternTypeR\apattern\"\x8d\x01\n" +
+	"\apattern\x18\x03 \x01(\x0e2\x17.chronos.v1.PatternTypeR\apattern\"C\n" +
+	"\x15StreamSignalsResponse\x12*\n" +
+	"\x06signal\x18\x01 \x01(\v2\x12.chronos.v1.SignalR\x06signal\"\x8d\x01\n" +
 	"\x15ValidateConfigRequest\x12<\n" +
 	"\x03env\x18\x01 \x03(\v2*.chronos.v1.ValidateConfigRequest.EnvEntryR\x03env\x1a6\n" +
 	"\bEnvEntry\x12\x10\n" +
@@ -1707,13 +1754,13 @@ const file_api_proto_chronos_v1_chronos_proto_rawDesc = "" +
 	"\x19PATTERN_TYPE_CHANGE_POINT\x10\t\x12 \n" +
 	"\x1cPATTERN_TYPE_OUTLIER_CLUSTER\x10\n" +
 	"\x12(\n" +
-	"$PATTERN_TYPE_CROSS_SCOPE_CORRELATION\x10\v2\xa9\x04\n" +
+	"$PATTERN_TYPE_CROSS_SCOPE_CORRELATION\x10\v2\xb8\x04\n" +
 	"\x0eChronosService\x12?\n" +
 	"\x06Ingest\x12\x19.chronos.v1.IngestRequest\x1a\x1a.chronos.v1.IngestResponse\x12N\n" +
 	"\vIngestBatch\x12\x1e.chronos.v1.IngestBatchRequest\x1a\x1f.chronos.v1.IngestBatchResponse\x12N\n" +
 	"\vListSignals\x12\x1e.chronos.v1.ListSignalsRequest\x1a\x1f.chronos.v1.ListSignalsResponse\x12=\n" +
-	"\tGetSignal\x12\x1c.chronos.v1.GetSignalRequest\x1a\x12.chronos.v1.Signal\x12G\n" +
-	"\rStreamSignals\x12 .chronos.v1.StreamSignalsRequest\x1a\x12.chronos.v1.Signal0\x01\x12W\n" +
+	"\tGetSignal\x12\x1c.chronos.v1.GetSignalRequest\x1a\x12.chronos.v1.Signal\x12V\n" +
+	"\rStreamSignals\x12 .chronos.v1.StreamSignalsRequest\x1a!.chronos.v1.StreamSignalsResponse0\x01\x12W\n" +
 	"\x0eValidateConfig\x12!.chronos.v1.ValidateConfigRequest\x1a\".chronos.v1.ValidateConfigResponse\x12U\n" +
 	"\x10ExportFederation\x12#.chronos.v1.ExportFederationRequest\x1a\x1c.chronos.v1.FederationExportBAZ?github.com/felixgeelhaar/chronos/api/proto/chronos/v1;chronosv1b\x06proto3"
 
@@ -1730,7 +1777,7 @@ func file_api_proto_chronos_v1_chronos_proto_rawDescGZIP() []byte {
 }
 
 var file_api_proto_chronos_v1_chronos_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_proto_chronos_v1_chronos_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
+var file_api_proto_chronos_v1_chronos_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_api_proto_chronos_v1_chronos_proto_goTypes = []any{
 	(PatternType)(0),                // 0: chronos.v1.PatternType
 	(*EntityState)(nil),             // 1: chronos.v1.EntityState
@@ -1746,68 +1793,70 @@ var file_api_proto_chronos_v1_chronos_proto_goTypes = []any{
 	(*IngestBatchRequest)(nil),      // 11: chronos.v1.IngestBatchRequest
 	(*IngestBatchResponse)(nil),     // 12: chronos.v1.IngestBatchResponse
 	(*StreamSignalsRequest)(nil),    // 13: chronos.v1.StreamSignalsRequest
-	(*ValidateConfigRequest)(nil),   // 14: chronos.v1.ValidateConfigRequest
-	(*DetectorReport)(nil),          // 15: chronos.v1.DetectorReport
-	(*ValidateConfigResponse)(nil),  // 16: chronos.v1.ValidateConfigResponse
-	(*ExportFederationRequest)(nil), // 17: chronos.v1.ExportFederationRequest
-	(*FederationPatternStats)(nil),  // 18: chronos.v1.FederationPatternStats
-	(*FederationExport)(nil),        // 19: chronos.v1.FederationExport
-	(*GetSignalRequest)(nil),        // 20: chronos.v1.GetSignalRequest
-	nil,                             // 21: chronos.v1.EntityState.MetaEntry
-	nil,                             // 22: chronos.v1.Signal.MetricsEntry
-	nil,                             // 23: chronos.v1.Evidence.MetricsEntry
-	nil,                             // 24: chronos.v1.IngestRequest.MetaEntry
-	nil,                             // 25: chronos.v1.ValidateConfigRequest.EnvEntry
-	nil,                             // 26: chronos.v1.DetectorReport.ThresholdsEntry
-	(*timestamppb.Timestamp)(nil),   // 27: google.protobuf.Timestamp
+	(*StreamSignalsResponse)(nil),   // 14: chronos.v1.StreamSignalsResponse
+	(*ValidateConfigRequest)(nil),   // 15: chronos.v1.ValidateConfigRequest
+	(*DetectorReport)(nil),          // 16: chronos.v1.DetectorReport
+	(*ValidateConfigResponse)(nil),  // 17: chronos.v1.ValidateConfigResponse
+	(*ExportFederationRequest)(nil), // 18: chronos.v1.ExportFederationRequest
+	(*FederationPatternStats)(nil),  // 19: chronos.v1.FederationPatternStats
+	(*FederationExport)(nil),        // 20: chronos.v1.FederationExport
+	(*GetSignalRequest)(nil),        // 21: chronos.v1.GetSignalRequest
+	nil,                             // 22: chronos.v1.EntityState.MetaEntry
+	nil,                             // 23: chronos.v1.Signal.MetricsEntry
+	nil,                             // 24: chronos.v1.Evidence.MetricsEntry
+	nil,                             // 25: chronos.v1.IngestRequest.MetaEntry
+	nil,                             // 26: chronos.v1.ValidateConfigRequest.EnvEntry
+	nil,                             // 27: chronos.v1.DetectorReport.ThresholdsEntry
+	(*timestamppb.Timestamp)(nil),   // 28: google.protobuf.Timestamp
 }
 var file_api_proto_chronos_v1_chronos_proto_depIdxs = []int32{
-	27, // 0: chronos.v1.EntityState.timestamp:type_name -> google.protobuf.Timestamp
-	21, // 1: chronos.v1.EntityState.meta:type_name -> chronos.v1.EntityState.MetaEntry
+	28, // 0: chronos.v1.EntityState.timestamp:type_name -> google.protobuf.Timestamp
+	22, // 1: chronos.v1.EntityState.meta:type_name -> chronos.v1.EntityState.MetaEntry
 	0,  // 2: chronos.v1.Signal.pattern:type_name -> chronos.v1.PatternType
-	27, // 3: chronos.v1.Signal.detected_at:type_name -> google.protobuf.Timestamp
+	28, // 3: chronos.v1.Signal.detected_at:type_name -> google.protobuf.Timestamp
 	5,  // 4: chronos.v1.Signal.window:type_name -> chronos.v1.TimeWindow
-	22, // 5: chronos.v1.Signal.metrics:type_name -> chronos.v1.Signal.MetricsEntry
+	23, // 5: chronos.v1.Signal.metrics:type_name -> chronos.v1.Signal.MetricsEntry
 	6,  // 6: chronos.v1.Signal.evidence:type_name -> chronos.v1.Evidence
 	4,  // 7: chronos.v1.Signal.explanation:type_name -> chronos.v1.Explanation
-	27, // 8: chronos.v1.FeatureSample.at:type_name -> google.protobuf.Timestamp
+	28, // 8: chronos.v1.FeatureSample.at:type_name -> google.protobuf.Timestamp
 	3,  // 9: chronos.v1.Explanation.feature_evolution:type_name -> chronos.v1.FeatureSample
-	27, // 10: chronos.v1.TimeWindow.start:type_name -> google.protobuf.Timestamp
-	27, // 11: chronos.v1.TimeWindow.end:type_name -> google.protobuf.Timestamp
-	27, // 12: chronos.v1.Evidence.time:type_name -> google.protobuf.Timestamp
-	23, // 13: chronos.v1.Evidence.metrics:type_name -> chronos.v1.Evidence.MetricsEntry
-	27, // 14: chronos.v1.IngestRequest.timestamp:type_name -> google.protobuf.Timestamp
-	24, // 15: chronos.v1.IngestRequest.meta:type_name -> chronos.v1.IngestRequest.MetaEntry
+	28, // 10: chronos.v1.TimeWindow.start:type_name -> google.protobuf.Timestamp
+	28, // 11: chronos.v1.TimeWindow.end:type_name -> google.protobuf.Timestamp
+	28, // 12: chronos.v1.Evidence.time:type_name -> google.protobuf.Timestamp
+	24, // 13: chronos.v1.Evidence.metrics:type_name -> chronos.v1.Evidence.MetricsEntry
+	28, // 14: chronos.v1.IngestRequest.timestamp:type_name -> google.protobuf.Timestamp
+	25, // 15: chronos.v1.IngestRequest.meta:type_name -> chronos.v1.IngestRequest.MetaEntry
 	0,  // 16: chronos.v1.ListSignalsRequest.pattern:type_name -> chronos.v1.PatternType
-	27, // 17: chronos.v1.ListSignalsRequest.since:type_name -> google.protobuf.Timestamp
-	27, // 18: chronos.v1.ListSignalsRequest.until:type_name -> google.protobuf.Timestamp
+	28, // 17: chronos.v1.ListSignalsRequest.since:type_name -> google.protobuf.Timestamp
+	28, // 18: chronos.v1.ListSignalsRequest.until:type_name -> google.protobuf.Timestamp
 	2,  // 19: chronos.v1.ListSignalsResponse.signals:type_name -> chronos.v1.Signal
 	7,  // 20: chronos.v1.IngestBatchRequest.observations:type_name -> chronos.v1.IngestRequest
 	0,  // 21: chronos.v1.StreamSignalsRequest.pattern:type_name -> chronos.v1.PatternType
-	25, // 22: chronos.v1.ValidateConfigRequest.env:type_name -> chronos.v1.ValidateConfigRequest.EnvEntry
-	26, // 23: chronos.v1.DetectorReport.thresholds:type_name -> chronos.v1.DetectorReport.ThresholdsEntry
-	15, // 24: chronos.v1.ValidateConfigResponse.detectors:type_name -> chronos.v1.DetectorReport
-	27, // 25: chronos.v1.FederationExport.generated_at:type_name -> google.protobuf.Timestamp
-	18, // 26: chronos.v1.FederationExport.patterns:type_name -> chronos.v1.FederationPatternStats
-	7,  // 27: chronos.v1.ChronosService.Ingest:input_type -> chronos.v1.IngestRequest
-	11, // 28: chronos.v1.ChronosService.IngestBatch:input_type -> chronos.v1.IngestBatchRequest
-	9,  // 29: chronos.v1.ChronosService.ListSignals:input_type -> chronos.v1.ListSignalsRequest
-	20, // 30: chronos.v1.ChronosService.GetSignal:input_type -> chronos.v1.GetSignalRequest
-	13, // 31: chronos.v1.ChronosService.StreamSignals:input_type -> chronos.v1.StreamSignalsRequest
-	14, // 32: chronos.v1.ChronosService.ValidateConfig:input_type -> chronos.v1.ValidateConfigRequest
-	17, // 33: chronos.v1.ChronosService.ExportFederation:input_type -> chronos.v1.ExportFederationRequest
-	8,  // 34: chronos.v1.ChronosService.Ingest:output_type -> chronos.v1.IngestResponse
-	12, // 35: chronos.v1.ChronosService.IngestBatch:output_type -> chronos.v1.IngestBatchResponse
-	10, // 36: chronos.v1.ChronosService.ListSignals:output_type -> chronos.v1.ListSignalsResponse
-	2,  // 37: chronos.v1.ChronosService.GetSignal:output_type -> chronos.v1.Signal
-	2,  // 38: chronos.v1.ChronosService.StreamSignals:output_type -> chronos.v1.Signal
-	16, // 39: chronos.v1.ChronosService.ValidateConfig:output_type -> chronos.v1.ValidateConfigResponse
-	19, // 40: chronos.v1.ChronosService.ExportFederation:output_type -> chronos.v1.FederationExport
-	34, // [34:41] is the sub-list for method output_type
-	27, // [27:34] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	2,  // 22: chronos.v1.StreamSignalsResponse.signal:type_name -> chronos.v1.Signal
+	26, // 23: chronos.v1.ValidateConfigRequest.env:type_name -> chronos.v1.ValidateConfigRequest.EnvEntry
+	27, // 24: chronos.v1.DetectorReport.thresholds:type_name -> chronos.v1.DetectorReport.ThresholdsEntry
+	16, // 25: chronos.v1.ValidateConfigResponse.detectors:type_name -> chronos.v1.DetectorReport
+	28, // 26: chronos.v1.FederationExport.generated_at:type_name -> google.protobuf.Timestamp
+	19, // 27: chronos.v1.FederationExport.patterns:type_name -> chronos.v1.FederationPatternStats
+	7,  // 28: chronos.v1.ChronosService.Ingest:input_type -> chronos.v1.IngestRequest
+	11, // 29: chronos.v1.ChronosService.IngestBatch:input_type -> chronos.v1.IngestBatchRequest
+	9,  // 30: chronos.v1.ChronosService.ListSignals:input_type -> chronos.v1.ListSignalsRequest
+	21, // 31: chronos.v1.ChronosService.GetSignal:input_type -> chronos.v1.GetSignalRequest
+	13, // 32: chronos.v1.ChronosService.StreamSignals:input_type -> chronos.v1.StreamSignalsRequest
+	15, // 33: chronos.v1.ChronosService.ValidateConfig:input_type -> chronos.v1.ValidateConfigRequest
+	18, // 34: chronos.v1.ChronosService.ExportFederation:input_type -> chronos.v1.ExportFederationRequest
+	8,  // 35: chronos.v1.ChronosService.Ingest:output_type -> chronos.v1.IngestResponse
+	12, // 36: chronos.v1.ChronosService.IngestBatch:output_type -> chronos.v1.IngestBatchResponse
+	10, // 37: chronos.v1.ChronosService.ListSignals:output_type -> chronos.v1.ListSignalsResponse
+	2,  // 38: chronos.v1.ChronosService.GetSignal:output_type -> chronos.v1.Signal
+	14, // 39: chronos.v1.ChronosService.StreamSignals:output_type -> chronos.v1.StreamSignalsResponse
+	17, // 40: chronos.v1.ChronosService.ValidateConfig:output_type -> chronos.v1.ValidateConfigResponse
+	20, // 41: chronos.v1.ChronosService.ExportFederation:output_type -> chronos.v1.FederationExport
+	35, // [35:42] is the sub-list for method output_type
+	28, // [28:35] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_chronos_v1_chronos_proto_init() }
@@ -1821,7 +1870,7 @@ func file_api_proto_chronos_v1_chronos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_chronos_v1_chronos_proto_rawDesc), len(file_api_proto_chronos_v1_chronos_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   26,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

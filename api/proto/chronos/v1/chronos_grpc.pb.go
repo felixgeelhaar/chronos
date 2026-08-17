@@ -49,8 +49,10 @@ type ChronosServiceClient interface {
 	GetSignal(ctx context.Context, in *GetSignalRequest, opts ...grpc.CallOption) (*Signal, error)
 	// StreamSignals is the gRPC equivalent of GET /v1/signals/stream.
 	// Requires the in-process detection scheduler. Returns Unimplemented
-	// when streaming is not attached.
-	StreamSignals(ctx context.Context, in *StreamSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Signal], error)
+	// when streaming is not attached. Each frame is a StreamSignalsResponse
+	// so the stream type is unique from GetSignal's Signal return
+	// (RPC_REQUEST_RESPONSE_UNIQUE).
+	StreamSignals(ctx context.Context, in *StreamSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamSignalsResponse], error)
 	// ValidateConfig dry-runs a candidate env-var map, matching
 	// POST /v1/config/validate. Does not mutate the running server.
 	ValidateConfig(ctx context.Context, in *ValidateConfigRequest, opts ...grpc.CallOption) (*ValidateConfigResponse, error)
@@ -108,13 +110,13 @@ func (c *chronosServiceClient) GetSignal(ctx context.Context, in *GetSignalReque
 	return out, nil
 }
 
-func (c *chronosServiceClient) StreamSignals(ctx context.Context, in *StreamSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Signal], error) {
+func (c *chronosServiceClient) StreamSignals(ctx context.Context, in *StreamSignalsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamSignalsResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &ChronosService_ServiceDesc.Streams[0], ChronosService_StreamSignals_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[StreamSignalsRequest, Signal]{ClientStream: stream}
+	x := &grpc.GenericClientStream[StreamSignalsRequest, StreamSignalsResponse]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -125,7 +127,7 @@ func (c *chronosServiceClient) StreamSignals(ctx context.Context, in *StreamSign
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ChronosService_StreamSignalsClient = grpc.ServerStreamingClient[Signal]
+type ChronosService_StreamSignalsClient = grpc.ServerStreamingClient[StreamSignalsResponse]
 
 func (c *chronosServiceClient) ValidateConfig(ctx context.Context, in *ValidateConfigRequest, opts ...grpc.CallOption) (*ValidateConfigResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -168,8 +170,10 @@ type ChronosServiceServer interface {
 	GetSignal(context.Context, *GetSignalRequest) (*Signal, error)
 	// StreamSignals is the gRPC equivalent of GET /v1/signals/stream.
 	// Requires the in-process detection scheduler. Returns Unimplemented
-	// when streaming is not attached.
-	StreamSignals(*StreamSignalsRequest, grpc.ServerStreamingServer[Signal]) error
+	// when streaming is not attached. Each frame is a StreamSignalsResponse
+	// so the stream type is unique from GetSignal's Signal return
+	// (RPC_REQUEST_RESPONSE_UNIQUE).
+	StreamSignals(*StreamSignalsRequest, grpc.ServerStreamingServer[StreamSignalsResponse]) error
 	// ValidateConfig dry-runs a candidate env-var map, matching
 	// POST /v1/config/validate. Does not mutate the running server.
 	ValidateConfig(context.Context, *ValidateConfigRequest) (*ValidateConfigResponse, error)
@@ -199,7 +203,7 @@ func (UnimplementedChronosServiceServer) ListSignals(context.Context, *ListSigna
 func (UnimplementedChronosServiceServer) GetSignal(context.Context, *GetSignalRequest) (*Signal, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSignal not implemented")
 }
-func (UnimplementedChronosServiceServer) StreamSignals(*StreamSignalsRequest, grpc.ServerStreamingServer[Signal]) error {
+func (UnimplementedChronosServiceServer) StreamSignals(*StreamSignalsRequest, grpc.ServerStreamingServer[StreamSignalsResponse]) error {
 	return status.Error(codes.Unimplemented, "method StreamSignals not implemented")
 }
 func (UnimplementedChronosServiceServer) ValidateConfig(context.Context, *ValidateConfigRequest) (*ValidateConfigResponse, error) {
@@ -306,11 +310,11 @@ func _ChronosService_StreamSignals_Handler(srv interface{}, stream grpc.ServerSt
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(ChronosServiceServer).StreamSignals(m, &grpc.GenericServerStream[StreamSignalsRequest, Signal]{ServerStream: stream})
+	return srv.(ChronosServiceServer).StreamSignals(m, &grpc.GenericServerStream[StreamSignalsRequest, StreamSignalsResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ChronosService_StreamSignalsServer = grpc.ServerStreamingServer[Signal]
+type ChronosService_StreamSignalsServer = grpc.ServerStreamingServer[StreamSignalsResponse]
 
 func _ChronosService_ValidateConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ValidateConfigRequest)
