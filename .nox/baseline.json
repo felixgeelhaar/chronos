@@ -138,11 +138,11 @@
       "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
-      "fingerprint": "7ef485203e7eafd08549ac444947726610bc794b080468e20f7ecbab803ba2ca",
+      "fingerprint": "5b618c670232b3622cc27d855783ac403ba9a0e64d375aa9dc90b7427637d2d4",
       "rule_id": "IAC-231",
       "file_path": "test/integration/docker-compose.yml",
       "severity": "low",
-      "reason": "Pre-existing finding (test/config/doc/example fixture); adopted into baseline at nox 1.7.0 upgrade. Triage tracked separately.",
+      "reason": "Same :latest default on the integration compose Chronos image after retargeting ghcr.io/klarlabs-studio/chronos. Fingerprint churned with the registry rename; waived via VEX IAC-231.",
       "created_at": "2026-07-06T09:09:35.07215Z"
     },
     {
