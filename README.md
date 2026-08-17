@@ -15,7 +15,7 @@
 
 Chronos ingests time-series observations from any source and emits structured **signals** describing the patterns it sees — recurrences, trends, spikes, drops, stalls, anomalies, seasonality, correlations, change-points, outlier clusters, cross-scope correlations. It does not decide, act, or render prose. Signals are perception, not opinion.
 
-Chronos sits between **Mnemos** (memory) and **Nous** (decisions) in the cognitive stack, alongside **Praxis** (execution). See [`docs/cognitive-stack.md`](docs/cognitive-stack.md) for how the four systems compose.
+Chronos sits next to **Mnemos** (memory). Downstream **agent runtimes** interpret signals and act. See [`docs/cognitive-stack.md`](docs/cognitive-stack.md) for how the systems compose. [Nous](https://github.com/felixgeelhaar/nous) is archived (2026-05-31); risk + intervention scoring lives in [decisionkit](https://github.com/felixgeelhaar/decisionkit).
 
 ---
 
@@ -74,16 +74,16 @@ curl -s "http://localhost:7778/v1/signals?scope_id=$SCOPE&pattern=stall" | jq
 kill $SERVER_PID
 ```
 
-That's the whole loop: ingest a series → detection runs in-process → signals are queryable and streamable. The full Mnemos → Chronos → Nous walkthrough lives in [`docs/cognitive-stack-example.md`](docs/cognitive-stack-example.md).
+That's the whole loop: ingest a series → detection runs in-process → signals are queryable and streamable. The full Mnemos → Chronos → agent walkthrough lives in [`docs/cognitive-stack-example.md`](docs/cognitive-stack-example.md).
 
 ## Why Chronos?
 
-Most observability tools answer *"is this metric outside its range?"* Chronos answers *"what shape is this series?"* and exposes the answer as a typed signal a downstream system (Nous, an agent, a workflow) can switch on.
+Most observability tools answer *"is this metric outside its range?"* Chronos answers *"what shape is this series?"* and exposes the answer as a typed signal a downstream system (an agent, a workflow, a dashboard) can switch on.
 
 | | Chronos | Prometheus + Alertmanager | Grafana | Build it yourself |
 |---|---|---|---|---|
 | **Output** | Typed signal (`Pattern` enum + structured `Metrics`) | Threshold alert (string) | Visual chart | Whatever you write |
-| **Audience** | Systems (Nous, agents, schedulers) | Humans (oncall) | Humans (looking) | You |
+| **Audience** | Systems (agents, schedulers) | Humans (oncall) | Humans (looking) | You |
 | **Detection** | 11 detectors out of the box (recurrence, trend, spike, drop, stall, anomaly, seasonality, correlation, change_point, outlier_cluster, cross_scope_correlation) | Threshold + rate + absent | n/a (visualisation) | What you implement |
 | **Storage** | memory / sqlite / postgres / mysql / libsql; namespace-isolated | TSDB | Reads other stores | Yours |
 | **Footprint** | Single static binary, no CGO, ~2 MB Docker image | TSDB cluster | Java/JS app | Depends |
@@ -93,7 +93,7 @@ Chronos doesn't replace any of these. It complements them by giving you a layer 
 
 ## Design principles
 
-- **Signals, not opinions.** Each signal carries Pattern, Strength, Confidence, Window, and Evidence. There is no Title, no Summary, no Suggestion. Interpretation is Nous's job.
+- **Signals, not opinions.** Each signal carries Pattern, Strength, Confidence, Window, and Evidence. There is no Title, no Summary, no Suggestion. Interpretation is the consumer's job.
 - **Domain-agnostic.** Athletes, servers, sensors, stocks — all flow through the `chronos.Source` adapter port.
 - **Loosely coupled.** Chronos works standalone. The stack composes through stable contracts, not internal coupling.
 - **Lightweight.** Single Go binary. Pure-Go SQLite (no CGO). Five backends; pick one per deployment.
@@ -123,8 +123,8 @@ Detailed layering and invariants: [`docs/architecture.md`](docs/architecture.md)
 
 | Document | What's in it |
 |---|---|
-| [`docs/cognitive-stack.md`](docs/cognitive-stack.md) | Chronos's role next to Mnemos / Praxis / Nous; the boundaries that make the four systems composable. |
-| [`docs/cognitive-stack-example.md`](docs/cognitive-stack-example.md) | End-to-end walkthrough with real curl + JSON + Go: a commitment goes stale, Chronos detects it, Nous interprets. |
+| [`docs/cognitive-stack.md`](docs/cognitive-stack.md) | Chronos's role next to Mnemos and agent runtimes; the boundaries that make the stack composable. |
+| [`docs/cognitive-stack-example.md`](docs/cognitive-stack-example.md) | End-to-end walkthrough with real curl + JSON + Go: a commitment goes stale, Chronos detects it, an agent interprets. |
 | [`docs/architecture.md`](docs/architecture.md) | Internal layering (DDD / hexagonal), per-aggregate repos, detector contract. |
 | [`docs/adapters.md`](docs/adapters.md) | How to write a `chronos.Source` adapter for your own data. |
 | [`docs/configuration.md`](docs/configuration.md) | All `CHRONOS_*` env vars; DSN syntax, namespace contract, backend matrix, push-notification setup. |
@@ -399,5 +399,5 @@ MIT — see [`LICENSE`](LICENSE).
 
 - **[Mnemos](https://github.com/felixgeelhaar/Mnemos)** — Memory & Knowledge ("what happened, what do we know")
 - **Chronos** — Time & Pattern Perception ("what is changing, what's emerging")
-- **Praxis** — Execution / Capabilities ("what can be done")
-- **Nous** — Coordination / Intelligence ("what should happen, by whom, when")
+- **[decisionkit](https://github.com/felixgeelhaar/decisionkit)** — deterministic risk + intervention scoring for agent consumers
+- **[Nous](https://github.com/felixgeelhaar/nous)** — archived 2026-05-31 (`v0.3.1-final`); reasoning moved to agent runtimes. See [Mnemos ADR 0005](https://github.com/felixgeelhaar/mnemos/blob/main/docs/adr/0005-archive-nous.md).

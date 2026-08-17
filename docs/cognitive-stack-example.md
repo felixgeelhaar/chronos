@@ -1,8 +1,8 @@
-# Worked Example: Mnemos → Chronos → Nous
+# Worked Example: Mnemos → Chronos → agents
 
-The [cognitive-stack overview](cognitive-stack.md) describes the layers in the abstract: *Mnemos remembers, Chronos perceives change, Nous decides, Praxis acts*. This document walks one scenario end-to-end with real wire payloads so adopters can see exactly how the four systems compose.
+The [cognitive-stack overview](cognitive-stack.md) describes the layers in the abstract: *Mnemos remembers, Chronos perceives change, agent runtimes interpret and act*. This document walks one scenario end-to-end with real wire payloads so adopters can see exactly how those systems compose.
 
-The scenario is the same one summarised in [`cognitive-stack.md`](cognitive-stack.md): a user says "I'll follow up with Alex tomorrow", and we want Nous to surface a nudge if the commitment goes stale.
+The scenario is the same one summarised in [`cognitive-stack.md`](cognitive-stack.md): a user says "I'll follow up with Alex tomorrow", and we want a downstream agent to surface a nudge if the commitment goes stale.
 
 ```
 [user]      "I'll follow up with Alex tomorrow"
@@ -16,14 +16,14 @@ The scenario is the same one summarised in [`cognitive-stack.md`](cognitive-stac
             sees it climb without resolution, emits a Stall signal
    │
    ▼
-[Nous]      reads (memory + signal), decides this is a commitment risk,
-            drafts a follow-up message
+[agent]     reads (memory + signal), decides this is a commitment risk,
+            optionally scores it with decisionkit, drafts a follow-up
    │
    ▼
-[Praxis]    sends or surfaces the message; outcome flows back to Mnemos
+[action]    sends or surfaces the message; outcome flows back to Mnemos
 ```
 
-The remainder of this doc focuses on the **Chronos slice** — what it sees, what it emits, and how Nous reads it. The Mnemos and Praxis sides are sketched briefly so you can see where Chronos sits in the data flow without leaving the stack abstract.
+The remainder of this doc focuses on the **Chronos slice** — what it sees, what it emits, and how a consumer reads it. The Mnemos and action sides are sketched briefly so you can see where Chronos sits in the data flow without leaving the stack abstract.
 
 ## 0. Setup
 
@@ -104,7 +104,7 @@ curl -s -X POST http://localhost:7778/v1/ingest \
 
 The detection scheduler ticks every `CHRONOS_DETECTION_INTERVAL`. It groups observations by scope, runs every detector ([`internal/detect/`](../internal/detect)), and persists each emitted signal. With seven flat observations the **Stall** detector trips: normalised stddev is below `CHRONOS_STALL_MAX_STDDEV` (default 0.05) over at least `CHRONOS_STALL_MIN_POINTS` (default 4).
 
-Chronos's emitted signal — exactly what Nous will see when it queries `/v1/signals`:
+Chronos's emitted signal — exactly what a consumer will see when it queries `/v1/signals`:
 
 ```json
 {
@@ -138,19 +138,19 @@ Chronos's emitted signal — exactly what Nous will see when it queries `/v1/sig
 }
 ```
 
-Things to notice — these are the parts of the contract Nous can rely on, all listed in [`docs/wire-contract.md`](wire-contract.md):
+Things to notice — these are the parts of the contract consumers can rely on, all listed in [`docs/wire-contract.md`](wire-contract.md):
 
-- **`pattern: "stall"`** — drives interpretation routing on the Nous side.
+- **`pattern: "stall"`** — drives interpretation routing on the consumer side.
 - **`strength: 0.91`** — how flat the series is (1.0 = perfectly flat).
 - **`confidence: 0.83`** — strength scaled by sample-size factor; rises as more observations land.
-- **`evidence[0].kind: "variance_window"`** — stable string Nous can switch on.
-- **`metrics.normalised_stddev`**, **`metrics.mean`**, **`metrics.n`** — the underlying numbers Nous needs if it wants to reason about *how* stalled the commitment is.
+- **`evidence[0].kind: "variance_window"`** — stable string a consumer can switch on.
+- **`metrics.normalised_stddev`**, **`metrics.mean`**, **`metrics.n`** — the underlying numbers an agent needs if it wants to reason about *how* stalled the commitment is.
 
-There is no `title`, no `summary`, no `suggestion`. Chronos perceives; Nous interprets. That's the design rule.
+There is no `title`, no `summary`, no `suggestion`. Chronos perceives; agent runtimes interpret. That's the design rule.
 
-## 4. Nous reads the signal
+## 4. An agent reads the signal
 
-Nous integrates as a Chronos *consumer*. It uses the public Go SDK ([`client/`](../client)) — there is no internal coupling.
+A downstream agent integrates as a Chronos *consumer*. It uses the public Go SDK ([`client/`](../client)) — there is no internal coupling.
 
 ### 4a. Pull (poll for the latest)
 
@@ -182,7 +182,7 @@ func ReadStallSignals(ctx context.Context, scopeID uuid.UUID, since time.Time) e
         return err
     }
     for _, sig := range signals {
-        nousInterpret(sig) // see 4c
+        interpretSignal(sig) // see 4c
     }
     return nil
 }
@@ -190,7 +190,7 @@ func ReadStallSignals(ctx context.Context, scopeID uuid.UUID, since time.Time) e
 
 ### 4b. Push (subscribe to the live feed)
 
-For low-latency interventions Nous can subscribe to the SSE endpoint instead of polling. Same wire shape, channel-based delivery:
+For low-latency interventions an agent can subscribe to the SSE endpoint instead of polling. Same wire shape, channel-based delivery:
 
 ```go
 ctx, cancel := context.WithCancel(ctx)
@@ -204,19 +204,19 @@ if err != nil {
     return err
 }
 for sig := range events {
-    nousInterpret(sig)
+    interpretSignal(sig)
 }
 // channel closes on ctx cancel, server EOF, or fatal protocol error
 ```
 
 A common production pattern is to use **both**: stream for live awareness, plus a periodic `Since`-keyed `List` call as the gap-recovery path. Chronos guarantees at-most-once delivery for streams; persistence is the source of truth.
 
-### 4c. Nous interprets and decides
+### 4c. The agent interprets and decides
 
 This is the part Chronos deliberately **does not do**. Sketch:
 
 ```go
-func nousInterpret(sig client.Signal) {
+func interpretSignal(sig client.Signal) {
     // 1. Look up the Memory that owns this entity.
     memory, _ := mnemos.GetByEntity(sig.Series)
     if memory.Kind != "commitment" {
@@ -225,15 +225,16 @@ func nousInterpret(sig client.Signal) {
     }
 
     // 2. Combine memory + signal into a decision.
+    //    Optional: score risk with github.com/felixgeelhaar/decisionkit.
     if sig.Confidence < 0.8 || memory.Status != "open" {
         return // not actionable yet
     }
     daysOpen := int(sig.Metrics["mean"]) // from the Stall metric
 
-    // 3. Hand a structured action to Praxis.
-    praxis.RequestAction(praxis.ActionRequest{
+    // 3. Act — draft a follow-up, post to Slack, call a tool, etc.
+    act.Request(ActionRequest{
         Capability: "draft-followup-message",
-        Payload: praxis.DraftPayload{
+        Payload: DraftPayload{
             Subject:    memory.Content,           // "follow up with Alex"
             DaysOpen:   daysOpen,                  // 11
             Confidence: sig.Confidence,            // 0.83
@@ -243,31 +244,33 @@ func nousInterpret(sig client.Signal) {
 }
 ```
 
-Nous's decision is always a *combination*: a memory (the commitment) plus a perception (the Stall) plus an interpretation rule. None of those rules live in Chronos.
+The decision is always a *combination*: a memory (the commitment) plus a perception (the Stall) plus an interpretation rule. None of those rules live in Chronos. [Nous](https://github.com/felixgeelhaar/nous) used to own this step as a dedicated service; it is archived (2026-05-31). Agent runtimes interpret; [decisionkit](https://github.com/felixgeelhaar/decisionkit) covers deterministic risk + intervention scoring.
 
 ## 5. The outcome flows back to Mnemos
 
-Once Praxis has done something — sent a draft for the user to review, posted to Slack, etc. — the outcome (sent, dismissed, edited) lands back in Mnemos. Chronos may then see the `days_since_opened` reset to zero on the next ingest tick, the next Stall signal goes silent, and the loop is closed.
+Once the agent has done something — sent a draft for the user to review, posted to Slack, etc. — the outcome (sent, dismissed, edited) lands back in Mnemos. Chronos may then see the `days_since_opened` reset to zero on the next ingest tick, the next Stall signal goes silent, and the loop is closed.
 
 ```
-World ──► Mnemos ──► Nous ◄── Chronos ◄── observations
+World ──► Mnemos ──► agent ◄── Chronos ◄── observations
                        │
                        ▼
-                     Praxis ──► outcome ──► Mnemos
+                     action ──► outcome ──► Mnemos
 ```
 
 ## What's deliberately *not* in this example
 
-- **No prose in any Chronos payload.** No "consider following up with Alex" string. The signal is a numeric perception; the prose belongs to Nous-or-later.
+- **No prose in any Chronos payload.** No "consider following up with Alex" string. The signal is a numeric perception; the prose belongs to the agent or later surfaces.
 - **No state about the *user*** in Chronos. Mnemos owns the commitment, the deadline, who it's with. Chronos sees a series of numbers tied to an entity ID and emits a perception.
-- **No decision logic in Chronos.** The Stall signal would fire identically for a stalled deployment, a stalled training plan, or a stalled commitment — Nous is what makes those interpretations diverge.
-- **No retries, dismissal, or feedback in Chronos.** Once a signal is detected and persisted it is immutable; any *acted on / suppressed / valid / invalid* status lives in Nous (decisions) or Mnemos (memory updates).
+- **No decision logic in Chronos.** The Stall signal would fire identically for a stalled deployment, a stalled training plan, or a stalled commitment — the agent is what makes those interpretations diverge.
+- **No retries, dismissal, or feedback in Chronos.** Once a signal is detected and persisted it is immutable; any *acted on / suppressed / valid / invalid* status lives in the agent layer (decisions) or Mnemos (memory updates).
 
 These are the same boundaries [`docs/cognitive-stack.md`](cognitive-stack.md) draws abstractly, made concrete with one scenario.
 
 ## Further reading
 
 - [`docs/cognitive-stack.md`](cognitive-stack.md) — the layer roles and contracts in the abstract.
-- [`docs/wire-contract.md`](wire-contract.md) — every stable string Nous can rely on (`Pattern`, `Evidence.Kind`, `Metrics` keys per detector).
+- [`docs/wire-contract.md`](wire-contract.md) — every stable string a consumer can rely on (`Pattern`, `Evidence.Kind`, `Metrics` keys per detector).
 - [`docs/adapters.md`](adapters.md) — write your own bridge if the commitments-bridge sketch above isn't enough.
 - [`docs/configuration.md`](configuration.md) — DSN syntax, namespace contract, push-notification setup.
+- [decisionkit](https://github.com/felixgeelhaar/decisionkit) — optional risk + intervention scoring for agent consumers.
+- [Mnemos ADR 0005](https://github.com/felixgeelhaar/mnemos/blob/main/docs/adr/0005-archive-nous.md) — why Nous was archived.

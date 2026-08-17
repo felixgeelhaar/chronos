@@ -26,7 +26,7 @@ new config knobs introduced, migration concerns. -->
 ## Checklist
 
 - [ ] `make check` passes locally (`fmt + vet + test -race`)
-- [ ] No prose in domain or wire types — Title/Summary/Suggestion belong to Nous
+- [ ] No prose in domain or wire types — Title/Summary/Suggestion belong to consumers / agent runtimes
 - [ ] If a new detector: registered in `detect.DefaultDetectors`, has tests, has config knobs documented in `docs/configuration.md`
 - [ ] If a schema change: migration file updated, sqlc regenerated where applicable
 - [ ] If a new public type: stable JSON shape, decoupled from internal/domain

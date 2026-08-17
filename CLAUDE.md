@@ -21,14 +21,14 @@ CI (`.github/workflows/ci.yml`) runs `go test -race -count=1`, `golangci-lint`, 
 
 ## Project intent
 
-Chronos is the **Time / Pattern Perception** layer of the cognitive stack (Mnemos → Chronos → Nous → Praxis). It ingests time-series observations and emits structured **signals** — `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, `Anomaly`, `Seasonality`, `Correlation`, `ChangePoint`, `OutlierCluster`, `CrossScopeCorrelation`. Each signal carries Pattern, Strength (intensity), Confidence (sureness), Window, Evidence, and Metrics.
+Chronos is the **Time / Pattern Perception** layer of the cognitive stack (Mnemos → Chronos → agent runtimes). It ingests time-series observations and emits structured **signals** — `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, `Anomaly`, `Seasonality`, `Correlation`, `ChangePoint`, `OutlierCluster`, `CrossScopeCorrelation`. Each signal carries Pattern, Strength (intensity), Confidence (sureness), Window, Evidence, and Metrics.
 
 Two non-negotiable rules:
 
-1. **Signals, not opinions.** Chronos perceives; Nous interprets. No Title/Summary/Suggestion in domain or wire types. No dismissal, no feedback, no IsActive. Those are Nous and Mnemos concerns.
+1. **Signals, not opinions.** Chronos perceives; agent runtimes interpret. No Title/Summary/Suggestion in domain or wire types. No dismissal, no feedback, no IsActive. Those are agent-runtime and Mnemos concerns.
 2. **The core engine knows nothing about the domain.** Domain knowledge enters only through adapters that produce `chronos.EntityState`. If domain-specific code starts leaking into `internal/` or the top-level `chronos` package, that is a design break.
 
-See [`docs/cognitive-stack.md`](docs/cognitive-stack.md) for how the four systems compose.
+See [`docs/cognitive-stack.md`](docs/cognitive-stack.md) for how the systems compose.
 
 ## Architecture
 

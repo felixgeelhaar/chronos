@@ -2,7 +2,7 @@
 //
 // Two aggregates: entity-state observations and signals. Per the cognitive-
 // stack vision Chronos does not own reviewer feedback (Mnemos's territory)
-// or dismissal/decision lifecycle (Nous's territory) — those interfaces are
+// or dismissal/decision lifecycle (agent runtimes) — those interfaces are
 // deliberately absent.
 //
 // Per-aggregate repositories follow the Interface Segregation Principle:
@@ -165,7 +165,7 @@ type VectorSearcher interface {
 // ctx cancellation. Delivery semantics are at-most-once per consumer;
 // consumers de-duplicate by Signal.ID. Per the cognitive-stack vision,
 // notification is a transport concern only — the decision of what a
-// signal means lives in Nous, never here.
+// signal means lives in the consumer, never here.
 type Notifier interface {
 	Notify(ctx context.Context, sig domain.Signal)
 }
@@ -173,7 +173,7 @@ type Notifier interface {
 // SignalRepository persists and queries signals. There is no Dismiss or
 // IsActive concept here — once a signal is detected and persisted it is
 // immutable. Decisions about whether to act on it (or to suppress it
-// in a UI) live in Nous.
+// in a UI) live in the consumer.
 type SignalRepository interface {
 	// Save persists a single signal including its evidence. Idempotent
 	// on Signal.ID.

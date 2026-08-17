@@ -1,6 +1,6 @@
 # Architecture
 
-This document describes the engine's layout, the contracts at each boundary, and the design principles that hold the codebase together. It complements [`AGENTS.md`](../AGENTS.md) (working conventions), [`CLAUDE.md`](../CLAUDE.md) (machine-oriented guidance), and [`docs/cognitive-stack.md`](cognitive-stack.md) (Chronos's role next to Mnemos / Praxis / Nous).
+This document describes the engine's layout, the contracts at each boundary, and the design principles that hold the codebase together. It complements [`AGENTS.md`](../AGENTS.md) (working conventions), [`CLAUDE.md`](../CLAUDE.md) (machine-oriented guidance), and [`docs/cognitive-stack.md`](cognitive-stack.md) (Chronos's role next to Mnemos and agent runtimes).
 
 ## Intent
 
@@ -8,7 +8,7 @@ Chronos is the **Time / Pattern Perception** layer of the cognitive stack. It ac
 
 Two design rules everything else follows:
 
-1. **Signals, not opinions.** Chronos perceives; Nous interprets. There is no Title/Summary/Suggestion, no dismissal, no feedback. Domain types carry only structured perception.
+1. **Signals, not opinions.** Chronos perceives; agent runtimes and other downstream consumers interpret. There is no Title/Summary/Suggestion, no dismissal, no feedback. Domain types carry only structured perception.
 2. **The engine knows nothing about the domain it serves.** All domain knowledge enters through `chronos.Source` implementations that live in their own repositories. `internal/domain` has no imports outside the standard library, `github.com/google/uuid`, and `chronos` itself.
 
 ## Layered design (DDD / hexagonal)
@@ -74,7 +74,7 @@ Layers run from inside (pure) to outside (I/O):
 ### Two public packages, two audiences
 
 - **`chronos`** is the *adapter SDK*. It exposes `EntityState` (the input shape) and `Source` (the inbound port) plus a process-wide registry.
-- **`client`** is the *HTTP SDK* for consumers (Nous integrators, dashboards, runtimes) reading signals from a running server.
+- **`client`** is the *HTTP SDK* for consumers (agent runtimes, dashboards) reading signals from a running server.
 
 `internal/domain.Signal` is deliberately private — wire shape lives in `internal/api.SignalDTO` and `client.Signal`. The engine's representation can evolve without breaking either audience.
 
@@ -89,7 +89,7 @@ There is **no `FeedbackRepository`** in Chronos. Reviewer feedback lives in Mnem
 
 ### Why the API does not render prose
 
-The cognitive-stack vision is explicit: Chronos emits signals, Nous interprets them, presentation surfaces vary. Putting prose at the API boundary would couple Chronos to a single language, audience, and surface. Instead, the wire shape carries structured fields (`Pattern`, `Strength`, `Confidence`, `Metrics`, numeric `Explanation`); consumers compose copy as they see fit.
+The cognitive-stack vision is explicit: Chronos emits signals, consumers interpret them, presentation surfaces vary. Putting prose at the API boundary would couple Chronos to a single language, audience, and surface. Instead, the wire shape carries structured fields (`Pattern`, `Strength`, `Confidence`, `Metrics`, numeric `Explanation`); consumers compose copy as they see fit.
 
 ## Engine semantics
 
@@ -176,8 +176,8 @@ Adapters are activated by blank imports in `cmd/chronos/main.go`. Because adapte
 
 ## What is *not* here (and why)
 
-- **No interpretation in the engine.** No "this is a problem" or "consider doing X." Those are decisions; Nous owns decisions.
-- **No reviewer feedback or dismissal.** Feedback updates knowledge; that lives in Mnemos. Dismissal is a UI/orchestration concern that lives in Nous.
+- **No interpretation in the engine.** No "this is a problem" or "consider doing X." Those are decisions; agent runtimes own decisions.
+- **No reviewer feedback or dismissal.** Feedback updates knowledge; that lives in Mnemos. Dismissal is a UI/orchestration concern that lives in the consumer.
 - **No Cobra**; the CLI is small enough that a hand-rolled dispatch is clearer.
 - **No DI container**; constructors take their dependencies directly; main wires everything.
 - **No event sourcing or CQRS**; the engine's writes are simple aggregates; reads are direct queries.

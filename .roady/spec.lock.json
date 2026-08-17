@@ -1,7 +1,7 @@
 {
   "id": "chronos",
   "title": "Chronos — Time / Pattern Perception",
-  "description": "Chronos is the Time / Pattern Perception layer of the cognitive stack\n(Mnemos → Chronos → Nous → Praxis). It ingests time-series observations\nvia domain-specific adapters and emits structured signals — Recurrence,\nTrend, Spike, Drop, Stall, Anomaly, Seasonality, Correlation. Each signal\ncarries Pattern, Strength (intensity), Confidence (sureness), Window,\nEvidence, and Metrics. Chronos perceives change; it does not interpret,\ndecide, render prose, or execute actions — those are Nous / Praxis concerns.\n",
+  "description": "Chronos is the Time / Pattern Perception layer of the cognitive stack\n(Mnemos → Chronos → agent runtimes). It ingests time-series observations\nvia domain-specific adapters and emits structured signals — Recurrence,\nTrend, Spike, Drop, Stall, Anomaly, Seasonality, Correlation. Each signal\ncarries Pattern, Strength (intensity), Confidence (sureness), Window,\nEvidence, and Metrics. Chronos perceives change; it does not interpret,\ndecide, render prose, or execute actions — those are agent-runtime concerns.\n",
   "features": [
     {
       "id": "domain-types",
@@ -68,7 +68,7 @@
     {
       "id": "client-sdk",
       "title": "Public HTTP client SDK (client/)",
-      "description": "client/ package — HTTP-API SDK for consumers (Nous integrators, dashboards,\nruntimes) reading signals from a running Chronos server.\n",
+      "description": "client/ package — HTTP-API SDK for consumers (agent runtimes, dashboards)\nreading signals from a running Chronos server.\n",
       "requirements": [
         {
           "id": "fluent-builder",
@@ -358,7 +358,7 @@
   "constraints": [
     {
       "id": "signals-not-opinions",
-      "description": "Chronos perceives; Nous interprets. No Title, Summary, or Suggestion in domain\nor wire types. No dismissal, feedback, or IsActive. Those are Nous / Mnemos\nconcerns.\n"
+      "description": "Chronos perceives; agent runtimes interpret. No Title, Summary, or Suggestion in domain\nor wire types. No dismissal, feedback, or IsActive. Those are agent-runtime / Mnemos\nconcerns.\n"
     },
     {
       "id": "domain-isolation",

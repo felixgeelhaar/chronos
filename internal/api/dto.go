@@ -13,7 +13,7 @@ import (
 // is decoupled from domain.Signal so internal refactors do not break
 // clients. There is no Title/Summary/Suggestion: per the cognitive-
 // stack vision, Chronos emits signals — not prose. Downstream
-// consumers (Nous) interpret the structured fields.
+// consumers interpret the structured fields.
 type SignalDTO struct {
 	ID         uuid.UUID          `json:"id"`
 	ScopeID    uuid.UUID          `json:"scope_id"`

@@ -22,6 +22,11 @@ The wire contract documented in [`docs/wire-contract.md`](docs/wire-contract.md)
   (`scope_in`); `IngestBatch`; `FederationExport`.
 
 ### Changed
+- **Nous is archived.** Living docs, agent files, issue/PR templates, and
+  package comments no longer treat Nous as a live decision layer.
+  Interpretation belongs to agent runtimes; risk + intervention scoring
+  lives in [decisionkit](https://github.com/felixgeelhaar/decisionkit).
+  See [Mnemos ADR 0005](https://github.com/felixgeelhaar/mnemos/blob/main/docs/adr/0005-archive-nous.md).
 - **Dockerfile hardening** — explicit `USER 65532:65532` (the distroless
   `nonroot` default, now stated rather than inherited, so it survives a base
   image retag), `COPY --chown=root:root --chmod=0555` so a compromised process

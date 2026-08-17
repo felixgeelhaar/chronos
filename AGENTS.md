@@ -2,9 +2,9 @@
 
 ## Project intent
 
-Chronos is the **Time / Pattern Perception** layer of the cognitive stack ([Mnemos / **Chronos** / Praxis / Nous](docs/cognitive-stack.md)). It ingests time-series observations from any source and emits **signals** — structured records describing patterns: `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, `Anomaly`, `Seasonality`, `Correlation`, `ChangePoint`, `OutlierCluster`, `CrossScopeCorrelation`.
+Chronos is the **Time / Pattern Perception** layer of the cognitive stack ([Mnemos / **Chronos** / agent runtimes](docs/cognitive-stack.md)). It ingests time-series observations from any source and emits **signals** — structured records describing patterns: `Recurrence`, `Trend`, `Spike`, `Drop`, `Stall`, `Anomaly`, `Seasonality`, `Correlation`, `ChangePoint`, `OutlierCluster`, `CrossScopeCorrelation`.
 
-The single hardest rule: **signals, not opinions.** Chronos perceives; it does not interpret. There is no Title, no Summary, no Suggestion, no dismissal workflow, no feedback. Those concerns belong to Nous (decisions) and Mnemos (knowledge), respectively.
+The single hardest rule: **signals, not opinions.** Chronos perceives; it does not interpret. There is no Title, no Summary, no Suggestion, no dismissal workflow, no feedback. Those concerns belong to agent runtimes (decisions) and Mnemos (knowledge), respectively.
 
 The second hardest rule: **the core engine knows nothing about the domain.** Athletes, servers, sensors — all enter through `chronos.Source` as undifferentiated `EntityState` records.
 
@@ -12,7 +12,7 @@ The second hardest rule: **the core engine knows nothing about the domain.** Ath
 
 ```
 chronos/                       Public adapter SDK: EntityState, Source, registry
-client/                        Public HTTP-API SDK for consumers (Nous integrators, dashboards)
+client/                        Public HTTP-API SDK for consumers (agent runtimes, dashboards)
 embed/                         In-process engine API (Process / Detect / Query)
 cmd/chronos/                   CLI: main.go + one file per subcommand + errors.go
 internal/
@@ -40,7 +40,7 @@ docs/                          Architecture, cognitive-stack, adapter authoring,
 ## Public surface
 
 - **`chronos`** — adapter authors import `chronos.EntityState` and implement `chronos.Source`. Adapters self-register via `init()` calling `chronos.Register(src)`.
-- **`client`** — consumers (Nous, dashboards) import `client.New(...)` and use the fluent builder (`c.Signals().Scope(id).Pattern(client.PatternTypeRecurrence).MinConfidence(0.7).List(ctx)`).
+- **`client`** — consumers (agent runtimes, dashboards) import `client.New(...)` and use the fluent builder (`c.Signals().Scope(id).Pattern(client.PatternTypeRecurrence).MinConfidence(0.7).List(ctx)`).
 
 Anything under `internal/` is private and may change without notice.
 

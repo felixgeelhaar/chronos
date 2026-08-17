@@ -70,7 +70,7 @@ CHRONOS_DETECTION_INTERVAL=30s
 CHRONOS_API_TOKEN=<bearer-secret>
 
 # Webhook fan-out (optional)
-CHRONOS_WEBHOOK_URLS=https://nous.example.com/v1/chronos-signal
+CHRONOS_WEBHOOK_URLS=https://agent.example.com/v1/chronos-signal
 CHRONOS_WEBHOOK_SECRET=<hmac-secret>
 CHRONOS_WEBHOOK_RETRIES=2
 ```
