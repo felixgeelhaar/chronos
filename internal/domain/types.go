@@ -1,10 +1,10 @@
 // Package domain holds the engine's private domain model.
 //
-// Chronos's role in the cognitive stack (Mnemos / Chronos / Praxis / Nous)
+// Chronos's role in the cognitive stack (Mnemos / Chronos / agent runtimes)
 // is *Time / Pattern Perception*: it ingests time-series observations and
 // emits structured Signals describing patterns. It does NOT interpret what
 // signals mean, decide actions, or store reviewer feedback — those are
-// Nous and Mnemos responsibilities respectively.
+// agent-runtime and Mnemos responsibilities respectively.
 //
 // As a result, this package contains only the perceptual primitives:
 // Signal, Evidence, PatternType, TimeWindow. There is no Title, no
@@ -32,7 +32,7 @@ var (
 
 // PatternType is a typed enum for the kinds of patterns Chronos can
 // detect. Each detector emits Signals tagged with one PatternType so
-// downstream consumers (Nous) can filter and route by perception kind
+// downstream consumers can filter and route by perception kind
 // without parsing free text.
 type PatternType string
 
@@ -127,7 +127,7 @@ type Evidence struct {
 
 // Signal is a structured description of a detected pattern. It is
 // presentation-neutral: no Title, no Summary, no Suggestion. Downstream
-// consumers (Nous) interpret Signals into actions; Chronos only perceives.
+// consumers interpret Signals into actions; Chronos only perceives.
 type Signal struct {
 	ID         uuid.UUID
 	ScopeID    uuid.UUID

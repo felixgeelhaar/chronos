@@ -9,7 +9,7 @@
 // package.
 //
 // This pattern mirrors Mnemos's ADR 0001 across the cognitive stack
-// (Mnemos, Chronos, Praxis, Nous): the factory contract, URL
+// (Mnemos, Chronos, and sibling tools): the factory contract, URL
 // convention, and namespace primitive are shared; the shape of Conn
 // is per-tool.
 package store

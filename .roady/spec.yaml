@@ -2,12 +2,12 @@ id: chronos
 title: Chronos — Time / Pattern Perception
 description: |
     Chronos is the Time / Pattern Perception layer of the cognitive stack
-    (Mnemos → Chronos → Nous → Praxis). It ingests time-series observations
+    (Mnemos → Chronos → agent runtimes). It ingests time-series observations
     via domain-specific adapters and emits structured signals — Recurrence,
     Trend, Spike, Drop, Stall, Anomaly, Seasonality, Correlation. Each signal
     carries Pattern, Strength (intensity), Confidence (sureness), Window,
     Evidence, and Metrics. Chronos perceives change; it does not interpret,
-    decide, render prose, or execute actions — those are Nous / Praxis concerns.
+    decide, render prose, or execute actions — those are agent-runtime concerns.
 features:
     - id: domain-types
       title: Core domain types
@@ -61,8 +61,8 @@ features:
     - id: client-sdk
       title: Public HTTP client SDK (client/)
       description: |
-        client/ package — HTTP-API SDK for consumers (Nous integrators, dashboards,
-        runtimes) reading signals from a running Chronos server.
+        client/ package — HTTP-API SDK for consumers (agent runtimes, dashboards)
+        reading signals from a running Chronos server.
       requirements:
         - id: fluent-builder
           title: ""
@@ -323,8 +323,8 @@ features:
 constraints:
     - id: signals-not-opinions
       description: |
-        Chronos perceives; Nous interprets. No Title, Summary, or Suggestion in domain
-        or wire types. No dismissal, feedback, or IsActive. Those are Nous / Mnemos
+        Chronos perceives; agent runtimes interpret. No Title, Summary, or Suggestion in domain
+        or wire types. No dismissal, feedback, or IsActive. Those are agent-runtime / Mnemos
         concerns.
     - id: domain-isolation
       description: |

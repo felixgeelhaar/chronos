@@ -8,8 +8,8 @@ body:
       value: |
         Chronos's role in the cognitive stack is **Time / Pattern Perception**:
         signals, not opinions. Feature requests that interpret signals or take
-        actions probably belong in Nous — but feel free to file here and we'll
-        route appropriately.
+        actions probably belong in an agent runtime — but feel free to file here
+        and we'll route appropriately.
 
   - type: textarea
     id: problem

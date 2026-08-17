@@ -210,7 +210,7 @@ chronos serve --port 7778</code></pre>
     Eleven detectors, five backends, HTTP + gRPC + SSE, bearer auth,
     GoReleaser distribution, in-process detection on every tick. The
     only public adapter is <code>ascend</code> (athletes sample); the
-    Mnemos / Nous integration adapters described in the cognitive-stack
+    Mnemos / agent integration adapters described in the cognitive-stack
     docs are illustrative — wire your own, or run Chronos standalone.
     No hosted UI; bring Grafana.
   </div>
@@ -218,17 +218,17 @@ chronos serve --port 7778</code></pre>
 
 <section id="stack" aria-labelledby="stack-heading">
   <p class="kicker">Cognitive stack context</p>
-  <h2 id="stack-heading">Chronos works alone. Plugs into a four-system stack.</h2>
+  <h2 id="stack-heading">Chronos works alone. Sits next to Mnemos; agents interpret.</h2>
   <p>
-    The four-system split lets each layer evolve independently:
-    Mnemos remembers, Chronos watches time, Nous decides, Praxis
-    executes. Olymp drives the loop. Each is independently usable.
+    Mnemos remembers, Chronos watches time, agent runtimes decide and act.
+    <a href="https://github.com/felixgeelhaar/nous">Nous</a> is archived; risk +
+    intervention scoring lives in decisionkit. Chronos is independently usable.
   </p>
   <div class="cols">
     <div class="card"><h3><a href="https://felixgeelhaar.github.io/mnemos/">Mnemos · memory</a></h3><p>Evidence-linked claims with point-in-time replay and contradiction detection.</p></div>
-    <div class="card"><h3><a href="https://felixgeelhaar.github.io/nous/">Nous · decisions</a></h3><p>Commitment extraction, risk evaluation, intervention generation.</p></div>
-    <div class="card"><h3><a href="https://felixgeelhaar.github.io/praxis/">Praxis · execution</a></h3><p>Three-verb action layer with idempotency and replay-from-audit.</p></div>
-    <div class="card"><h3><a href="https://felixgeelhaar.github.io/olymp/">Olymp · runtime</a></h3><p>Drives observe → understand → decide → act → learn end-to-end.</p></div>
+    <div class="card"><h3>Chronos · perception</h3><p>Typed time-series signals. This project. Consumers switch on Pattern, not prose.</p></div>
+    <div class="card"><h3>Agent runtimes · interpretation</h3><p>Combine memories + signals, decide, and act. Reasoning no longer lives in a dedicated service.</p></div>
+    <div class="card"><h3><a href="https://github.com/felixgeelhaar/decisionkit">decisionkit · risk</a></h3><p>Deterministic risk + intervention scoring extracted from archived Nous.</p></div>
   </div>
 </section>
 
@@ -252,9 +252,8 @@ chronos serve --port 7778</code></pre>
       <h4>Stack</h4>
       <ul>
         <li><a href="https://felixgeelhaar.github.io/mnemos/">Mnemos</a></li>
-        <li><a href="https://felixgeelhaar.github.io/nous/">Nous</a></li>
-        <li><a href="https://felixgeelhaar.github.io/praxis/">Praxis</a></li>
-        <li><a href="https://felixgeelhaar.github.io/olymp/">Olymp</a></li>
+        <li><a href="https://github.com/felixgeelhaar/decisionkit">decisionkit</a></li>
+        <li><a href="https://github.com/felixgeelhaar/nous">Nous (archived)</a></li>
       </ul>
     </div>
     <div>

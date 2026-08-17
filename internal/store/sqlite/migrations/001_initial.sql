@@ -2,7 +2,7 @@
 --
 -- Two aggregates: time-series observations (entity_states) and detected
 -- patterns (signals + signal_evidence). No insights, no feedback, no
--- dismissal: those concerns belong to Nous and Mnemos in the broader
+-- dismissal: those concerns belong to agent runtimes and Mnemos in the broader
 -- cognitive stack.
 
 CREATE TABLE entity_states (

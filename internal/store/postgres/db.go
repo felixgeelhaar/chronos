@@ -27,7 +27,7 @@ import (
 	"github.com/felixgeelhaar/chronos/internal/store"
 
 	// pgx-stdlib registers the "pgx" sql.DB driver in init(). Replaces
-	// lib/pq so the cognitive stack (Mnemos, Chronos, Praxis, Nous)
+	// lib/pq so the cognitive stack (Mnemos, Chronos, and sibling tools)
 	// shares one driver surface.
 	_ "github.com/jackc/pgx/v5/stdlib"
 )

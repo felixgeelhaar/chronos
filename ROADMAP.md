@@ -1,6 +1,6 @@
 # Chronos Roadmap
 
-Chronos is the **time / pattern perception** layer of the cognitive stack (Mnemos → Chronos → Nous → Praxis). The engine is feature-complete for the v1 contract; this roadmap covers what comes next.
+Chronos is the **time / pattern perception** layer of the cognitive stack (Mnemos → Chronos → agent runtimes). The engine is feature-complete for the v1 contract; this roadmap covers what comes next.
 
 ## Status (May 2026)
 
@@ -46,7 +46,7 @@ Shipped items from earlier roadmap slices stay checked in git history; they are 
 The point of the no-adapters-in-Chronos rule is that adapters live close to their domain. Anticipated near-term integrations from neighbouring projects:
 
 - **Mnemos action+outcome stream** — feed Mnemos's recorded outcomes into Chronos as a metric series; pattern detection on the outcome.
-- **decisionkit risk score over time** — feed [decisionkit](https://github.com/felixgeelhaar/decisionkit) risk-score time series; detect "risk piling up" patterns.
+- **decisionkit risk score over time** — feed [decisionkit](https://github.com/felixgeelhaar/decisionkit) risk-score time series; detect "risk piling up" patterns. (Nous owned this when it was a live service; it is archived.)
 
 Both are out-of-tree adapters. This roadmap tracks them only as expected use cases — implementation belongs to the consuming repo.
 

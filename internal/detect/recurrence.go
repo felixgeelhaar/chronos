@@ -18,8 +18,8 @@ import (
 // historical states.
 //
 // The detector is intentionally simple — it emits the *signal* that "we
-// have seen this before"; what it means (good, bad, neutral) is Nous's
-// concern, not Chronos's.
+// have seen this before"; what it means (good, bad, neutral) is the
+// consumer's concern, not Chronos's.
 type Recurrence struct {
 	cfg *config.Config
 	now func() time.Time
