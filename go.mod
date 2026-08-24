@@ -2,6 +2,8 @@ module github.com/felixgeelhaar/chronos
 
 go 1.25.0
 
+toolchain go1.25.14
+
 require (
 	github.com/go-sql-driver/mysql v1.10.0
 	github.com/google/uuid v1.6.0
